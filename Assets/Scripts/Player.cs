@@ -9,10 +9,21 @@ public class Player : MonoBehaviour
     public float movementSpeed = 10.0F;
     public bool momentumMovement = false;
 
+    // camera controls
+    public Camera camera; // the player's camera
+    public Vector3 camDefaultDist = new Vector3(0, 3, 10); // camera distance from player
+    public Vector3 camDefaultRot = new Vector3(0, 0, 0); // the camera's default orientation
+     
+    // // saves the rotation of the camera
+    // private Vector3 camRot = new Vector3(0.0F, 0.0F, 0.0F);
+    // private Vector3 rotSpeed = new Vector3(100.0F, 100.0F, 0.0F);
+    // private Vector2 xRotLimit = new Vector2(-50.0F, 50.0F);
+
+    // animal characteristics
     protected float speedMult = 1.0F;
     protected float knockbackMult = 1.0F;
     protected float jumpMult = 1.0F;
-    protected float sturdyMult = 1.0F;
+    protected float defenseMult = 1.0F;
     
     // TODO: add files for model?
 
@@ -89,5 +100,11 @@ public class Player : MonoBehaviour
                 transform.Translate(new Vector3(0, -movementSpeed * speedMult * Time.deltaTime, 0));
             }
         }
+
+
+        // if()
+        // {
+        // 
+        // }
     }
 }

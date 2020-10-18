@@ -623,8 +623,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1908994742}
-  - component: {fileID: 1908994741}
   - component: {fileID: 1908994743}
+  - component: {fileID: 1908994741}
   m_Layer: 0
   m_Name: Player Object
   m_TagString: Untagged
@@ -647,6 +647,9 @@ MonoBehaviour:
   rigidBody: {fileID: 1908994743}
   movementSpeed: 20
   momentumMovement: 1
+  camera: {fileID: 0}
+  camDefaultDist: {x: 0, y: 3, z: 10}
+  camDefaultRot: {x: 0, y: 0, z: 0}
 --- !u!4 &1908994742
 Transform:
   m_ObjectHideFlags: 0
