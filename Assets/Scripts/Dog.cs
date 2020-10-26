@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dog : Player
+public class Dog : PlayerObject
 {
     // Start is called before the first frame update
     void Start()

@@ -709,6 +709,56 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1438589769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1438589771}
+  - component: {fileID: 1438589770}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1438589770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438589769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d114ac8a3d2122946879e64261218aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: -25, z: 0}
+  useX: 0
+  useY: 1
+  useZ: 0
+  lessThanX: 1
+  lessThanY: 1
+  lessThanZ: 1
+--- !u!4 &1438589771
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438589769}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.0518885, y: -0.39723706, z: -2.3894877}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1469053266
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,6 +1124,12 @@ MonoBehaviour:
   movementSpeed: 20
   momentumMovement: 1
   camera: {fileID: 963194227}
+  deathSpace: {fileID: 1438589770}
+  spawnPos: {x: 0, y: 1, z: 0}
+  speedMult: 1
+  knockbackMult: 1
+  jumpMult: 1
+  defenseMult: 1
 --- !u!4 &1908994742
 Transform:
   m_ObjectHideFlags: 0
