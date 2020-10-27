@@ -164,9 +164,9 @@ public class PlayerObject : MonoBehaviour
                 rigidBody.AddForce(force);
                 direcVec += force;
             }
-
-            // normalize the direction vector.
+            
             direcVec.Normalize();
+           
         }
         else
         {
@@ -211,6 +211,7 @@ public class PlayerObject : MonoBehaviour
                 transform.Translate(shift);
                 direcVec += shift;
             }
+
         }
 
         // gets the change in position - player has moved.
