@@ -349,6 +349,7 @@ GameObject:
   - component: {fileID: 749829310}
   - component: {fileID: 749829309}
   - component: {fileID: 749829311}
+  - component: {fileID: 749829312}
   m_Layer: 5
   m_Name: Time Text
   m_TagString: Untagged
@@ -424,12 +425,30 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749829307}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1e2127e640bb0c4b9e8d30ed2b52773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 749829309}
+--- !u!114 &749829312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749829307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab45c8ceda4a8f54c91dcf781127dbb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  timerNumber: 2
+  timer1: {fileID: 0}
+  countdownStart: 0
+  timer2: {fileID: 0}
+  paused: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

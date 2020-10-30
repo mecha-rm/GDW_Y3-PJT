@@ -47,7 +47,7 @@ namespace GED
 
         // main camera and secondary camera
         // the original plan was to allow for the switching of displays, but instead we're using turning on and off the UI.
-        private bool swapCam = false; // unused
+        // private bool swapCam = false; // unused
         public Camera cam1;
         public Camera cam2;
 

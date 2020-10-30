@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// TODO: 
+// timer - uses DLL.
 public class Timer : MonoBehaviour
 {
     // timer text
