@@ -12,12 +12,14 @@ public class PlayerObject : MonoBehaviour
     public int playerNumber = 1;
 
     // the rigidbody for the player.
-    public Rigidbody rigidBody; // maybe make this private since the start() function gets it?
+    private Rigidbody rigidBody; // maybe make this private since the start() function gets it?
     public float movementSpeed = 10.0F;
     public bool momentumMovement = false;
 
     // camera controls
-    public Camera camera; // the player's camera
+    public FollowerCamera camera; // the player's camera
+    public Vector3 camPosOffset = new Vector3(0, 3, -7); // the offset for the camera that's attached to the player.
+
     private Vector3 direcVec; // the vector direction
     private Vector3 lastPos; // the player's previous position
 
@@ -40,7 +42,13 @@ public class PlayerObject : MonoBehaviour
     public float jumpMult = 1.0F;
     public float defenseMult = 1.0F;
 
-    // TODO: add files for model?
+    // flag object
+    // TODO: have score countdown until it hits zero.
+    public FlagObject flag = null;
+    public GameObject flagIndicator = null; // the indicator that the player is holding the flag.
+
+    // public float score = 1000.0F;
+    // public float scoreDecRate = 0.25F;
 
     // Start is called before the first frame update
     void Start()
@@ -49,10 +57,32 @@ public class PlayerObject : MonoBehaviour
         if (rigidBody == null)
             rigidBody = gameObject.GetComponent<Rigidbody>();
 
+        rigidBody.freezeRotation = true;
+
+        // camera settings
+        if (camera.target != gameObject)
+        {
+            camera.target = gameObject;
+            camera.distance = camPosOffset;
+        }
+
         // gets values to be reset upon spawning
         spawnPos = transform.position;
         spawnRot = transform.rotation;
         spawnScl = transform.localScale;
+    }
+
+    // attaches the flag to the player
+    public void AttachFlag(FlagObject flag)
+    {
+        flag.AttachToPlayer(this);
+    }
+
+    // detaches the flag from the player
+    public void DetachFlag()
+    {
+        if (flag != null)
+            flag.DetachFromPlayer();
     }
 
     // sets the speed multiplier
@@ -126,13 +156,17 @@ public class PlayerObject : MonoBehaviour
             if (Input.GetKey(KeyCode.W))
             {
                 Vector3 force = Vector3.forward * movementSpeed * speedMult;
+                // Vector3 force = transform.forward * movementSpeed * speedMult;
                 rigidBody.AddForce(force);
                 direcVec += force;
+                
 
             }
             if (Input.GetKey(KeyCode.S))
             {
+                // TODO: maybe instead of moving down you just rotate the player.
                 Vector3 force = Vector3.back * movementSpeed * speedMult;
+                // Vector3 force = -transform.forward * movementSpeed * speedMult;
                 rigidBody.AddForce(force);
                 direcVec += force;
             }
@@ -141,12 +175,14 @@ public class PlayerObject : MonoBehaviour
             if (Input.GetKey(KeyCode.A))
             {
                 Vector3 force = Vector3.left * movementSpeed * speedMult;
+                // Vector3 force = -transform.right * movementSpeed * speedMult;
                 rigidBody.AddForce(force);
                 direcVec += force;
             }
-            if (Input.GetKey(KeyCode.D))
+            else if (Input.GetKey(KeyCode.D))
             {
                 Vector3 force = Vector3.right * movementSpeed * speedMult;
+                // Vector3 force = transform.right * movementSpeed * speedMult;
                 rigidBody.AddForce(force);
                 direcVec += force;
             }
@@ -155,17 +191,35 @@ public class PlayerObject : MonoBehaviour
             if (Input.GetKey(KeyCode.Q))
             {
                 Vector3 force = Vector3.up * movementSpeed * speedMult;
+                // Vector3 force = transform.up * movementSpeed * speedMult;
                 rigidBody.AddForce(force);
                 direcVec += force;
             }
             if (Input.GetKey(KeyCode.E))
             {
                 Vector3 force = Vector3.down * movementSpeed * speedMult;
+                // Vector3 force = -transform.up * movementSpeed * speedMult;
                 rigidBody.AddForce(force);
                 direcVec += force;
             }
-            
-            direcVec.Normalize();
+
+            // gets the angle
+            {
+                Vector3 currVelo = rigidBody.velocity;
+                if(currVelo != new Vector3())
+                {
+                    transform.LookAt(transform.position + currVelo);
+                    transform.rotation = new Quaternion(0.0f, transform.rotation.y, 0.0F, 1.0F);
+
+                    // camera.rotation = transform.rotation.eulerAngles;
+                    // camera.rotation.x = 0.0F;
+                    // camera.rotation.y *= -1;
+                    // camera.rotation.z = 0.0F;
+                }
+                
+            }
+
+            // direcVec.Normalize();
            
         }
         else

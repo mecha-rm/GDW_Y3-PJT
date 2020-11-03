@@ -13,6 +13,9 @@ public class FollowerCamera : MonoBehaviour
     // the camera's rotation
     public Vector3 rotation = new Vector3(0, 0, 0); // the camera's default orientation
 
+    // if 'true', the follower camera goes off of the parent rotation.
+    public bool useParentRotation = true;
+
 
     // Start is called before the first frame update
     void Start()
@@ -64,11 +67,15 @@ public class FollowerCamera : MonoBehaviour
 
         {
             Vector3 worldOrigin = new Vector3();
+            Vector3 newRot = rotation;
+
+            if (useParentRotation && target != null)
+                newRot = target.transform.rotation.eulerAngles + newRot;
 
             // rotations
-            transform.RotateAround(worldOrigin, Vector3.right, rotation.x); // x-axis
-            transform.RotateAround(worldOrigin, Vector3.up, rotation.y); // y-axis
-            transform.RotateAround(worldOrigin, Vector3.forward, rotation.z); // z-axis
+            transform.RotateAround(worldOrigin, Vector3.right, newRot.x); // x-axis
+            transform.RotateAround(worldOrigin, Vector3.up, newRot.y); // y-axis
+            transform.RotateAround(worldOrigin, Vector3.forward, newRot.z); // z-axis
         }
 
         // gets the new position offset from the rotations.
