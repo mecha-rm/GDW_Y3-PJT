@@ -747,8 +747,41 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 3.8, z: 4.5}
+  m_Center: {x: 0, y: 1.75, z: 0.8}
+--- !u!95 &1353302121
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353302118}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f0c22a757e948f7478acfb5b13538922, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1353302122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353302118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46fd83dbd3816824c8658c859b9e8d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subject: {fileID: 1908994744}
+  anim: {fileID: 1353302121}
 --- !u!1 &1438589769
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,7 +863,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be46c6dcab8dcf4a87640195e6d101c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 100
+  winScore: 15
+  p1: {fileID: 1908994741}
+  p2: {fileID: 0}
+  p3: {fileID: 0}
+  p4: {fileID: 0}
 --- !u!1 &1469053266
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,7 +938,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 000
+  m_Text: 'Player Score: 0'
 --- !u!222 &1469053269
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1488,6 +1525,7 @@ GameObject:
   - component: {fileID: 1908994742}
   - component: {fileID: 1908994743}
   - component: {fileID: 1908994741}
+  - component: {fileID: 1908994744}
   m_Layer: 0
   m_Name: Player Object
   m_TagString: Untagged
@@ -1508,9 +1546,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 919132149155446097, guid: 854d6202151959b45aa6a353c39ae3d5, type: 3}
+  stateMachine: {fileID: 1908994744}
   playerNumber: 0
+  playerScore: 0
+  playerScoreText: {fileID: 1469053268}
   movementSpeed: 12
-  jumpForce: 30000
+  jumpForce: 20000
   backupFactor: 0.5
   momentumMovement: 1
   camera: {fileID: 963194229}
@@ -1557,6 +1598,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1908994744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908994740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8704484221038e94e8305dbc107ecb75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  stateNames:
+  - Idle
+  - Run
+  observers:
+  - {fileID: 1353302122}
 --- !u!1 &2144322857
 GameObject:
   m_ObjectHideFlags: 0

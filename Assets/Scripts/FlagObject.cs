@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 
 public class FlagObject : MonoBehaviour
@@ -7,11 +8,14 @@ public class FlagObject : MonoBehaviour
     // the owner of the flag.
     PlayerObject owner = null;
 
+    // TODO: replace with vector of spawn positions
+    private Vector3 spawnPos;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawnPos = transform.position;
     }
 
     // if the flag collides with something.
@@ -50,6 +54,8 @@ public class FlagObject : MonoBehaviour
         owner = null;
 
         // TODO: repositon the flag
+        // this is temporary; the flag should have spawn positions to return to.
+        transform.position = spawnPos;
     }
 
     // Update is called once per frame

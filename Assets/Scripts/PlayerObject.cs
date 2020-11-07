@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerObject : MonoBehaviour
 {
-    // the model that represents the player
+    // the model that represents the player (TODO: load it from prefab using filepath)
     public GameObject model;
+    public StateMachine stateMachine = null;
 
     // the player number
     public int playerNumber = 1;
+    public float playerScore = 0.0F;
+    public Text playerScoreText = null; // TODO: maybe make a dedicated script to handle this.
 
     // the rigidbody for the player.
     private Rigidbody rigidBody; // maybe make this private since the start() function gets it?
@@ -61,7 +65,16 @@ public class PlayerObject : MonoBehaviour
         if (rigidBody == null)
             rigidBody = gameObject.GetComponent<Rigidbody>();
 
+
         rigidBody.freezeRotation = true;
+
+        // state machine hasn't been set.
+        if (stateMachine == null)
+            stateMachine = gameObject.GetComponent<StateMachine>();
+
+        // state machine hasn't been set.
+        if (playerScoreText == null)
+            playerScoreText = gameObject.GetComponent<Text>();
 
         // camera settings
         if (camera.target != gameObject)
@@ -170,6 +183,7 @@ public class PlayerObject : MonoBehaviour
                     Vector3 force = transform.forward * movementSpeed * speedMult;
                     rigidBody.AddForce(force);
                     direcVec += force;
+                    stateMachine.SetState(1);
 
                 }
                 else if (Input.GetKey(KeyCode.S))
@@ -424,9 +438,21 @@ public class PlayerObject : MonoBehaviour
         //     }
         // }
 
+        // TODO: take this out or make it more efficient.
+        // player isn't moving
+        if(stateMachine.state != 0 && rigidBody.velocity == new Vector3())
+        {
+            stateMachine.SetState(0);
+        }
+
         // entered death space
         if(deathSpace.InDeathSpace(transform.position)) 
         {
+            // takes away the flag
+            if (flag != null)
+                flag.DetachFromPlayer();
+
+            // returns player to spawn position
             // TODO: make changes for death
             transform.position = spawnPos;
             transform.rotation = spawnRot;
@@ -435,6 +461,14 @@ public class PlayerObject : MonoBehaviour
             // remove all velocity
             rigidBody.velocity = new Vector3();
             rigidBody.angularVelocity = new Vector3();
+            stateMachine.SetState(0);
+        }
+
+        // if the player has a flag, gain a point.
+        if(flag != null)
+        {
+            playerScore += Time.deltaTime;
+            playerScoreText.text = "Player Score: " + Mathf.Floor(playerScore);
         }
 
         // saves the player's current position

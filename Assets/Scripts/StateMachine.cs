@@ -20,6 +20,10 @@ public class StateMachine : MonoBehaviour
         // if the state is negative
         if (state < 0)
             state = 0;
+
+        // sets subject for all starting observers
+        for(int i = 0; i < observers.Count; i++)
+            observers[i].subject = this;
     }
 
     // gets the state number
@@ -87,7 +91,11 @@ public class StateMachine : MonoBehaviour
     {
         // called when the state changes
         foreach (StateObserver observer in observers)
+        {
+            observer.subject = this; // in case the observer doesn't have it already
             observer.OnStateChange();
+        }
+            
     }
 
     // adds a new state. Do note that this does NOT allow for states of the same name to be added, though it is case sensitive.
