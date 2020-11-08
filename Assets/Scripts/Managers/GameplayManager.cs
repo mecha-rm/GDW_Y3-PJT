@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameplayManager : MonoBehaviour
 {
     // the winning score
     public float winScore = 15.0F;
+
+    // the object for a player to win.
+    public Text objectiveText = null;
 
     // the player count
     // TODO: use this to optimize.
@@ -22,7 +26,8 @@ public class GameplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (objectiveText != null)
+            objectiveText.text = "First player to " + winScore + " wins";
     }
 
     // Update is called once per frame
