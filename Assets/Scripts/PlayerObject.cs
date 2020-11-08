@@ -17,14 +17,15 @@ public class PlayerObject : MonoBehaviour
     public Text playerScoreText = null; // TODO: maybe make a dedicated script to handle this.
 
     // the jump cycle - these are meant to fix the jump.
-    // this is currently unused ,but might be implemented later.
-    private float jumpCycle = 0;
-    private float jumpCycleMax = 50.0F; // the amount of cycles for jump force.
+    // this is currently unused, but might be implemented later.
+    private bool onGround = false;
+    // values less than or equal to this value count as a slope the player can jump off of.
+    private const float SLOPE_DOT = 0.55F;
 
     // the rigidbody for the player.
     private Rigidbody rigidBody; // maybe make this private since the start() function gets it?
     public float movementSpeed = 2500.0F;
-    public float jumpForce = 500.0F;
+    public float jumpForce = 10.0F;
     public float backupFactor = 0.5F;
     public bool momentumMovement = false;
 
@@ -94,18 +95,52 @@ public class PlayerObject : MonoBehaviour
         spawnScl = transform.localScale;
     }
 
+    // called when the player collides with something.
+    private void OnCollisionEnter(Collision collision)
+    {
+        onGround = true;
+    }
+
     // called when colliding
-    // private void OnCollisionStay(Collision collision)
+    // checks every frame
+    private void OnCollisionStay(Collision collision)
+    {
+        // the collision
+        if(!onGround)
+        {
+            for (int i = 0; i < collision.contactCount; i++)
+            {
+                ContactPoint cp = collision.GetContact(i);
+
+                float dot = Vector3.Dot(cp.point.normalized, transform.position.normalized);
+
+                // this number should be adjusted. This tests to see if the player is considered to be on the ground.
+                // the higher the number, the steeper the slope (based on a 90 deg angle)
+                if (Mathf.Abs(dot) <= SLOPE_DOT)
+                {
+                    onGround = true;
+                    break;
+                }
+            }
+        }
+        
+
+    }
+
+    // player leaving ground
+    // private void OnCollisionExit(Collision collision)
     // {
+    //     // checks to see if the object the player has left was a floor or not. 
+    //     // if(onGround)
+    //     // {
+    //     //     float dot = Vector3.Dot(transform.position.normalized, collision.transform.position.normalized);
+    //     // 
+    //     //     if (Mathf.Abs(dot) <= SLOPE_DOT)
+    //     //         onGround = false;
+    //     // }
     // 
-    //     // the collision
-    //     for (int i = 0; i < collision.contactCount; i++)
-    //     {
-    //         ContactPoint cp = collision.GetContact(i);
-    //         Debug.Log("Contact Point:" + cp.point);
-    // 
-    //     }
-    // 
+    //     // this gets turned off in case the player left the ground.
+    //     // onGround = false;
     // }
 
     // attaches the flag to the player
@@ -332,67 +367,26 @@ public class PlayerObject : MonoBehaviour
 
             // jump
             {
-                // this adds force continously until the amount of jump cycles has been surpassed.
-                // applies force multiple times
-                // rigidBody.velocity.y == 0.0F
-                // if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
-                //     && ((jumpCycle == 0) || (jumpCycle > 0.0F && jumpCycle < jumpCycleMax)))
-                // {
-                //     // if (jumpCycle == 0)
-                //     //     transform.Translate(new Vector3(0, 1, 0));
-                // 
-                //     jumpCycle += Time.deltaTime;
-                //     // rigidBody.AddForce(Vector3.up * jumpForce * jumpMult * Time.deltaTime);
-                // 
-                //     rigidBody.AddForce(Vector3.up * jumpForce * jumpMult * Time.deltaTime, ForceMode.Impulse);
-                // }
-                // else
-                // {
-                //     //if the jump cycle has reached its max.
-                //     if(jumpCycle != 0.0F)
-                //         jumpCycle = 0.0F;
-                // }
 
-                // TODO: check to see if this effects slopes.
-                if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && rigidBody.velocity.y == 0.0F)
+                // if the player is on the on the gound, and can jump.
+                // jump does NOT rely on delta time for consistency sake
+                if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && onGround)
                 {
-                    // transform.position = new Vector3(transform.position.x, transform.position.y + 0.1F, transform.position.z);
-                    // rigidBody.AddExplosionForce(jumpForce * 1000.0f, transform.position, 1.0F);
-                    // rigidBody.AddForce(Vector3.up * jumpForce * jumpMult * Time.deltaTime);
-                    rigidBody.AddForce(Vector3.up * jumpForce * jumpMult * Time.deltaTime, ForceMode.Impulse);
-                    // rigidBody.AddForce(Vector3.up * jumpForce);
-
+                    rigidBody.AddForce(Vector3.up * jumpForce * jumpMult, ForceMode.Impulse);
+                    onGround = false;
                 }
             }
 
-            // gets the angle
-            // {
-            //     Vector3 currVelo = rigidBody.velocity;
-            //     if(currVelo != new Vector3())
-            //     {
-            //         transform.LookAt(transform.position + currVelo);
-            //         transform.rotation = new Quaternion(0.0f, transform.rotation.y, 0.0F, 1.0F);
-            // 
-            //         // camera.rotation = transform.rotation.eulerAngles;
-            //         // camera.rotation.x = 0.0F;
-            //         // camera.rotation.y *= -1;
-            //         // camera.rotation.z = 0.0F;
-            //     }
-            //     
-            // }
-
-            // direcVec.Normalize();
-
             // caps velocity
             // TODO: this might need to be changed for the jump.
-            //if (rigidBody.velocity.magnitude > maxVelocity)
-            //{
-            //    rigidBody.velocity = rigidBody.velocity.normalized * maxVelocity;
+            if (rigidBody.velocity.magnitude > maxVelocity)
+            {
+                rigidBody.velocity = rigidBody.velocity.normalized * maxVelocity;
 
-            //    // float revForce = rigidBody.velocity.magnitude - maxVelocity;
-            //    // rigidBody.AddForce(rigidBody.velocity.normalized * -1 * revForce);
-            //}
-           
+                // float revForce = rigidBody.velocity.magnitude - maxVelocity;
+                // rigidBody.AddForce(rigidBody.velocity.normalized * -1 * revForce);
+            }
+
         }
         else
         {
