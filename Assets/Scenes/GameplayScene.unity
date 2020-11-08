@@ -1550,11 +1550,11 @@ MonoBehaviour:
   playerNumber: 0
   playerScore: 0
   playerScoreText: {fileID: 1469053268}
-  movementSpeed: 12
-  jumpForce: 20000
+  movementSpeed: 2500
+  jumpForce: 500
   backupFactor: 0.5
   momentumMovement: 1
-  camera: {fileID: 963194229}
+  playerCamera: {fileID: 0}
   camPosOffset: {x: 0, y: 4, z: -8}
   deathSpace: {fileID: 1438589770}
   spawnPos: {x: 0, y: 1, z: 0}

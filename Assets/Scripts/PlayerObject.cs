@@ -16,15 +16,20 @@ public class PlayerObject : MonoBehaviour
     public float playerScore = 0.0F;
     public Text playerScoreText = null; // TODO: maybe make a dedicated script to handle this.
 
+    // the jump cycle - these are meant to fix the jump.
+    // this is currently unused ,but might be implemented later.
+    private float jumpCycle = 0;
+    private float jumpCycleMax = 50.0F; // the amount of cycles for jump force.
+
     // the rigidbody for the player.
     private Rigidbody rigidBody; // maybe make this private since the start() function gets it?
-    public float movementSpeed = 12.0F;
-    public float jumpForce = 20000.0F;
+    public float movementSpeed = 2500.0F;
+    public float jumpForce = 500.0F;
     public float backupFactor = 0.5F;
     public bool momentumMovement = false;
 
     // camera controls
-    public FollowerCamera camera; // the player's camera
+    public FollowerCamera playerCamera; // the player's camera (TODO: generate a dedicated camera for the player)
     public Vector3 camPosOffset = new Vector3(0, 3, -7); // the offset for the camera that's attached to the player.
 
     private Vector3 direcVec; // the vector direction
@@ -77,17 +82,31 @@ public class PlayerObject : MonoBehaviour
             playerScoreText = gameObject.GetComponent<Text>();
 
         // camera settings
-        if (camera.target != gameObject)
-        {
-            camera.target = gameObject;
-            camera.distance = camPosOffset;
-        }
+        // if (camera.target != null)
+        // {
+        //     camera.target = gameObject;
+        //     camera.distance = camPosOffset;
+        // }
 
         // gets values to be reset upon spawning
         spawnPos = transform.position;
         spawnRot = transform.rotation;
         spawnScl = transform.localScale;
     }
+
+    // called when colliding
+    // private void OnCollisionStay(Collision collision)
+    // {
+    // 
+    //     // the collision
+    //     for (int i = 0; i < collision.contactCount; i++)
+    //     {
+    //         ContactPoint cp = collision.GetContact(i);
+    //         Debug.Log("Contact Point:" + cp.point);
+    // 
+    //     }
+    // 
+    // }
 
     // attaches the flag to the player
     public void AttachFlag(FlagObject flag)
@@ -176,70 +195,49 @@ public class PlayerObject : MonoBehaviour
                 // forward and backward movement
                 if (Input.GetKey(KeyCode.W))
                 {
-                    // Vector3 force = Vector3.forward * movementSpeed * speedMult;
-                    // // Vector3 force = transform.forward * movementSpeed * speedMult;
-                    // rigidBody.AddForce(force);
-                    // direcVec += force;
-                    Vector3 force = transform.forward * movementSpeed * speedMult;
-                    rigidBody.AddForce(force);
+                    Vector3 force = transform.forward * movementSpeed * speedMult * Time.deltaTime;
+                    rigidBody.AddForce(force, ForceMode.Force);
                     direcVec += force;
                     stateMachine.SetState(1);
 
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
-                    // TODO: maybe instead of moving down you just rotate the player.
-                    // Vector3 force = Vector3.back * movementSpeed * speedMult;
-                    Vector3 force = -transform.forward * movementSpeed * backupFactor * speedMult;
-
-
+                    Vector3 force = -transform.forward * movementSpeed * backupFactor * speedMult * Time.deltaTime;
                     rigidBody.AddForce(force);
-
                     direcVec += force;
-
-                    // TODO: rotate if not facing backward.
 
                 }
 
                 // leftward and rightward movement
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKey(KeyCode.A)) // turn left
                 {
-                    // Vector3 force = Vector3.left * movementSpeed * speedMult;
-                    // Vector3 force = -transform.right * movementSpeed * speedMult;
-                    // rigidBody.AddForce(force);
-                    // direcVec += force;
-
-
                     // if there is no velocity, set the player's rotation to -90 degrees.
                     if(Input.GetKey(KeyCode.W)) // if the player is going foward
                     {
-                        Vector3 force = -transform.right * movementSpeed * speedMult;
+                        Vector3 force = -transform.right * movementSpeed * speedMult * Time.deltaTime;
                         rigidBody.AddForce(force);
                         direcVec += force;
 
                         transform.Rotate(Vector3.up, -rotSpeed.y * Time.deltaTime);
                     }
-                    else // the player is not going forward so, rotate instead.
+                    else // the player is not pushing themself forward, so rotate instead.
                     {
                         transform.Rotate(Vector3.up, -rotSpeed.y * Time.deltaTime);
                     }
                 }
-                else if (Input.GetKey(KeyCode.D))
+                else if (Input.GetKey(KeyCode.D)) // turn right
                 {
-                    // Vector3 force = Vector3.right * movementSpeed * speedMult;
-                    // Vector3 force = transform.right * movementSpeed * speedMult;
-                    // rigidBody.AddForce(force);
-                    // direcVec += force;
-
                     // if there is no velocity, set the player's rotation to -90 degrees.
                     if (Input.GetKey(KeyCode.W)) // if the player is going foward
                     {
-                        Vector3 force = transform.right * movementSpeed * speedMult;
+                        Vector3 force = transform.right * movementSpeed * speedMult * Time.deltaTime;
                         rigidBody.AddForce(force);
                         direcVec += force;
-                        // transform.Rotate(Vector3.up, rotSpeed.y * Time.deltaTime);
+                        
+                        transform.Rotate(Vector3.up, rotSpeed.y * Time.deltaTime);
                     }
-                    else // the player is not going forward so, rotate instead.
+                    else // the player is not pushing themself forward, so rotate instead.
                     {
                         transform.Rotate(Vector3.up, rotSpeed.y * Time.deltaTime);
                     }
@@ -334,12 +332,34 @@ public class PlayerObject : MonoBehaviour
 
             // jump
             {
+                // this adds force continously until the amount of jump cycles has been surpassed.
+                // applies force multiple times
+                // rigidBody.velocity.y == 0.0F
+                // if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
+                //     && ((jumpCycle == 0) || (jumpCycle > 0.0F && jumpCycle < jumpCycleMax)))
+                // {
+                //     // if (jumpCycle == 0)
+                //     //     transform.Translate(new Vector3(0, 1, 0));
+                // 
+                //     jumpCycle += Time.deltaTime;
+                //     // rigidBody.AddForce(Vector3.up * jumpForce * jumpMult * Time.deltaTime);
+                // 
+                //     rigidBody.AddForce(Vector3.up * jumpForce * jumpMult * Time.deltaTime, ForceMode.Impulse);
+                // }
+                // else
+                // {
+                //     //if the jump cycle has reached its max.
+                //     if(jumpCycle != 0.0F)
+                //         jumpCycle = 0.0F;
+                // }
+
                 // TODO: check to see if this effects slopes.
                 if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && rigidBody.velocity.y == 0.0F)
                 {
                     // transform.position = new Vector3(transform.position.x, transform.position.y + 0.1F, transform.position.z);
                     // rigidBody.AddExplosionForce(jumpForce * 1000.0f, transform.position, 1.0F);
-                    rigidBody.AddForce(Vector3.up * jumpForce * Time.deltaTime);
+                    // rigidBody.AddForce(Vector3.up * jumpForce * jumpMult * Time.deltaTime);
+                    rigidBody.AddForce(Vector3.up * jumpForce * jumpMult * Time.deltaTime, ForceMode.Impulse);
                     // rigidBody.AddForce(Vector3.up * jumpForce);
 
                 }
@@ -364,13 +384,14 @@ public class PlayerObject : MonoBehaviour
             // direcVec.Normalize();
 
             // caps velocity
-            if (rigidBody.velocity.magnitude > maxVelocity)
-            {
-                rigidBody.velocity = rigidBody.velocity.normalized * maxVelocity;
+            // TODO: this might need to be changed for the jump.
+            //if (rigidBody.velocity.magnitude > maxVelocity)
+            //{
+            //    rigidBody.velocity = rigidBody.velocity.normalized * maxVelocity;
 
-                // float revForce = rigidBody.velocity.magnitude - maxVelocity;
-                // rigidBody.AddForce(rigidBody.velocity.normalized * -1 * revForce);
-            }
+            //    // float revForce = rigidBody.velocity.magnitude - maxVelocity;
+            //    // rigidBody.AddForce(rigidBody.velocity.normalized * -1 * revForce);
+            //}
            
         }
         else
