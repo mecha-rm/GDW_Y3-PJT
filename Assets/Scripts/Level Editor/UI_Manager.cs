@@ -14,6 +14,9 @@ namespace GED
 {
     public class UI_Manager : MonoBehaviour
     {
+        // an empty game object that encompasses the level
+        private GameObject level;
+
         // 3D objects used for instaniation
         public GameObject cube;
         public GameObject sphere;
@@ -69,7 +72,7 @@ namespace GED
         // Start is called before the first frame update
         void Start()
         {
-
+            level = new GameObject("Level");
         }
 
         // mouse has clicked on the UI
@@ -278,6 +281,9 @@ namespace GED
         // adds components to spawned objects
         private void AddSpawnComponents(GameObject newObject)
         {
+            // parents the object to the level scene
+            newObject.transform.parent = level.transform;
+
             // gives the new object the user interface manager so that they can be selected.
             newObject.GetComponent<ObjectScript>().uiManager = gameObject;
 
