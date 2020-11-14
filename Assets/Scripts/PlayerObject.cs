@@ -483,7 +483,7 @@ public class PlayerObject : MonoBehaviour
         if(flag != null)
         {
             playerScore += Time.deltaTime;
-            playerScoreText.text = "Player Score: " + Mathf.Floor(playerScore);
+            playerScoreText.text = "" + Mathf.Floor(playerScore); // "Player Score: " +
         }
 
         // saves the player's current position
