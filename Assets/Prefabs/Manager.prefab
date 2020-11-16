@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 7284661196444069591}
   m_Layer: 0
   m_Name: Manager
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,10 +174,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winScore: 15
+  playerCount: 0
   p1: {fileID: 0}
   p2: {fileID: 0}
   p3: {fileID: 0}
   p4: {fileID: 0}
+  deathSpace: {fileID: 0}
 --- !u!114 &7284661196444069585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,5 +213,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 7284661196071721411}
   clipStart: 0
-  clipEnd: 21
+  clipEnd: 0
   playAtClipStart: 0
