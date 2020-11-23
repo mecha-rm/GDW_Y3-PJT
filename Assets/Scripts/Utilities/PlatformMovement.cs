@@ -9,7 +9,7 @@ using UnityEngine;
 public class PlatformMovement : MonoBehaviour
 {
     // the rigid body of the platform. This will automatically be filled if not provided.
-    private Rigidbody rigidBody;
+    public Rigidbody rigidBody;
 
     // the force applied to move the platform.
     public float force = 1.0F;
@@ -97,8 +97,12 @@ public class PlatformMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // if the rigidbody has not been set, it looks for the component again.
+        if (rigidBody == null)
+            rigidBody = GetComponent<Rigidbody>();
+
         // if there are travel points
-        if(!paused && travelPoints.Count != 0)
+        if (!paused && travelPoints.Count != 0)
         {
             // puts the destination index within the proper bounds
             destIndex = Mathf.Clamp(destIndex, 0, travelPoints.Count - 1);

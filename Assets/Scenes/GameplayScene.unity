@@ -437,6 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a48695a779c0a49ba1eea4ca4e8afd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidBody: {fileID: 0}
   force: 300
   travelPoints:
   - {x: -6, y: 1, z: 70}
@@ -635,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: {x: 0, y: 3, z: -7}
-  target: {fileID: 1908994740}
+  target: {fileID: 0}
   rotation: {x: 0, y: 0, z: 0}
   useParentRotation: 1
 --- !u!1 &1006230738
@@ -1757,6 +1758,10 @@ PrefabInstance:
     - target: {fileID: 7284661196444069590, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: winScore
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7284661196444069590, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: playerCount
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
