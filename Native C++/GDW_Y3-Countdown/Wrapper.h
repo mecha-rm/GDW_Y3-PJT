@@ -1,0 +1,27 @@
+#pragma once
+
+#include "Timer.h"
+
+#ifdef __cplusplus
+extern "C" // convert to C code.
+{
+#endif
+	// get current time
+	PLUGIN_API float GetCurrentTime();
+
+	// sets the start time
+	PLUGIN_API void SetStartTime(float time);
+
+	// returns the start time
+	PLUGIN_API float GetStartTime();
+
+	// checks to see if the countdown timer is finished.
+	PLUGIN_API bool IsFinished();
+
+	// update timer
+	PLUGIN_API void UpdateTimer(float deltaTime);
+
+#ifdef __cplusplus
+}
+#endif
+

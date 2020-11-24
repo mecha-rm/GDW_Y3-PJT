@@ -13,126 +13,261 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using UnityEngine;
 
+// puts lines into a file
 public class FileStream : MonoBehaviour
 {
-    // the list of objects that are being written to the file.
-    public List<GameObject> objects;
+    // the file for the metrics logger. Make sure to include the file path from highest hierachy.
+    public string file = "";
 
-    // uses a DLL
-    const string DLL_NAME = "GED - ASN01";
+    // if 'true', data is loaded.
+    public bool loadData = false;
 
-    // Functions from DLL
-    // Calling these cause Unity to crash.
+    // if 'true', data is saved upon destruction.
+    public bool saveData = true;
+
+    // the DLL
+    private const string DLL_NAME = "GDW_Y3-RecordSystem";
+
+    // adds record at index
     [DllImport(DLL_NAME)]
-    private static extern bool OpenForReading([In] byte[] arr);
+    private static extern void AddRecord([MarshalAs(UnmanagedType.LPStr)] string record);
 
+    // insert record at index
     [DllImport(DLL_NAME)]
-    private static extern bool OpenForWriting([In] byte[] arr, bool createFile);
+    private static extern void InsertRecord([MarshalAs(UnmanagedType.LPStr)] string record, int index);
 
+    // removes the record.
     [DllImport(DLL_NAME)]
-    private static extern string GetFilePath();
+    private static extern void RemoveRecord([MarshalAs(UnmanagedType.LPStr)] string record);
 
-    // [DllImport(DLL_NAME)]
-    // private static extern byte[] GetFilePath();
+    // removes record at index 
+    [DllImport(DLL_NAME)]
+    private static extern void RemoveRecordAtIndex(int index);
+
+    // gets record
+    [DllImport(DLL_NAME, EntryPoint = "GetRecord")]
+    private static extern System.IntPtr GetRecord(int index);
+
+    // gets the amount of records
+    [DllImport(DLL_NAME)]
+    private static extern int GetRecordCount();
+
+    // returns (1) if contains record, (0) if record is not in list.
+    [DllImport(DLL_NAME)]
+    private static extern int ContainsRecord([MarshalAs(UnmanagedType.LPStr)] string record);
+
+    // clears out all records
+    [DllImport(DLL_NAME)]
+    private static extern void ClearAllRecords();
+
+    // gets the file tied to this record system.
+    [DllImport(DLL_NAME)]
+    private static extern System.IntPtr GetFile();
+
+    // sets the file for this file system
+    [DllImport(DLL_NAME)]
+    private static extern void SetFile([MarshalAs(UnmanagedType.LPStr)] string file);
+
+    // imports the records from the provided file
+    [DllImport(DLL_NAME)]
+    private static extern int ImportRecords();
+
+    // exports records to saved file.
+    [DllImport(DLL_NAME)]
+    private static extern int ExportRecords();
+
+    // adds record at index
+    public void AddRecordToList(string record)
+    {
+        AddRecord(record);
+    }
+
+    // insert record at index
+    public void InsertRecordIntoList(string record, int index)
+    {
+        InsertRecord(record, index);
+    }
+
+    // removes record
+    public void RemoveRecordFromList(string record)
+    {
+        RemoveRecord(record);
+    }
+
+    // removes record at index 
+    public void RemoveRecordFromListAtIndex(int index)
+    {
+        RemoveRecordAtIndex(index);
+    }
+
+    // gets record
+    public string GetRecordFromList(int index)
+    {
+        return Marshal.PtrToStringAnsi(GetRecord(index));
+    }
+
+    // gets the amount of records
+    public int GetAmountOfRecords()
+    {
+        return GetRecordCount();
+    }
+
+    // returns (1) if contains record, (0) if record is not in list.
+    public bool ListContainsRecord(string record)
+    {
+        int res = ContainsRecord(record);
+        return (res == 0) ? false : true;
+    }
+
+    // clears out all records
+    public void ClearAllRecordsFromList()
+    {
+        ClearAllRecords();
+    }
+
+    // gets save file path
+    public string GetRecordFile()
+    {
+        return Marshal.PtrToStringAnsi(GetFile());
+    }
+
+    // sets the file
+    public void SetRecordFile(string file)
+    {
+        SetFile(file);
+    }
+
+    // imports records from set file.
+    public bool LoadRecords()
+    {
+        int res = ImportRecords();
+        return (res == 0) ? false : true;
+    }
+
+    // exports records to saved file.
+    public bool SaveRecords()
+    {
+        int res = ExportRecords();
+        return (res == 0) ? false : true;
+    }
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
-        // BinaryFormatter converter = new BinaryFormatter();
-        // MemoryStream mStream = new MemoryStream();
-        // string file = "test.txt";
-        // string f2 = "";
-        // 
-        // converter.Serialize(mStream, file);
-        // 
-        // // Test
-        // OpenForWriting(mStream.ToArray(), true); // crahsed unity
-        // f2 = GetFilePath();
-        // Debug.Log(f2);
+        // sets file
+        SetRecordFile(file);
+
+        // if data should be loaded.
+        if (loadData)
+            LoadRecords();
     }
 
-    // adds an object to the list for saving/loading. An object cannot be put into the list twice.
-    public void AddObjectToList(GameObject entity)
+    // converts object to bytes (requires seralizable object)
+    static public byte[] SerializeObject(object entity)
     {
-        // an object can't be written in twice.
-        foreach(GameObject obj in objects)
-        {
-            if (obj == entity)
-                return;
-        }
+        BinaryFormatter bf = new BinaryFormatter();
+        MemoryStream ms = new MemoryStream();
 
-        objects.Add(entity);
+        bf.Serialize(ms, entity);
+        return ms.ToArray();
     }
 
-    // removes an object to the list for saving/loading. An object cannot be put into the list twice.
-    public void RemoveObjectFromList(GameObject entity)
+    // deserialize provided object
+    // bytes in C# is the equivalent of chars in C++.
+    static public object DeserializeObject(byte[] data)
     {
-        // removes the entity from the list
-        objects.Remove(entity);
+        BinaryFormatter bf = new BinaryFormatter();
+        MemoryStream ms = new MemoryStream();
+
+        ms.Write(data, 0, data.Length); // write data
+        ms.Seek(0, 0); // return to start
+
+        return bf.Deserialize(ms); // return content
     }
 
-    // checks if the object is in the list already.
-    public bool ObjectInList(GameObject entity)
+    // CONVERSIONS //
+    // convert char array to string
+    static public byte[] ConvertCharArrayToBytes(char[] chars)
     {
-        return objects.Contains(entity);
+        byte[] data = System.Text.Encoding.ASCII.GetBytes(chars);
+        return data;
     }
 
-    // converts entity to bytes
-    public static byte[] ConvertObjectToBytes(GameObject entity)
+    // convert string to bytes
+    static public byte[] ConvertStringToBytes(string str)
     {
-        BinaryFormatter converter = new BinaryFormatter();
-        MemoryStream mStream = new MemoryStream();
-        
-        converter.Serialize(mStream, entity);
-        return mStream.ToArray();
-    }
-    
-    // convert bytes to a game object
-    public static GameObject ConvertBytesToObject(byte[] data)
-    {
-        BinaryFormatter converter = new BinaryFormatter();
-        MemoryStream mStream = new MemoryStream();
-
-        mStream.Write(data, 0, data.Length);
-        mStream.Seek(0, 0);
-
-        GameObject entity = (GameObject)converter.Deserialize(mStream);
-        return entity;
+        byte[] data = System.Text.Encoding.ASCII.GetBytes(str);
+        return data;
     }
 
-    // saves all objects in the list
-    public void SaveObjects()
+    // converts bytes to char array
+    static public char[] ConvertBytesToCharArray(byte[] data)
     {
-        // list of objects (converted to bytes)
-        List<byte[]> arrs = new List<byte[]>();
-
-        // converts all objects to bytes
-        foreach (GameObject entity in objects)
-        {
-            byte[] bytes = ConvertObjectToBytes(entity);
-            arrs.Add(bytes);
-        }
-
-        // SAVE DATA
+        char[] chars = System.Text.Encoding.ASCII.GetChars(data);
+        return chars;
     }
 
-    // loads all objects
-    public void LoadObjects()
+    // convert byte array to string
+    static public string ConvertBytesToString(byte[] data)
     {
-        // GET DATA FROM FILE
-        // while loop
-        {
-            // byte[] bytes;
-            // 
-            // GameObject entity = ConvertBytesToObject(bytes);
-        }
+        string str = System.Text.Encoding.ASCII.GetString(data);
+        return str;
+    }
 
-        // LOAD DATA
+    // converts char array to string
+    static public char[] ConvertStringToCharArray(string str)
+    {
+        return str.ToCharArray();
+    }
+
+    // converts char array to string
+    static public string ConvertCharArrayToString(char[] chs)
+    {
+        string str = new string(chs);
+        return str;
+    }
+
+
+    // Overloaded Functions //
+    // adds a record as a string
+    public void AddRecordToList(byte[] data)
+    {
+        string str = ConvertBytesToString(data);
+        AddRecord(str);
+    }
+
+    // insert record at index
+    public void InsertRecordIntoList(byte[] record, int index)
+    {
+        string str = ConvertBytesToString(record);
+        InsertRecord(str, index);
+    }
+
+    // removes a record (converts to string to check)
+    public void RemoveRecordFromList(byte[] data)
+    {
+        string str = ConvertBytesToString(data);
+        RemoveRecord(str);
+    }
+
+    // returns (1) if contains record, (0) if record is not in list.
+    public bool ListContainsRecord(byte[] data)
+    {
+        string str = ConvertBytesToString(data);
+        return ListContainsRecord(str);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    // OnDestroy is called when the object is being destroyed.
+    private void OnDestroy()
+    {
+        // if data should be saved.
+        if (saveData)
+            SaveRecords();
     }
 }
