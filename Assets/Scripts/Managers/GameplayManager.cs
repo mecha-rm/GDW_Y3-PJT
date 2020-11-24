@@ -29,7 +29,7 @@ public class GameplayManager : MonoBehaviour
     private List<PlayerObject> players = new List<PlayerObject>();
 
     // the death space attached to the gameplay manager
-    public DeathSpace deathSpace;
+    public DeathSpace deathSpace = null;
 
     // Start is called before the first frame update
     void Start()

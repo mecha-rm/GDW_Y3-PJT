@@ -12,13 +12,13 @@ using UnityEngine;
 // rename this class. StageObject is already used.
 // things like items and player locations are saved to a particular object.
 [System.Serializable]
-public class ObjectScript : MonoBehaviour
+public class StageObject : MonoBehaviour
 {
     // the user interface manager. Used for selecting objects.
     public GameObject uiManager;
 
     // name
-    public string name = "";
+    public string entityName = "";
 
     // description
     public string description = "";
@@ -34,7 +34,7 @@ public class ObjectScript : MonoBehaviour
     void Start()
     {
         // if the name is blank.
-        if (name == "")
+        if (entityName == "")
         {
             string str = "";
             const int CHAR_COUNT = 10;
@@ -58,7 +58,7 @@ public class ObjectScript : MonoBehaviour
                 }
             }
 
-            name = str;
+            entityName = str;
         }
 
         // leave them seperate

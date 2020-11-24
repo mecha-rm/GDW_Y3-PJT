@@ -7,12 +7,18 @@ using UnityEngine.UI;
 
 public class PlayerObject : MonoBehaviour
 {
+    // the player number
+    public int playerNumber = 0;
+
+    // player name and descrition
+    public string playerName = "";
+    public string description = "";
+
     // the model that represents the player (TODO: load it from prefab using filepath)
     public GameObject model;
     public StateMachine stateMachine = null;
 
-    // the player number
-    public int playerNumber = 0;
+
     public float playerScore = 0.0F;
     public Text playerScoreText = null; // TODO: maybe make a dedicated script to handle this.
 
@@ -66,7 +72,7 @@ public class PlayerObject : MonoBehaviour
     // public float scoreDecRate = 0.25F;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         // gets the rigid body attached to this object if one hasn't been set.
         if (rigidBody == null)
@@ -267,7 +273,7 @@ public class PlayerObject : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         if (momentumMovement)
         {

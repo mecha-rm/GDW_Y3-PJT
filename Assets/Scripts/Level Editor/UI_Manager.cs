@@ -284,7 +284,7 @@ public class UI_Manager : MonoBehaviour
         newObject.transform.parent = level.transform;
 
         // gives the new object the user interface manager so that they can be selected.
-        newObject.GetComponent<ObjectScript>().uiManager = gameObject;
+        newObject.GetComponent<StageObject>().uiManager = gameObject;
 
         // adds a player script
         if (addPlayerScript)
@@ -294,7 +294,7 @@ public class UI_Manager : MonoBehaviour
         if (addRigidBody)
             newObject.AddComponent<Rigidbody>();
 
-        newObject.GetComponent<ObjectScript>().camera = cam1;
+        newObject.GetComponent<StageObject>().camera = cam1;
 
         // adds the object to the file list.
         fileObjectList.Add(newObject);

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4878162473090054656}
   - component: {fileID: 2443962622481174524}
   - component: {fileID: 1796867372563036927}
-  - component: {fileID: 2698717511005846968}
+  - component: {fileID: 6781808547747617761}
   - component: {fileID: 9028695605461594439}
   m_Layer: 0
   m_Name: Cat Player
@@ -65,7 +65,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &2698717511005846968
+--- !u!114 &6781808547747617761
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,10 +74,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3772718574990424221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e63993220b9ee4f8b0702c62a62fb9, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b75d73de53b4ed45b2d353d5401a412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 0}
+  model: {fileID: 6862045962384086653}
   stateMachine: {fileID: 9028695605461594439}
   playerNumber: 0
   playerScore: 0
@@ -85,10 +85,10 @@ MonoBehaviour:
   movementSpeed: 2500
   jumpForce: 10
   backupFactor: 0.5
-  momentumMovement: 1
+  momentumMovement: 0
   playerCamera: {fileID: 0}
   cameraDistance: {x: 0, y: 3, z: -7}
-  spawnPos: {x: 0, y: 1, z: 0}
+  spawnPos: {x: 0, y: 0, z: 0}
   spawnRot: {x: 0, y: 0, z: 0, w: 1}
   spawnScl: {x: 0, y: 0, z: 0}
   speedMult: 1

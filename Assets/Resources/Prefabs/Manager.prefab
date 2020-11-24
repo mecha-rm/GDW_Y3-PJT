@@ -174,12 +174,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winScore: 15
+  objectiveText: {fileID: 0}
   playerCount: 0
   p1: {fileID: 0}
   p2: {fileID: 0}
   p3: {fileID: 0}
   p4: {fileID: 0}
-  deathSpace: {fileID: 0}
+  deathSpace: {fileID: 7284661196444069585}
 --- !u!114 &7284661196444069585
 MonoBehaviour:
   m_ObjectHideFlags: 0
