@@ -74,8 +74,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8275541115934795243}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e378b7d58ee24734d879552adf3bae80, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a159bbd8082aa34fab2e1097dc874ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Reflection Probe
-  description: A probe that shows reflections of nearby objects.
+  uiManager: {fileID: 0}
+  name: 
+  description: 
+  camera: {fileID: 0}

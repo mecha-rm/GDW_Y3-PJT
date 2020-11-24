@@ -8,6 +8,8 @@ using UnityEngine;
 [System.Serializable]
 public class LevelFileSystem : MonoBehaviour
 {
+	public ObjectScript temp;
+
     // the file for the metrics logger. Make sure to include the file path from highest hierachy.
     public string file = "";
 
@@ -145,7 +147,7 @@ public class LevelFileSystem : MonoBehaviour
 	}
 
 
-	// Convert Object to D
+	// converts object to bytes (requires seralizable object)
 	static public byte[] SerializeObject(GameObject entity)
     {
 		BinaryFormatter converter = new BinaryFormatter();
@@ -178,20 +180,28 @@ public class LevelFileSystem : MonoBehaviour
 
 		// TODO: this is NOT sending the data over properly.
 		// for(int i = 0; i < count; i++)
-        // {
+		// {
 		// 	Debug.Log("Record " + i + " : " + GetRecordFromList(i));
 		// }
 
+		// BinaryFormatter converter = new BinaryFormatter();
+		// MemoryStream mStream = new MemoryStream();
+		// 
+		// converter.Serialize(mStream, temp);
+		// byte[] arr = mStream.ToArray();
+		// 
+		// // byte[] arr = SerializeObject(temp.gameObject);
+		// Debug.Log(arr.ToString());
+
 	}
 
-	// converts object to bytes
+	// converts object to bytes (serializable objects only)
 	public byte[] GetAsBytes()
     {
 		BinaryFormatter converter = new BinaryFormatter();
 		MemoryStream mStream = new MemoryStream();
 		
-		converter.Serialize(mStream, this);
-		string stx = converter.ToString();
+		converter.Serialize(mStream, gameObject);
 		return mStream.ToArray();
 	}
 
