@@ -104,6 +104,9 @@ public abstract class SerializableObject : MonoBehaviour
     {
         GameObject newObject;
         
+        // TODO: just check for each primitive that the player can load, then see if it's a resource or not.
+        // just don't use Type. It's bad.
+
         // if the entity contains a period, it's a file to be loaded.
         // if it doesn't, it's a Unity object. If it's blank, it's an empty game object.
         if(parent.type.Contains(".") && parent.type != "") // unity primitive type

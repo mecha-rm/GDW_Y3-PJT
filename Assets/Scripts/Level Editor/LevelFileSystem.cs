@@ -78,8 +78,15 @@ public class LevelFileSystem : FileStream
 		// // v3 = new V3();
 
 		// System.Type t = System.Type.GetType("UnityEngine.GameObject");
-		// System.Type t = System.Type.GetType(typeof(GameObject).FullName, "UnityEngine");
-		// GameObject go = (GameObject)System.Activator.CreateInstance(System.Type.GetType("GameObject"));
+		// System.Type t = System.Type.GetType(typeof(GameObject).FullName);
+		// System.Type t = (typeof(GameObject).AssemblyQualifiedName).GetType(); // this should work
+		System.Type t = (typeof(GameObject).GetType()); // doesn't work
+
+		Debug.Log((t == null) ? "null" : t.ToString());
+		object o = System.Activator.CreateInstance(t);
+		GameObject go = (GameObject)o;
+		Debug.Log((go == null) ? "null" : go.ToString());
+
 		// 
 		// object objTemp;
 		// byte[] arrTemp = FileStream.SerializeObject(temp);
