@@ -77,6 +77,7 @@ public class LevelFileSystem : FileStream
 		// // v3Str = System.Text.Encoding.ASCII.GetString(v3Arr);
 		// // v3 = new V3();
 
+		// System.Type t = System.Type.GetType("UnityEngine.GameObject");
 		// System.Type t = System.Type.GetType(typeof(GameObject).FullName, "UnityEngine");
 		// GameObject go = (GameObject)System.Activator.CreateInstance(System.Type.GetType("GameObject"));
 		// 
