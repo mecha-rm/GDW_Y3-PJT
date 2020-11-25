@@ -6,13 +6,19 @@
  */
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
+
+// serializes the stage object
+[System.Serializable]
+public class SerializedStageObject : SerializedComponent
+{
+    public string entityName;
+    public string description;
+}
 
 // rename this class. StageObject is already used.
 // things like items and player locations are saved to a particular object.
-[System.Serializable]
-public class StageObject : MonoBehaviour
+public class StageObject : SerializableObject
 {
     // the user interface manager. Used for selecting objects.
     public GameObject uiManager;
@@ -24,7 +30,7 @@ public class StageObject : MonoBehaviour
     public string description = "";
 
     // the main camera for all objects.
-    public Camera camera;
+    public Camera objectCamera;
 
     // used for undo/redo - checks to see if anything changes.
     // the previous version of the transformation applied to the object.
@@ -197,5 +203,29 @@ public class StageObject : MonoBehaviour
 
             // tform = Instantiate(transform); // makes a copy of the transform
         }
+    }
+
+    // exports the serialized component.
+    public override SerializedComponent ExportSerializedComponent()
+    {
+        SerializedStageObject comp = new SerializedStageObject();
+        
+        comp.componentName = this.GetType().Name; // gets the name of the type.
+        comp.entityName = entityName; // gets the entity name
+        comp.description = description; // gets the description
+
+        return comp;
+    }
+
+    // the imported serialized component.
+    public override void ImportSerializedComponent(GameObject gameObject, SerializedComponent component)
+    {
+        // downcasts
+        SerializedStageObject sso = (SerializedStageObject)(component);
+
+        // provides values
+        StageObject attachedComp = gameObject.AddComponent<StageObject>();
+        attachedComp.entityName = sso.entityName; // gives entity name
+        attachedComp.description = sso.description; // gives entity description
     }
 }

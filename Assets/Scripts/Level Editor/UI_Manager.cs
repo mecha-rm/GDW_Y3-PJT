@@ -294,7 +294,7 @@ public class UI_Manager : MonoBehaviour
         if (addRigidBody)
             newObject.AddComponent<Rigidbody>();
 
-        newObject.GetComponent<StageObject>().camera = cam1;
+        newObject.GetComponent<StageObject>().objectCamera = cam1;
 
         // adds the object to the file list.
         fileObjectList.Add(newObject);

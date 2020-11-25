@@ -77,14 +77,17 @@ public class LevelFileSystem : FileStream
 		// // v3Str = System.Text.Encoding.ASCII.GetString(v3Arr);
 		// // v3 = new V3();
 
+		// System.Type t = System.Type.GetType(typeof(GameObject).FullName, "UnityEngine");
+		// GameObject go = (GameObject)System.Activator.CreateInstance(System.Type.GetType("GameObject"));
+		// 
+		// object objTemp;
+		// byte[] arrTemp = FileStream.SerializeObject(temp);
+		// Destroy(temp);
+		// objTemp = FileStream.DeserializeObject(arrTemp);
+		// GameObject goTemp = Instantiate((GameObject)objTemp);
+		// temp = goTemp.GetComponent<StageObject>();
+		// Debug.Log("goTemp - " + temp.entityName);
 
-		object objTemp;
-		byte[] arrTemp = FileStream.SerializeObject(temp);
-		Destroy(temp);
-		objTemp = FileStream.DeserializeObject(arrTemp);
-		GameObject goTemp = Instantiate((GameObject)objTemp);
-		temp = goTemp.GetComponent<StageObject>();
-		Debug.Log("goTemp - " + temp.entityName);
 	}
 
 
