@@ -165,7 +165,7 @@ public class UndoRedoSystem : MonoBehaviour
 
         undoList.RemoveFirst(); // removes first entry in the undo list.
         redoStack.Push(e0); // puts the entry on the redo stack.
-        e0.entity.GetComponent<StageObject>().ResetPreviousTransform(); // resets the previous transformation to current transform 
+        e0.entity.GetComponent<EditorObject>().ResetPreviousTransform(); // resets the previous transformation to current transform 
     }
 
     // redos the last action.
@@ -221,7 +221,7 @@ public class UndoRedoSystem : MonoBehaviour
 
         redoStack.Pop(); // removes first entry in the undo list.
         undoList.AddFirst(e0); // puts the entry on the redo stack.
-        e0.entity.GetComponent<StageObject>().ResetPreviousTransform(); // resets the previous transformation to current transform 
+        e0.entity.GetComponent<EditorObject>().ResetPreviousTransform(); // resets the previous transformation to current transform 
     }
 
     // update is called once per frame

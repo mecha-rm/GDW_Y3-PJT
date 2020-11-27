@@ -8,17 +8,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// serializes the stage object
-[System.Serializable]
-public class SerializedStageObject : SerializedComponent
-{
-    public string entityName;
-    public string description;
-}
+//// serialized as an independent object
+//[System.Serializable]
+//public class SerializedStageObject : SerializedObject
+//{
+//    public string entityName;
+//    public string description;
+
+//    public SerializedStageObject(StageObject so, string etyName, string desc) : 
+//        base(so.name, typeof(StageObject), so.transform)
+//    {
+//        entityName = etyName;
+//        description = desc;
+//    }
+//}
+
+//// serialized as a component
+//[System.Serializable]
+//public class SerializedStageObjectComponent : SerializedComponent
+//{
+//    public string entityName;
+//    public string description;
+
+//    public SerializedStageObjectComponent(StageObject so, string etyName, string desc) :
+//        base(typeof(StageObject))
+//    {
+//        entityName = etyName;
+//        description = desc;
+//    }
+//}
 
 // rename this class. StageObject is already used.
 // things like items and player locations are saved to a particular object.
-public class StageObject : SerializableObject
+public class EditorObject : MonoBehaviour
 {
     // the user interface manager. Used for selecting objects.
     public GameObject uiManager;
@@ -205,27 +227,27 @@ public class StageObject : SerializableObject
         }
     }
 
-    // exports the serialized component.
-    public override SerializedComponent ExportSerializedComponent()
-    {
-        SerializedStageObject comp = new SerializedStageObject();
+    //// exports the serialized component.
+    //public override SerializedComponent ExportSerializedComponent()
+    //{
+    //    SerializedStageObject comp = new SerializedStageObject();
         
-        comp.componentName = this.GetType().Name; // gets the name of the type.
-        comp.entityName = entityName; // gets the entity name
-        comp.description = description; // gets the description
+    //    comp.componentName = this.GetType().Name; // gets the name of the type.
+    //    comp.entityName = entityName; // gets the entity name
+    //    comp.description = description; // gets the description
 
-        return comp;
-    }
+    //    return comp;
+    //}
 
-    // the imported serialized component.
-    public override void ImportSerializedComponent(GameObject gameObject, SerializedComponent component)
-    {
-        // downcasts
-        SerializedStageObject sso = (SerializedStageObject)(component);
+    //// the imported serialized component.
+    //public override void ImportSerializedComponent(GameObject gameObject, SerializedComponent component)
+    //{
+    //    // downcasts
+    //    SerializedStageObject sso = (SerializedStageObject)(component);
 
-        // provides values
-        StageObject attachedComp = gameObject.AddComponent<StageObject>();
-        attachedComp.entityName = sso.entityName; // gives entity name
-        attachedComp.description = sso.description; // gives entity description
-    }
+    //    // provides values
+    //    StageObject attachedComp = gameObject.AddComponent<StageObject>();
+    //    attachedComp.entityName = sso.entityName; // gives entity name
+    //    attachedComp.description = sso.description; // gives entity description
+    //}
 }

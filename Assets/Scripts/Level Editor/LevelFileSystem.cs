@@ -15,7 +15,7 @@ public struct V3
 
 public class LevelFileSystem : FileStream
 {
-	public StageObject temp;
+	public EditorObject temp;
 
 	// Start is called before the first frame update
 	void Start()
