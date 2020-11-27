@@ -80,12 +80,54 @@ public class LevelFileSystem : FileStream
 		// System.Type t = System.Type.GetType("UnityEngine.GameObject");
 		// System.Type t = System.Type.GetType(typeof(GameObject).FullName);
 		// System.Type t = (typeof(GameObject).AssemblyQualifiedName).GetType(); // this should work
-		System.Type t = (typeof(GameObject).GetType()); // doesn't work
+		// System.Type t = (typeof(GameObject).GetType()); // doesn't work
+		// t = (typeof(GameObject).AssemblyQualifiedName).GetType();
+		System.Type t = typeof(GameObject); // this works!
+		// object test = (System.Activator.CreateInstance(t));
 
-		Debug.Log((t == null) ? "null" : t.ToString());
+		System.Reflection.Assembly assembly = typeof(GameObject).Assembly;
+		Debug.Log("Assembly Name: " + assembly.GetName());
+
+		// get the type, convert it to data, then convert it back afterwards
+		byte[] arr = SerializeObject(t); // conversion works
+		t = null;
+		t = (System.Type)DeserializeObject(arr);
+		
+
+		System.Type t2 = System.Type.GetType(t.Name); // GameObject
+		t2 = System.Type.GetType(t.FullName); // Unity.GameObject
+
+		Debug.Log((t == null) ? "null" : t.Name); 
 		object o = System.Activator.CreateInstance(t);
-		GameObject go = (GameObject)o;
+		GameObject go = (GameObject)o; // generates game object
 		Debug.Log((go == null) ? "null" : go.ToString());
+
+		/*
+		 * Parent (Serializable Object)
+		 *	- System.Type of Parent Object
+		 *	- List of Components (Serialized Components)
+		 *		- Components get 
+		 * Components (SerializedComponent):
+		 *	- System.Type of Child Object (gets created and upcasted to SerializedComponent)
+		 *	- Child Values (call Virtual Function in Order to Have these downcasted0
+		 *	
+		 */
+
+		/*
+		 * So here's what's going to be done:
+		 * (1) You get the type of the parent, its name, its prefab (if applicable) and save that as System.Type.
+		 * (2) The parent class is inherited by children that store any other base values they need, which also get saved.
+		 * (3) You get all components, and save every component that can be upcasted to SerializableObject. You use ExportSerializeComponent for this.
+			* Anything that can't be upcasted would just be set in one of the classes that CAN be upcasted. 
+		 * (4) You serialize the object and its data. You put it in a file.
+		 * (5) You take the data out of the file and unpack it back to a SerializedObject.
+		 * (6) You use the parent's type (System.Type) to create the base object, or you load up the prefab if that's provided.
+			* You also give it its name.	
+		 * (7) You go through each component, creating the type (or prefab) it applies to. You add each component at this stage.
+		 * (8) If a component can be upcasted to SerializableObject, you do that.
+		 * (9) You call the ImportSerializedComponent function, giving it the component and the SerializedComponent class.
+		 * (10) When downcasted, the SerializedComponent should have the values that are needed to be filled. Said values are then filled.
+		 */
 
 		// 
 		// object objTemp;
