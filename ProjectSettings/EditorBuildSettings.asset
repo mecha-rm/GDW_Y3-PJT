@@ -23,4 +23,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelEditor.unity
     guid: 730afcbb4dbc165409201851e235c87c
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: e6a7d8515e2cfeb498f3284627d5552b
+  - enabled: 1
+    path: Assets/Scenes/Help.unity
+    guid: de24b6e2f00759b4eb920a5480e05ea5
+  - enabled: 1
+    path: Assets/Scenes/CreditsScene.unity
+    guid: 13bf2fda9a8e92b419811c7268905428
+  - enabled: 1
+    path: Assets/Scenes/controlsScreen.unity
+    guid: 6f908777f4bd1f548a9b825491ec95a9
+  - enabled: 1
+    path: Assets/Scenes/How to Play.unity
+    guid: f66afdcfd9e1c054db50874c6f6b4fbc
   m_configObjects: {}
