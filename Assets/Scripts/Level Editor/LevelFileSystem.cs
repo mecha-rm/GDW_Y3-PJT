@@ -5,14 +5,15 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-[System.Serializable]
-public struct V3
-{
-	public int x;
-	public int y;
-	public int z;
-}
+// [System.Serializable]
+// public struct V3
+// {
+// 	public int x;
+// 	public int y;
+// 	public int z;
+// }
 
+// TODO: rename or remove this.
 public class LevelFileSystem : FileStream
 {
 	public EditorObject temp;
@@ -21,6 +22,17 @@ public class LevelFileSystem : FileStream
 	void Start()
     {
 		base.Start();
+
+		// FileStream fs = new FileStream();
+		// fs.SetRecordFile("FMV.dat");
+		// bool x = fs.RecordFileAvailable();
+		// 
+		// Debug.Log(fs.GetRecordFile() + " : " + fs.RecordFileAvailable());
+		// 
+		// fs.SetRecordFile("Assets/Resources/Saves/level_test.txt");
+		// x = fs.RecordFileAvailable();
+		// Debug.Log(fs.GetRecordFile() + " : " + fs.RecordFileAvailable());
+
 
 		// V3 v3 = new V3();
 		// byte[] v3Arr;
@@ -82,25 +94,25 @@ public class LevelFileSystem : FileStream
 		// System.Type t = (typeof(GameObject).AssemblyQualifiedName).GetType(); // this should work
 		// System.Type t = (typeof(GameObject).GetType()); // doesn't work
 		// t = (typeof(GameObject).AssemblyQualifiedName).GetType();
-		System.Type t = typeof(GameObject); // this works!
-		// object test = (System.Activator.CreateInstance(t));
-
-		System.Reflection.Assembly assembly = typeof(GameObject).Assembly;
-		Debug.Log("Assembly Name: " + assembly.GetName());
-
-		// get the type, convert it to data, then convert it back afterwards
-		byte[] arr = SerializeObject(t); // conversion works
-		t = null;
-		t = (System.Type)DeserializeObject(arr);
-		
-
-		System.Type t2 = System.Type.GetType(t.Name); // GameObject
-		t2 = System.Type.GetType(t.FullName); // Unity.GameObject
-
-		Debug.Log((t == null) ? "null" : t.Name); 
-		object o = System.Activator.CreateInstance(t);
-		GameObject go = (GameObject)o; // generates game object
-		Debug.Log((go == null) ? "null" : go.ToString());
+		// System.Type t = typeof(GameObject); // this works!
+		// // object test = (System.Activator.CreateInstance(t));
+		// 
+		// System.Reflection.Assembly assembly = typeof(GameObject).Assembly;
+		// Debug.Log("Assembly Name: " + assembly.GetName());
+		// 
+		// // get the type, convert it to data, then convert it back afterwards
+		// byte[] arr = SerializeObject(t); // conversion works
+		// t = null;
+		// t = (System.Type)DeserializeObject(arr);
+		// 
+		// 
+		// System.Type t2 = System.Type.GetType(t.Name); // GameObject
+		// t2 = System.Type.GetType(t.FullName); // Unity.GameObject
+		// 
+		// Debug.Log((t == null) ? "null" : t.Name); 
+		// object o = System.Activator.CreateInstance(t);
+		// GameObject go = (GameObject)o; // generates game object
+		// Debug.Log((go == null) ? "null" : go.ToString());
 
 		/*
 		 * Parent (Serializable Object)

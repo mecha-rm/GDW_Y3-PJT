@@ -62,6 +62,12 @@ PLUGIN_API void SetFile(const char* file)
 	return fs.SetFile(std::string(file));
 }
 
+// checks to see if the file is accessible.
+PLUGIN_API int FileAccessible()
+{
+	return (int)fs.FileAccessible();
+}
+
 // imports records
 PLUGIN_API int ImportRecords()
 {

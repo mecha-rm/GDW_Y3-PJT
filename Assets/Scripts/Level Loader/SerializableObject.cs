@@ -63,6 +63,10 @@ public abstract class SerializableObject : MonoBehaviour
     // there's no local Unpack since a new object would need to be created, then its values would need to be instaniated.
     public static GameObject Unpack(SerializedObject serializedObject)
     {
+        // if the serialized object is empty, return null.
+        if (serializedObject == null)
+            return null;
+
         // base object and game object
         object baseObject;
         GameObject gameObject;

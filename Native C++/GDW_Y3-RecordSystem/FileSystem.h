@@ -48,6 +48,12 @@ public:
 	// sets the file for this file system
 	void SetFile(std::string file);
 
+	// checks to see if the file is available. This does NOT save the file.
+	bool FileAccessible() const;
+
+	// checks to see if the file is available. This does NOT save the file.
+	static bool FileAccessible(std::string file);
+
 	// imports the records from the provided file
 	bool ImportRecords();
 

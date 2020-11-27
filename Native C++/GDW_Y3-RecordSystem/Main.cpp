@@ -22,6 +22,8 @@
 //	std::string file = "text.txt";
 //	bool success = false;
 //
+//	std::cout << "File \"" << fs.GetFile() << "\" Exists (At Start): " << std::boolalpha << fs.FileAccessible() << std::endl;
+//	std::cout << "File \"" << file << "\" Exists (At Start): " << std::boolalpha << FileSystem::FileAccessible(file) << "\n" << std::endl;
 //
 //	// adds record
 //	fs.AddRecord("Adrian");
@@ -38,6 +40,7 @@
 //	PrintRecords(fs);
 //
 //	fs.SetFile(file);
+//	std::cout << "\nFile " << fs.GetFile() << " is Available - " << std::boolalpha << fs.FileAccessible() << "\n" << std::endl;
 //
 //	std::cout << "Saving Content to " << fs.GetFile() << "." << std::endl;
 //	success = fs.ExportRecords();

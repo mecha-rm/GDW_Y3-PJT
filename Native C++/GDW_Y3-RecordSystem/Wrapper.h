@@ -37,6 +37,9 @@ extern "C" // convert to C code.
 	// sets the file for this file system
 	PLUGIN_API void SetFile(const char* file);
 
+	// checks to see if the file is accessible.
+	PLUGIN_API int FileAccessible();
+
 	// imports the records from the provided file
 	PLUGIN_API int ImportRecords();
 

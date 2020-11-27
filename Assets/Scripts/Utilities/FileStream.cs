@@ -68,6 +68,10 @@ public class FileStream : MonoBehaviour
     [DllImport(DLL_NAME)]
     private static extern void SetFile([MarshalAs(UnmanagedType.LPStr)] string file);
 
+    // returns (1) if the set file is accessible, (0) if the set file is not accessible.
+    [DllImport(DLL_NAME)]
+    private static extern int FileAccessible();
+
     // imports the records from the provided file
     [DllImport(DLL_NAME)]
     private static extern int ImportRecords();
@@ -135,6 +139,13 @@ public class FileStream : MonoBehaviour
     public void SetRecordFile(string file)
     {
         SetFile(file);
+    }
+
+    // checks to see if the set file is available.
+    public bool RecordFileAvailable()
+    {
+        int res = FileAccessible();
+        return (res == 0) ? false : true;
     }
 
     // imports records from set file.
@@ -248,6 +259,12 @@ public class FileStream : MonoBehaviour
     {
         string str = ConvertBytesToString(data);
         RemoveRecord(str);
+    }
+
+    // gets the record from the list as bytes
+    public byte[] GetRecordFromListAsBytes(int index)
+    {
+        return ConvertStringToBytes(GetRecordFromList(index));
     }
 
     // returns (1) if contains record, (0) if record is not in list.

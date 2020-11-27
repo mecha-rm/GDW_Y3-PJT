@@ -1,20 +1,6 @@
 #include "FileSystem.h"
 #include <iostream>
 
-// checks to see if the file exists
-bool FileAccessible(std::string fileName)
-{
-	std::ifstream file(fileName, std::ios::in); // opens file for reading
-	bool accessible; // checks to see if the file is accessible.
-
-	// if !file is true, then the file couldn't be opened.
-	accessible = !file;
-	file.close();
-
-	// returns the opposite of 'accessible' since it's showing if the file is accessible.
-	return !accessible;
-}
-
 // constructor
 FileSystem::FileSystem()
 {
@@ -120,6 +106,26 @@ const std::string& FileSystem::GetFile() const
 void FileSystem::SetFile(std::string file)
 {
 	this->file = file;
+}
+
+// checks to see if the file is accessible
+bool FileSystem::FileAccessible() const
+{
+	return FileAccessible(file);
+}
+
+// checks to see if the file exists
+bool FileSystem::FileAccessible(std::string fileName)
+{
+	std::ifstream file(fileName, std::ios::in); // opens file for reading
+	bool accessible; // checks to see if the file is accessible.
+
+	// if !file is true, then the file couldn't be opened.
+	accessible = !file;
+	file.close();
+
+	// returns the opposite of 'accessible' since it's showing if the file is accessible.
+	return !accessible;
 }
 
 // imports the records

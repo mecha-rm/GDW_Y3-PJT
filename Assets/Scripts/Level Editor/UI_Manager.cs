@@ -15,6 +15,7 @@ public class UI_Manager : MonoBehaviour
 {
     // an empty game object that encompasses the level
     private GameObject level;
+    private LevelLoadManager levelFileManager;
 
     // 3D objects used for instaniation
     public GameObject cube;
@@ -72,6 +73,7 @@ public class UI_Manager : MonoBehaviour
     void Start()
     {
         level = new GameObject("Level");
+        levelFileManager = level.AddComponent<LevelLoadManager>();
     }
 
     // mouse has clicked on the UI
@@ -346,14 +348,23 @@ public class UI_Manager : MonoBehaviour
     public void SaveDataToFile()
     {
         // this was not completed in time for the submission.
-        Debug.Log("Data saving system was not completed.");
+        // Debug.Log("Data saving system was not completed.");
+        levelFileManager.SaveToFile();
+
     }
 
     // loads the data from the file
     public void LoadDataFromFile()
     {
         // this was not completed in time for the submission.
-        Debug.Log("Data loading system was not completed.");
+        // Debug.Log("Data loading system was not completed.");
+        levelFileManager.LoadFromFile();
+    }
+
+    // updates the level file system
+    public void UpdateLevelFileSystem()
+    {
+        levelFileManager.AddChildrenToList();
     }
 
     // Update is called once per frame
