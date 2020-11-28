@@ -54,7 +54,7 @@ public class SerializedObject
     ///     * if the prefab is left blank, the type is used.
     /// </summary>
     public string name = ""; // the name of the object
-    public System.Type type = null; // the type of the object (just set this to GameObject type)
+    // public System.Type type = null; // the type of the object (just set this to GameObject type)
     public string prefabPath = ""; // the path of the object prefab.
 
     /// <summary>
@@ -80,26 +80,23 @@ public class SerializedObject
 
     // constructor - name and type
     // use typeof(class_name) to get type
-    public SerializedObject(string name, System.Type type)
+    public SerializedObject(string name)
     {
         this.name = name;
-        this.type = type;
     }
 
     // constructor - name, type, and prefab path
     // use typeof(class_name) to get type
-    public SerializedObject(string name, System.Type type, string prefabPath)
+    public SerializedObject(string name, string prefabPath)
     {
         this.name = name;
-        this.type = type;
         this.prefabPath = prefabPath;
     }
 
     // constructor - name, type, and transformation
-    public SerializedObject(string name, System.Type type, Vector3 pos, Quaternion rot, Vector3 scale)
+    public SerializedObject(string name, Vector3 pos, Quaternion rot, Vector3 scale)
     {
         this.name = name;
-        this.type = type;
 
         position = SerializedObject.Vector3ToVec3(pos);
         rotation = SerializedObject.QuaternionToQuat(rot);
@@ -107,10 +104,9 @@ public class SerializedObject
     }
 
     // constructor - name, type, and transformation
-    public SerializedObject(string name, System.Type type, Transform transform)
+    public SerializedObject(string name, Transform transform)
     {
         this.name = name;
-        this.type = type;
 
         position = SerializedObject.Vector3ToVec3(transform.position);
         rotation = SerializedObject.QuaternionToQuat(transform.rotation);
@@ -118,10 +114,9 @@ public class SerializedObject
     }
 
     // constructor - name, type, prefab path, and Transform
-    public SerializedObject(string name, System.Type type, string prefabPath, Vector3 pos, Quaternion rot, Vector3 scale)
+    public SerializedObject(string name, string prefabPath, Vector3 pos, Quaternion rot, Vector3 scale)
     {
         this.name = name;
-        this.type = type;
         this.prefabPath = prefabPath;
 
         position = SerializedObject.Vector3ToVec3(pos);
@@ -130,10 +125,9 @@ public class SerializedObject
     }
 
     // constructor - name, type, prefab path, and Transform
-    public SerializedObject(string name, System.Type type, string prefabPath, Transform transform)
+    public SerializedObject(string name, string prefabPath, Transform transform)
     {
         this.name = name;
-        this.type = type;
         this.prefabPath = prefabPath;
 
         position = SerializedObject.Vector3ToVec3(transform.position);
@@ -232,6 +226,4 @@ public class SerializedObject
 
         return q2;
     }
-
-
 }

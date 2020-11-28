@@ -7,7 +7,7 @@ public class LevelLoadManager : MonoBehaviour
 {
     // all assets to be saved (or loaded in)
     public string filePath = "Assets/Resources/Saves/"; // file path (from highest directory in Unity folder)
-    public string file = ""; // file (defaults to .txt if not stated)
+    public string file = "unnamed.txt"; // file (defaults to .txt if not stated)
     public List<GameObject> objects = new List<GameObject>(); // needed to be initialized for some reason
     public bool addChildren = true;
 
@@ -118,19 +118,28 @@ public class LevelLoadManager : MonoBehaviour
         if (addChildren)
             AddChildrenToList();
 
-        // adds all elements in the list.
-        foreach (GameObject element in objects)
-        {
-            byte[] data = SerializableObject.PackToBytes(element, element.GetType());
-            fileStream.AddRecordToList(data);
-        }
-
         // set record file and save
         fullFile = GetFileWithPath();
         fileStream.SetRecordFile(fullFile);
+
+        // adds all elements in the list.
+        foreach (GameObject element in objects)
+        {
+            SerializedObject entity = SerializableObject.Pack(element);
+            byte[] data = FileStream.SerializeObject(entity);
+            // byte[] data = SerializableObject.PackToBytes(element);
+            fileStream.AddRecordToList(data);
+
+            int count = fileStream.GetAmountOfRecords();
+            // Debug.Log("Count: " + count);
+
+        }
+
         fileStream.SaveRecords();
+        fileStream.ClearAllRecordsFromList();
 
         Destroy(fileStream);
+        Debug.Log("Save Successful!");
     }
 
 
@@ -145,6 +154,13 @@ public class LevelLoadManager : MonoBehaviour
         // loads content
         fullFile = GetFileWithPath();
         fileStream.SetRecordFile(fullFile);
+
+        // if the record file is not available
+        if(!fileStream.RecordFileAvailable())
+        {
+            Debug.LogError(fullFile + " not found.");
+        }
+
         fileStream.LoadRecords();
 
         // gets the count of records
@@ -153,15 +169,20 @@ public class LevelLoadManager : MonoBehaviour
         // grabs all items
         for(int i = 0; i < count; i++)
         {
-            byte[] data = fileStream.GetRecordFromListAsBytes(i);
-            GameObject newObject = SerializableObject.UnpackFromBytes(data);
-
+            GameObject newObject = null;
+            byte[] byteData = fileStream.GetRecordFromListAsBytes(i);
+            object objectData = FileStream.DeserializeObject(byteData);
+            SerializedObject serialData = (SerializedObject)(objectData);
+            
+            newObject = SerializableObject.Unpack(serialData);
             // if a new object was generated, add it to the list.
             if (newObject != null)
                 objects.Add(newObject);
         }
 
+        fileStream.ClearAllRecordsFromList();
         Destroy(fileStream);
+        Debug.Log("Load Successful!");
     }
 
     // Update is called once per frame

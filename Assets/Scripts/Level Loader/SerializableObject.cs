@@ -1,4 +1,22 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/*
+		 * So here's what's going to be done:
+		 * (1) You get the type of the parent, its name, its prefab (if applicable) and save that as System.Type.
+		 * (2) The parent class is inherited by children that store any other base values they need, which also get saved.
+		 * (3) You get all components, and save every component that can be upcasted to SerializableObject. You use ExportSerializeComponent for this.
+			* Anything that can't be upcasted would just be set in one of the classes that CAN be upcasted. 
+		 * (4) You serialize the object and its data. You put it in a file.
+		 * (5) You take the data out of the file and unpack it back to a SerializedObject.
+		 * (6) You use the parent's type (System.Type) to create the base object, or you load up the prefab if that's provided.
+			* You also give it its name.	
+		 * (7) You go through each component, creating the type (or prefab) it applies to. You add each component at this stage.
+		 * (8) If a component can be upcasted to SerializableObject, you do that.
+		 * (9) You call the ImportSerializedComponent function, giving it the component and the SerializedComponent class.
+		 * (10) When downcasted, the SerializedComponent should have the values that are needed to be filled. Said values are then filled.
+*/
 
 
 // CLASSES
@@ -24,11 +42,11 @@ public abstract class SerializableObject : MonoBehaviour
 
     // packs the object and returns a serialized object
     // note. This should be called for the gameObject all components are attached to.
-    public static SerializedObject Pack(GameObject entity, System.Type type, string prefabPath = "")
+    public static SerializedObject Pack(GameObject entity, string prefabPath = "")
     {
         // creates the object
         // SerializedObject serializedObject = new SerializedObject(entity.name, type, prefabPath, entity.transform);
-        SerializedObject serializedObject = new SerializedObject(entity.name, type, prefabPath, entity.transform);
+        SerializedObject serializedObject = new SerializedObject(entity.name, prefabPath, entity.transform);
 
         // gets all components of type 'SerializableObject'
         SerializableObject[] comps = entity.GetComponents<SerializableObject>();
@@ -43,23 +61,25 @@ public abstract class SerializableObject : MonoBehaviour
     }
 
     // packs this object with a prefab. Pass in derived type.
-    public SerializedObject Pack(System.Type type, string prefabPath = "")
+    public SerializedObject Pack(string prefabPath = "")
     {
-        return Pack(gameObject, type, prefabPath);
+        return Pack(gameObject, prefabPath);
     }
 
+    // for some reason Unity doesn't like these functions
     // packs data and returns it as byte array
-    public static byte[] PackToBytes(GameObject entity, System.Type type, string prefabPath = "")
-    {
-        SerializedObject obj = Pack(entity, type, prefabPath);
-        return FileStream.SerializeObject(entity);
-    }
-
-    // packs data and returns it as byte array
-    public byte[] PackToBytes(System.Type type, string prefabPath = "")
-    {
-        return PackToBytes(gameObject, type, prefabPath);
-    }
+    // public static byte[] PackToBytes(GameObject entity, string prefabPath = "")
+    // {
+    //     SerializedObject obj = Pack(entity, prefabPath);
+    //     byte[] data = FileStream.SerializeObject(entity);
+    //     return data;
+    // }
+    // 
+    // // packs data and returns it as byte array
+    // public byte[] PackToBytes(string prefabPath = "")
+    // {
+    //     return PackToBytes(gameObject, prefabPath);
+    // }
 
     // the unpack functions are all static since these are meant to load in game objects
     // unpacks the serialized object
@@ -70,8 +90,7 @@ public abstract class SerializableObject : MonoBehaviour
         if (serializedObject == null)
             return null;
 
-        // base object and game object
-        object baseObject;
+        // game object
         GameObject gameObject;
 
         // PARENT //
@@ -84,17 +103,19 @@ public abstract class SerializableObject : MonoBehaviour
         }
         else // there is no prefab - load from type
         {
-            if(serializedObject.type != null) // type is set
-            {
-                baseObject = System.Activator.CreateInstance(serializedObject.type);
-                gameObject = Instantiate((GameObject)(baseObject));
-                gameObject.name = serializedObject.name;
-            }
-            else // type is not set - load empty object
-            {
-                gameObject = new GameObject(); // empty game object
-                gameObject.name = serializedObject.name;
-            }
+            gameObject = new GameObject(serializedObject.name);
+
+            // if(serializedObject.type != null) // type is set
+            // {
+            //     baseObject = System.Activator.CreateInstance(serializedObject.type);
+            //     gameObject = Instantiate((GameObject)(baseObject));
+            //     gameObject.name = serializedObject.name;
+            // }
+            // else // type is not set - load empty object
+            // {
+            //     gameObject = new GameObject(); // empty game object
+            //     gameObject.name = serializedObject.name;
+            // }
         }
 
         // sets values for transformation
@@ -142,11 +163,13 @@ public abstract class SerializableObject : MonoBehaviour
         return gameObject;
     }
 
+
+    // for some reason Unity doesn't like this function.
     // unpacks at the byte level
-    public static GameObject UnpackFromBytes(byte[] data)
-    {
-        return Unpack(DeserializeObject(data));
-    }
+    // public static GameObject UnpackFromBytes(byte[] data)
+    // {
+    //     return Unpack(DeserializeObject(data));
+    // }
 
     // these are treated as if they are static, but they're not.
     // exports the child component with its provided values.

@@ -75,8 +75,8 @@ public class MetricsLogger : MonoBehaviour
 
     // generates an array of values in the list.
     // this is not saved
-    [DllImport(DLL_NAME, EntryPoint = "GenerateValueArray")]
-    private static extern void GenerateValueArray(float[] arr, int size);
+    // [DllImport(DLL_NAME, EntryPoint = "GenerateValueArray")]
+    // private static extern void GenerateValueArray(float[] arr, int size);
 
     // sets the file
     [DllImport(DLL_NAME)]
@@ -167,14 +167,14 @@ public class MetricsLogger : MonoBehaviour
     // }
 
     // gets array with float values
-    public float[] GetLoggerValueArray()
-    {
-        int count = GetMetricCount();
-        float[] arr = new float[count];
-
-        GenerateValueArray(arr, count);
-        return arr;
-    }
+    // public float[] GetLoggerValueArray()
+    // {
+    //     int count = GetMetricCount();
+    //     float[] arr = new float[count];
+    // 
+    //     GenerateValueArray(arr, count);
+    //     return arr;
+    // }
 
     // sets the file
     public void SetLoggerFile(string file)
