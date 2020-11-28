@@ -236,7 +236,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.573}
-  m_AnchoredPosition: {x: 18.3, y: -107.6}
+  m_AnchoredPosition: {x: 18.3, y: -83}
   m_SizeDelta: {x: 792.6511, y: 215.12793}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &937497556
@@ -272,8 +272,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The goal of the game is to hold on for the target object for as long as
-    you can while the other players try to take it from you
+  m_Text: The goal of the game is to capture the flag object and hold it for as long
+    as possible within a certain length of time. This timer would be chosen by the
+    players. When a player holds the flag, they will gain points and will win once
+    they have enough points or until the timer runs out. If the player loses the
+    flag, they stop gaining points until they reclaim the flag.
 --- !u!222 &937497557
 CanvasRenderer:
   m_ObjectHideFlags: 0
