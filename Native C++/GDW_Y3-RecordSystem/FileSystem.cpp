@@ -111,7 +111,7 @@ int FileSystem::GetRecordSize(int index) const
 	if (index >= 0 && index < records.size())
 		return records.at(index).length();
 	else
-		return 0;
+		return -1;
 }
 
 // gets the amount of records.

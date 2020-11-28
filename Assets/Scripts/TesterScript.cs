@@ -22,7 +22,7 @@ public class TesterScript : MonoBehaviour
 		fs.AddRecordToList("record2");
 		fs.AddRecordToList("record3");
 
-		if(false)
+		if(true)
         {
 			// float x = 2.0f;
 			Vec3 x;
@@ -33,6 +33,12 @@ public class TesterScript : MonoBehaviour
 			byte[] data = FileStream.SerializeObject(x);
 			fs.AddRecordToList(data);
 			byteIndex = fs.GetAmountOfRecords() - 1;
+
+			x.x = 0;
+			x.y = 0;
+			x.z = 0;
+
+			x = (Vec3)FileStream.DeserializeObject(data);
 
         }
 		else
@@ -68,7 +74,7 @@ public class TesterScript : MonoBehaviour
 
 		Debug.Log("Reloading Records...");
 		fs.ClearAllRecordsFromList();
-		Debug.Log("Record Count: " + fs.GetAmountOfRecords());
+		// Debug.Log("Record Count: " + fs.GetAmountOfRecords());
 		
 		fs.LoadRecords();
 		Debug.Log("Record Count (Reloaded): " + fs.GetAmountOfRecords());
@@ -82,21 +88,23 @@ public class TesterScript : MonoBehaviour
 			int count = fs.GetAmountOfRecords();
 		
 			// prints all records
-			// for(int i = 0; i < count; i++)
-            // {
-			// 	if(i == byteIndex) // byte storage
-            //     {
-			// 		byte[] impData = FileStream.SerializeObject(fs.GetRecordFromListInBytes(i));
-			// 		Vec3 x2 = new Vec3();
-			// 		x2 = (Vec3)FileStream.DeserializeObject(impData);
-			// 		Debug.Log("Vec3 Import: " + "(" + x2.x + ", " + x2.y + ", " + x2.z + ")");
-			// 	}
-            //     else
-            //     {
-			// 		Debug.Log("Record " + i + ": " + fs.GetRecordFromList(i));
-            //     }
-			// 	
-            // }
+			for(int i = 0; i < count; i++)
+            {
+				if(i == byteIndex) // byte storage
+                {
+					byte[] impData = fs.GetRecordFromListInBytes(i);
+					Vec3 x2 = new Vec3();
+					object obj = FileStream.DeserializeObject(impData);
+
+					x2 = (Vec3)obj;
+					Debug.Log("Vec3 Import: " + "(" + x2.x + ", " + x2.y + ", " + x2.z + ")");
+				}
+                else
+                {
+					Debug.Log("Record " + i + ": " + fs.GetRecordFromList(i));
+                }
+				
+            }
 
 			// for(int i = 0; i < count; i++)
             // {

@@ -59,7 +59,7 @@ PLUGIN_API void GetRecordInBytes(int index, char* arr, int size)
 // returns the length of the record.
 PLUGIN_API int GetRecordSize(int index)
 {
-	fs.GetRecordSize(index);
+	return fs.GetRecordSize(index);
 }
 
 // gets the amount of records
