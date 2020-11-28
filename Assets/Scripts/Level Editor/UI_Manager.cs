@@ -287,7 +287,8 @@ public class UI_Manager : MonoBehaviour
         newObject.transform.parent = level.transform;
 
         // gives the new object the user interface manager so that they can be selected.
-        newObject.GetComponent<EditorObject>().uiManager = gameObject;
+        EditorObject editorObj = newObject.AddComponent<EditorObject>();
+        editorObj.uiManager = gameObject;
 
         // adds a player script
         if (addPlayerScript)

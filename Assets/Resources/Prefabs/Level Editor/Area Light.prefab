@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8954863454907031602}
   - component: {fileID: 4121104939898154863}
-  - component: {fileID: 8408387933375544082}
   m_Layer: 0
   m_Name: Area Light
   m_TagString: Untagged
@@ -93,17 +92,3 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &8408387933375544082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1451442440932673405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e378b7d58ee24734d879552adf3bae80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: Area Light
-  description: A light that illuminates the whole area.

@@ -54,7 +54,7 @@ public class SerializedObject
     ///     * if the prefab is left blank, the type is used.
     /// </summary>
     public string name = ""; // the name of the object
-    public System.Type type = null; // the type of the object
+    public System.Type type = null; // the type of the object (just set this to GameObject type)
     public string prefabPath = ""; // the path of the object prefab.
 
     /// <summary>

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6925458612276523715}
   - component: {fileID: 2541446547314871545}
   - component: {fileID: 7897829285139132921}
-  - component: {fileID: 6886754230628285760}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -97,19 +96,3 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6886754230628285760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4378598027632771873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a159bbd8082aa34fab2e1097dc874ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiManager: {fileID: 0}
-  name: 
-  description: 
-  camera: {fileID: 0}
