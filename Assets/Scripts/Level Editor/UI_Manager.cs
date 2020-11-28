@@ -89,7 +89,7 @@ public class UI_Manager : MonoBehaviour
     {
         // instantiates a new object at the world origin
         GameObject newObject = Instantiate(cube, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
-        GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // GameObject.CreatePrimitive(PrimitiveType.Cube); // from primitive
 
         // adds the spawn components.
         AddSpawnComponents(newObject);

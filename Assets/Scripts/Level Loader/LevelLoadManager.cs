@@ -11,6 +11,13 @@ public class LevelLoadManager : MonoBehaviour
     public List<GameObject> objects = new List<GameObject>(); // needed to be initialized for some reason
     public bool addChildren = true;
 
+    // the limit of the amount of data per line
+    // one file is used to store the size of the data, the other is used to store hte data itself.
+    int lineLimit = 1000;
+
+    // temporary to check file sizes
+    private int tempSizeSave = 0, tempSizeSizeFile = 0, tempSizeLoad;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -114,6 +121,8 @@ public class LevelLoadManager : MonoBehaviour
         FileStream fileStream = new FileStream();
         string fullFile = "";
 
+        fileStream.ClearAllRecordsFromList(); // clear existing content
+
         // if children should be added, its updated before saving.
         if (addChildren)
             AddChildrenToList();
@@ -122,6 +131,9 @@ public class LevelLoadManager : MonoBehaviour
         fullFile = GetFileWithPath();
         fileStream.SetRecordFile(fullFile);
 
+        int startCount = fileStream.GetAmountOfRecords();
+        Debug.Log("Start Count: " + startCount);
+
         // adds all elements in the list.
         foreach (GameObject element in objects)
         {
@@ -129,9 +141,12 @@ public class LevelLoadManager : MonoBehaviour
             byte[] data = FileStream.SerializeObject(entity);
             // byte[] data = SerializableObject.PackToBytes(element);
             fileStream.AddRecordToList(data);
+            tempSizeSave = data.Length;
 
             int count = fileStream.GetAmountOfRecords();
-            // Debug.Log("Count: " + count);
+            Debug.Log("New Count: " + count);
+            Debug.Log("Byte Size: " + data.Length);
+            Debug.Log("Size in File: " + fileStream.GetRecordLength(count - 1));
 
         }
 
@@ -152,6 +167,7 @@ public class LevelLoadManager : MonoBehaviour
         string fullFile = "";
 
         // loads content
+        fileStream.ClearAllRecordsFromList(); // clear existing content
         fullFile = GetFileWithPath();
         fileStream.SetRecordFile(fullFile);
 
@@ -161,10 +177,19 @@ public class LevelLoadManager : MonoBehaviour
             Debug.LogError(fullFile + " not found.");
         }
 
+        count = fileStream.GetAmountOfRecords();
+
         fileStream.LoadRecords();
 
         // gets the count of records
         count = fileStream.GetAmountOfRecords();
+
+        for(int i = 0; i < count; i++)
+        {
+            int rsize = fileStream.GetRecordLength(i);
+            Debug.Log("Record " + i + " = " + rsize);
+            tempSizeLoad += rsize;
+        }
 
         // grabs all items
         for(int i = 0; i < count; i++)
