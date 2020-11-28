@@ -13,10 +13,10 @@ void FileSystem::AddRecord(std::string record)
 }
 
 // adds a record as a byte array. This does not delete the data.
-void FileSystem::AddRecord(char* arr)
+void FileSystem::AddRecord(char* arr, int size)
 {
 	// adds the record.
-	records.push_back(std::string(arr));
+	records.push_back(std::string(arr, size));
 }
 
 // inserts a record at the provided index.
@@ -31,9 +31,9 @@ void FileSystem::InsertRecord(std::string record, int index)
 }
 
 // inserts a record in bytes
-void FileSystem::InsertRecord(char* arr, int index)
+void FileSystem::InsertRecord(char* arr, int size, int index)
 {
-	InsertRecord(std::string(arr), index);
+	InsertRecord(std::string(arr, size), index);
 }
 
 // removes a record
@@ -58,9 +58,9 @@ void FileSystem::RemoveRecord(std::string record)
 }
 
 // removes record based on byte data
-void FileSystem::RemoveRecord(char* arr)
+void FileSystem::RemoveRecord(char* arr, int size)
 {
-	RemoveRecord(std::string(arr));
+	RemoveRecord(std::string(arr, size));
 }
 
 // removes the record ath the provided index
@@ -92,7 +92,7 @@ const std::string& FileSystem::GetRecord(int index) const
 // TODO: find out if you can return an array instead of filling one.
 void FileSystem::GetRecordInBytes(int index, char* arr, int size)
 {
-	std::string record = "";
+	std::string record = ""; // record to be received
 
 	// index bounds check
 	if (index >= 0 && index < records.size())
@@ -133,6 +133,12 @@ bool FileSystem::ContainsRecord(std::string record) const
 	}
 
 	return false;
+}
+
+// checks to see if the record contains the record (in bytes).
+bool FileSystem::ContainsRecord(char* arr, int size) const
+{
+	return ContainsRecord(std::string(arr, size));
 }
 
 // clears out all records

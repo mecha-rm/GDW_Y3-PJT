@@ -10,20 +10,20 @@ extern "C" // convert to C code.
 	PLUGIN_API void AddRecord(const char* record);
 
 	// adds a record in bytes
-	PLUGIN_API void AddRecordInBytes(char* data);
+	PLUGIN_API void AddRecordInBytes(char* data, int size);
 
 	// inserts a record at the provided index.
 	// this returns the index as well.
 	PLUGIN_API void InsertRecord(const char* record, int index);
 
 	// inserts a record in bytes
-	PLUGIN_API void InsertRecordInBytes(char* data, int index);
+	PLUGIN_API void InsertRecordInBytes(char* data, int size, int index);
 
 	// removes the record based on its string. If there are multiple instances of it, it only removes the first one.
 	PLUGIN_API void RemoveRecord(const char* record);
 
 	// removes the record in bytes
-	PLUGIN_API void RemoveRecordInBytes(char* data);
+	PLUGIN_API void RemoveRecordInBytes(char* data, int size);
 
 	// removes a record at its index. This is the same as 'RemoveRecord'.
 	PLUGIN_API void RemoveRecordAtIndex(int index);
@@ -42,6 +42,9 @@ extern "C" // convert to C code.
 
 	// returns (1) if contains record, (0) if record is not in list.
 	PLUGIN_API int ContainsRecord(const char* record);
+
+	// checks if the list contains the record (in bytes).
+	PLUGIN_API int ContainsRecordInBytes(char* data, int size);
 
 	// clears out all records
 	PLUGIN_API void ClearAllRecords();

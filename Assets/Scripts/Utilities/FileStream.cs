@@ -34,7 +34,7 @@ public class FileStream : MonoBehaviour
 
     // adds a record in bytes
     [DllImport(DLL_NAME)]
-    private static extern void AddRecordInBytes(byte[] arr);
+    private static extern void AddRecordInBytes(byte[] data, int size);
 
     // insert record at index
     [DllImport(DLL_NAME)]
@@ -42,7 +42,7 @@ public class FileStream : MonoBehaviour
 
     // insert a record in bytes
     [DllImport(DLL_NAME)]
-    private static extern void InsertRecordInBytes(byte[] arr, int index);
+    private static extern void InsertRecordInBytes(byte[] data, int size, int index);
 
     // removes the record.
     [DllImport(DLL_NAME)]
@@ -50,7 +50,7 @@ public class FileStream : MonoBehaviour
 
     // remove a record in bytes
     [DllImport(DLL_NAME)]
-    private static extern void RemoveRecordInBytes(byte[] arr);
+    private static extern void RemoveRecordInBytes(byte[] data, int size);
 
     // removes record at index 
     [DllImport(DLL_NAME)]
@@ -62,7 +62,7 @@ public class FileStream : MonoBehaviour
 
     // gets the record in byte form.
     [DllImport(DLL_NAME)]
-    private static extern void GetRecordInBytes(int index, byte[] arr, int size);
+    private static extern void GetRecordInBytes(int index, byte[] data, int size);
 
     // gets the length of a record.
     [DllImport(DLL_NAME)]
@@ -75,6 +75,10 @@ public class FileStream : MonoBehaviour
     // returns (1) if contains record, (0) if record is not in list.
     [DllImport(DLL_NAME)]
     private static extern int ContainsRecord([MarshalAs(UnmanagedType.LPStr)] string record);
+
+    // returns (1) if contains record, (0) if record is not in list.
+    [DllImport(DLL_NAME)]
+    private static extern int ContainsRecordInBytes(byte[] data, int size);
 
     // clears out all records
     [DllImport(DLL_NAME)]
@@ -109,7 +113,7 @@ public class FileStream : MonoBehaviour
     // adds a record to the list in bytes
     public void AddRecordToList(byte[] data)
     {
-        AddRecordInBytes(data);
+        AddRecordInBytes(data, data.Length);
     }
 
     // insert record at index
@@ -121,7 +125,7 @@ public class FileStream : MonoBehaviour
     // insert record at provided index in bytes
     public void InsertRecordIntoList(byte[] data, int index)
     {
-        InsertRecordInBytes(data, index);
+        InsertRecordInBytes(data, data.Length, index);
     }
 
     // removes record
@@ -133,7 +137,7 @@ public class FileStream : MonoBehaviour
     // removes record in bytes
     public void RemoveRecordFromList(byte[] data)
     {
-        RemoveRecordInBytes(data);
+        RemoveRecordInBytes(data, data.Length);
     }
 
     // removes record at index 
@@ -157,7 +161,7 @@ public class FileStream : MonoBehaviour
         if(size > 0)
         {
             data = new byte[size];
-            GetRecordInBytes(index, data, size);
+            GetRecordInBytes(index, data, data.Length);
             return data;
         }
         else
@@ -182,6 +186,13 @@ public class FileStream : MonoBehaviour
     public bool ListContainsRecord(string record)
     {
         int res = ContainsRecord(record);
+        return (res == 0) ? false : true;
+    }
+
+    // returns (1) if contains record, (0) if record is not in list.
+    public bool ListContainsRecord(byte[] record)
+    {
+        int res = ContainsRecordInBytes(record, record.Length);
         return (res == 0) ? false : true;
     }
 
@@ -325,17 +336,17 @@ public class FileStream : MonoBehaviour
     // }
 
     // gets the record from the list as bytes
-    public byte[] GetRecordFromListAsBytes(int index)
-    {
-        return ConvertStringToBytes(GetRecordFromList(index));
-    }
+    // public byte[] GetRecordFromListAsBytes(int index)
+    // {
+    //     return ConvertStringToBytes(GetRecordFromList(index));
+    // }
 
-    // returns (1) if contains record, (0) if record is not in list.
-    public bool ListContainsRecord(byte[] data)
-    {
-        string str = ConvertBytesToString(data);
-        return ListContainsRecord(str);
-    }
+    // // returns (1) if contains record, (0) if record is not in list.
+    // public bool ListContainsRecord(byte[] data)
+    // {
+    //     string str = ConvertBytesToString(data);
+    //     return ListContainsRecord(str);
+    // }
 
     // Update is called once per frame
     void Update()

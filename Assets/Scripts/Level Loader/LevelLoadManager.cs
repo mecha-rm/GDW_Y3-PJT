@@ -170,7 +170,7 @@ public class LevelLoadManager : MonoBehaviour
         for(int i = 0; i < count; i++)
         {
             GameObject newObject = null;
-            byte[] byteData = fileStream.GetRecordFromListAsBytes(i);
+            byte[] byteData = fileStream.GetRecordFromListInBytes(i);
             object objectData = FileStream.DeserializeObject(byteData);
             SerializedObject serialData = (SerializedObject)(objectData);
             

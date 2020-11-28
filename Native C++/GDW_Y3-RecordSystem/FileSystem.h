@@ -17,20 +17,20 @@ public:
 	void AddRecord(std::string record);
 
 	// adds a record as a byte array. This does not delete the data.
-	void AddRecord(char* arr);
+	void AddRecord(char* arr, int size);
 
 	// inserts a record at the provided index.
 	// this returns the index as well.
 	void InsertRecord(std::string record, int index);
 
 	// inserts a record in bytes
-	void InsertRecord(char* arr, int index);
+	void InsertRecord(char* arr, int size, int index);
 
 	// removes the record based on its string. If there are multiple instances of it, it only removes the first one.
 	void RemoveRecord(std::string record);
 
 	// removes record based on byte data.
-	void RemoveRecord(char* arr);
+	void RemoveRecord(char* arr, int size);
 
 	// removes the record based on its index
 	void RemoveRecord(int index);
@@ -53,6 +53,9 @@ public:
 	// checks to see if a given record is in the file system.
 	// this returns 'true' if the record is in the system.
 	bool ContainsRecord(std::string record) const;
+
+	// checks if the list contains the record (in bytes).
+	bool ContainsRecord(char* arr, int size) const;
 
 	// clears out all records
 	void ClearAllRecords();

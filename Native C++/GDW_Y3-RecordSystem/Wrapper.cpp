@@ -9,9 +9,9 @@ PLUGIN_API void AddRecord(const char* record)
 }
 
 // adds a record in bytes
-PLUGIN_API void AddRecordInBytes(char* data)
+PLUGIN_API void AddRecordInBytes(char* data, int size)
 {
-	return fs.AddRecord(data);
+	return fs.AddRecord(data, size);
 }
 
 // inserts record at index
@@ -21,9 +21,9 @@ PLUGIN_API void InsertRecord(const char* record, int index)
 }
 
 // inserts the record in bytes
-PLUGIN_API void InsertRecordInBytes(char* data, int index)
+PLUGIN_API void InsertRecordInBytes(char* data, int size, int index)
 {
-	return fs.InsertRecord(data, index);
+	return fs.InsertRecord(data, size, index);
 }
 
 // removes record
@@ -33,9 +33,9 @@ PLUGIN_API void RemoveRecord(const char* record)
 }
 
 // removes a record in bytes
-PLUGIN_API void RemoveRecordInBytes(char* data)
+PLUGIN_API void RemoveRecordInBytes(char* data, int size)
 {
-	return fs.RemoveRecord(data);
+	return fs.RemoveRecord(data, size);
 }
 
 // removes record at index
@@ -72,6 +72,12 @@ PLUGIN_API int GetRecordCount()
 PLUGIN_API int ContainsRecord(const char* record)
 {
 	return (int)fs.ContainsRecord(std::string(record));
+}
+
+// checks to see if the list contains the record
+PLUGIN_API int ContainsRecordInBytes(char* data, int size)
+{
+	return (int)fs.ContainsRecord(data, size);
 }
 
 // clears out all records
