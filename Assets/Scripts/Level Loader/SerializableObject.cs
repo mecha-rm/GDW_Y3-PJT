@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+
+// CLASSES
 // subclasses of this base class have a function that can be serializable.
 // this doesn't support multiple instances of the same component, but that shouldn't happen anyway.
 // NOTE: this can only save serializable components, so data for other components should be put in them.
@@ -25,6 +27,7 @@ public abstract class SerializableObject : MonoBehaviour
     public static SerializedObject Pack(GameObject entity, System.Type type, string prefabPath = "")
     {
         // creates the object
+        // SerializedObject serializedObject = new SerializedObject(entity.name, type, prefabPath, entity.transform);
         SerializedObject serializedObject = new SerializedObject(entity.name, type, prefabPath, entity.transform);
 
         // gets all components of type 'SerializableObject'
@@ -95,9 +98,9 @@ public abstract class SerializableObject : MonoBehaviour
         }
 
         // sets values for transformation
-        gameObject.transform.position = serializedObject.position;
-        gameObject.transform.rotation = serializedObject.rotation;
-        gameObject.transform.localScale = serializedObject.localScale;
+        gameObject.transform.position = SerializedObject.Vec3ToUnityVector3(serializedObject.position);
+        gameObject.transform.rotation = SerializedObject.QuatToQuaternion(serializedObject.rotation);
+        gameObject.transform.localScale = SerializedObject.Vec3ToUnityVector3(serializedObject.localScale);
 
         // COMPONENTS //
         // gets and adds components, giving them the overwritten data

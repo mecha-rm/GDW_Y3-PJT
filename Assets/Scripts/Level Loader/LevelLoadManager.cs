@@ -8,7 +8,7 @@ public class LevelLoadManager : MonoBehaviour
     // all assets to be saved (or loaded in)
     public string filePath = "Assets/Resources/Saves/"; // file path (from highest directory in Unity folder)
     public string file = ""; // file (defaults to .txt if not stated)
-    public List<GameObject> objects;
+    public List<GameObject> objects = new List<GameObject>(); // needed to be initialized for some reason
     public bool addChildren = true;
 
     // Start is called before the first frame update

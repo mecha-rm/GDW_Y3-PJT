@@ -5,23 +5,28 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-// [System.Serializable]
-// public struct V3
-// {
-// 	public int x;
-// 	public int y;
-// 	public int z;
-// }
 
 // TODO: rename or remove this.
 public class LevelFileSystem : FileStream
 {
+
 	public EditorObject temp;
 
 	// Start is called before the first frame update
 	void Start()
     {
 		base.Start();
+
+		SerializedObject obj = new SerializedObject("john", typeof(GameObject));
+		// Test obj = new Test();
+		// Vector3 obj = new Vector3();
+		// List<int> list = new List<int>();
+		// list.Add(1);
+		byte[] data;
+
+		// data = FileStream.SerializeObject(list);
+		data = FileStream.SerializeObject(obj);
+		Debug.Log(data.ToString());
 
 		// FileStream fs = new FileStream();
 		// fs.SetRecordFile("FMV.dat");
