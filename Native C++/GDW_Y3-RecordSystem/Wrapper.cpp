@@ -8,16 +8,34 @@ PLUGIN_API void AddRecord(const char* record)
 	return fs.AddRecord(std::string(record));
 }
 
+// adds a record in bytes
+PLUGIN_API void AddRecordInBytes(char* data)
+{
+	return fs.AddRecord(data);
+}
+
 // inserts record at index
 PLUGIN_API void InsertRecord(const char* record, int index)
 {
 	return fs.InsertRecord(std::string(record), index);
 }
 
+// inserts the record in bytes
+PLUGIN_API void InsertRecordInBytes(char* data, int index)
+{
+	return fs.InsertRecord(data, index);
+}
+
 // removes record
 PLUGIN_API void RemoveRecord(const char* record)
 {
 	return fs.RemoveRecord(std::string(record));
+}
+
+// removes a record in bytes
+PLUGIN_API void RemoveRecordInBytes(char* data)
+{
+	return fs.RemoveRecord(data);
 }
 
 // removes record at index
@@ -30,6 +48,18 @@ PLUGIN_API void RemoveRecordAtIndex(int index)
 PLUGIN_API const char* GetRecord(int index)
 {
 	return fs.GetRecord(index).c_str();
+}
+
+// gets the record in byte form.
+PLUGIN_API void GetRecordInBytes(int index, char* arr, int size)
+{
+	return fs.GetRecordInBytes(index, arr, size);
+}
+
+// returns the length of the record.
+PLUGIN_API int GetRecordSize(int index)
+{
+	fs.GetRecordSize(index);
 }
 
 // gets the amount of records

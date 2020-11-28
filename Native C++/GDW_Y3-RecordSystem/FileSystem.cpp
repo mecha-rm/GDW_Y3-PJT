@@ -12,6 +12,13 @@ void FileSystem::AddRecord(std::string record)
 	records.push_back(record);
 }
 
+// adds a record as a byte array. This does not delete the data.
+void FileSystem::AddRecord(char* arr)
+{
+	// adds the record.
+	records.push_back(std::string(arr));
+}
+
 // inserts a record at the provided index.
 void FileSystem::InsertRecord(std::string record, int index)
 {
@@ -21,6 +28,12 @@ void FileSystem::InsertRecord(std::string record, int index)
 		records.push_back(record);
 	else // provided index
 		records.insert(records.begin() + index, record);
+}
+
+// inserts a record in bytes
+void FileSystem::InsertRecord(char* arr, int index)
+{
+	InsertRecord(std::string(arr), index);
 }
 
 // removes a record
@@ -42,6 +55,12 @@ void FileSystem::RemoveRecord(std::string record)
 	// removes the record at the index.
 	if (index != -1)
 		records.erase(records.begin() + index);
+}
+
+// removes record based on byte data
+void FileSystem::RemoveRecord(char* arr)
+{
+	RemoveRecord(std::string(arr));
 }
 
 // removes the record ath the provided index
@@ -67,6 +86,32 @@ const std::string& FileSystem::GetRecord(int index) const
 		return records.at(index);
 	else
 		return std::string("");
+}
+
+// gets the record in bytes
+// TODO: find out if you can return an array instead of filling one.
+void FileSystem::GetRecordInBytes(int index, char* arr, int size)
+{
+	std::string record = "";
+
+	// index bounds check
+	if (index >= 0 && index < records.size())
+		record = records.at(index);
+	else
+		return;
+
+	// adds in values while there is still space.
+	for (int i = 0; i < size && i < record.length(); i++)
+		arr[i] = record[i]; // copy data
+}
+
+// returns the length of a record.
+int FileSystem::GetRecordSize(int index) const
+{
+	if (index >= 0 && index < records.size())
+		return records.at(index).length();
+	else
+		return 0;
 }
 
 // gets the amount of records.

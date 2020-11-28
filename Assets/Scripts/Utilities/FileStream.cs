@@ -32,13 +32,25 @@ public class FileStream : MonoBehaviour
     [DllImport(DLL_NAME)]
     private static extern void AddRecord([MarshalAs(UnmanagedType.LPStr)] string record);
 
+    // adds a record in bytes
+    [DllImport(DLL_NAME)]
+    private static extern void AddRecordInBytes(byte[] arr);
+
     // insert record at index
     [DllImport(DLL_NAME)]
     private static extern void InsertRecord([MarshalAs(UnmanagedType.LPStr)] string record, int index);
 
+    // insert a record in bytes
+    [DllImport(DLL_NAME)]
+    private static extern void InsertRecordInBytes(byte[] arr, int index);
+
     // removes the record.
     [DllImport(DLL_NAME)]
     private static extern void RemoveRecord([MarshalAs(UnmanagedType.LPStr)] string record);
+
+    // remove a record in bytes
+    [DllImport(DLL_NAME)]
+    private static extern void RemoveRecordInBytes(byte[] arr);
 
     // removes record at index 
     [DllImport(DLL_NAME)]
@@ -47,6 +59,14 @@ public class FileStream : MonoBehaviour
     // gets record
     [DllImport(DLL_NAME, EntryPoint = "GetRecord")]
     private static extern System.IntPtr GetRecord(int index);
+
+    // gets the record in byte form.
+    [DllImport(DLL_NAME)]
+    private static extern void GetRecordInBytes(int index, byte[] arr, int size);
+
+    // gets the length of a record.
+    [DllImport(DLL_NAME)]
+    private static extern int GetRecordSize(int index);
 
     // gets the amount of records
     [DllImport(DLL_NAME)]
@@ -86,16 +106,34 @@ public class FileStream : MonoBehaviour
         AddRecord(record);
     }
 
+    // adds a record to the list in bytes
+    public void AddRecordToList(byte[] data)
+    {
+        AddRecordInBytes(data);
+    }
+
     // insert record at index
     public void InsertRecordIntoList(string record, int index)
     {
         InsertRecord(record, index);
     }
 
+    // insert record at provided index in bytes
+    public void InsertRecordIntoList(byte[] data, int index)
+    {
+        InsertRecordInBytes(data, index);
+    }
+
     // removes record
     public void RemoveRecordFromList(string record)
     {
         RemoveRecord(record);
+    }
+
+    // removes record in bytes
+    public void RemoveRecordFromList(byte[] data)
+    {
+        RemoveRecordInBytes(data);
     }
 
     // removes record at index 
@@ -108,6 +146,30 @@ public class FileStream : MonoBehaviour
     public string GetRecordFromList(int index)
     {
         return Marshal.PtrToStringAnsi(GetRecord(index));
+    }
+
+    // returns record in bytes
+    public byte[] GetRecordFromListInBytes(int index)
+    {
+        byte[] data = null;
+        int size = GetRecordSize(index);
+
+        if(size > 0)
+        {
+            data = new byte[size];
+            GetRecordInBytes(index, data, size);
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    // gets the size of a record
+    public int GetRecordLength(int index)
+    {
+        return GetRecordSize(index);
     }
 
     // gets the amount of records
@@ -240,26 +302,27 @@ public class FileStream : MonoBehaviour
 
 
     // Overloaded Functions //
+    // no longer needed
     // adds a record as a string
-    public void AddRecordToList(byte[] data)
-    {
-        string str = ConvertBytesToString(data);
-        AddRecord(str);
-    }
-
-    // insert record at index
-    public void InsertRecordIntoList(byte[] record, int index)
-    {
-        string str = ConvertBytesToString(record);
-        InsertRecord(str, index);
-    }
-
-    // removes a record (converts to string to check)
-    public void RemoveRecordFromList(byte[] data)
-    {
-        string str = ConvertBytesToString(data);
-        RemoveRecord(str);
-    }
+    // public void AddRecordToList(byte[] data)
+    // {
+    //     string str = ConvertBytesToString(data);
+    //     AddRecord(str);
+    // }
+    // 
+    // // insert record at index
+    // public void InsertRecordIntoList(byte[] record, int index)
+    // {
+    //     string str = ConvertBytesToString(record);
+    //     InsertRecord(str, index);
+    // }
+    // 
+    // // removes a record (converts to string to check)
+    // public void RemoveRecordFromList(byte[] data)
+    // {
+    //     string str = ConvertBytesToString(data);
+    //     RemoveRecord(str);
+    // }
 
     // gets the record from the list as bytes
     public byte[] GetRecordFromListAsBytes(int index)

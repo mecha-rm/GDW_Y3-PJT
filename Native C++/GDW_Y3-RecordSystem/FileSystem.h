@@ -16,12 +16,21 @@ public:
 	// adds a record and returns its index in the list.
 	void AddRecord(std::string record);
 
+	// adds a record as a byte array. This does not delete the data.
+	void AddRecord(char* arr);
+
 	// inserts a record at the provided index.
 	// this returns the index as well.
 	void InsertRecord(std::string record, int index);
 
+	// inserts a record in bytes
+	void InsertRecord(char* arr, int index);
+
 	// removes the record based on its string. If there are multiple instances of it, it only removes the first one.
 	void RemoveRecord(std::string record);
+
+	// removes record based on byte data.
+	void RemoveRecord(char* arr);
 
 	// removes the record based on its index
 	void RemoveRecord(int index);
@@ -31,6 +40,12 @@ public:
 
 	// gets the record at the provided index. Returns empty string if invalid.
 	const std::string& GetRecord(int index) const;
+
+	// gets the record in byte form. Make sure to allocate the data first.
+	void GetRecordInBytes(int index, char* arr, int size);
+
+	// gets the length of a record.
+	int GetRecordSize(int index) const;
 
 	// gets the amount of records
 	int GetRecordCount() const;

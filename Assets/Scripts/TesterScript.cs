@@ -22,7 +22,12 @@ public class TesterScript : MonoBehaviour
 		fs.AddRecordToList("record3");
 
         {
-			int x = 5;
+			// float x = 2.0f;
+			Vec3 x;
+			x.x = 10;
+			x.y = 2;
+			x.z = -1;
+
 			byte[] data = FileStream.SerializeObject(x);
 			fs.AddRecordToList(data);
         }
@@ -39,24 +44,24 @@ public class TesterScript : MonoBehaviour
 		fs.ClearAllRecordsFromList();
 		Debug.Log("Record Count: " + fs.GetAmountOfRecords());
 		
-		fs.LoadRecords();
-		Debug.Log("Record Count (Reloaded): " + fs.GetAmountOfRecords());
-
-		string str = "abc";
-		byte[] strData;
-		strData = FileStream.SerializeObject(str); // ASCII (size 27)
-		// strData = FileStream.SerializeObject(str.ToCharArray()); // ASCII (size 31)
-
-		{
-			int count = fs.GetAmountOfRecords();
-
-			// prints all records
-			for(int i = 0; i < count; i++)
-            {
-				Debug.Log("Record " + i + ": " + fs.GetRecordFromList(i));
-            }
-
-        }		
+		// fs.LoadRecords();
+		// Debug.Log("Record Count (Reloaded): " + fs.GetAmountOfRecords());
+		// 
+		// string str = "abc";
+		// byte[] strData;
+		// strData = FileStream.SerializeObject(str); // ASCII (size 27)
+		// // strData = FileStream.SerializeObject(str.ToCharArray()); // ASCII (size 31)
+		// 
+		// {
+		// 	int count = fs.GetAmountOfRecords();
+		// 
+		// 	// prints all records
+		// 	for(int i = 0; i < count; i++)
+        //     {
+		// 		Debug.Log("Record " + i + ": " + fs.GetRecordFromList(i));
+        //     }
+		// 
+        // }		
 
 	}
 
