@@ -9,14 +9,19 @@ public class LevelLoadManager : MonoBehaviour
     public string filePath = "Assets/Resources/Saves/"; // file path (from highest directory in Unity folder)
     public string file = "unnamed.txt"; // file (defaults to .txt if not stated)
     public List<GameObject> objects = new List<GameObject>(); // needed to be initialized for some reason
+    
+    // if 'true', the children are added.
     public bool addChildren = true;
 
     // the limit of the amount of data per line
     // one file is used to store the size of the data, the other is used to store hte data itself.
-    int lineLimit = 1000;
+    public bool ApplyMaxSectionSize = true;
+    public int maxSectionSize = 512; // 8 * 64 NOTE: arrays copy in Int64
 
-    // temporary to check file sizes
-    private int tempSizeSave = 0, tempSizeSizeFile = 0, tempSizeLoad;
+    const string SECOND_FILE_EXT = "rri"; // the file extension for section limit files
+    const string SEC_SIZE_SYMBOL = "S"; // letter representing the maximum length of each record.
+    const string REC_COUNT_SYMBOL = "R"; // letter representing the size of a record
+
 
     // Start is called before the first frame update
     void Start()
@@ -119,7 +124,8 @@ public class LevelLoadManager : MonoBehaviour
     {
         // file stream
         FileStream fileStream = new FileStream();
-        string fullFile = "";
+        string fullFile;
+        List<int> sections = new List<int>();
 
         fileStream.ClearAllRecordsFromList(); // clear existing content
 
@@ -131,28 +137,57 @@ public class LevelLoadManager : MonoBehaviour
         fullFile = GetFileWithPath();
         fileStream.SetRecordFile(fullFile);
 
-        int startCount = fileStream.GetAmountOfRecords();
-        Debug.Log("Start Count: " + startCount);
-
         // adds all elements in the list.
         foreach (GameObject element in objects)
         {
             SerializedObject entity = SerializableObject.Pack(element);
             byte[] data = FileStream.SerializeObject(entity);
-            // byte[] data = SerializableObject.PackToBytes(element);
-            fileStream.AddRecordToList(data);
-            tempSizeSave = data.Length;
 
-            int count = fileStream.GetAmountOfRecords();
-            Debug.Log("New Count: " + count);
-            Debug.Log("Byte Size: " + data.Length);
-            Debug.Log("Size in File: " + fileStream.GetRecordLength(count - 1));
+            // if the section limiter is on, the data is split into individual records.
+            if (ApplyMaxSectionSize)
+                fileStream.SplitAndAddData(data, maxSectionSize);
+            else
+                fileStream.AddRecordToList(data);
 
+            // saves the amount of records
+            sections.Add((int)Mathf.Ceil((float)data.Length / maxSectionSize));
         }
 
         fileStream.SaveRecords();
+
+        // if the save record didn't create or edit a file, the name must be invalid.
+        if(!fileStream.RecordFileAvailable())
+        {
+            Debug.Log("File could not be found, or opened.");
+            return;
+        }
+
+        Debug.Log("New Record Count: " + fileStream.GetAmountOfRecords());
+
+        //  clear ocntent so it can be reused.
         fileStream.ClearAllRecordsFromList();
 
+        // if the section limit should be used.
+        if(ApplyMaxSectionSize && fullFile.Contains("."))
+        {
+            // string secondFile = fullFile.Substring(0, fullFile.IndexOf("."));
+            string secondFile = fullFile; // just double up the file extension instead
+            secondFile += "." + SECOND_FILE_EXT;
+
+            fileStream.SetRecordFile(secondFile); // sets file
+            fileStream.AddRecordToList(SEC_SIZE_SYMBOL + " " + maxSectionSize);
+
+            // adds records
+            for(int i = 0; i < sections.Count; i++)
+            {
+                fileStream.AddRecordToList(REC_COUNT_SYMBOL + " " + i + " " + sections[i]);
+            }
+
+            // saves records
+            fileStream.SaveRecords();
+        }
+
+        fileStream.ClearAllRecordsFromList();
         Destroy(fileStream);
         Debug.Log("Save Successful!");
     }
@@ -162,51 +197,172 @@ public class LevelLoadManager : MonoBehaviour
     public void LoadFromFile()
     {
         // file stream
+        // FileStream fileStream = new FileStream();
+        // int count = 0;
+        // string fullFile = "";
+        // 
+        // // loads content
+        // fileStream.ClearAllRecordsFromList(); // clear existing content
+        // fullFile = GetFileWithPath();
+        // fileStream.SetRecordFile(fullFile);
+        // 
+        // // if the record file is not available
+        // if(!fileStream.RecordFileAvailable())
+        // {
+        //     Debug.LogError(fullFile + " not found.");
+        // }
+        // 
+        // count = fileStream.GetAmountOfRecords();
+        // 
+        // fileStream.LoadRecords();
+        // 
+        // // gets the count of records
+        // count = fileStream.GetAmountOfRecords();
+        // 
+        // for(int i = 0; i < count; i++)
+        // {
+        //     int rsize = fileStream.GetRecordLength(i);
+        //     Debug.Log("Record " + i + " = " + rsize);
+        // }
+        // 
+        // // grabs all items
+        // // for(int i = 0; i < count; i++)
+        // // {
+        // //     GameObject newObject = null;
+        // //     byte[] byteData = fileStream.GetRecordFromListInBytes(i);
+        // //     object objectData = FileStream.DeserializeObject(byteData);
+        // //     SerializedObject serialData = (SerializedObject)(objectData);
+        // //     
+        // //     newObject = SerializableObject.Unpack(serialData);
+        // //     // if a new object was generated, add it to the list.
+        // //     if (newObject != null)
+        // //         objects.Add(newObject);
+        // // }
+        // 
+        // fileStream.ClearAllRecordsFromList();
+        // Destroy(fileStream);
+        // Debug.Log("Load Successful!");
+
+        // file stream object.
         FileStream fileStream = new FileStream();
         int count = 0;
         string fullFile = "";
 
+        List<int> recordCounts = new List<int>(); // the amount of records per object (index)
+        bool recordLimits = ApplyMaxSectionSize;
+
         // loads content
         fileStream.ClearAllRecordsFromList(); // clear existing content
         fullFile = GetFileWithPath();
+
+        // loads record count data
+        string secondFile = fullFile + "." + SECOND_FILE_EXT; // gets the second file
+        fileStream.SetRecordFile(secondFile);
+        
+        // gets the record limits
+        recordLimits = fileStream.RecordFileAvailable();
+        
+        if(recordLimits) // there were record limits
+        {
+            fileStream.LoadRecords();
+
+            // the total amount of records
+            int secRecordCount = fileStream.GetAmountOfRecords();
+        
+            // gets the amount of records
+            for (int i = 0; i < secRecordCount; i++)
+            {
+                string str = fileStream.GetRecordFromList(i); // gets the record
+        
+                if(str.Contains(SEC_SIZE_SYMBOL)) // contains section size symbol
+                {
+                    // currently does nothing
+                }
+                else if(str.Contains(REC_COUNT_SYMBOL)) // contains record count symbol
+                {
+                    // gets spaces
+                    int space1 = str.IndexOf(" ");
+                    int space2 = str.LastIndexOf(" ");
+        
+                    // parses data
+                    int index = int.Parse(str.Substring(space1 + 1, space2 - space1 - 1));
+                    int val = int.Parse(str.Substring(space2 + 1));
+        
+        
+                    // checks to see if this record is the last record.
+                    if (recordCounts.Count == index) // last value
+                        recordCounts.Add(val);
+                    else // not last value
+                        recordCounts.Insert(index, val);
+                }
+            }
+        }
+
+        // clears out records
+        fileStream.ClearAllRecordsFromList();
+
+        // gets data
         fileStream.SetRecordFile(fullFile);
 
         // if the record file is not available
-        if(!fileStream.RecordFileAvailable())
+        if (!fileStream.RecordFileAvailable())
         {
             Debug.LogError(fullFile + " not found.");
+            return;
         }
 
-        count = fileStream.GetAmountOfRecords();
-
+        // loads records and gets count
         fileStream.LoadRecords();
-
-        // gets the count of records
         count = fileStream.GetAmountOfRecords();
 
-        for(int i = 0; i < count; i++)
+        // if there are record limits
+        if(recordLimits)
         {
-            int rsize = fileStream.GetRecordLength(i);
-            Debug.Log("Record " + i + " = " + rsize);
-            tempSizeLoad += rsize;
-        }
+            int currRecord = 0;
+            // List<byte[]> loadedObjects = new List<byte[]>(); // loaded objects
 
-        // grabs all items
-        for(int i = 0; i < count; i++)
+            // goes through all record counts
+            for (int i = 0; i < recordCounts.Count; i++)
+            {               
+                byte[] data = fileStream.GetAndCombineData(currRecord, recordCounts[i]);
+                currRecord += recordCounts[i];
+                // loadedObjects.Add(data); // adds data to list
+
+                // data exists
+                if(data.Length > 0)
+                {
+                    GameObject newObject;
+                    object objectData = FileStream.DeserializeObject(data);
+                    SerializedObject serialData = (SerializedObject)(objectData);
+
+                    newObject = SerializableObject.Unpack(serialData);
+
+                    // if a new object was generated, add it to the list.
+                    if (newObject != null)
+                        objects.Add(newObject);
+                }
+            }
+        }
+        else // no record limits
         {
-            GameObject newObject = null;
-            byte[] byteData = fileStream.GetRecordFromListInBytes(i);
-            object objectData = FileStream.DeserializeObject(byteData);
-            SerializedObject serialData = (SerializedObject)(objectData);
-            
-            newObject = SerializableObject.Unpack(serialData);
-            // if a new object was generated, add it to the list.
-            if (newObject != null)
-                objects.Add(newObject);
+            // grabs all items, with each record representing one item
+            for (int i = 0; i < count; i++)
+            {
+                GameObject newObject = null;
+                byte[] byteData = fileStream.GetRecordFromListInBytes(i);
+                object objectData = FileStream.DeserializeObject(byteData);
+                SerializedObject serialData = (SerializedObject)(objectData);
+
+                newObject = SerializableObject.Unpack(serialData);
+                // if a new object was generated, add it to the list.
+                if (newObject != null)
+                    objects.Add(newObject);
+            }
         }
 
         fileStream.ClearAllRecordsFromList();
         Destroy(fileStream);
+
         Debug.Log("Load Successful!");
     }
 

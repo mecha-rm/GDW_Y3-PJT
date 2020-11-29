@@ -7,11 +7,10 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml;
-using UnityEngine;
 
 // puts lines into a file
 public class FileStream : MonoBehaviour
@@ -235,6 +234,8 @@ public class FileStream : MonoBehaviour
         return (res == 0) ? false : true;
     }
 
+    // Functions //
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -348,6 +349,93 @@ public class FileStream : MonoBehaviour
     //     return ListContainsRecord(str);
     // }
 
+
+    // splits the record into pieces and adds it.
+    // splitSize determiens how large each split is.
+    public void SplitAndAddData(byte[] data, int sectionSize)
+    {
+        int records = (int)Mathf.Ceil((float)data.Length / sectionSize); // number of records to make
+        int bytesLeft = data.Length; // bytes remaining
+
+        // generates records
+        for(int i = 0; i < records; i++)
+        {
+            // reduces byte count
+            bytesLeft -= sectionSize;
+            byte[] dataSec;
+
+            // if the bytes left amount is negative, that means the last piece of data won't fill the whole array.
+            // as such, the length needs to be adjusted.
+            if (bytesLeft >= 0) 
+                dataSec = new byte[sectionSize]; // copies segment of data
+            else
+                dataSec = new byte[data.Length % sectionSize]; // copies remaining data
+
+
+            // copies content
+            System.Array.Copy(data, sectionSize * i, dataSec, 0, dataSec.Length);
+
+            AddRecordInBytes(dataSec, dataSec.Length);
+        }
+    }
+
+    // gets a series of data and combines it into one byte array
+    // 'count' includes the value at the starting index
+    public byte[] GetAndCombineData(int startIndex, int recordAmount)
+    {
+        int totalRecordCount = GetRecordCount();
+        List<byte[]> dataParts = new List<byte[]>();
+        int totalDataSize = 0;
+        byte[] dataCombined = null;
+
+        // if the index is invalid
+        if (startIndex < 0 || startIndex >= totalRecordCount)
+            return null;
+
+        // gets the data and combines it.
+        for(int i = 0; i < recordAmount && startIndex + i < totalRecordCount; i++)
+        {
+            byte[] data;
+            int size = GetRecordSize(startIndex + i); // gets the record size
+
+            // if the size is greater than 0 (i.e. there's data to get)
+            if(size > 0)
+            {
+                data = new byte[size]; // allocates space
+                GetRecordInBytes(startIndex + i, data, size); // gets record
+                dataParts.Add(data); // adds the data
+            }
+        }
+
+        // data exists
+        if (dataParts.Count > 0)
+        {
+            // gets total byte count
+            for (int i = 0; i < dataParts.Count; i++)
+                totalDataSize += dataParts[i].Length;
+
+            // allocate space
+            dataCombined = new byte[totalDataSize];
+
+            // current index
+            int currIndex = 0;
+
+            // copies content
+            for(int i = 0; i < dataParts.Count; i++)
+            {
+                System.Array.Copy(dataParts[i], 0, dataCombined, currIndex, dataParts[i].Length);
+                currIndex += dataParts[i].Length; // move index
+            }
+
+            // returns combined data
+            return dataCombined;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
     // Update is called once per frame
     void Update()
     {
