@@ -1513,9 +1513,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e63993220b9ee4f8b0702c62a62fb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNumber: 0
+  playerName: 
+  description: 
   model: {fileID: 919132149155446097, guid: 854d6202151959b45aa6a353c39ae3d5, type: 3}
   stateMachine: {fileID: 1908994744}
-  playerNumber: 0
   playerScore: 0
   playerScoreText: {fileID: 1469053268}
   movementSpeed: 2500
