@@ -15,7 +15,7 @@ public class UI_Manager : MonoBehaviour
 {
     // an empty game object that encompasses the level
     private GameObject level;
-    private LevelLoadManager levelFileManager;
+    private LevelLoader levelFileManager;
 
     // 3D objects used for instaniation
     public GameObject cube;
@@ -73,7 +73,7 @@ public class UI_Manager : MonoBehaviour
     void Start()
     {
         level = new GameObject("Level");
-        levelFileManager = level.AddComponent<LevelLoadManager>();
+        levelFileManager = level.AddComponent<LevelLoader>();
     }
 
     // mouse has clicked on the UI

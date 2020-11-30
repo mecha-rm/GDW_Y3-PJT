@@ -43,6 +43,7 @@ public struct Quat
 
 // a serialized object, which is used for storing data for making an object.
 // this should be a struct, but it's not since it wouldn't be able to be overridden.
+// this doesn't really need to be inherited since its just base information.
 [System.Serializable]
 public class SerializedObject
 {

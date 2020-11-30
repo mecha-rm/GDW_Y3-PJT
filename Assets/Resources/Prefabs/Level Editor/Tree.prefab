@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 4073371550297151367}
   - component: {fileID: 8277975670117897458}
   - component: {fileID: 7537211093131880437}
+  - component: {fileID: 3495220826550191032}
   m_Layer: 0
   m_Name: Tree
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,6 +92,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3495220826550191032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7039759417937879931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7315b9bd0e6edf1489eea328b020c859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabPath: Prefabs/Level Editor/Tree
 --- !u!21 &-3960982370892268335
 Material:
   serializedVersion: 6

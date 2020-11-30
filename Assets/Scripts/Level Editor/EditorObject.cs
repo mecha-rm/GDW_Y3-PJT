@@ -8,39 +8,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//// serialized as an independent object
-//[System.Serializable]
-//public class SerializedStageObject : SerializedObject
-//{
-//    public string entityName;
-//    public string description;
+// serialized as an independent object
+// [System.Serializable]
+// public class SerializedEditorObject : SerializedObject
+// {
+//     public string entityName;
+//     public string description;
+// 
+//     public SerializedEditorObject(EditorObject so, string etyName, string desc) : 
+//         base(so.name, so.transform)
+//     {
+//         entityName = etyName;
+//         description = desc;
+//     }
+// }
+// 
+// // serialized as a component
+// [System.Serializable]
+// public class SerializedEditorObjectComponent : SerializedComponent
+// {
+//     public string entityName;
+//     public string description;
+// 
+//     public SerializedEditorObjectComponent(EditorObject so, string etyName, string desc) :
+//         base(typeof(EditorObject))
+//     {
+//         entityName = etyName;
+//         description = desc;
+//     }
+// }
 
-//    public SerializedStageObject(StageObject so, string etyName, string desc) : 
-//        base(so.name, typeof(StageObject), so.transform)
-//    {
-//        entityName = etyName;
-//        description = desc;
-//    }
-//}
-
-//// serialized as a component
-//[System.Serializable]
-//public class SerializedStageObjectComponent : SerializedComponent
-//{
-//    public string entityName;
-//    public string description;
-
-//    public SerializedStageObjectComponent(StageObject so, string etyName, string desc) :
-//        base(typeof(StageObject))
-//    {
-//        entityName = etyName;
-//        description = desc;
-//    }
-//}
-
-// rename this class. StageObject is already used.
+// this script does NOT get saved upon export.
 // things like items and player locations are saved to a particular object.
-public class EditorObject : MonoBehaviour
+public class EditorObject : MonoBehaviour // SerializableObject 
 {
     // the user interface manager. Used for selecting objects.
     public GameObject uiManager;
@@ -227,27 +227,23 @@ public class EditorObject : MonoBehaviour
         }
     }
 
-    //// exports the serialized component.
-    //public override SerializedComponent ExportSerializedComponent()
-    //{
-    //    SerializedStageObject comp = new SerializedStageObject();
-        
-    //    comp.componentName = this.GetType().Name; // gets the name of the type.
-    //    comp.entityName = entityName; // gets the entity name
-    //    comp.description = description; // gets the description
-
-    //    return comp;
-    //}
-
-    //// the imported serialized component.
-    //public override void ImportSerializedComponent(GameObject gameObject, SerializedComponent component)
-    //{
-    //    // downcasts
-    //    SerializedStageObject sso = (SerializedStageObject)(component);
-
-    //    // provides values
-    //    StageObject attachedComp = gameObject.AddComponent<StageObject>();
-    //    attachedComp.entityName = sso.entityName; // gives entity name
-    //    attachedComp.description = sso.description; // gives entity description
-    //}
+    // exports the serialized component.
+    // public override SerializedComponent ExportSerializedComponent()
+    // {
+    //     SerializedEditorObjectComponent comp = new SerializedEditorObjectComponent(this, entityName, description);
+    // 
+    //     return comp;
+    // }
+    // 
+    // // the imported serialized component.
+    // public override void ImportSerializedComponent(GameObject gameObject, SerializedComponent component)
+    // {
+    //     // downcasts
+    //     SerializedStageObject sso = (SerializedStageObject)(component);
+    // 
+    //     // provides values
+    //     StageObject attachedComp = gameObject.AddComponent<StageObject>();
+    //     attachedComp.entityName = sso.entityName; // gives entity name
+    //     attachedComp.description = sso.description; // gives entity description
+    // }
 }

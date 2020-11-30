@@ -25,8 +25,9 @@ using UnityEngine;
 // NOTE: this can only save serializable components, so data for other components should be put in them.
 public abstract class SerializableObject : MonoBehaviour
 {
-    // // the prefab for the object.
-    // public string prefab = "";
+    // the prefab for the object from the resources folder. Do NOT include the file extension.
+    // e.g. a path of "Assets/Resources/Prefabs/Player.prefab" would be entered as "Prefabs/Player"
+    public string prefabPath = "";
 
     // serialize parent
     public static byte[] SerializeObject(SerializedObject entity)
@@ -45,6 +46,7 @@ public abstract class SerializableObject : MonoBehaviour
 
     // packs the object and returns a serialized object
     // note. This should be called for the gameObject all components are attached to.
+    // if 'prefab path' is left blank, an empty game object is made. 
     public static SerializedObject Pack(GameObject entity, string prefabPath = "")
     {
         // creates the object
@@ -57,14 +59,14 @@ public abstract class SerializableObject : MonoBehaviour
         // adds all Serializable Components
         foreach (SerializableObject comp in comps)
         {
-            serializedObject.components.Add(comp.ExportSerializedComponent());
+            serializedObject.components.Add(comp.ExportSerializedComponent(serializedObject));
         }
 
         return serializedObject;
     }
 
     // packs this object with a prefab. Pass in derived type.
-    public SerializedObject Pack(string prefabPath = "")
+    public SerializedObject Pack()
     {
         return Pack(gameObject, prefabPath);
     }
@@ -151,7 +153,7 @@ public abstract class SerializableObject : MonoBehaviour
             if (attachedComp is SerializableObject)
             {
                 SerializableObject serialObject = (SerializableObject)(attachedComp);
-                serialObject.ImportSerializedComponent(comp); // passes content so it can be downcasted.
+                serialObject.ImportSerializedComponent(serializedObject, comp); // passes content so it can be downcasted.
             }
         }
 
@@ -181,12 +183,14 @@ public abstract class SerializableObject : MonoBehaviour
     // creates a serialized component in the derived class and returns it.
     // the SerializedComponent class should be overwritten so that it can be downcasted when imported.
     // this is called by the Pack() function.
-    public abstract SerializedComponent ExportSerializedComponent();
+    // the serializable object is provided in case it's needed.
+    public abstract SerializedComponent ExportSerializedComponent(SerializedObject serialObject);
     
     // imports the component and calls a function so that it can be downcasted and have its content accessible.
     // the SerializedComponent class should be overwritten so that it has something to downcast to.
     // this is called by the Unpack() function.
-    public abstract void ImportSerializedComponent(SerializedComponent component);
+    // the serializable object is provided in case it's needed.
+    public abstract void ImportSerializedComponent(SerializedObject serialObject, SerializedComponent component);
 
 
 }

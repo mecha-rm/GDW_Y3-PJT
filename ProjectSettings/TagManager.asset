@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Manager
   - Item
+  - Spawner
+  - LevelCamera
+  - StageObject
   layers:
   - Default
   - TransparentFX
