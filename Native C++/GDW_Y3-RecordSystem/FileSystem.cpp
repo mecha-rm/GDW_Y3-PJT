@@ -1,6 +1,24 @@
 #include "FileSystem.h"
 #include <iostream>
 
+// replaces substring and returns new string.
+std::string ReplaceAllSubstrings(const std::string& str, std::string oldSubstr, std::string newSubstr)
+{
+	// string result
+	std::string strRes = str;
+
+	// while there are still instances of the old substring
+	while (strRes.find(oldSubstr) != std::string::npos)
+	{
+		// gets the substring index and replaces the string
+		int index = strRes.find(oldSubstr);
+		strRes.replace(index, oldSubstr.length(), newSubstr);
+	}
+
+	// returns the resulting string
+	return strRes;
+}
+
 // constructor
 FileSystem::FileSystem()
 {
@@ -195,9 +213,18 @@ bool FileSystem::ImportRecords()
 		return false;
 
 	// read all records
+	// it now replaces all instances of "\\n" with "\n" since that's how the file stores it.
+	// it's done this way because each record is put on a new line.
 	while (std::getline(f, line))
 	{
-		records.push_back(line);
+		// records.push_back(line);
+		
+		records.push_back(ReplaceAllSubstrings(line, "\\n", "\n"));
+
+		// replaces all instances of "\\n" with "\n" and all instances of "\\\n" with "\\n"
+		// std::string imp = ReplaceAllSubstrings(line, "\\n", "\n");
+		// imp = ReplaceAllSubstrings(imp, "\\\n", "\\n");
+		// records.push_back(imp);
 	}
 
 	// closes file
@@ -242,10 +269,20 @@ bool FileSystem::ExportRecords()
 	if (records.empty())
 		return false;
 
-	// writes all metrics
+	// writes all records
+	// in order to be read properly, all instances of "\n" are replaced with "\\n"
+	// this allows the "\n" symbol to be put into the file instead of a new line instead
 	for (int i = 0; i < records.size(); i++)
 	{
-		f << records[i] << "\n";
+		// f << records[i] << "\n";
+
+		f << ReplaceAllSubstrings(records[i], "\n", "\\n") << "\n";
+		
+		// replaces all instances of "\\n" with "\\\n" first, then replaces all instances of "\n" with "\\n"
+		// std::string exp = ReplaceAllSubstrings(records[i], "\\n", "\\\n");;
+		// exp = ReplaceAllSubstrings(records[i], "\n", "\\n");
+		// 
+		// f << exp << "\n";
 	}
 
 	// closes the file

@@ -25,6 +25,9 @@ using UnityEngine;
 // NOTE: this can only save serializable components, so data for other components should be put in them.
 public abstract class SerializableObject : MonoBehaviour
 {
+    // // the prefab for the object.
+    // public string prefab = "";
+
     // serialize parent
     public static byte[] SerializeObject(SerializedObject entity)
     {

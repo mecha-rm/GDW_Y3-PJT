@@ -1,11 +1,11 @@
 // Main.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
-#include "FileSystem.h"
-#include "Wrapper.h"
-
-// prints records
+// #include <iostream>
+// #include "FileSystem.h"
+// #include "Wrapper.h"
+// 
+// // prints records
 // void PrintRecords(const FileSystem& fs)
 // {
 // 	for (int i = 0; i < fs.GetRecordCount(); i++)
@@ -76,7 +76,7 @@
 // 	std::cout << "Complete" << std::endl;
 // 
 // 	{
-// 		std::cout << "\nTesting Wrapper" << std::endl;
+// 		std::cout << "\nTesting Char Array, Const Char Array, and String" << std::endl;
 // 		std::string r1 = "Bibity Bopity";
 // 
 // 		const int R_LEN = 5;
@@ -109,6 +109,93 @@
 // 
 // 		delete[] r2;
 // 		delete[] r3;
+// 	}
+// 
+// 	// null termination check
+// 	{
+// 		std::cout << "Null Character Storage Check: \n" << std::endl;
+// 
+// 		FileSystem fsNull = FileSystem();
+// 		std::string fileName = "null_char_check.txt";
+// 		std::string str1 = std::string("ab\0de");
+// 		std::string str2 = std::string("ab\0de", 5);
+// 
+// 		// string 1
+// 		std::cout << "String 1 (Auto Size): " << str1.length() << std::endl;
+// 		std::cout << "String 2 (Preset Size): " << str2.length() << std::endl;
+// 		
+// 		// string 2
+// 		std::cout << "\nString 1 (cout): " << str1 << std::endl;
+// 		std::cout << "String 2 (cout): " << str2 << std::endl;
+// 
+// 		fsNull.AddRecord(str1);
+// 		fsNull.AddRecord(str2);
+// 
+// 		std::cout << "\nPrinting Records (Not Saved)";
+// 		PrintRecords(fsNull);
+// 
+// 		// the null termination character gets exported if the string is of a fixed size.
+// 		// this is because under normal circumstances \0 is used to mark the end of the string.
+// 		// as such, the size must be manually set in such a case.
+// 		std::cout << "\nContent Exported." << std::endl;
+// 		fsNull.SetFile(fileName);
+// 		fsNull.ExportRecords();
+// 		fsNull.ClearAllRecords();
+// 
+// 		std::cout << "\nContent Imported." << std::endl;
+// 		fsNull.ImportRecords();
+// 
+// 		std::cout << "Printing Known Records" << std::endl;
+// 		PrintRecords(fsNull);
+// 	}
+// 
+// 	// new line file check
+// 	{
+// 		std::cout << "Newline (\\n) Character Storage Check: \n" << std::endl;
+// 
+// 		FileSystem fsnl = FileSystem();
+// 		std::string fileName = "new_line_check.txt";
+// 
+// 		// the \\n turns into a newline character when exported and imported.
+// 		// this shouldn't be a problem for stoying byte data?
+// 		std::string str1 = std::string("ab\nde");
+// 		std::string str2 = std::string("ab\nde", 5);
+// 		std::string str3 = std::string("ab\\nde"); // this gets turned into a newline character when exported.
+// 		std::string str4 = std::string("ab\\\nde");
+// 
+// 		// string lengths
+// 		std::cout << "String 1 (Contains \\n) (Auto Size): " << str1.length() << std::endl;
+// 		std::cout << "String 2 (Contains \\n) (Preset Size): " << str2.length() << std::endl;
+// 		std::cout << "String 3 (Contains \\\\n) (Auto Size): " << str2.length() << std::endl;
+// 		std::cout << "String 4 (Contains \\\\\\n) (Auto Size): " << str2.length() << std::endl;
+// 
+// 		std::cout << "String 1.find(\\n): " << str1.find("\n") << std::endl;
+// 
+// 		// print
+// 		fsnl.AddRecord(str1);
+// 		fsnl.AddRecord(str2);
+// 		fsnl.AddRecord(str3);
+// 		fsnl.AddRecord(str4);
+// 		
+// 		std::cout << "\nPrinting Records (Not Saved)";
+// 		PrintRecords(fsnl);
+// 		
+// 		// when exported, the \n turns into a new line. 
+// 		// Meanwhile the "\\n" is exported as the symbol "\n" and not a newline.
+// 		// It has been changed so that all user defined instances of "\n" become "\\n" when exported.
+// 		std::cout << "\nContent Exported." << std::endl;
+// 		fsnl.SetFile(fileName);
+// 		fsnl.ExportRecords();
+// 		fsnl.ClearAllRecords();
+// 		
+// 		// when imported the "\n" character is brought back in as "\\n"
+// 		// since you can search for "\n", this can be rectified by changing the character upon export and import.
+// 		// all instances of "\\n" become "\n" when imported.
+// 		std::cout << "\nContent Imported." << std::endl;
+// 		fsnl.ImportRecords();
+// 		
+// 		std::cout << "Printing Known Records" << std::endl;
+// 		PrintRecords(fsnl);
 // 	}
 // 
 // 	system("pause");
