@@ -152,6 +152,7 @@ public class LevelLoader : MonoBehaviour
                 fileStream.AddRecordToList(data);
 
             // saves the amount of records
+            // TODO: maybe have this odne only if splititng data.
             sections.Add((int)Mathf.Ceil((float)data.Length / maxSectionSize));
         }
 
