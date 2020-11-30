@@ -2757,6 +2757,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885890871}
   m_CullTransparentMesh: 0
+--- !u!4 &931865020 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4081627978070180513, guid: 2cc7a237f7925a845a1899d082b0a314, type: 3}
+  m_PrefabInstance: {fileID: 9025518574475648744}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &962633143 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6748075616785765388, guid: 686d1ce119c9e774580332e3cb4a94e5, type: 3}
@@ -2904,11 +2909,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!4 &1028783258 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4148387172553114008, guid: 2cc7a237f7925a845a1899d082b0a314, type: 3}
-  m_PrefabInstance: {fileID: 9025518574475648744}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1074252298
 GameObject:
   m_ObjectHideFlags: 0
@@ -7349,7 +7349,7 @@ Transform:
   - {fileID: 1541166943}
   - {fileID: 962633143}
   - {fileID: 1455776296}
-  - {fileID: 1028783258}
+  - {fileID: 931865020}
   - {fileID: 1930494671}
   - {fileID: 709021839}
   - {fileID: 476605892}
@@ -7405,7 +7405,7 @@ MonoBehaviour:
   sphere: {fileID: 2255681451965634301, guid: ae4dab446311b7f4e86376bdc6b7c660, type: 3}
   capsule: {fileID: 4378598027632771873, guid: cf133c4c3535f9e4aad2704b8d2690a8, type: 3}
   cylinder: {fileID: 7062621995173074884, guid: 686d1ce119c9e774580332e3cb4a94e5, type: 3}
-  plane: {fileID: 1781001807408163263, guid: 2cc7a237f7925a845a1899d082b0a314, type: 3}
+  plane: {fileID: 2802605059774170166, guid: 2cc7a237f7925a845a1899d082b0a314, type: 3}
   quad: {fileID: 955106822620126611, guid: 4e17d787cce232448b9c11afe8920ec0, type: 3}
   terrain: {fileID: 1544651926890225123, guid: 776e4b167bf247a408dbea314eb5a85a, type: 3}
   tree: {fileID: 7039759417937879931, guid: 44a632ecc3543bc4784eea075f90d781, type: 3}
@@ -7495,6 +7495,7 @@ MonoBehaviour:
   file: 
   objects: []
   addChildren: 1
+  loadAsChildren: 1
   ApplyMaxSectionSize: 1
   maxSectionSize: 1024
 --- !u!1001 &44613139312541609
@@ -8604,6 +8605,10 @@ PrefabInstance:
     - target: {fileID: 1781001807408163263, guid: 2cc7a237f7925a845a1899d082b0a314, type: 3}
       propertyPath: m_Name
       value: Plane
+      objectReference: {fileID: 0}
+    - target: {fileID: 4081627978070180513, guid: 2cc7a237f7925a845a1899d082b0a314, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4148387172553114008, guid: 2cc7a237f7925a845a1899d082b0a314, type: 3}
       propertyPath: m_LocalPosition.x
