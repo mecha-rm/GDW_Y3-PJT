@@ -8,10 +8,11 @@ public class LevelLoader : MonoBehaviour
     // all assets to be saved (or loaded in)
     public string filePath = "Assets/Resources/Saves/"; // file path (from highest directory in Unity folder)
     public string file = "unnamed.txt"; // file (defaults to .txt if not stated)
+    public GameObject parent = null;
     public List<GameObject> objects = new List<GameObject>(); // needed to be initialized for some reason
     
     // if 'true', the children are added.
-    public bool addChildren = true;
+    public bool addChildrenOnSave = true;
     // if 'true', objects are loaded as children of the parent game object.
     public bool loadAsChildren = true;
 
@@ -28,7 +29,12 @@ public class LevelLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(addChildren)
+        // if the parent is null...
+        // then its set to the game object this component is attached to.
+        if (parent == null)
+            parent = gameObject;
+
+        if(addChildrenOnSave)
         {
             AddChildrenToList();
         }
@@ -72,11 +78,11 @@ public class LevelLoader : MonoBehaviour
         // TODO: should add children effect this?
 
         // adds all children not already in the list
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < parent.transform.childCount; i++)
         {
             // adds all children that aren't already in the list.
-            if (!objects.Contains(transform.GetChild(i).gameObject))
-                objects.Add(transform.GetChild(i).gameObject);
+            if (!objects.Contains(parent.transform.GetChild(i).gameObject))
+                objects.Add(parent.transform.GetChild(i).gameObject);
         }
     }
 
@@ -132,7 +138,7 @@ public class LevelLoader : MonoBehaviour
         fileStream.ClearAllRecordsFromList(); // clear existing content
 
         // if children should be added, its updated before saving.
-        if (addChildren)
+        if (addChildrenOnSave)
             AddChildrenToList();
 
         // set record file and save
@@ -294,7 +300,7 @@ public class LevelLoader : MonoBehaviour
 
                     // if the objects should be loaded as children of the current object.
                     if (loadAsChildren)
-                        newObject.transform.parent = transform;
+                        newObject.transform.parent = parent.transform;
 
                     // if a new object was generated, add it to the list.
                     if (newObject != null)
@@ -316,7 +322,7 @@ public class LevelLoader : MonoBehaviour
 
                 // if the objects should be loaded as children of the current object.
                 if (loadAsChildren)
-                    newObject.transform.parent = transform;
+                    newObject.transform.parent = parent.transform;
 
                 // if a new object was generated, add it to the list.
                 if (newObject != null)

@@ -1273,7 +1273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &622903969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5840,6 +5840,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1662285097}
   m_CullTransparentMesh: 0
+--- !u!1 &1724117758
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1724117759}
+  m_Layer: 0
+  m_Name: Level
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1724117759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724117758}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 318.28436, y: 276.6426, z: 220.54414}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1726968246
 GameObject:
   m_ObjectHideFlags: 0
@@ -7380,8 +7410,9 @@ GameObject:
   - component: {fileID: 2138335689}
   - component: {fileID: 2138335691}
   - component: {fileID: 2138335692}
-  - component: {fileID: 2138335693}
+  - component: {fileID: 2138335695}
   - component: {fileID: 2138335694}
+  - component: {fileID: 2138335693}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -7401,6 +7432,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cfe219c4b9e2d14d9c533329be106b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: {fileID: 1724117758}
+  levelLoader: {fileID: 2138335694}
   cube: {fileID: 300044775466533198, guid: 3bd5a44968d77834e88906db9c19850c, type: 3}
   sphere: {fileID: 2255681451965634301, guid: ae4dab446311b7f4e86376bdc6b7c660, type: 3}
   capsule: {fileID: 4378598027632771873, guid: cf133c4c3535f9e4aad2704b8d2690a8, type: 3}
@@ -7423,7 +7456,6 @@ MonoBehaviour:
   instructionPanel: {fileID: 765909854}
   cam1: {fileID: 963194227}
   cam2: {fileID: 1820018587}
-  fileName: 
 --- !u!4 &2138335690
 Transform:
   m_ObjectHideFlags: 0
@@ -7486,18 +7518,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2138335688}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e83b3994b593a7247ad5724cef13c87b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   filePath: Assets/Resources/Saves/
-  file: 
+  file: unnamed.txt
+  parent: {fileID: 1724117758}
   objects: []
-  addChildren: 1
+  addChildrenOnSave: 1
   loadAsChildren: 1
-  ApplyMaxSectionSize: 1
-  maxSectionSize: 1024
+  ApplyMaxSectionSize: 0
+  maxSectionSize: 512
+--- !u!114 &2138335695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138335688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26bc85400ddcce742b8a5151b45d8416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loader: {fileID: 2138335694}
+  levels: []
 --- !u!1001 &44613139312541609
 PrefabInstance:
   m_ObjectHideFlags: 0

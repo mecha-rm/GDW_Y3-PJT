@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8948354679817201717}
   - component: {fileID: 8565892322277477192}
   m_Layer: 0
-  m_Name: Plane2
+  m_Name: Plane1
   m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,4 +109,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7315b9bd0e6edf1489eea328b020c859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabPath: Prefabs/Level Editor/Plane
+  prefabPath: Prefabs/Level Editor/Plane1

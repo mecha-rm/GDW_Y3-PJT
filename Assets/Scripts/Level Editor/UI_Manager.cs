@@ -14,8 +14,8 @@ using UnityEngine;
 public class UI_Manager : MonoBehaviour
 {
     // an empty game object that encompasses the level
-    private GameObject level;
-    private LevelLoader levelFileManager;
+    public GameObject level;
+    public LevelLoader levelLoader;
 
     // 3D objects used for instaniation
     public GameObject cube;
@@ -62,9 +62,6 @@ public class UI_Manager : MonoBehaviour
     // the currently selected object
     private GameObject selectedObject;
 
-    // the file that will be read from or written to.
-    public string fileName = "";
-
     // list of entities to be saved to and loaded from files
     // this feature was not completed.
     private List<GameObject> fileObjectList = new List<GameObject>();
@@ -72,8 +69,21 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        level = new GameObject("Level");
-        levelFileManager = level.AddComponent<LevelLoader>();
+        // if level object is empty
+        if(level == null)
+            level = new GameObject("Level");
+
+        // if level loader object is empty
+        if(levelLoader == null)
+        {
+            // grabs component from level
+            levelLoader = level.GetComponent<LevelLoader>();
+
+            // if the component didn't exist, add it.
+            if(levelLoader == null)
+                levelLoader = level.AddComponent<LevelLoader>();
+        }
+        
     }
 
     // mouse has clicked on the UI
@@ -351,7 +361,7 @@ public class UI_Manager : MonoBehaviour
     {
         // this was not completed in time for the submission.
         // Debug.Log("Data saving system was not completed.");
-        levelFileManager.SaveToFile();
+        levelLoader.SaveToFile();
 
     }
 
@@ -360,13 +370,13 @@ public class UI_Manager : MonoBehaviour
     {
         // this was not completed in time for the submission.
         // Debug.Log("Data loading system was not completed.");
-        levelFileManager.LoadFromFile();
+        levelLoader.LoadFromFile();
     }
 
     // updates the level file system
     public void UpdateLevelFileSystem()
     {
-        levelFileManager.AddChildrenToList();
+        levelLoader.AddChildrenToList();
     }
 
     // Update is called once per frame
