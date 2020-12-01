@@ -9,6 +9,7 @@ TagManager:
   - Spawner
   - LevelCamera
   - StageObject
+  - Effect
   layers:
   - Default
   - TransparentFX
