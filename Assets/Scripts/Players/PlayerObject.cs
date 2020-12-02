@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerObject : MonoBehaviour
 {
+    
+
     // the player number
     public int playerNumber = 0;
 
@@ -74,6 +76,9 @@ public class PlayerObject : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
+       
+
+
         // gets the rigid body attached to this object if one hasn't been set.
         if (rigidBody == null)
             rigidBody = gameObject.GetComponent<Rigidbody>();
@@ -275,6 +280,8 @@ public class PlayerObject : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+       
+
         if (momentumMovement)
         {
             // TODO: factor in deltaTime for movement
@@ -530,5 +537,8 @@ public class PlayerObject : MonoBehaviour
 
         // saves the player's current position
         lastPos = transform.position;
+
+        // Gameplay Audio 
+        
     }
 }
