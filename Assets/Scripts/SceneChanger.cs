@@ -7,6 +7,7 @@ public class SceneChanger : MonoBehaviour
 {
     // public List<Object> keepList;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,8 +29,8 @@ public class SceneChanger : MonoBehaviour
     //     Object.DontDestroyOnLoad(entity);
     //     keepList.Add(entity);
     // }
-
-
+    
+   
     // changes the scene using an index.
     public void ChangeScene(int scene)
     {
@@ -42,9 +43,24 @@ public class SceneChanger : MonoBehaviour
         SceneManager.LoadScene(scene);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BackChangeCanvas(string canvas)
     {
-        
+        var temp = GameObject.Find(canvas);
+        temp.GetComponent<Canvas>().enabled = false;
+
     }
+
+    public void ChangeCanvas(string canvas)
+    {
+        var temp = GameObject.Find(canvas);
+        temp.GetComponent<Canvas>().enabled = true;
+     
+    }
+
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
 }
