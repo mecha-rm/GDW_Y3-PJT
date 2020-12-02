@@ -7544,7 +7544,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loader: {fileID: 2138335694}
-  levels: []
+  levels:
+  - halloween_stage.dat
+  - christmas_stage.dat
 --- !u!1001 &44613139312541609
 PrefabInstance:
   m_ObjectHideFlags: 0
