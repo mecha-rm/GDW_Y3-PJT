@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class FlagObject : MonoBehaviour
 {
+
+    //source of the flag grabbing sound
+    public AudioSource FlagGrab;
+
+
     // the owner of the flag.
     PlayerObject owner = null;
 
@@ -15,16 +20,26 @@ public class FlagObject : MonoBehaviour
     void Start()
     {
         spawnPos = transform.position;
+
+        FlagGrab = GetComponent <AudioSource> ();
     }
 
     // if the flag collides with something.
     private void OnCollisionEnter(Collision collision)
     {
+        
         PlayerObject po = collision.gameObject.GetComponent<PlayerObject>();
 
-        // a player has obtained the flag.
-        if (po != null)
-            AttachToPlayer(po);
+        FlagGrab.Play();
+
+
+        while (!FlagGrab.isPlaying)
+        {
+            // a player has obtained the flag.
+            if (po != null)
+                AttachToPlayer(po);
+        }
+        
         
     }
 
@@ -35,6 +50,9 @@ public class FlagObject : MonoBehaviour
         owner = po;
         gameObject.SetActive(false); // hide object
         
+
+
+
         // shows flag indicator
         if (po.flagIndicator != null)
             po.flagIndicator.SetActive(true);
