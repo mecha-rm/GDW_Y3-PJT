@@ -30,17 +30,21 @@ public class FlagObject : MonoBehaviour
         
         PlayerObject po = collision.gameObject.GetComponent<PlayerObject>();
 
-        FlagGrab.Play();
-
-
-        while (!FlagGrab.isPlaying)
+        if(FlagGrab != null)
         {
-            // a player has obtained the flag.
-            if (po != null)
-                AttachToPlayer(po);
+            FlagGrab.Play();
+            // while (!FlagGrab.isPlaying)
+            // {
+            //     // a player has obtained the flag.
+            //     if (po != null)
+            //         AttachToPlayer(po);
+            // }
+
         }
-        
-        
+
+        if (po != null)
+            AttachToPlayer(po);
+
     }
 
     // attaches the flag to the player
