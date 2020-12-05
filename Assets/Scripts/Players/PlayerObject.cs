@@ -73,12 +73,14 @@ public class PlayerObject : MonoBehaviour
     // public float score = 1000.0F;
     // public float scoreDecRate = 0.25F;
 
+    // sound effects
+    public AudioSource sfx_Run = null;
+    public AudioSource sfx_Idle = null;
+    
+
     // Start is called before the first frame update
     protected void Start()
     {
-       
-
-
         // gets the rigid body attached to this object if one hasn't been set.
         if (rigidBody == null)
             rigidBody = gameObject.GetComponent<Rigidbody>();
@@ -296,7 +298,6 @@ public class PlayerObject : MonoBehaviour
                     rigidBody.AddForce(force, ForceMode.Force);
                     // direcVec += force;
                     stateMachine.SetState(1);
-
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
@@ -356,6 +357,17 @@ public class PlayerObject : MonoBehaviour
                 //     rigidBody.AddForce(force);
                 //     direcVec += force;
                 // }
+
+                // if the player has stopped moving on these axes, turn off the audio.
+                if((rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) || onGround == false) // player not moving
+                {
+                    sfx_Run.Stop();
+                }
+                else if(onGround) // player moving, and on ground.
+                {
+                    if (!sfx_Run.isPlaying)
+                        sfx_Run.Play();
+                }
             }
 
             // Hard Rotation (Snap)
