@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial2.unity
     guid: 6ee408fc91e355344b715343f976b630
+  - enabled: 1
+    path: Assets/Scenes/ChristmasMap.unity
+    guid: c6bee96e9e0d49f4e98cf97c9fb20165
   m_configObjects: {}
