@@ -57,8 +57,8 @@ public class SceneChanger : MonoBehaviour
      
     }
 
-
-    public void Exit()
+    // exits the game
+    public void ExitGame()
     {
         Application.Quit();
     }
