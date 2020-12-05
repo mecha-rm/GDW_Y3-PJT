@@ -109,18 +109,6 @@ public abstract class SerializableObject : MonoBehaviour
         else // there is no prefab - load from type
         {
             gameObject = new GameObject(serializedObject.name);
-
-            // if(serializedObject.type != null) // type is set
-            // {
-            //     baseObject = System.Activator.CreateInstance(serializedObject.type);
-            //     gameObject = Instantiate((GameObject)(baseObject));
-            //     gameObject.name = serializedObject.name;
-            // }
-            // else // type is not set - load empty object
-            // {
-            //     gameObject = new GameObject(); // empty game object
-            //     gameObject.name = serializedObject.name;
-            // }
         }
 
         // sets values for transformation
