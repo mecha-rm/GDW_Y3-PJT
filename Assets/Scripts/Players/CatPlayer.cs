@@ -13,6 +13,8 @@ public class CatPlayer : PlayerObject
         base.Start();
 
         source = GetComponent<AudioSource>();
+        Destroy(sfx_Idle.clip);
+        sfx_Idle.clip = (AudioClip)Resources.Load("Audio/SFX_CAT_MEOW");
 
         speedMult = 1.5F;
         knockbackMult = 1.0F;

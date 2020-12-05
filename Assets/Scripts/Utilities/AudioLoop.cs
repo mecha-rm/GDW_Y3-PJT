@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AudioClip : MonoBehaviour
+public class AudioLoop : MonoBehaviour
 {
     // audio source
     public AudioSource audioSource = null;
