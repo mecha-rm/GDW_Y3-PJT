@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Stage : MonoBehaviour
 {
+    // gameplay manager
+    public GameplayManager gameManager;
+
     // the bgm for the stage.
     public AudioClip bgm;
 
@@ -46,6 +49,45 @@ public class Stage : MonoBehaviour
         // no spawns added
         if (playerSpawns.Count == 0)
             playerSpawns.Add(new Vector3(0, 0, 0));
+    }
+
+    // randomizes the player positions
+    public void RandomizePlayerPositions()
+    {
+        // if the game manager is set to null
+        if (gameManager == null)
+            return;
+
+        // copies spawn positions
+        List<Vector3> positions = playerSpawns;
+
+        // gives random positions
+        for(int i = 1; i <= gameManager.playerCount; i++)
+        {
+            // it's a "up to but not including" randomizer
+            int index = Random.Range(0, gameManager.playerCount);
+
+            // TODO: don't limit to the provided positions?
+            switch(i)
+            {
+                case 1:
+                    gameManager.p1.transform.position = positions[index];
+                    break;
+                case 2:
+                    gameManager.p2.transform.position = positions[index];
+                    break;
+                case 3:
+                    gameManager.p3.transform.position = positions[index];
+                    break;
+                case 4:
+                    gameManager.p4.transform.position = positions[index];
+                    break;
+            }
+
+            // removes position
+            positions.RemoveAt(index);
+
+        }
     }
 
     // Update is called once per frame

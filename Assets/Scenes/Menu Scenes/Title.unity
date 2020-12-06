@@ -6188,6 +6188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282393298c2462647885dfe955dec025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadGame: 0
   map: 0
   playerList: 
 --- !u!114 &1836392323
