@@ -18,7 +18,8 @@ public class GameplayManager : MonoBehaviour
     public int playerCount = 0;
 
     // the four players
-    // TODO: have these get generated instead of just already existing.
+    // TODO: have these get generated instead of just already existing. Done elsewhere.
+    // TODO: make this a listi nstead of dedicated varaibles?
     // the character select screen will generate these.
     public PlayerObject p1 = null;
     public PlayerObject p2 = null;
@@ -39,42 +40,42 @@ public class GameplayManager : MonoBehaviour
             objectiveText.text = "First player to " + winScore + " wins";
 
         // now loads from resources folder so that an EXE can be built.
-        Object playerPrefab = Resources.Load<Object>("Prefabs/Player"); // Assets/Resources/Prefabs/Player.prefab
+        // Object playerPrefab = Resources.Load<Object>("Prefabs/Player"); // Assets/Resources/Prefabs/Player.prefab
 
         // creates players at runtime
-        if (p1 == null || p2 == null || p3 == null || p4 == null)
-        {
-            for (int i = 1; i <= playerCount; i++)
-            {
-                GameObject px = Instantiate((GameObject)playerPrefab);
-
-                // generates players
-                if (i == 1 && p1 == null)
-                {
-                    p1 = px.GetComponent<PlayerObject>();
-                    p1.playerNumber = 1;
-                    p1.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 1;
-                }
-                else if (i == 2 && p2 == null)
-                {
-                    p2 = px.GetComponent<PlayerObject>();
-                    p2.playerNumber = 2;
-                    p2.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 2;
-                }
-                else if (i == 3 && p3 == null)
-                {
-                    p3 = px.GetComponent<PlayerObject>();
-                    p3.playerNumber = 3;
-                    p3.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 3;
-                }
-                else if (i == 4 && p4 == null)
-                {
-                    p4 = px.GetComponent<PlayerObject>();
-                    p4.playerNumber = 4;
-                    p4.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 4;
-                }
-            }
-        }
+        // if (p1 == null || p2 == null || p3 == null || p4 == null)
+        // {
+        //     for (int i = 1; i <= playerCount; i++)
+        //     {
+        //         GameObject px = Instantiate((GameObject)playerPrefab);
+        // 
+        //         // generates players
+        //         if (i == 1 && p1 == null)
+        //         {
+        //             p1 = px.GetComponent<PlayerObject>();
+        //             p1.playerNumber = 1;
+        //             p1.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 1;
+        //         }
+        //         else if (i == 2 && p2 == null)
+        //         {
+        //             p2 = px.GetComponent<PlayerObject>();
+        //             p2.playerNumber = 2;
+        //             p2.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 2;
+        //         }
+        //         else if (i == 3 && p3 == null)
+        //         {
+        //             p3 = px.GetComponent<PlayerObject>();
+        //             p3.playerNumber = 3;
+        //             p3.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 3;
+        //         }
+        //         else if (i == 4 && p4 == null)
+        //         {
+        //             p4 = px.GetComponent<PlayerObject>();
+        //             p4.playerNumber = 4;
+        //             p4.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 4;
+        //         }
+        //     }
+        // }
         
 
         // adds players to the player list

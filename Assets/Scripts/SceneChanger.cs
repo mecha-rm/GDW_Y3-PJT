@@ -32,6 +32,7 @@ public class SceneChanger : MonoBehaviour
     
    
     // changes the scene using an index.
+    // TODO: make static
     public void ChangeScene(int scene)
     {
         SceneManager.LoadScene(scene);

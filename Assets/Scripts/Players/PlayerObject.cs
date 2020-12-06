@@ -104,8 +104,20 @@ public class PlayerObject : MonoBehaviour
         // }
 
         // if no player camera has been set, a new one will be created.
+        Camera:
         if(playerCamera == null)
         {
+            // if the player number is 0
+            if(playerNumber == 0)
+            {
+                // if the camera exists, the player uses it.
+                playerCamera = GameObject.FindObjectOfType<FollowerCamera>();
+
+                // goes to the label if the player found a camera
+                if (playerCamera != null)
+                    goto Camera;
+            }
+
             // creates an empty player object and gives it a camera.
             GameObject camObject = new GameObject("Player " + playerNumber + " Camera");
             Camera camera = camObject.AddComponent<Camera>();
