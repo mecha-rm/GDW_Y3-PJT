@@ -399,17 +399,6 @@ public class PlayerObject : MonoBehaviour
                 //     rigidBody.AddForce(force);
                 //     direcVec += force;
                 // }
-
-                // if the player has stopped moving on these axes, turn off the audio.
-                if((rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) || onGround == false) // player not moving
-                {
-                    sfx_Run.Stop();
-                }
-                else if(onGround) // player moving, and on ground.
-                {
-                    if (!sfx_Run.isPlaying)
-                        sfx_Run.Play();
-                }
             }
 
             // Hard Rotation (Snap)
@@ -606,6 +595,16 @@ public class PlayerObject : MonoBehaviour
         // lastPos = transform.position;
 
         // Gameplay Audio 
-        
+
+        // if the player has stopped moving on these axes, turn off the audio.
+        if ((rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) || onGround == false) // player not moving
+        {
+            sfx_Run.Stop();
+        }
+        else if (onGround) // player moving, and on ground.
+        {
+            if (!sfx_Run.isPlaying)
+                sfx_Run.Play();
+        }
     }
 }
