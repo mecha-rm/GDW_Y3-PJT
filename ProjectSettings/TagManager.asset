@@ -10,6 +10,7 @@ TagManager:
   - LevelCamera
   - StageObject
   - Effect
+  - Canvas
   layers:
   - Default
   - TransparentFX

@@ -36,6 +36,9 @@ public class GameplayManager : MonoBehaviour
     void Start()
     {
         // shows player objective.
+        if (objectiveText == null)
+            objectiveText = (GameObject.Find("Objective Text").GetComponent<Text>());
+
         if (objectiveText != null)
             objectiveText.text = "First player to " + winScore + " wins";
 

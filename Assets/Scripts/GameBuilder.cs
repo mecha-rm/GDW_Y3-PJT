@@ -140,7 +140,14 @@ public class GameBuilder : MonoBehaviour
                     break;
             }
         }
-           
+
+
+        // creates canvas, or just have it in the scene automatically?
+        {
+
+            // GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
+
+        }
     }
 
     
