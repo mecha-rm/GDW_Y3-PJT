@@ -1,14 +1,9 @@
 ﻿// class for the player
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerObject : MonoBehaviour
 {
-    
-
     // the player number
     public int playerNumber = 0;
 
@@ -74,9 +69,10 @@ public class PlayerObject : MonoBehaviour
     // public float scoreDecRate = 0.25F;
 
     // sound effects
-    public AudioSource sfx_Run = null;
     public AudioSource sfx_Idle = null;
-    
+    public AudioSource sfx_Run = null;
+    public AudioSource sfx_FlagGet = null;
+    // public AudioSoure sfx_FlagLoss = null;
 
     // Start is called before the first frame update
     protected void Start()
@@ -140,6 +136,21 @@ public class PlayerObject : MonoBehaviour
         spawnPos = transform.position;
         spawnRot = transform.rotation;
         spawnScl = transform.localScale;
+
+        // initializes audio if not set
+        {
+            AudioSource[] audios = GetComponentsInChildren<AudioSource>();
+
+            // initializes sound effects if not set.
+            if(sfx_Run == null && audios.Length >= 1)
+                sfx_Run = audios[0];
+
+            if (sfx_Idle== null && audios.Length >= 2)
+                sfx_Idle = audios[1];
+
+            if (sfx_FlagGet == null && audios.Length >= 3)
+                sfx_FlagGet = audios[2];
+        }
     }
 
     // called when the player collides with something.
@@ -194,6 +205,9 @@ public class PlayerObject : MonoBehaviour
     public void AttachFlag(FlagObject flag)
     {
         flag.AttachToPlayer(this);
+
+        // plays the flag sound effect.
+        sfx_FlagGet.Play();
     }
 
     // detaches the flag from the player
