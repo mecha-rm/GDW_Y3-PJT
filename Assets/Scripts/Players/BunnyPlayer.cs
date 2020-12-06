@@ -13,6 +13,12 @@ public class BunnyPlayer : PlayerObject
         knockbackMult = 1.0F;
         jumpMult = 1.5F;
         defenseMult = 1.0F;
+
+        // replacing sounds
+        {
+            Destroy(sfx_Idle.clip);
+            sfx_Idle.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_BUNNY_NOISES_01");
+        }
     }
 
     // Update is called once per frame

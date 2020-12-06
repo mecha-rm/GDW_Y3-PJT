@@ -12,7 +12,7 @@ public class CatPlayer : PlayerObject
 
         // replacing sounds
         {
-            // TODO: randomize sound
+            // TODO: randomize sound for cat meow
             Destroy(sfx_Idle.clip);
             sfx_Idle.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_MEOW_01");
 

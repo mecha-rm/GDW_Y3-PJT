@@ -5,9 +5,6 @@ using UnityEngine;
 // flag object
 public class FlagObject : MonoBehaviour
 {
-    //source of the flag grabbing sound
-    public AudioSource flagGrab;
-
     // the owner of the flag.
     PlayerObject owner = null;
 
@@ -19,13 +16,10 @@ public class FlagObject : MonoBehaviour
     void Start()
     {
         spawnPos = transform.position;
-
-        // flag grab sound effect not set.
-        if (flagGrab == null)
-            flagGrab = GetComponentInChildren<AudioSource>();
     }
 
     // if the flag collides with something.
+    // in order for this to work, the script MUST be on the same game object the collider is on.
     private void OnCollisionEnter(Collision collision)
     {
         
@@ -45,7 +39,8 @@ public class FlagObject : MonoBehaviour
     {
         po.flag = this;
         owner = po;
-        gameObject.SetActive(false); // hide object
+        // gameObject.SetActive(false); // hide object
+        transform.parent.gameObject.SetActive(false); // hide whole parent
         
         // shows flag indicator
         if (po.flagIndicator != null)
@@ -56,7 +51,8 @@ public class FlagObject : MonoBehaviour
     public void DetachFromPlayer()
     {
         owner.flag = null;
-        gameObject.SetActive(true);
+        // gameObject.SetActive(true);
+        transform.parent.gameObject.SetActive(true);
 
         // hides flag indicator
         if (owner.flagIndicator != null)
