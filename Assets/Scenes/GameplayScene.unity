@@ -637,15 +637,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a0af380c2e3057349aa62f594d46f34e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.8500285
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0af380c2e3057349aa62f594d46f34e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.3499997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0af380c2e3057349aa62f594d46f34e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.35858083
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0af380c2e3057349aa62f594d46f34e, type: 3}
       propertyPath: m_LocalRotation.x
@@ -681,11 +681,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a0af380c2e3057349aa62f594d46f34e, type: 3}
       propertyPath: m_Name
-      value: bunny (w_armature)
+      value: bunny
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a0af380c2e3057349aa62f594d46f34e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0af380c2e3057349aa62f594d46f34e, type: 3}
@@ -1110,7 +1110,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e676705070e02b84fbd9283f09e6e854, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 888ac3edba5d9994a8444adf0e1d64be, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1721,15 +1721,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 06ea2ccad3548e941a93e5feb827bf58, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.0149071
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 06ea2ccad3548e941a93e5feb827bf58, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 06ea2ccad3548e941a93e5feb827bf58, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.1374416
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 06ea2ccad3548e941a93e5feb827bf58, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1765,11 +1765,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 06ea2ccad3548e941a93e5feb827bf58, type: 3}
       propertyPath: m_Name
-      value: turtle (w_armature)
+      value: turtle
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 06ea2ccad3548e941a93e5feb827bf58, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06ea2ccad3548e941a93e5feb827bf58, type: 3}
@@ -2285,7 +2285,7 @@ MonoBehaviour:
   sfx_Idle: {fileID: 1185407939}
   sfx_Run: {fileID: 1357075263}
   sfx_FlagGet: {fileID: 944506919}
-  sfx_Death: {fileID: 0}
+  sfx_Death: {fileID: 1868219666}
 --- !u!4 &1908994742
 Transform:
   m_ObjectHideFlags: 0
