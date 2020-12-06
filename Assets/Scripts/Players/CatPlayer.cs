@@ -6,15 +6,19 @@ public class CatPlayer : PlayerObject
 {
     // Start is called before the first frame update
 
-    private AudioSource source;
-
     void Start()
     {
         base.Start();
 
-        source = GetComponent<AudioSource>();
-        Destroy(sfx_Idle.clip);
-        sfx_Idle.clip = (AudioClip)Resources.Load("Audio/SFX_CAT_MEOW");
+        // replacing sounds
+        {
+            // TODO: randomize sound
+            Destroy(sfx_Idle.clip);
+            sfx_Idle.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_MEOW_01");
+
+            Destroy(sfx_Death.clip);
+            sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_SCREAM");
+        }
 
         speedMult = 1.5F;
         knockbackMult = 1.0F;
@@ -26,6 +30,5 @@ public class CatPlayer : PlayerObject
     void Update()
     {
         base.Update();
-        source.Play();
     }
 }

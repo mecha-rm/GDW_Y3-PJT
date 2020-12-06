@@ -68,11 +68,18 @@ public class PlayerObject : MonoBehaviour
     // public float score = 1000.0F;
     // public float scoreDecRate = 0.25F;
 
+    // the amount of time to takes for the idle animation and sound to play
+    public float idleEffectWaitTime = 5.0F;
+    private float idleEffectCurrTime = 0.0F;
+
     // sound effects
     public AudioSource sfx_Idle = null;
+
     public AudioSource sfx_Run = null;
-    public AudioSource sfx_FlagGet = null;
-    // public AudioSoure sfx_FlagLoss = null;
+    public AudioSource sfx_FlagGet = null; // TODO: this could maybe be static.
+    public AudioSource sfx_Death = null;
+
+    // public AudioSource sfx_FlagLoss = null;
 
     // Start is called before the first frame update
     protected void Start()
@@ -137,6 +144,9 @@ public class PlayerObject : MonoBehaviour
         spawnRot = transform.rotation;
         spawnScl = transform.localScale;
 
+        // gets idleEffectTime.
+        // idleEffectCurrTime = idleEffectWaitTime;
+
         // initializes audio if not set
         {
             AudioSource[] audios = GetComponentsInChildren<AudioSource>();
@@ -150,6 +160,9 @@ public class PlayerObject : MonoBehaviour
 
             if (sfx_FlagGet == null && audios.Length >= 3)
                 sfx_FlagGet = audios[2];
+
+            if (sfx_Death == null && audios.Length >= 3)
+                sfx_Death = audios[3];
         }
     }
 
@@ -295,6 +308,10 @@ public class PlayerObject : MonoBehaviour
         rigidBody.velocity = new Vector3();
         rigidBody.angularVelocity = new Vector3();
         stateMachine.SetState(0);
+
+        // play death sound effect.
+        if(sfx_Death != null)
+            sfx_Death.Play();
     }
 
     // TODO: set spawn position
@@ -308,8 +325,7 @@ public class PlayerObject : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-       
-
+        // TODO: take this out; it's unnecessary for the final game, since it will always be momentum based to a point.
         if (momentumMovement)
         {
             // TODO: factor in deltaTime for movement
@@ -571,6 +587,19 @@ public class PlayerObject : MonoBehaviour
         {
             playerScore += Time.deltaTime;
             playerScoreText.text = "Player Score: " + Mathf.Floor(playerScore); // "Player Score: " +
+        }
+
+        // playing idle sound
+        if(idleEffectCurrTime >= idleEffectWaitTime) // wait time reached
+        {
+            if (sfx_Idle != null) // play effect
+                sfx_Idle.Play();
+
+            idleEffectCurrTime = 0;
+        }
+        else //
+        {
+            idleEffectCurrTime += Time.deltaTime;
         }
 
         // saves the player's current position
