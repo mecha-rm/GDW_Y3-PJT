@@ -8477,7 +8477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   learnJump: 0
   player: {fileID: 1186646843623082912}
-  flag: {fileID: 0}
+  flag: {fileID: 1910794842}
   arrow: {fileID: 893723639}
   jumpPlatform: {fileID: 1499521233}
   Stage: {fileID: 321601617}
@@ -9700,7 +9700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   getFlag: 0
   player: {fileID: 1186646843623082912}
-  flag: {fileID: 0}
+  flag: {fileID: 1910794842}
   arrow: {fileID: 893723639}
   Stage: {fileID: 321601617}
   Prompt: {fileID: 640251788}
