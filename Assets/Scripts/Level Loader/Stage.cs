@@ -10,6 +10,9 @@ public class Stage : MonoBehaviour
     // the bgm for the stage.
     public AudioClip bgm;
 
+    // the skybox for the stage
+    public Material skybox;
+
     // flag spawn position
     public GameObject flag = null;
     public Vector3 flagSpawn = new Vector3();

@@ -202,14 +202,14 @@ public class GameBuilder : MonoBehaviour
 
         }
 
-        // creates canvas, or just have it in the scene automatically?
+        // skybox
         {
-
-            // GameObject canvas = GameObject.FindGameObjectWithTag("Canvas");
-
+            if(stage.skybox != null)
+                RenderSettings.skybox = stage.skybox;
         }
 
-
+        // game has been loaded. Turn back on before going to a new scene to load game assets.
+        loadGame = false;
     }
 
     
