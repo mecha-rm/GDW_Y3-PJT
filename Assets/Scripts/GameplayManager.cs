@@ -27,7 +27,7 @@ public class GameplayManager : MonoBehaviour
     public PlayerObject p4 = null;
 
     // the list of players
-    private List<PlayerObject> players = new List<PlayerObject>();
+    // private List<PlayerObject> players = new List<PlayerObject>();
 
     // the death space attached to the gameplay manager
     public DeathSpace deathSpace = null;
@@ -82,14 +82,14 @@ public class GameplayManager : MonoBehaviour
         
 
         // adds players to the player list
-        if (p1 != null)
-            players.Add(p1);
-        if (p2 != null)
-            players.Add(p2);
-        if (p3 != null)
-            players.Add(p3);
-        if (p4 != null)
-            players.Add(p4);
+        // if (p1 != null)
+        //     players.Add(p1);
+        // if (p2 != null)
+        //     players.Add(p2);
+        // if (p3 != null)
+        //     players.Add(p3);
+        // if (p4 != null)
+        //     players.Add(p4);
 
         // adds a death space if one doesn't exist.
         if(deathSpace == null)
@@ -115,6 +115,10 @@ public class GameplayManager : MonoBehaviour
         {
             if (p1.playerScore >= winScore)
                 SceneManager.LoadScene("EndScene");
+
+            // death calculation.
+            if (deathSpace.InDeathSpace(p1.gameObject.transform.position))
+                p1.Respawn();
         }
 
         // player 2 has won
@@ -140,13 +144,13 @@ public class GameplayManager : MonoBehaviour
 
         // goes through all players
         // TODO: maybe put this in object checks?
-        foreach(PlayerObject px in players)
-        {
-            // entered death space
-            if (deathSpace.InDeathSpace(px.gameObject.transform.position))
-            {
-                px.Respawn();
-            }
-        }
+        // foreach(PlayerObject px in players)
+        // {
+        //     // entered death space
+        //     if (deathSpace.InDeathSpace(px.gameObject.transform.position))
+        //     {
+        //         px.Respawn();
+        //     }
+        // }
     }
 }

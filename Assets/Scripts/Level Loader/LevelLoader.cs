@@ -299,6 +299,7 @@ public class LevelLoader : MonoBehaviour
                     newObject = SerializableObject.Unpack(serialData);
 
                     // if the objects should be loaded as children of the current object.
+                    // TODO: maybe change this so you don't get a parent of a parent?
                     if (loadAsChildren)
                         newObject.transform.parent = parent.transform;
 
@@ -310,6 +311,9 @@ public class LevelLoader : MonoBehaviour
         }
         else // no record limits
         {
+            // loads children
+            bool childLoad = (loadAsChildren && parent != null);
+
             // grabs all items, with each record representing one item
             for (int i = 0; i < count; i++)
             {
@@ -321,7 +325,7 @@ public class LevelLoader : MonoBehaviour
                 newObject = SerializableObject.Unpack(serialData);
 
                 // if the objects should be loaded as children of the current object.
-                if (loadAsChildren)
+                if (childLoad)
                     newObject.transform.parent = parent.transform;
 
                 // if a new object was generated, add it to the list.

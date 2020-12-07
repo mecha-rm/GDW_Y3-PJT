@@ -726,7 +726,7 @@ MonoBehaviour:
   movementSpeed: 2500
   jumpForce: 10
   backupFactor: 0.5
-  momentumMovement: 0
+  momentumMovement: 1
   playerCamera: {fileID: 0}
   cameraDistance: {x: 0, y: 3, z: -7}
   spawnPos: {x: 0, y: 0, z: 0}

@@ -90,6 +90,13 @@ public class Stage : MonoBehaviour
         }
     }
 
+    // sets manager and randomizes player positions
+    public void RandomizePlayerPositions(GameplayManager manager)
+    {
+        this.gameManager = manager;
+        RandomizePlayerPositions();
+    }
+
     // Update is called once per frame
     void Update()
     {

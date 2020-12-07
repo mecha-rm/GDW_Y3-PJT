@@ -13,10 +13,12 @@ public class CatPlayer : PlayerObject
         // replacing sounds
         {
             // TODO: randomize sound for cat meow
-            Destroy(sfx_Idle.clip);
+            // Destroy(sfx_Idle.clip); // regular destroy didn't work.
+            DestroyImmediate(sfx_Idle.clip, true);
             sfx_Idle.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_MEOW_01");
 
-            Destroy(sfx_Death.clip);
+            // Destroy(sfx_Death.clip);
+            DestroyImmediate(sfx_Death.clip, true);
             sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_SCREAM");
         }
 

@@ -15,7 +15,6 @@ public class PlayerObject : MonoBehaviour
     public GameObject model;
     public StateMachine stateMachine = null;
 
-
     public float playerScore = 0.0F;
     public Text playerScoreText = null; // TODO: maybe make a dedicated script to handle this.
 
@@ -30,7 +29,7 @@ public class PlayerObject : MonoBehaviour
     public float movementSpeed = 2500.0F;
     public float jumpForce = 10.0F;
     public float backupFactor = 0.5F;
-    public bool momentumMovement = false;
+    public bool momentumMovement = true;
 
     // camera controls
     public FollowerCamera playerCamera; // the player's camera (TODO: generate a dedicated camera for the player)
@@ -97,7 +96,22 @@ public class PlayerObject : MonoBehaviour
 
         // state machine hasn't been set.
         if (playerScoreText == null)
-            playerScoreText = gameObject.GetComponent<Text>();
+        {
+
+            // TEMP: change the way this works for final build.
+            GameObject temp = GameObject.Find("P1 Score Text");
+
+            if(temp != null)
+            {
+                playerScoreText = temp.GetComponent<Text>();
+            }
+            else
+            {
+                temp = new GameObject("Player " + playerNumber + " Score Text");
+                playerScoreText = temp.AddComponent<Text>();
+            }
+
+        }
 
         // camera settings
         // if (camera.target != null)
@@ -107,14 +121,30 @@ public class PlayerObject : MonoBehaviour
         // }
 
         // if no player camera has been set, a new one will be created.
+        // it first checks if the main camera has the right script
         Camera:
         if(playerCamera == null)
         {
-            // if the player number is 0
+            // player number is 0, so it may not make an new camera.
+            // grabs main camera if it has the right script.
             if(playerNumber == 0)
             {
-                // if the camera exists, the player uses it.
-                playerCamera = GameObject.FindObjectOfType<FollowerCamera>();
+                // gets main camera
+                GameObject mainCam = GameObject.Find("Main Camera");
+
+                if (mainCam == null)
+                    return;
+
+                // gets camera follower
+                FollowerCamera mainCamFollower = mainCam.GetComponent<FollowerCamera>();
+
+                // main camera
+                if(mainCamFollower != null)
+                {
+                    // if the component is active and enabled, use it.
+                    if(mainCamFollower.isActiveAndEnabled)
+                        playerCamera = mainCamFollower;
+                }
 
                 // goes to the label if the player found a camera
                 if (playerCamera != null)

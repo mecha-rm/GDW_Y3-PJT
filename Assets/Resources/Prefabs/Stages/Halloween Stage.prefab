@@ -52,10 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47b4e7df563daf4b97a010335aa1861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   bgm: {fileID: 8300000, guid: cbfd6c0140713074db30d7decf533be1, type: 3}
   flag: {fileID: 0}
   flagSpawn: {x: 25.8, y: 3.641, z: 75.5}
-  useFlagPosAsSpawn: 1
+  useFlagPosAsSpawn: 0
   playerSpawns:
   - {x: 55, y: 0.005, z: 17}
   randomPlayerPos: 0
