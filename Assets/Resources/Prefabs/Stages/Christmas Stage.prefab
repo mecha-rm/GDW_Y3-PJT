@@ -74,7 +74,7 @@ MonoBehaviour:
   flagSpawn: {x: -152.7, y: 326.3, z: -80.8}
   useFlagPosAsSpawn: 1
   playerSpawns:
-  - {x: -58.4, y: 1.2, z: 0.0077}
+  - {x: -157.1, y: 323.82, z: -218.19}
   randomPlayerPos: 0
 --- !u!114 &4995310447147020150
 MonoBehaviour:

@@ -15,7 +15,7 @@ public class AudioLoop : MonoBehaviour
     // i don't know what happens if the time is set beyond the clip length but I assume it just errors out.
     public float clipEnd = 0.0F;
 
-    // if 'true', a song will be limited to the clip rnage.
+    // if 'true', a song will be limited to the clip range.
     // if 'false', the start of the song will play normally,...
     // but once within the clip range it will stay within the clip.
     public bool playAtClipStart = false;

@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadGame: 1
-  map: 1
+  map: 2
   playerList: 02000000
 --- !u!4 &704188573
 Transform:

@@ -15361,7 +15361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7284661196444069586, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: m_Name
-      value: Gameplay Manager
+      value: Manager
       objectReference: {fileID: 0}
     - target: {fileID: 7284661196444069590, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: p1
