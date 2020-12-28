@@ -383,6 +383,8 @@ bool DataManager::ExportDataRecords()
 		return false;
 	}
 
+	// TODO: maybe put all the data sizes on one line instead of calling getline every time?
+	// this should be tested for efficiency's sake.
 
 	// writes all records
 	/*
