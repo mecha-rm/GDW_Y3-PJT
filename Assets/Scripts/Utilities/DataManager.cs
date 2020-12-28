@@ -229,7 +229,7 @@ public class DataManager : MonoBehaviour
     }
 
     // sets the file for the data manager
-    public void SetManagerFile(string file)
+    public void SetDataFile(string file)
     {
         SetFile(file);
     }
@@ -261,6 +261,12 @@ public class DataManager : MonoBehaviour
     void Start()
     {
 
+    }
+
+    // adds a data record
+    public void AddDataRecordToManager(byte[] data)
+    {
+        AddDataRecord(data, data.Length);
     }
 
     // adds a data record

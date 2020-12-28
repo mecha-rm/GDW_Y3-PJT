@@ -12,8 +12,10 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 
+// NOTE: this is for storing string records only now. This was used for saving and loading data, but the method was flawed.
+// This is still here for preservation's sake, but it's not being used.
 // puts lines into a file
-public class RecordManager : MonoBehaviour
+public class StringRecordManager : MonoBehaviour
 {
     // the file for the metrics logger. Make sure to include the file path from highest hierachy.
     public string file = "";
