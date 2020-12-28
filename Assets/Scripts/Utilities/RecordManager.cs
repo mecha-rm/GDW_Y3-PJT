@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 
 // puts lines into a file
-public class FileStream : MonoBehaviour
+public class RecordManager : MonoBehaviour
 {
     // the file for the metrics logger. Make sure to include the file path from highest hierachy.
     public string file = "";

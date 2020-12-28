@@ -131,7 +131,7 @@ public class LevelLoader : MonoBehaviour
     public void SaveToFile()
     {
         // file stream
-        FileStream fileStream = new FileStream();
+        RecordManager fileStream = new RecordManager();
         string fullFile;
         List<int> sections = new List<int>();
 
@@ -149,7 +149,7 @@ public class LevelLoader : MonoBehaviour
         foreach (GameObject element in objects)
         {
             SerializedObject entity = SerializableObject.Pack(element);
-            byte[] data = FileStream.SerializeObject(entity);
+            byte[] data = RecordManager.SerializeObject(entity);
 
             // if the section limiter is on, the data is split into individual records.
             if (ApplyMaxSectionSize)
@@ -205,7 +205,7 @@ public class LevelLoader : MonoBehaviour
     {
 
         // file stream object.
-        FileStream fileStream = new FileStream();
+        RecordManager fileStream = new RecordManager();
         int count = 0;
         string fullFile = "";
 
@@ -293,7 +293,7 @@ public class LevelLoader : MonoBehaviour
                 if(data.Length > 0)
                 {
                     GameObject newObject;
-                    object objectData = FileStream.DeserializeObject(data);
+                    object objectData = RecordManager.DeserializeObject(data);
                     SerializedObject serialData = (SerializedObject)(objectData);
 
                     newObject = SerializableObject.Unpack(serialData);
@@ -319,7 +319,7 @@ public class LevelLoader : MonoBehaviour
             {
                 GameObject newObject = null;
                 byte[] byteData = fileStream.GetRecordFromListInBytes(i);
-                object objectData = FileStream.DeserializeObject(byteData);
+                object objectData = RecordManager.DeserializeObject(byteData);
                 SerializedObject serialData = (SerializedObject)(objectData);
 
                 newObject = SerializableObject.Unpack(serialData);
