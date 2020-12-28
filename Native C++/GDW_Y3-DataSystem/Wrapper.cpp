@@ -80,21 +80,21 @@ PLUGIN_API int GetDataSize(int index)
 }
 
 // edits the record data
-PLUGIN_API void EditData(int index, char* newData)
+PLUGIN_API void ReplaceData(int index, char* newData)
 {
-	dm.EditDataRecord(index, newData);
+	dm.ReplaceData(index, newData);
 }
 
 // edits the size of a data record
-PLUGIN_API void EditDataSize(int index, int newSize)
+PLUGIN_API void ReplaceDataSize(int index, int newSize)
 {
-	return dm.EditDataRecord(index, newSize);
+	return dm.ReplaceDataSize(index, newSize);
 }
 
 // edits data record data and size
-PLUGIN_API void EditDataRecord(int index, char* newData, int newSize)
+PLUGIN_API void ReplaceDataRecord(int index, char* newData, int newSize)
 {
-	dm.EditDataRecord(index, newData, newSize);
+	dm.ReplaceDataRecord(index, newData, newSize);
 }
 
 // gets the record count

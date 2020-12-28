@@ -195,7 +195,7 @@ DataRecord DataManager::GetDataRecord(int index) const
 }
 
 // edits the data record
-void DataManager::EditDataRecord(int index, char* newData)
+void DataManager::ReplaceData(int index, char* newData)
 {
 	// index validity check
 	if (index < 0 || index >= dataRecords.size())
@@ -205,7 +205,7 @@ void DataManager::EditDataRecord(int index, char* newData)
 }
 
 // edits the data record
-void DataManager::EditDataRecord(int index, int newSize)
+void DataManager::ReplaceDataSize(int index, int newSize)
 {
 	// index validity check
 	if (index < 0 || index >= dataRecords.size())
@@ -215,7 +215,7 @@ void DataManager::EditDataRecord(int index, int newSize)
 }
 
 // edit the data record
-void DataManager::EditDataRecord(int index, char* newData, int newSize)
+void DataManager::ReplaceDataRecord(int index, char* newData, int newSize)
 {
 	// index is invalid
 	if (index < 0 || index >= dataRecords.size())
@@ -226,7 +226,7 @@ void DataManager::EditDataRecord(int index, char* newData, int newSize)
 }
 
 // edits the data
-void DataManager::EditDataRecord(int index, const DataRecord& DATA_RECORD)
+void DataManager::ReplaceDataRecord(int index, const DataRecord& DATA_RECORD)
 {
 	// index is invalid
 	if (index < 0 || index >= dataRecords.size())
@@ -313,10 +313,10 @@ bool DataManager::ImportDataRecords()
 			// the new data record
 			DataRecord newRecord;
 
-			// gets the data size as an integer
+			// gets the data size as a long long
 			std::stringstream ss; // the string stream.
 			ss.str(line); // puts line in stream
-			ss >> newRecord.size; // gets it as integer
+			ss >> newRecord.size; // gets it as long long
 
 			imports.push_back(newRecord);
 		}

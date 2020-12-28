@@ -43,13 +43,13 @@ extern "C" // convert to C code.
 	PLUGIN_API int GetDataSize(int index);
 
 	// edits a data record's data, replacing it with newData.
-	PLUGIN_API void EditData(int index, char* newData);
+	PLUGIN_API void ReplaceData(int index, char* newData);
 
 	// edits the data record's size
-	PLUGIN_API void EditDataSize(int index, int newSize);
+	PLUGIN_API void ReplaceDataSize(int index, int newSize);
 
 	// edits a data record, providing it with new values. This does not delete the existing data from memory.
-	PLUGIN_API void EditDataRecord(int index, char* newData, int newSize);
+	PLUGIN_API void ReplaceDataRecord(int index, char* newData, int newSize);
 
 	// gets the amount of data records
 	PLUGIN_API int GetDataRecordCount();

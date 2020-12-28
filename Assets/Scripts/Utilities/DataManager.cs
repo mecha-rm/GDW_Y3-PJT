@@ -69,15 +69,15 @@ public class DataManager : MonoBehaviour
 
     // edits a data record's data, replacing it with newData.
     [DllImport(DLL_NAME)]
-    private static extern void EditData(int index, byte[] newData);
+    private static extern void ReplaceData(int index, byte[] newData);
 
     // edits the data record's size
     [DllImport(DLL_NAME)]
-    private static extern void EditDataSize(int index, int newSize);
+    private static extern void ReplaceDataSize(int index, int newSize);
 
     // edits a data record, providing it with new values. This does not delete the existing data from memory.
     [DllImport(DLL_NAME)]
-    private static extern void EditDataRecord(int index, byte[] newData, int newSize);
+    private static extern void ReplaceDataRecord(int index, byte[] newData, int newSize);
 
     // gets the amount of data records
     [DllImport(DLL_NAME)]
@@ -191,22 +191,22 @@ public class DataManager : MonoBehaviour
     }
 
     // edits a data record's data, replacing it with newData.
-    public void EditDataInManager(int index, byte[] newData)
+    public void ReplaceDataInManager(int index, byte[] newData)
     {
-        EditData(index, newData);
+        ReplaceData(index, newData);
     }
 
     // edits the data record's size
-    public void EditDataSizeInManager(int index, int newSize)
+    public void ReplaceDataSizeInManager(int index, int newSize)
     {
-        EditDataSize(index, newSize);
+        ReplaceDataSize(index, newSize);
     }
 
     // edits a data record, providing it with new values.
     // This does not delete the existing data from memory.
-    public void EditDataRecordInManager(int index, byte[] newData, int newSize)
+    public void ReplaceDataRecordInManager(int index, byte[] newData, int newSize)
     {
-        EditDataRecord(index, newData, newSize);
+        ReplaceDataRecord(index, newData, newSize);
     }
 
     // gets the amount of data records
@@ -308,7 +308,7 @@ public class DataManager : MonoBehaviour
     // This does not delete the existing data from memory.
     public void EditDataRecordInManager(int index, DataRecord dr)
     {
-        EditDataRecord(index, dr.data, dr.data.Length);
+        ReplaceDataRecord(index, dr.data, dr.data.Length);
     }
 
     // Update is called once per frame
