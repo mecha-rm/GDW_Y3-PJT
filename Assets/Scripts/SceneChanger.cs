@@ -58,6 +58,16 @@ public class SceneChanger : MonoBehaviour
      
     }
 
+    // switches out an active game object for an inactive one.
+    public void SwitchActiveGameObject(string current, string next)
+    {
+        GameObject g0 = GameObject.Find(current);
+        GameObject g1 = GameObject.Find(next);
+
+        g0.SetActive(false);
+        g1.SetActive(true);
+    }
+
     // returns the skybox
     public Material GetSkybox()
     {
