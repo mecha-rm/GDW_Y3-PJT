@@ -6059,11 +6059,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2862a84db332b014ca222ef7ab0d7e6b, type: 3}
   m_PrefabInstance: {fileID: 235978265}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &893723642 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2862a84db332b014ca222ef7ab0d7e6b, type: 3}
-  m_PrefabInstance: {fileID: 235978265}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &893723643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6076,7 +6071,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd89002b3e605ec42aa451d127a0028f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovingArrow: {fileID: 893723642}
+  movingArrow: {fileID: 0}
+  speed: 5
+  endPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &909682011
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // interpolation (single)
-public class InterpolatonSingle : MonoBehaviour
+public class InterpolatonSingle : Interpolation // MonoBehaviour
 {
     // TODO: add interpolation options.
 
