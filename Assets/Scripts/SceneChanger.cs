@@ -58,8 +58,19 @@ public class SceneChanger : MonoBehaviour
      
     }
 
+    // returns the skybox
+    public Material GetSkybox()
+    {
+        return RenderSettings.skybox;
+    }
+
+    public void SetSkybox(Material newSkybox)
+    {
+        RenderSettings.skybox = newSkybox;
+    }
+
     // exits the game
-    public void ExitGame()
+    public void ExitApplication()
     {
         Application.Quit();
     }

@@ -28,6 +28,10 @@ public class Stage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // sets the skybox
+        if (skybox != null)
+            RenderSettings.skybox = skybox;
+
         // flag not set
         if (flag == null)
         {
