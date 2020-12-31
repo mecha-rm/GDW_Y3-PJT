@@ -191,7 +191,7 @@ public class PlayerObject : MonoBehaviour
             if (sfx_FlagGet == null && audios.Length >= 3)
                 sfx_FlagGet = audios[2];
 
-            if (sfx_Death == null && audios.Length >= 3)
+            if (sfx_Death == null && audios.Length >= 4)
                 sfx_Death = audios[3];
         }
     }

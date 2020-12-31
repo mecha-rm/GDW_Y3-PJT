@@ -37,7 +37,14 @@ public class GameplayManager : MonoBehaviour
     {
         // shows player objective.
         if (objectiveText == null)
-            objectiveText = (GameObject.Find("Objective Text").GetComponent<Text>());
+        {
+            GameObject temp = GameObject.Find("Objective Text");
+
+            // if the objective text object exists
+            if(temp != null)
+                objectiveText = temp.GetComponent<Text>();
+        }
+            
 
         if (objectiveText != null)
             objectiveText.text = "First player to " + winScore + " wins";
