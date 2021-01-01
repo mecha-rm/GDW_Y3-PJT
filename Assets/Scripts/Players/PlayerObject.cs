@@ -199,31 +199,59 @@ public class PlayerObject : MonoBehaviour
     // called when the player collides with something.
     private void OnCollisionEnter(Collision collision)
     {
-        onGround = true;
-    }
+        // onGround = true;
 
-    // called when colliding
-    // checks every frame
-    private void OnCollisionStay(Collision collision)
-    {
-        // the collision
-        if(!onGround)
+        // if onGround is false
+        if (!onGround)
         {
             for (int i = 0; i < collision.contactCount; i++)
             {
                 ContactPoint cp = collision.GetContact(i);
 
                 float dot = Vector3.Dot(cp.point.normalized, transform.position.normalized);
+                float theta = Vector3.Angle(cp.point.normalized, transform.position.normalized);
+
+
+                Debug.Log("OnGround - Dot: " + dot + " | Angle: " + theta);
 
                 // this number should be adjusted. This tests to see if the player is considered to be on the ground.
                 // the higher the number, the steeper the slope (based on a 90 deg angle)
                 if (Mathf.Abs(dot) <= SLOPE_DOT)
                 {
                     onGround = true;
+
                     break;
                 }
             }
         }
+        onGround = true;
+    }
+
+
+    // called when colliding
+    // checks every frame
+    private void OnCollisionStay(Collision collision)
+    {
+        // the collision
+        // if(!onGround)
+        // {
+        //     for (int i = 0; i < collision.contactCount; i++)
+        //     {
+        //         ContactPoint cp = collision.GetContact(i);
+        // 
+        //         float dot = Vector3.Dot(cp.point.normalized, transform.position.normalized);
+        //         Debug.Log("OnGround w/" + dot);
+        // 
+        //         // this number should be adjusted. This tests to see if the player is considered to be on the ground.
+        //         // the higher the number, the steeper the slope (based on a 90 deg angle)
+        //         if (Mathf.Abs(dot) <= SLOPE_DOT)
+        //         {
+        //             onGround = true;
+        //             
+        //             break;
+        //         }
+        //     }
+        // }
         
 
     }
