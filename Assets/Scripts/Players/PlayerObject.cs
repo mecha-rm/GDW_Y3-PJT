@@ -25,7 +25,9 @@ public class PlayerObject : MonoBehaviour
     private const float SLOPE_DOT = 0.55F;
 
     // the rigidbody for the player.
-    private Rigidbody rigidBody; // maybe make this private since the start() function gets it?
+    public Rigidbody rigidBody = null; // rigid body (why is this private?)
+    public Collider playerCollider = null;
+
     public float movementSpeed = 2500.0F;
     public float jumpForce = 10.0F;
     public float backupFactor = 0.5F;
@@ -89,6 +91,11 @@ public class PlayerObject : MonoBehaviour
 
 
         rigidBody.freezeRotation = true;
+
+        // gets the collider attached to the player
+        if (playerCollider == null)
+            playerCollider = gameObject.GetComponent<Collider>();
+
 
         // state machine hasn't been set.
         if (stateMachine == null)
@@ -208,23 +215,40 @@ public class PlayerObject : MonoBehaviour
             {
                 ContactPoint cp = collision.GetContact(i);
 
-                float dot = Vector3.Dot(cp.point.normalized, transform.position.normalized);
-                float theta = Vector3.Angle(cp.point.normalized, transform.position.normalized);
+                // maybe check bounds of player's collider?
 
+                Vector2 posA = new Vector2(playerCollider.transform.position.x, playerCollider.transform.position.z);
+                Vector2 posB = new Vector2(cp.point.x, cp.point.z);
+                float dist = Vector3.Distance(playerCollider.transform.position, cp.point); // Vector2.Distance(posA, posB);
 
-                Debug.Log("OnGround - Dot: " + dot + " | Angle: " + theta);
+                // SOH - opposite / hypotenuse - (y2 - y1) / distance
+                float angle = Mathf.Asin((playerCollider.transform.position.y - cp.point.y) / dist) * Mathf.Rad2Deg;
 
-                // this number should be adjusted. This tests to see if the player is considered to be on the ground.
-                // the higher the number, the steeper the slope (based on a 90 deg angle)
-                if (Mathf.Abs(dot) <= SLOPE_DOT)
+                Debug.Log("OnGround - Dist: " + dist + " | Angle: " + angle);
+
+                if (Mathf.Abs(angle) < 10.0F) // the steeper the angle, the steeper the lope.
                 {
                     onGround = true;
-
                     break;
                 }
+
+                // float dot = Vector3.Dot(cp.point.normalized, transform.position.normalized);
+                // float theta = Vector3.Angle(cp.point.normalized, transform.position.normalized);
+                // 
+                // 
+                // Debug.Log("OnGround - Dot: " + dot + " | Angle: " + theta);
+                // 
+                // // this number should be adjusted. This tests to see if the player is considered to be on the ground.
+                // // the higher the number, the steeper the slope (based on a 90 deg angle)
+                // if (Mathf.Abs(dot) <= SLOPE_DOT)
+                // {
+                //     onGround = true;
+                //     break;
+                // }
             }
         }
-        onGround = true;
+
+        // onGround = true;
     }
 
 
