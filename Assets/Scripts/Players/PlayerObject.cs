@@ -207,46 +207,47 @@ public class PlayerObject : MonoBehaviour
         // TODO: there is a glitch where you can jump infinitely by jumping against a wall over and over.
         // this should be fixed later.
 
+        // this is still causing problems with other entities.
         // if onGround is false
-        if (!onGround)
-        {
-            for (int i = 0; i < collision.contactCount; i++)
-            {
-                // basically, it gets the contact point, and checks how close it is to the bottom center of the hitbox.
-                ContactPoint cp = collision.GetContact(i);
-
-                // if (Mathf.InverseLerp(playerCollider.bounds.min.y, playerCollider.bounds.max.y, cp.point.y) < 0.25F)
-                // {
-                //     onGround = true;
-                //     break;
-                // }
-
-
-                // gets the percentage of the cp point to see how close it is the the bottom of the collider.
-                float yPercent = Mathf.InverseLerp(playerCollider.bounds.min.y, playerCollider.bounds.max.y, cp.point.y);
-
-                // gets the distance along the xz 
-                Vector2 posA = new Vector2(playerCollider.bounds.center.x, playerCollider.bounds.center.z);
-                Vector2 posB = new Vector2(cp.point.x, cp.point.z);
-                float xzDist = (posA - posB).magnitude;
-                
-                // gets the bounds size on the xz axis
-                Vector2 xzBounds = new Vector2(playerCollider.bounds.size.x, playerCollider.bounds.size.z);
-                
-                // wall scaling is still weird.
-                if (yPercent < 0.2F)
-                {
-                    if (xzDist < xzBounds.magnitude * 0.45F)
-                    {
-                        // Debug.Log("XZDIST: " + xzDist + " | XZBOUNDS: " + xzBounds.magnitude);
-                        onGround = true;
-                        break;
-                    }
-                }
-            }
-        }
+        // if (!onGround)
+        // {
+        //     for (int i = 0; i < collision.contactCount; i++)
+        //     {
+        //         // basically, it gets the contact point, and checks how close it is to the bottom center of the hitbox.
+        //         ContactPoint cp = collision.GetContact(i);
+        // 
+        //         // if (Mathf.InverseLerp(playerCollider.bounds.min.y, playerCollider.bounds.max.y, cp.point.y) < 0.25F)
+        //         // {
+        //         //     onGround = true;
+        //         //     break;
+        //         // }
+        // 
+        // 
+        //         // gets the percentage of the cp point to see how close it is the the bottom of the collider.
+        //         float yPercent = Mathf.InverseLerp(playerCollider.bounds.min.y, playerCollider.bounds.max.y, cp.point.y);
+        // 
+        //         // gets the distance along the xz 
+        //         Vector2 posA = new Vector2(playerCollider.bounds.center.x, playerCollider.bounds.center.z);
+        //         Vector2 posB = new Vector2(cp.point.x, cp.point.z);
+        //         float xzDist = (posA - posB).magnitude;
+        //         
+        //         // gets the bounds size on the xz axis
+        //         Vector2 xzBounds = new Vector2(playerCollider.bounds.size.x, playerCollider.bounds.size.z);
+        //         
+        //         // wall scaling is still weird.
+        //         if (yPercent < 0.2F)
+        //         {
+        //             if (xzDist < xzBounds.magnitude * 0.45F)
+        //             {
+        //                 // Debug.Log("XZDIST: " + xzDist + " | XZBOUNDS: " + xzBounds.magnitude);
+        //                 onGround = true;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
     
-        // onGround = true;
+        onGround = true;
     }
 
 
