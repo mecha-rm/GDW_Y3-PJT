@@ -1492,7 +1492,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1353302118}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: f0c22a757e948f7478acfb5b13538922, type: 2}
   m_CullingMode: 0
@@ -2361,6 +2361,8 @@ MonoBehaviour:
   stateMachine: {fileID: 1908994744}
   playerScore: 0
   playerScoreText: {fileID: 1469053268}
+  rigidBody: {fileID: 0}
+  playerCollider: {fileID: 788240746}
   movementSpeed: 2500
   jumpForce: 10
   backupFactor: 0.5

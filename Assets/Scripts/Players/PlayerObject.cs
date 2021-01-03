@@ -207,7 +207,7 @@ public class PlayerObject : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // onGround = true;
-
+        
         // if onGround is false
         if (!onGround)
         {
@@ -217,19 +217,45 @@ public class PlayerObject : MonoBehaviour
 
                 // maybe check bounds of player's collider?
 
-                Vector2 posA = new Vector2(playerCollider.transform.position.x, playerCollider.transform.position.z);
+                // Vector2 posA = new Vector2(playerCollider.transform.position.x, playerCollider.transform.position.z);
+                // Vector2 posB = new Vector2(cp.point.x, cp.point.z);
+                // float dist = Vector3.Distance(playerCollider.transform.position, cp.point); // Vector2.Distance(posA, posB);
+                // 
+                // // SOH - opposite / hypotenuse - (y2 - y1) / distance
+                // float angle = Mathf.Asin((playerCollider.transform.position.y - cp.point.y) / dist) * Mathf.Rad2Deg;
+
+                // Debug.Log("OnGround - Dist: " + dist + " | Angle: " + angle);
+                // Debug.Log("Current Position: " + transform.position + " | Collision Point: " + cp.point);
+                // Debug.Log("Collider Bounds: " + playerCollider.ClosestPoint(collision);
+
+
+                // if (Mathf.Abs(angle) < 10.0F) // the steeper the angle, the steeper the lope.
+                // {
+                //     onGround = true;
+                //     break;
+                // }
+
+                // basically, it gets the contact point, and checks how close it is to the bottom center of the hitbox.
+
+                float yPercent = Mathf.InverseLerp(playerCollider.bounds.min.y, playerCollider.bounds.max.y, cp.point.y);
+                
+                Vector2 posA = new Vector2(playerCollider.bounds.center.x, playerCollider.bounds.center.z);
                 Vector2 posB = new Vector2(cp.point.x, cp.point.z);
-                float dist = Vector3.Distance(playerCollider.transform.position, cp.point); // Vector2.Distance(posA, posB);
 
-                // SOH - opposite / hypotenuse - (y2 - y1) / distance
-                float angle = Mathf.Asin((playerCollider.transform.position.y - cp.point.y) / dist) * Mathf.Rad2Deg;
+                float xzDist = (posA - posB).magnitude;
+                Vector2 bounds = new Vector2(playerCollider.bounds.size.x, playerCollider.bounds.size.z);
+                float boundsDist = bounds.magnitude;
 
-                Debug.Log("OnGround - Dist: " + dist + " | Angle: " + angle);
+                // wall scaling is still weird.
 
-                if (Mathf.Abs(angle) < 10.0F) // the steeper the angle, the steeper the lope.
+                // Debug.Log("Percentage: " + yValid);
+                if (yPercent < 0.5F)
                 {
-                    onGround = true;
-                    break;
+                    if (xzDist < boundsDist * 0.45F)
+                    {
+                        onGround = true;
+                        break;
+                    }
                 }
 
                 // float dot = Vector3.Dot(cp.point.normalized, transform.position.normalized);
@@ -281,20 +307,22 @@ public class PlayerObject : MonoBehaviour
     }
 
     // player leaving ground
-    // private void OnCollisionExit(Collision collision)
-    // {
-    //     // checks to see if the object the player has left was a floor or not. 
-    //     // if(onGround)
-    //     // {
-    //     //     float dot = Vector3.Dot(transform.position.normalized, collision.transform.position.normalized);
-    //     // 
-    //     //     if (Mathf.Abs(dot) <= SLOPE_DOT)
-    //     //         onGround = false;
-    //     // }
-    // 
-    //     // this gets turned off in case the player left the ground.
-    //     // onGround = false;
-    // }
+    private void OnCollisionExit(Collision collision)
+    {
+        // checks to see if the object the player has left was a floor or not. 
+        // if(onGround)
+        // {
+        //     float dot = Vector3.Dot(transform.position.normalized, collision.transform.position.normalized);
+        // 
+        //     if (Mathf.Abs(dot) <= SLOPE_DOT)
+        //         onGround = false;
+        // }
+
+        // this gets turned off in case the player left the ground.
+        // onGround = false;
+
+        onGround = false;
+    }
 
     // attaches the flag to the player
     public void AttachFlag(FlagObject flag)
