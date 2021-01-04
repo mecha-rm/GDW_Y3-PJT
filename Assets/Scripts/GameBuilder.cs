@@ -45,22 +45,29 @@ public class GameBuilder : MonoBehaviour
         // getting the manager from the game - gets or creates the gameplay manager
         if (manager == null)
         {
-            GameObject temp = GameObject.Find("Manager");
+            manager = GetComponent<GameplayManager>();
 
-            // object doesn't exist
-            if (temp == null)
+            // if the manager component was not found...
+            if (manager == null)
             {
-                // generate manager
-                temp = Instantiate((GameObject)(Resources.Load("Prefabs/Gameplay Manager")));
-                manager = temp.GetComponent<GameplayManager>();
-            }
-            else
-            {
-                manager = temp.GetComponent<GameplayManager>();
+                // searches for an object with the manager.
+                GameObject temp = GameObject.Find("Manager");
 
-                // if the manager is null, add the component
-                if (manager == null)
-                    manager = gameObject.AddComponent<GameplayManager>();
+                // object doesn't exist, so a new gameplay manager is made.
+                if (temp == null)
+                {
+                    // generate manager
+                    temp = Instantiate((GameObject)(Resources.Load("Prefabs/Gameplay Manager")));
+                    manager = temp.GetComponent<GameplayManager>();
+                }
+                else
+                {
+                    manager = temp.GetComponent<GameplayManager>();
+
+                    // if the manager is null, add the component
+                    if (manager == null)
+                        manager = gameObject.AddComponent<GameplayManager>();
+                }
             }
         }
         else
