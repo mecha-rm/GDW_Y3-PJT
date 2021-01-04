@@ -13,7 +13,7 @@ public class GameBuilder : MonoBehaviour
     // the name of the map
     public int map = 0; // loads the map for the scene.
 
-    // the amoutn of players
+    // the amount of players
     public List<playables> playerList = new List<playables>();
 
     // the gameplay manager
@@ -36,13 +36,19 @@ public class GameBuilder : MonoBehaviour
         if (!loadGame)
             return;
 
+        LoadGame();
+    }
+
+    // loads the game
+    public void LoadGame()
+    {
         // getting the manager from the game - gets or creates the gameplay manager
         if (manager == null)
         {
             GameObject temp = GameObject.Find("Manager");
-            
+
             // object doesn't exist
-            if(temp == null)
+            if (temp == null)
             {
                 // generate manager
                 temp = Instantiate((GameObject)(Resources.Load("Prefabs/Gameplay Manager")));
@@ -53,9 +59,16 @@ public class GameBuilder : MonoBehaviour
                 manager = temp.GetComponent<GameplayManager>();
 
                 // if the manager is null, add the component
-                if(manager == null)
+                if (manager == null)
                     manager = gameObject.AddComponent<GameplayManager>();
             }
+        }
+        else
+        {
+            // creates a new manager
+            // Destroy(manager); // destroys the current manager
+            // GameObject temp = Instantiate((GameObject)(Resources.Load("Prefabs/Gameplay Manager")));
+            // manager = temp.GetComponent<GameplayManager>();
         }
 
         // create game assets
@@ -82,7 +95,7 @@ public class GameBuilder : MonoBehaviour
             //     stage = levelLoader.parent;
             // }
 
-            
+
             levelLoader.loadAsChildren = true;
 
             // TODO: move stage files into folder
@@ -117,64 +130,74 @@ public class GameBuilder : MonoBehaviour
         // LOAD CHARACTER ASSETS
 
         // create the game assets
-        int count = playerList.Count;
-        manager.playerCount = Mathf.Clamp(count, 0, 4);
+        int count = Mathf.Clamp(playerList.Count, 0, 4);
+        manager.DestroyAllPlayers(); // destroys all players
 
-        // creating players
+        // creates the player and puts it in the manager
         for(int i = 0; i < count; i++)
         {
-            // player object
-            GameObject newPlayer = null;
-            PlayerObject playerComp = null;
-
-            // goes through all the players
-            switch(playerList[i])
-            {
-                default:
-                case playables.none: // no character set
-                    newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Player"));
-                    playerComp = newPlayer.GetComponent<PlayerObject>();
-                    break;
-
-                case playables.dog: // dog
-                    newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Dog Player"));
-                    playerComp = newPlayer.GetComponent<DogPlayer>();
-                    break;
-
-                case playables.cat: // cat
-                    newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Cat Player"));
-                    playerComp = newPlayer.GetComponent<CatPlayer>();
-                    break;
-
-                case playables.bunny: // bunny
-                    newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Player"));
-                    playerComp = newPlayer.GetComponent<PlayerObject>();
-                    break;
-
-                case playables.turtle: // turtle
-                    newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Player"));
-                    playerComp = newPlayer.GetComponent<PlayerObject>();
-                    break;
-            }
-
-            // adds player to manager
-            // there can only be maximum of 4 players
-            switch(i + 1)
-            {
-                case 1:
-                    manager.p1 = playerComp;
-                    break;
-                case 2:
-                    manager.p2 = playerComp;
-                    break;
-                case 3:
-                    manager.p3 = playerComp;
-                    break;
-                case 4:
-                    manager.p4 = playerComp;
-                    break;
-            }
+            manager.CreatePlayer(i + 1, playerList[i], false);
         }
+
+        manager.playerCount = count;
+
+        // creating players - now happens in the for loop above.
+        // for (int i = 0; i < count; i++)
+        // {
+        //     // player object
+        //     GameObject newPlayer = null;
+        //     PlayerObject playerComp = null;
+        // 
+        //     // goes through all the players
+        //     switch (playerList[i])
+        //     {
+        //         default:
+        //         case playables.none: // no character set
+        //             newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Player"));
+        //             playerComp = newPlayer.GetComponent<PlayerObject>();
+        //             break;
+        // 
+        //         case playables.dog: // dog
+        //             newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Dog Player"));
+        //             playerComp = newPlayer.GetComponent<DogPlayer>();
+        //             break;
+        // 
+        //         case playables.cat: // cat
+        //             newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Cat Player"));
+        //             playerComp = newPlayer.GetComponent<CatPlayer>();
+        //             break;
+        // 
+        //         case playables.bunny: // bunny
+        //             newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Bunny Player"));
+        //             playerComp = newPlayer.GetComponent<PlayerObject>();
+        //             break;
+        // 
+        //         case playables.turtle: // turtle
+        //             newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Turtle Player"));
+        //             playerComp = newPlayer.GetComponent<PlayerObject>();
+        //             break;
+        //     }
+        // 
+        //     // adds player to manager
+        //     // there can only be maximum of 4 players
+        //     switch (i + 1)
+        //     {
+        //         case 1:
+        //             manager.p1 = playerComp;
+        //             break;
+        //         case 2:
+        //             manager.p2 = playerComp;
+        //             break;
+        //         case 3:
+        //             manager.p3 = playerComp;
+        //             break;
+        //         case 4:
+        //             manager.p4 = playerComp;
+        //             break;
+        //     }
+        // }
+
+        // TODO: check and see if the stage Start() needs to be called.
 
         // if the stage is not null, randomize the positions of the players
         if (stage != null)
@@ -186,6 +209,7 @@ public class GameBuilder : MonoBehaviour
         // LOAD AUDIO
         {
             AudioClip clip = stage.bgm;
+
             if (clip == null)
                 clip = (AudioClip)(Resources.Load("Audio/BGMs/BGM_MAP_THEME_01"));
 
@@ -193,7 +217,7 @@ public class GameBuilder : MonoBehaviour
             AudioSource audioSource = manager.GetComponentInChildren<AudioSource>();
 
             // if there is an audio source, play the audio.
-            if(audioSource != null)
+            if (audioSource != null)
             {
                 // add in the clip
                 audioSource.clip = clip;
@@ -204,7 +228,7 @@ public class GameBuilder : MonoBehaviour
 
         // skybox
         {
-            if(stage.skybox != null)
+            if (stage.skybox != null)
                 RenderSettings.skybox = stage.skybox;
         }
 
@@ -212,7 +236,11 @@ public class GameBuilder : MonoBehaviour
         loadGame = false;
     }
 
-    
+    // adds a player to the list
+    public void AddPlayer(playables newPlayer)
+    {
+        playerList.Add(newPlayer);
+    }
 
     // Update is called once per frame
     void Update()
