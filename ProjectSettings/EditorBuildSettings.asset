@@ -6,16 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Menu Scenes/Title.unity
+    path: Assets/Scenes/Title.unity
     guid: e6a7d8515e2cfeb498f3284627d5552b
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: b1be9b430cfd3824cb9125be1a8aa755
   - enabled: 1
-    path: Assets/Scenes/GameplayScene.unity
+    path: Assets/Scenes/DebugScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Menu Scenes/EndScene.unity
+    path: Assets/Scenes/EndScene.unity
     guid: cf5a8cd984935b04284829d35503beeb
   - enabled: 1
     path: Assets/Scenes/HalloweenMap.unity

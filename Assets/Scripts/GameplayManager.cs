@@ -37,7 +37,14 @@ public class GameplayManager : MonoBehaviour
     {
         // shows player objective.
         if (objectiveText == null)
-            objectiveText = (GameObject.Find("Objective Text").GetComponent<Text>());
+        {
+            GameObject temp = GameObject.Find("Objective Text");
+
+            // if the objective text object exists
+            if(temp != null)
+                objectiveText = temp.GetComponent<Text>();
+        }
+            
 
         if (objectiveText != null)
             objectiveText.text = "First player to " + winScore + " wins";
@@ -105,6 +112,130 @@ public class GameplayManager : MonoBehaviour
 
             }
         }
+    }
+
+    // creates the players
+    public void CreatePlayer(int number, GameBuilder.playables type, bool destroySaved)
+    {
+        // new player
+        GameObject newPlayer;
+
+        // type
+        switch (type)
+        {
+            case GameBuilder.playables.dog:
+                newPlayer = (GameObject)Resources.Load("Prefabs/Dog");
+                break;
+            case GameBuilder.playables.cat:
+                newPlayer = (GameObject)Resources.Load("Prefabs/Cat");
+                break;
+            case GameBuilder.playables.bunny:
+                newPlayer = (GameObject)Resources.Load("Prefabs/Bunny");
+                break;
+            case GameBuilder.playables.turtle:
+                newPlayer = (GameObject)Resources.Load("Prefabs/Turtle");
+                break;
+            case GameBuilder.playables.none:
+            default:
+                newPlayer = (GameObject)Resources.Load("Prefabs/Player");
+                break;
+        }
+
+
+        // player object values
+        PlayerObject px = newPlayer.GetComponent<PlayerObject>();
+        number = Mathf.Clamp(number, 0, 4);
+
+        px.playerNumber = number;
+        px.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = number;
+        
+        // saves the player object
+        // also increases player count if no player object was assigned yet.
+        switch(number)
+        {
+            case 1:
+            default:
+                if (p1 == null)
+                    playerCount++;
+
+                if (destroySaved)
+                    Destroy(p1);
+
+                p1 = px;
+                break;
+
+            case 2:
+                if (p2 == null)
+                    playerCount++;
+
+                if (destroySaved)
+                    Destroy(p2);
+
+                p2 = px;
+                break;
+
+            case 3:
+                if (p3 == null)
+                    playerCount++;
+
+                if (destroySaved)
+                    Destroy(p3);
+
+                p3 = px;
+                break;
+
+            case 4:
+                if (p4 == null)
+                    playerCount++;
+
+                if (destroySaved)
+                    Destroy(p4);
+
+                p4 = px;
+                break;
+
+        }
+    }
+
+    // destroys the player mased on their number
+    public void DestroyPlayer(int number)
+    {
+        // bool for destroying objects
+        bool destroyed = false;
+
+        switch(number)
+        {
+            case 1:
+                Destroy(p1);
+                destroyed = true;
+                break;
+            case 2:
+                Destroy(p2);
+                destroyed = true;
+                break;
+            case 3:
+                Destroy(p3);
+                destroyed = true;
+                break;
+            case 4:
+                Destroy(p4);
+                destroyed = true;
+                break;
+        }
+
+        if (destroyed)
+            playerCount--;
+    }
+
+    // destroys all players
+    public void DestroyAllPlayers()
+    {
+        Destroy(p1);
+        Destroy(p2);
+        Destroy(p3);
+        Destroy(p4);
+
+        playerCount = 0;
     }
 
     // Update is called once per frame

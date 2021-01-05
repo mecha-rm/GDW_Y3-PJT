@@ -12,7 +12,7 @@ public class TesterScript : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		FileStream fs = new FileStream();
+		StringRecordManager fs = new StringRecordManager();
 		string file = "Assets/Resources/Saves/record_test.txt";
 		int byteIndex = -1;
 
@@ -30,7 +30,7 @@ public class TesterScript : MonoBehaviour
 			x.y = 2;
 			x.z = -1;
 
-			byte[] data = FileStream.SerializeObject(x);
+			byte[] data = StringRecordManager.SerializeObject(x);
 			fs.AddRecordToList(data);
 			byteIndex = fs.GetAmountOfRecords() - 1;
 
@@ -38,7 +38,7 @@ public class TesterScript : MonoBehaviour
 			x.y = 0;
 			x.z = 0;
 
-			x = (Vec3)FileStream.DeserializeObject(data);
+			x = (Vec3)StringRecordManager.DeserializeObject(data);
 
         }
 		else
@@ -94,7 +94,7 @@ public class TesterScript : MonoBehaviour
                 {
 					byte[] impData = fs.GetRecordFromListInBytes(i);
 					Vec3 x2 = new Vec3();
-					object obj = FileStream.DeserializeObject(impData);
+					object obj = StringRecordManager.DeserializeObject(impData);
 
 					x2 = (Vec3)obj;
 					Debug.Log("Vec3 Import: " + "(" + x2.x + ", " + x2.y + ", " + x2.z + ")");

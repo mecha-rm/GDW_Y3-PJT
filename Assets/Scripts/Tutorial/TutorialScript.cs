@@ -66,7 +66,7 @@ public class TutorialScript : MonoBehaviour
     {
         if (tutorialList.activeList)
         {
-            // step as changed
+            // step has changed
             if (currStep < tutorialList.GetCurrentStepNumber() && !tutorialList.IsCompleteList())
             {
                 currStep++;

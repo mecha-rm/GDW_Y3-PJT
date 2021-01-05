@@ -58,3 +58,21 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Native C++ (Plugins)
+Native C\+\+/GDW_Y3-Countdown/x64/
+
+Native C\+\+/GDW_Y3-MetricsLogger/x64/
+
+Native C\+\+/GDW_Y3-RecordSystem/x64/
+
+Native C\+\+/GDW_Y3-Stopwatch/x64/
+
+Native C\+\+/GDW_Y3-DataSystem/x64/
+
+Native C\+\+/*/x64/
+
+Native C\+\+/**/x86/
+
+Native C\+\+/*.txt
+
+Native C\+\+/*.dat

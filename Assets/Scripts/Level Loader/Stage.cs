@@ -24,10 +24,13 @@ public class Stage : MonoBehaviour
     public List<Vector3> playerSpawns = new List<Vector3>();
     public bool randomPlayerPos = false; // randomizes player position
 
-
     // Start is called before the first frame update
     void Start()
     {
+        // sets the skybox
+        if (skybox != null)
+            RenderSettings.skybox = skybox;
+
         // flag not set
         if (flag == null)
         {

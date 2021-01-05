@@ -4,28 +4,35 @@ using UnityEngine;
 
 public class ArrowMovement : MonoBehaviour
 {
-    public Transform MovingArrow;   
-    float speed = 5.0f;
+    // transform
+    public Transform movingArrow;   
+
+    // speed
+    public float speed = 5.0f;
+
+    // end point
+    public Vector3 endPoint;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (movingArrow == null)
+            movingArrow = gameObject.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
         //Moves arrow up and down using LERP
-        if(MovingArrow.position.y > 15.0f)
+        if(movingArrow.position.y > 15.0f)
         {
             speed = 10.0f;
         }
-        if(MovingArrow.position.y < 5.0f)
+        if(movingArrow.position.y < 5.0f)
         {
             speed = -10.0f;
         }
 
-        MovingArrow.Translate(0, speed * Time.deltaTime, 0);
+        movingArrow.Translate(0, speed * Time.deltaTime, 0);
     }
 }

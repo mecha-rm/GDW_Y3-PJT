@@ -5,14 +5,20 @@ public class AudioLoop : MonoBehaviour
     // audio source
     public AudioSource audioSource = null;
 
-    // start start and end of the audio clip being played. This is in seconds
+    // start start and end of the audio clip being played. This is in seconds.
 
     // the start of the clip. If this value is negative, the clip continues like normal.
     // if clip start is less than 0, then it doesn't function.
     public float clipStart = 0.0F;
 
-    // the end of the clip.
-    // i don't know what happens if the time is set beyond the clip length but I assume it just errors out.
+    // the end of the clip
+    /// <summary>
+    /// * I don't know what happens if the time is set beyond the clip length but I assume it just errors out.
+    /// * on another note that if clipEnd is set to the end of the clip, the song will loop back to the start...
+    /// * instead of looping back to the pre-defined clip start. 
+    /// * so it's best to either have some silence, or continue the file a little longer so that the loop...
+    /// * has time to work properly.
+    /// </summary>
     public float clipEnd = 0.0F;
 
     // if 'true', a song will be limited to the clip range.

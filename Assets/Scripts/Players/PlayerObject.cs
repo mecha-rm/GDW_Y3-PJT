@@ -21,11 +21,11 @@ public class PlayerObject : MonoBehaviour
     // the jump cycle - these are meant to fix the jump.
     // this is currently unused, but might be implemented later.
     private bool onGround = false;
-    // values less than or equal to this value count as a slope the player can jump off of.
-    private const float SLOPE_DOT = 0.55F;
 
     // the rigidbody for the player.
-    private Rigidbody rigidBody; // maybe make this private since the start() function gets it?
+    public Rigidbody rigidBody = null; // rigid body (why is this private?)
+    public Collider playerCollider = null;
+
     public float movementSpeed = 2500.0F;
     public float jumpForce = 10.0F;
     public float backupFactor = 0.5F;
@@ -89,6 +89,11 @@ public class PlayerObject : MonoBehaviour
 
 
         rigidBody.freezeRotation = true;
+
+        // gets the collider attached to the player
+        if (playerCollider == null)
+            playerCollider = gameObject.GetComponent<Collider>();
+
 
         // state machine hasn't been set.
         if (stateMachine == null)
@@ -191,7 +196,7 @@ public class PlayerObject : MonoBehaviour
             if (sfx_FlagGet == null && audios.Length >= 3)
                 sfx_FlagGet = audios[2];
 
-            if (sfx_Death == null && audios.Length >= 3)
+            if (sfx_Death == null && audios.Length >= 4)
                 sfx_Death = audios[3];
         }
     }
@@ -199,50 +204,96 @@ public class PlayerObject : MonoBehaviour
     // called when the player collides with something.
     private void OnCollisionEnter(Collision collision)
     {
+        // TODO: there is a glitch where you can jump infinitely by jumping against a wall over and over.
+        // this should be fixed later.
+
+        // this is still causing problems with other entities.
+        // if onGround is false
+        // if (!onGround)
+        // {
+        //     for (int i = 0; i < collision.contactCount; i++)
+        //     {
+        //         // basically, it gets the contact point, and checks how close it is to the bottom center of the hitbox.
+        //         ContactPoint cp = collision.GetContact(i);
+        // 
+        //         // if (Mathf.InverseLerp(playerCollider.bounds.min.y, playerCollider.bounds.max.y, cp.point.y) < 0.25F)
+        //         // {
+        //         //     onGround = true;
+        //         //     break;
+        //         // }
+        // 
+        // 
+        //         // gets the percentage of the cp point to see how close it is the the bottom of the collider.
+        //         float yPercent = Mathf.InverseLerp(playerCollider.bounds.min.y, playerCollider.bounds.max.y, cp.point.y);
+        // 
+        //         // gets the distance along the xz 
+        //         Vector2 posA = new Vector2(playerCollider.bounds.center.x, playerCollider.bounds.center.z);
+        //         Vector2 posB = new Vector2(cp.point.x, cp.point.z);
+        //         float xzDist = (posA - posB).magnitude;
+        //         
+        //         // gets the bounds size on the xz axis
+        //         Vector2 xzBounds = new Vector2(playerCollider.bounds.size.x, playerCollider.bounds.size.z);
+        //         
+        //         // wall scaling is still weird.
+        //         if (yPercent < 0.2F)
+        //         {
+        //             if (xzDist < xzBounds.magnitude * 0.45F)
+        //             {
+        //                 // Debug.Log("XZDIST: " + xzDist + " | XZBOUNDS: " + xzBounds.magnitude);
+        //                 onGround = true;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
+    
         onGround = true;
     }
 
+
     // called when colliding
     // checks every frame
-    private void OnCollisionStay(Collision collision)
-    {
-        // the collision
-        if(!onGround)
-        {
-            for (int i = 0; i < collision.contactCount; i++)
-            {
-                ContactPoint cp = collision.GetContact(i);
-
-                float dot = Vector3.Dot(cp.point.normalized, transform.position.normalized);
-
-                // this number should be adjusted. This tests to see if the player is considered to be on the ground.
-                // the higher the number, the steeper the slope (based on a 90 deg angle)
-                if (Mathf.Abs(dot) <= SLOPE_DOT)
-                {
-                    onGround = true;
-                    break;
-                }
-            }
-        }
-        
-
-    }
+    // private void OnCollisionStay(Collision collision)
+    // {
+    //     // if onGround is false
+    //     if (!onGround)
+    //     {
+    //         for (int i = 0; i < collision.contactCount; i++)
+    //         {
+    //             // basically, it gets the contact point, and checks how close it is to the bottom center of the hitbox.
+    //             ContactPoint cp = collision.GetContact(i);
+    //             
+    //             // gets the percentage of the cp point to see how close it is the the bottom of the collider.
+    //             float yPercent = Mathf.InverseLerp(playerCollider.bounds.min.y, playerCollider.bounds.max.y, cp.point.y);
+    //             
+    //             // gets the distance along the xz 
+    //             Vector2 posA = new Vector2(playerCollider.bounds.center.x, playerCollider.bounds.center.z);
+    //             Vector2 posB = new Vector2(cp.point.x, cp.point.z);
+    //             float xzDist = (posA - posB).magnitude;
+    // 
+    //             // gets the bounds size on the xz axis
+    //             Vector2 xzBounds = new Vector2(playerCollider.bounds.size.x, playerCollider.bounds.size.z);
+    // 
+    //             // wall scaling is still weird.
+    //             if (yPercent < 0.5F)
+    //             {
+    //                 if (xzDist < xzBounds.magnitude * 0.45F)
+    //                 {
+    //                     onGround = true;
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     // player leaving ground
-    // private void OnCollisionExit(Collision collision)
-    // {
-    //     // checks to see if the object the player has left was a floor or not. 
-    //     // if(onGround)
-    //     // {
-    //     //     float dot = Vector3.Dot(transform.position.normalized, collision.transform.position.normalized);
-    //     // 
-    //     //     if (Mathf.Abs(dot) <= SLOPE_DOT)
-    //     //         onGround = false;
-    //     // }
-    // 
-    //     // this gets turned off in case the player left the ground.
-    //     // onGround = false;
-    // }
+    private void OnCollisionExit(Collision collision)
+    {
+        if(collision.gameObject.tag == "StageObject" || collision.gameObject.tag == "Untagged")
+            onGround = false;
+        // onGround = false;
+    }
 
     // attaches the flag to the player
     public void AttachFlag(FlagObject flag)
@@ -307,19 +358,6 @@ public class PlayerObject : MonoBehaviour
     {
         defenseMult = (newMult > 0.0F) ? newMult : defenseMult;
     }
-
-    // called when two objects collide with one another.
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //    if (other.GetComponent<Player>() != null) // player has collided with another player.
-    //    {
-    //         Vector3 p0Vel = rigidBody.velocity;
-    //         Vector3 p1Vel = other.GetComponent<Rigidbody>().velocity;
-    // 
-    //         
-    // 
-    //     }
-    // }
 
     // respawns the player. Doing so takes away the flag.
     // this is called when entering the death space.

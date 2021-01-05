@@ -31,6 +31,12 @@ public class Checklist : MonoBehaviour
     // sets whether the checklist has been activated or not.
     public bool activeList = true;
 
+    // if 'true', the program searches for all steps.
+    public bool addStepChildren;
+
+    // key for hiding the step list
+    public KeyCode hideKey = KeyCode.H;
+
     // the amount of steps that have been completed.
     // private int stepsCompleted = 0;
 
@@ -40,6 +46,12 @@ public class Checklist : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // creates metric logger
+        if (logMetrics && logger == null)
+        {
+            logger = new MetricsLogger();
+        }
+
         // starts the first step if there are steps
         if (activeList && steps.Count > 0)
         {
@@ -57,6 +69,17 @@ public class Checklist : MonoBehaviour
             RefreshStepList();
         }
 
+        // if step children should be added.
+        if(addStepChildren)
+        {
+            List<Step> childSteps = new List<Step>();
+            GetComponentsInChildren<Step>(true, childSteps);
+            steps.AddRange(childSteps);
+        }
+
+        // adds checklist to step
+        foreach (Step step in steps)
+            step.checklist = this;
     }
 
     // if the list is active
@@ -261,7 +284,7 @@ public class Checklist : MonoBehaviour
     void Update()
     {
         // the keycode
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(hideKey))
         {
             if (stepList != null)
                 stepList.SetActive(!stepList.activeSelf);
