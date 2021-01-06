@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 104850988}
   - component: {fileID: 104850987}
   m_Layer: 5
-  m_Name: 'Bunny_Button '
+  m_Name: 'Bunny Button '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -678,6 +678,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1836392322}
+        m_TargetAssemblyTypeName: GameBuilder, Assembly-CSharp
+        m_MethodName: AddPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -903,7 +915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &192166393
 RectTransform:
   m_ObjectHideFlags: 0
@@ -961,7 +973,7 @@ GameObject:
   - component: {fileID: 250257010}
   - component: {fileID: 250257009}
   m_Layer: 5
-  m_Name: 'Back_Button '
+  m_Name: 'Back Button '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1265,7 +1277,7 @@ GameObject:
   - component: {fileID: 351643776}
   - component: {fileID: 351643775}
   m_Layer: 5
-  m_Name: Turtle_Button
+  m_Name: Turtle Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1354,6 +1366,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1836392322}
+        m_TargetAssemblyTypeName: GameBuilder, Assembly-CSharp
+        m_MethodName: AddPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1560,7 +1584,7 @@ GameObject:
   - component: {fileID: 398688603}
   - component: {fileID: 398688602}
   m_Layer: 5
-  m_Name: Cat_Button
+  m_Name: Cat Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1649,6 +1673,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1836392322}
+        m_TargetAssemblyTypeName: GameBuilder, Assembly-CSharp
+        m_MethodName: AddPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1862,7 +1898,7 @@ GameObject:
   - component: {fileID: 431264087}
   - component: {fileID: 431264086}
   m_Layer: 5
-  m_Name: christmas button
+  m_Name: Christmas Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2098,7 +2134,7 @@ GameObject:
   - component: {fileID: 462580812}
   - component: {fileID: 462580811}
   m_Layer: 5
-  m_Name: backButton
+  m_Name: Back Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4176,7 +4212,7 @@ GameObject:
   - component: {fileID: 1297182402}
   - component: {fileID: 1297182401}
   m_Layer: 5
-  m_Name: Dog_Button
+  m_Name: Dog Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4265,6 +4301,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1836392322}
+        m_TargetAssemblyTypeName: GameBuilder, Assembly-CSharp
+        m_MethodName: AddPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4936,7 +4984,7 @@ GameObject:
   - component: {fileID: 1445402942}
   - component: {fileID: 1445402941}
   m_Layer: 5
-  m_Name: Tutorial Button
+  m_Name: Tutorial 1 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5014,7 +5062,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Tutorial
+          m_StringArgument: Tutorial1
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 132760803}
@@ -6846,7 +6894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2086940561
 RectTransform:
   m_ObjectHideFlags: 0

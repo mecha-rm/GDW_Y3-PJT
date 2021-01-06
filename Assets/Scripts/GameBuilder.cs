@@ -244,9 +244,9 @@ public class GameBuilder : MonoBehaviour
     }
 
     // adds a player to the list
-    public void AddPlayer(playables newPlayer)
+    public void AddPlayer(int newPlayer)
     {
-        playerList.Add(newPlayer);
+        playerList.Add((playables)newPlayer);
     }
 
     // Update is called once per frame
