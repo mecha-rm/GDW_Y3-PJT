@@ -141,9 +141,16 @@ public class GameBuilder : MonoBehaviour
         manager.DestroyAllPlayers(); // destroys all players
 
         // creates the player and puts it in the manager
-        for(int i = 0; i < count; i++)
+        if(count == 0) // no playes set, so test player is added.
         {
-            manager.CreatePlayer(i + 1, playerList[i], false);
+            manager.CreatePlayer(0, 0, true);
+        }
+        else
+        {
+            for (int i = 0; i < count; i++)
+            {
+                manager.CreatePlayer(i + 1, playerList[i], false);
+            }
         }
 
         manager.playerCount = count;
@@ -247,6 +254,23 @@ public class GameBuilder : MonoBehaviour
     public void AddPlayer(int newPlayer)
     {
         playerList.Add((playables)newPlayer);
+    }
+
+    // called when the scene changes
+    public void OnLevelWasLoaded(int level)
+    {
+        // TODO: maybe just have this do it on loadGame being true?.
+        // picks from list of loaded scenes
+        // string sceneName = UnityEngine.SceneManagement.SceneManager.GetSceneAt(level).name;
+
+        // TODO: this will cause an infinite loop for some reason. Fix this.
+        // string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        // 
+        // // if the gameplay scene has been entered, or if the game should be loaded.
+        // if(sceneName == "GameplayScene" || loadGame)
+        // {
+        //     LoadGame();
+        // }   
     }
 
     // Update is called once per frame

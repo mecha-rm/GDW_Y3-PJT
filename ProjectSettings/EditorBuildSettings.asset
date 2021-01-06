@@ -9,24 +9,27 @@ EditorBuildSettings:
     path: Assets/Scenes/Title.unity
     guid: e6a7d8515e2cfeb498f3284627d5552b
   - enabled: 1
+    path: Assets/Scenes/GameplayScene.unity
+    guid: 863a43a5a50e50d4abe6968541fd1669
+  - enabled: 1
     path: Assets/Scenes/Tutorial1.unity
     guid: b1be9b430cfd3824cb9125be1a8aa755
   - enabled: 1
-    path: Assets/Scenes/DebugScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/Tutorial2.unity
+    guid: 6ee408fc91e355344b715343f976b630
   - enabled: 1
     path: Assets/Scenes/EndScene.unity
     guid: cf5a8cd984935b04284829d35503beeb
   - enabled: 1
     path: Assets/Scenes/HalloweenMap.unity
     guid: e87722f6647325b4e86d384e0747e80a
+  - enabled: 1
+    path: Assets/Scenes/Christmasmap.unity
+    guid: c6bee96e9e0d49f4e98cf97c9fb20165
+  - enabled: 1
+    path: Assets/Scenes/DebugScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
     path: Assets/Scenes/LevelEditor.unity
     guid: 730afcbb4dbc165409201851e235c87c
-  - enabled: 1
-    path: Assets/Scenes/Tutorial2.unity
-    guid: 6ee408fc91e355344b715343f976b630
-  - enabled: 1
-    path: Assets/Scenes/ChristmasMap.unity
-    guid: c6bee96e9e0d49f4e98cf97c9fb20165
   m_configObjects: {}
