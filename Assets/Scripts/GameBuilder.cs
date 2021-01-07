@@ -22,6 +22,9 @@ public class GameBuilder : MonoBehaviour
     // the stage parent object
     Stage stage;
 
+    // the stage file directory
+    // string stageFileDirectory;
+
     // states that the object shouldn't be destroyed on load.
     private void Awake()
     {
@@ -109,9 +112,11 @@ public class GameBuilder : MonoBehaviour
             switch (map)
             {
                 default:
-                case 0: // no map
+                case 0: // no map, so load the debug scene instead.
                     loadGame = false;
-                    UnityEngine.SceneManagement.SceneManager.LoadScene("GameplayScene"); // TODO: update when you rename scene.
+                    // NOTE: do NOT try to jump to another scene when processing a switch to an exiting scene.
+                    // UnityEngine.SceneManagement.SceneManager.LoadScene("DebugScene"); // TODO: update when you rename scene.
+                    levelLoader.file = "unnamed.dat";
                     break;
 
                 case 1: // halloween stage
@@ -256,6 +261,18 @@ public class GameBuilder : MonoBehaviour
         playerList.Add((playables)newPlayer);
     }
 
+    // gets the stage
+    public int GetStage()
+    {
+        return map;
+    }
+
+    // sets the stage
+    public void SetStage(int newMap)
+    {
+        map = newMap;
+    }
+
     // called when the scene changes
     public void OnLevelWasLoaded(int level)
     {
@@ -271,6 +288,8 @@ public class GameBuilder : MonoBehaviour
         // {
         //     LoadGame();
         // }   
+
+        LoadGame();
     }
 
     // Update is called once per frame

@@ -124,20 +124,24 @@ public class GameplayManager : MonoBehaviour
         switch (type)
         {
             case GameBuilder.playables.dog:
-                newPlayer = (GameObject)Resources.Load("Prefabs/Dog");
+                newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Dog Player"));
                 break;
+
             case GameBuilder.playables.cat:
-                newPlayer = (GameObject)Resources.Load("Prefabs/Cat");
+                newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Cat Player"));
                 break;
+
             case GameBuilder.playables.bunny:
-                newPlayer = (GameObject)Resources.Load("Prefabs/Bunny");
+                newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Bunny Player"));
                 break;
+
             case GameBuilder.playables.turtle:
-                newPlayer = (GameObject)Resources.Load("Prefabs/Turtle");
+                newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Turtle Player"));
                 break;
+
             case GameBuilder.playables.none:
             default:
-                newPlayer = (GameObject)Resources.Load("Prefabs/Player");
+                newPlayer = Instantiate((GameObject)Resources.Load("Prefabs/Characters/Player"));
                 break;
         }
 
