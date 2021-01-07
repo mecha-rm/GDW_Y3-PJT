@@ -115,7 +115,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     // creates the players
-    public void CreatePlayer(int number, GameBuilder.playables type, bool destroySaved)
+    public PlayerObject CreatePlayer(int number, GameBuilder.playables type, bool destroySaved)
     {
         // new player
         GameObject newPlayer;
@@ -151,8 +151,18 @@ public class GameplayManager : MonoBehaviour
         number = Mathf.Clamp(number, 0, 4);
 
         px.playerNumber = number;
-        px.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = number;
-        
+
+        // if the number is greater than 0, set the target display to it.
+        if (number > 0)
+        {
+            // camera object.
+            Camera cam = px.playerCamera.GetCamera();
+
+            // change target display
+            if(cam != null)
+                cam.targetDisplay = number;
+        }
+
         // saves the player object
         // also increases player count if no player object was assigned yet.
         switch(number)
@@ -199,6 +209,9 @@ public class GameplayManager : MonoBehaviour
                 break;
 
         }
+
+        // returns the player object script
+        return px;
     }
 
     // destroys the player mased on their number

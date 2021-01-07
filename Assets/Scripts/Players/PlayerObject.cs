@@ -127,52 +127,81 @@ public class PlayerObject : MonoBehaviour
 
         // if no player camera has been set, a new one will be created.
         // it first checks if the main camera has the right script
-        Camera:
-        if(playerCamera == null)
         {
-            // player number is 0, so it may not make an new camera.
-            // grabs main camera if it has the right script.
-            if(playerNumber == 0)
+            // used if the camera couldn't be foun.
+            bool setCamera = true;
+
+        Camera:
+            if (playerCamera == null && setCamera)
             {
-                // gets main camera
-                GameObject mainCam = GameObject.Find("Main Camera");
-
-                if (mainCam == null)
-                    return;
-
-                // gets camera follower
-                FollowerCamera mainCamFollower = mainCam.GetComponent<FollowerCamera>();
-
-                // main camera
-                if(mainCamFollower != null)
+                // player number is 0, so it may not make an new camera.
+                // grabs main camera if it has the right script.
+                if (playerNumber == 0)
                 {
-                    // if the component is active and enabled, use it.
-                    if(mainCamFollower.isActiveAndEnabled)
+                    // gets main camera
+                    GameObject mainCam = GameObject.Find("Main Camera");
+
+                    // main cmaera wasn't found, so go back to the label.
+                    if (mainCam == null)
+                    {
+                        setCamera = false;
+                        goto Camera;
+                    }
+
+                    // gets camera follower
+                    FollowerCamera mainCamFollower = mainCam.GetComponent<FollowerCamera>();
+
+                    // main camera
+                    if (mainCamFollower != null && mainCamFollower.isActiveAndEnabled)
+                    {
+                        // if the component is active and enabled, use it.
+                        if (mainCamFollower.isActiveAndEnabled)
+                        {
+                            playerCamera = mainCamFollower;
+                        }
+                        else
+                        {
+                            mainCamFollower.enabled = true;
+                            playerCamera = mainCamFollower;
+                        }
+                    }
+                    else
+                    {
+                        // adds the follwoer camera script to the main cmaera
+                        mainCamFollower = mainCam.AddComponent<FollowerCamera>();
                         playerCamera = mainCamFollower;
+                    }
+
+                    mainCamFollower.target = gameObject;
+
+                    // goes to the label if the player found a camera
+                    if (playerCamera != null)
+                    {
+                        setCamera = false;
+                        goto Camera;
+                    }
+
                 }
 
-                // goes to the label if the player found a camera
-                if (playerCamera != null)
-                    goto Camera;
+                // creates an empty player object and gives it a camera.
+                GameObject camObject = new GameObject("Player " + playerNumber + " Camera");
+                Camera camera = camObject.AddComponent<Camera>();
+                camera.depth = -1;
+
+                // adds a follower camera script, and gives it the base value.
+                playerCamera = camObject.AddComponent<FollowerCamera>();
+                playerCamera.target = gameObject;
+                playerCamera.distance = cameraDistance;
+                playerCamera.useParentRotation = true;
+
             }
-
-            // creates an empty player object and gives it a camera.
-            GameObject camObject = new GameObject("Player " + playerNumber + " Camera");
-            Camera camera = camObject.AddComponent<Camera>();
-            camera.depth = -1;
-
-            // adds a follower camera script, and gives it the base value.
-            playerCamera = camObject.AddComponent<FollowerCamera>();
-            playerCamera.target = gameObject;
-            playerCamera.distance = cameraDistance;
-            playerCamera.useParentRotation = true;
-
+            else if (playerCamera.target != gameObject)
+            {
+                playerCamera.target = gameObject;
+                playerCamera.distance = cameraDistance;
+            }
         }
-        else if(playerCamera.target != gameObject)
-        {
-            playerCamera.target = gameObject;
-            playerCamera.distance = cameraDistance;
-        }
+        
 
         // gets values to be reset upon spawning
         spawnPos = transform.position;
@@ -293,6 +322,30 @@ public class PlayerObject : MonoBehaviour
         if(collision.gameObject.tag == "StageObject" || collision.gameObject.tag == "Untagged")
             onGround = false;
         // onGround = false;
+    }
+
+    // gets the player number
+    public int GetPlayerNumber()
+    {
+        return playerNumber;
+    }
+
+    // sets the new player number
+    public void SetPlayerNumber(int newNumber)
+    {
+        playerNumber = newNumber;
+
+        // sets the target display of the camera object.
+        if (playerCamera != null && newNumber > 0)
+        {
+            // temporary camera object
+            Camera cam = playerCamera.GetCamera();
+
+            // if there is a camera, set its target display.
+            if(cam != null)
+                playerCamera.cameraObject.targetDisplay = newNumber;
+        }
+            
     }
 
     // attaches the flag to the player

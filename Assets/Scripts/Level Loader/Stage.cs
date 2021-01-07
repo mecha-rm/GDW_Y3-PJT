@@ -27,6 +27,12 @@ public class Stage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // finds the game manager if it hasn't been set. 
+        if(gameManager == null)
+        {
+            gameManager = FindObjectOfType<GameplayManager>();
+        }
+
         // sets the skybox
         if (skybox != null)
             RenderSettings.skybox = skybox;
