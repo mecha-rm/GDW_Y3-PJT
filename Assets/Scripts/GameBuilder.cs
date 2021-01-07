@@ -240,8 +240,27 @@ public class GameBuilder : MonoBehaviour
             {
                 // add in the clip
                 audioSource.clip = clip;
+                audioSource.mute = false;
                 audioSource.Play();
             }
+
+            // gets the audio loop component.
+            // TODO: maybe save this somewhere to save load time?
+            AudioLoop audioLoop = GetComponent<AudioLoop>();
+            
+            // looping audio
+            if(audioLoop == null)
+            {
+                audioLoop = gameObject.AddComponent<AudioLoop>();
+            }
+
+            // enables audio loop
+            // TODO: should you check if it's already enabled first?
+            audioLoop.enabled = true;
+            audioLoop.clipStart = stage.bgmClipStart;
+            audioLoop.clipEnd = stage.bgmClipEnd;
+
+            // TODO: safety check?
 
         }
 

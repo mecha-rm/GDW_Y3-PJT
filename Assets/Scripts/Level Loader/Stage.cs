@@ -9,6 +9,8 @@ public class Stage : MonoBehaviour
 
     // the bgm for the stage.
     public AudioClip bgm;
+    public int bgmClipStart;
+    public int bgmClipEnd;
 
     // the skybox for the stage
     public Material skybox;
@@ -32,6 +34,8 @@ public class Stage : MonoBehaviour
         {
             gameManager = FindObjectOfType<GameplayManager>();
         }
+
+        
 
         // sets the skybox
         if (skybox != null)
