@@ -14004,6 +14004,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1529482308}
   bgm: {fileID: 8300000, guid: cbfd6c0140713074db30d7decf533be1, type: 3}
+  bgmClipStart: 0
+  bgmClipEnd: 0
   skybox: {fileID: 2100000, guid: e1b58e3a03211b944977d64f85d1ebea, type: 2}
   flag: {fileID: 970319896}
   flagSpawn: {x: 0, y: 0, z: 0}
@@ -16170,6 +16172,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6439735491323624411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: clipEnd
+      value: 260.938
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439735491323624411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: clipStart
+      value: 35.49
+      objectReference: {fileID: 0}
     - target: {fileID: 7284661196071721411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: m_Volume
       value: 0.2

@@ -2354,6 +2354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 490095434}
   - component: {fileID: 490095435}
+  - component: {fileID: 490095436}
   m_Layer: 0
   m_Name: BGM Source
   m_TagString: Untagged
@@ -2471,6 +2472,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &490095436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490095433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4a50f41e84ca294fbf5ee9d14bf320f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 490095435}
+  clipStart: 7.642
+  clipEnd: 114.309
+  playAtClipStart: 0
 --- !u!1 &519805176
 GameObject:
   m_ObjectHideFlags: 0
@@ -6054,7 +6071,8 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7284661196444069591, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
 --- !u!114 &1615420657 stripped
 MonoBehaviour:

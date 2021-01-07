@@ -246,7 +246,7 @@ public class GameBuilder : MonoBehaviour
 
             // gets the audio loop component.
             // TODO: maybe save this somewhere to save load time?
-            AudioLoop audioLoop = GetComponent<AudioLoop>();
+            AudioLoop audioLoop = GetComponentInChildren<AudioLoop>();
             
             // looping audio
             if(audioLoop == null)

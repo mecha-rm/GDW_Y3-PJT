@@ -10772,6 +10772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673d71784134cfd48872d202820a56fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraObject: {fileID: 0}
   distance: {x: 1, y: 1, z: 0}
   target: {fileID: 0}
   rotation: {x: 0, y: 0, z: 0}
@@ -15614,6 +15615,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 115769315}
   bgm: {fileID: 8300000, guid: cbfd6c0140713074db30d7decf533be1, type: 3}
+  bgmClipStart: 0
+  bgmClipEnd: 0
   skybox: {fileID: 2100000, guid: fd5a33f66f5af044295d90c45bd75c70, type: 2}
   flag: {fileID: 1398358213}
   flagSpawn: {x: 0, y: 0, z: 0}
@@ -18315,6 +18318,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6439735491323624411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: clipStart
+      value: 35.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439735491323624411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: clipEnd
+      value: 260.938
+      objectReference: {fileID: 0}
     - target: {fileID: 7284661196071721411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: Mute
       value: 0

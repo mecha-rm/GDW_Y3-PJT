@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7284661196071721420}
   - component: {fileID: 7284661196071721411}
+  - component: {fileID: 6439735491323624411}
   m_Layer: 0
   m_Name: Audio Source
   m_TagString: Untagged
@@ -127,6 +128,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6439735491323624411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7284661196071721421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4a50f41e84ca294fbf5ee9d14bf320f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 7284661196071721411}
+  clipStart: 0
+  clipEnd: 0
+  playAtClipStart: 0
 --- !u!1 &7284661196444069586
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,7 +157,6 @@ GameObject:
   - component: {fileID: -1464304370684644558}
   - component: {fileID: 7284661196444069590}
   - component: {fileID: 7284661196444069585}
-  - component: {fileID: 7284661196444069591}
   - component: {fileID: -3004198080248553708}
   m_Layer: 0
   m_Name: Gameplay Manager
@@ -230,22 +246,6 @@ MonoBehaviour:
   lessThanX: 1
   lessThanY: 1
   lessThanZ: 1
---- !u!114 &7284661196444069591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7284661196444069586}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4a50f41e84ca294fbf5ee9d14bf320f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 7284661196071721411}
-  clipStart: 0
-  clipEnd: 0
-  playAtClipStart: 0
 --- !u!114 &-3004198080248553708
 MonoBehaviour:
   m_ObjectHideFlags: 0
