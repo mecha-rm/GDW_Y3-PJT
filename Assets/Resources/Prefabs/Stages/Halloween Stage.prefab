@@ -276,11 +276,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
   bgm: {fileID: 0}
+  bgmClipStart: 0
+  bgmClipEnd: 0
   skybox: {fileID: 0}
   flag: {fileID: 0}
-  flagSpawn: {x: 0, y: 0, z: 0}
+  flagSpawn: {x: 25.8, y: 3.641, z: 75.5}
   useFlagPosAsSpawn: 1
-  playerSpawns: []
+  playerSpawns:
+  - {x: 72, y: 0.005, z: 17}
+  - {x: 48, y: 1, z: 12}
+  - {x: 55, y: 1, z: 14}
+  - {x: 60, y: 0.06, z: 13}
   randomPlayerPos: 0
 --- !u!65 &6634739912395925470
 BoxCollider:

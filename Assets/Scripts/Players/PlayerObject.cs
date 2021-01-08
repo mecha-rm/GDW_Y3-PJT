@@ -230,6 +230,12 @@ public class PlayerObject : MonoBehaviour
         }
     }
 
+    //
+    virtual public void InitializePlayer()
+    {
+
+    }
+
     // called when the player collides with something.
     private void OnCollisionEnter(Collision collision)
     {
