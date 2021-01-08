@@ -148,13 +148,17 @@ public class GameBuilder : MonoBehaviour
         // creates the player and puts it in the manager
         if(count == 0) // no playes set, so test player is added.
         {
-            manager.CreatePlayer(0, 0, true);
+            manager.CreatePlayer(0, 0, true, true);
+        }
+        else if(count == 1) // only one player, so use main camera
+        {
+            manager.CreatePlayer(0, playerList[0], false, true);
         }
         else
         {
             for (int i = 0; i < count; i++)
             {
-                manager.CreatePlayer(i + 1, playerList[i], false);
+                manager.CreatePlayer(i + 1, playerList[i], false, false);
             }
         }
 

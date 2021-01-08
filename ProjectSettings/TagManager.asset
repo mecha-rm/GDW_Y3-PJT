@@ -12,6 +12,7 @@ TagManager:
   - Effect
   - Canvas
   - SubUI
+  - Camera
   layers:
   - Default
   - TransparentFX

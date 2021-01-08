@@ -13,6 +13,7 @@ public class FollowerCamera : MonoBehaviour
    
     // the target the camera is following.
     public GameObject target;
+
     // the camera's rotation
     public Vector3 rotation = new Vector3(0, 0, 0); // the camera's default orientation
 

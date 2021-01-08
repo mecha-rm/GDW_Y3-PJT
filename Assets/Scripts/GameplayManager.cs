@@ -115,7 +115,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     // creates the players
-    public PlayerObject CreatePlayer(int number, GameBuilder.playables type, bool destroySaved)
+    public PlayerObject CreatePlayer(int number, GameBuilder.playables type, bool destroySaved, bool useMainCamera)
     {
         // new player
         GameObject newPlayer;
@@ -153,14 +153,22 @@ public class GameplayManager : MonoBehaviour
         px.playerNumber = number;
 
         // if the number is greater than 0, set the target display to it.
-        if (number > 0)
+        if (number > 0 && !useMainCamera)
         {
+            // TODO: playerCamera has not been set for some reason.
             // camera object.
-            Camera cam = px.playerCamera.GetCamera();
-
+            // it's done this way just in case the follower camera isn't set yet.
+            Camera cam = px.GetFollowerCamera().GetCamera();
+            
             // change target display
             if(cam != null)
                 cam.targetDisplay = number;
+        }
+        else // use main camera
+        {
+            GameObject camObject = GameObject.Find("Main Camera");
+            Camera camComp = camObject.GetComponent<Camera>();
+            FollowerCamera fwr = px.MakeFollowerCamera(camComp);
         }
 
         // saves the player object
