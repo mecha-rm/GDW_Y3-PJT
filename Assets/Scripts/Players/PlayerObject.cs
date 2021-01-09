@@ -145,8 +145,10 @@ public class PlayerObject : MonoBehaviour
                     // makes the main camera the follower component.
                     if (camComp != null)
                     {
-                        if(!camComp.isActiveAndEnabled)
-                            MakeFollowerCamera(camComp);
+                        // if(!camComp.isActiveAndEnabled)
+                        //     MakeFollowerCamera(camComp);
+
+                        MakeFollowerCamera(camComp);
                     }
                     else
                     {

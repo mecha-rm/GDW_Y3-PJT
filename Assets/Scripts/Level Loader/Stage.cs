@@ -9,8 +9,8 @@ public class Stage : MonoBehaviour
 
     // the bgm for the stage.
     public AudioClip bgm;
-    public int bgmClipStart;
-    public int bgmClipEnd;
+    public float bgmClipStart;
+    public float bgmClipEnd;
 
     // the skybox for the stage
     public Material skybox;
