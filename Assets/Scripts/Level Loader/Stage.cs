@@ -24,6 +24,7 @@ public class Stage : MonoBehaviour
 
     // flag spawn position
     public GameObject flag = null;
+    public string flagPrefab = "Prefabs/Flag";
     public Vector3 flagSpawn = new Vector3();
     public bool useFlagPosAsSpawn = true; // use flag's position as its spawn point.
     // public List<Vector3> flagSpawns = new List<Vector3>();
@@ -55,7 +56,15 @@ public class Stage : MonoBehaviour
 
             if(flag == null) // if the flag doesn't exist, make one.
             {
-                flag = Instantiate((GameObject)(Resources.Load("Prefabs/Flag")));
+                // loads up the flag prefab
+                object prefab = Resources.Load(flagPrefab);
+
+                // loads default flag
+                if (prefab == null)
+                    prefab = Resources.Load("Prefabs/Flag");
+
+                // instantiates the prefab.
+                flag = Instantiate((GameObject)prefab);
             }
         }
 
