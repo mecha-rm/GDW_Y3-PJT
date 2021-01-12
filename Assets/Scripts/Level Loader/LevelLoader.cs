@@ -139,10 +139,16 @@ public class LevelLoader : MonoBehaviour
         foreach (GameObject element in objects)
         {
             SerializedObject entity = SerializableObject.Pack(element);
-            byte[] data = StringRecordManager.SerializeObject(entity);
+            byte[] data = DataManager.SerializeObject(entity);
 
             // adds data
             fileStream.AddDataRecordToManager(data);
+
+            // new 
+            byte[] tempData = fileStream.GetDataFromManager(fileStream.GetDataRecordAmount() - 1);
+            object tempObj = DataManager.DeserializeObject(tempData);
+            SerializedObject tempEty = (SerializedObject)tempObj;
+            tempEty.GetType();
         }
 
         fileStream.SaveDataRecords();
@@ -165,7 +171,6 @@ public class LevelLoader : MonoBehaviour
     // load objects
     public void LoadFromFile()
     {
-
         // file stream object.
         DataManager fileStream = new DataManager();
         int count = 0;
@@ -197,8 +202,8 @@ public class LevelLoader : MonoBehaviour
         {
             GameObject newObject = null;
             byte[] byteData = fileStream.GetDataFromManager(i);
-            object objectData = StringRecordManager.DeserializeObject(byteData);
-            SerializedObject serialData = (SerializedObject)(objectData);
+            object objectData = DataManager.DeserializeObject(byteData);
+            SerializedObject serialData = (SerializedObject)(objectData); // gets to this line, then stops.
 
             newObject = SerializableObject.Unpack(serialData);
 

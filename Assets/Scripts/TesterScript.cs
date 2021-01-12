@@ -30,7 +30,7 @@ public class TesterScript : MonoBehaviour
 			x.y = 2;
 			x.z = -1;
 
-			byte[] data = StringRecordManager.SerializeObject(x);
+			byte[] data = DataManager.SerializeObject(x);
 			fs.AddRecordToList(data);
 			byteIndex = fs.GetAmountOfRecords() - 1;
 
@@ -38,7 +38,7 @@ public class TesterScript : MonoBehaviour
 			x.y = 0;
 			x.z = 0;
 
-			x = (Vec3)StringRecordManager.DeserializeObject(data);
+			x = (Vec3)DataManager.DeserializeObject(data);
 
         }
 		else
@@ -94,7 +94,7 @@ public class TesterScript : MonoBehaviour
                 {
 					byte[] impData = fs.GetRecordFromListInBytes(i);
 					Vec3 x2 = new Vec3();
-					object obj = StringRecordManager.DeserializeObject(impData);
+					object obj = DataManager.DeserializeObject(impData);
 
 					x2 = (Vec3)obj;
 					Debug.Log("Vec3 Import: " + "(" + x2.x + ", " + x2.y + ", " + x2.z + ")");

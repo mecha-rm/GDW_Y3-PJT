@@ -2,8 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// class for stage information.
 public class Stage : MonoBehaviour
 {
+    // NOTE: for some reason, if the position is too high or too low, it may not save properly.
+    // I encountered that problem when it came to saving and loading the stages for some reason.
+    // If you encounter another issue with saving and loading stages, maybe that's why.
+    // since all stages are saved as prefabs, the parent object should always be at (0, 0, 0).
+    // I don't know why this happens, but it is an issue. Maybe it has to do with how things are saved in the file or something.
+
     // gameplay manager
     public GameplayManager gameManager;
 

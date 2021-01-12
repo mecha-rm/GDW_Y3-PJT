@@ -249,29 +249,6 @@ public class StringRecordManager : MonoBehaviour
             LoadRecords();
     }
 
-    // converts object to bytes (requires seralizable object)
-    static public byte[] SerializeObject(object entity)
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-        MemoryStream ms = new MemoryStream();
-
-        bf.Serialize(ms, entity);
-        return ms.ToArray();
-    }
-
-    // deserialize provided object
-    // bytes in C# is the equivalent of chars in C++.
-    static public object DeserializeObject(byte[] data)
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-        MemoryStream ms = new MemoryStream();
-
-        ms.Write(data, 0, data.Length); // write data
-        ms.Seek(0, 0); // return to start
-
-        return bf.Deserialize(ms); // return content
-    }
-
     // CONVERSIONS //
     // convert char array to string
     static public byte[] ConvertCharArrayToBytes(char[] chars)
