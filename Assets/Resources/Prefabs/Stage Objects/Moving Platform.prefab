@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 0}
-  force: 300
+  force: 1
   travelPoints: []
   destIndex: 0
   addStartPos: 1

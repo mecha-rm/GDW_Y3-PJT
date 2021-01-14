@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // interpolation (single)
-public class InterpolatonSingle : Interpolation // MonoBehaviour
+public class InterpolationSingle : Interpolation // MonoBehaviour
 {
     // interpolation type
     // NOTE: if 'Interpolate()' is overridden, this variable is disregarded.
@@ -61,7 +61,7 @@ public class InterpolatonSingle : Interpolation // MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         if (!paused)
         {
