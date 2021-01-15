@@ -12,6 +12,10 @@ public class InterpolationSingle : Interpolation // MonoBehaviour
     // time
     public float t = 0;
 
+    // factor that the increase in t is multiplied by.
+    // if set to '1', t is just increased by deltaTime.
+    public float speed = 1.0F;
+
     // travel points
     public List<Vector3> travelPoints = new List<Vector3>();
 
@@ -65,7 +69,7 @@ public class InterpolationSingle : Interpolation // MonoBehaviour
     {
         if (!paused)
         {
-            t += Time.deltaTime;
+            t += Time.deltaTime * speed;
             t = Mathf.Clamp(t, 0.0F, 1.0F);
 
             // clamps the index value

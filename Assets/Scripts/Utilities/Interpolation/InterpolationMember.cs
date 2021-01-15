@@ -14,6 +14,10 @@ public class InterpolationMember : MonoBehaviour
     // t value
     public float t;
 
+    // factor that the increase in t is multiplied by.
+    // if set to '1', t is just increased by deltaTime.
+    public float speed = 1.0F;
+
     // if the member should be paused.
     public bool paused = false;
 

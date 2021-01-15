@@ -14,7 +14,7 @@ public class RigidbodyLerpMultiple : MonoBehaviour
     public float masterForce = 1.0F;
 
     // if 'true', the master force overrides the individual forces.
-    bool useMasterForce = true;
+    public bool useMasterForce = true;
 
     // becomes 'true' if the interpolation should be paused.
     public bool paused = false;

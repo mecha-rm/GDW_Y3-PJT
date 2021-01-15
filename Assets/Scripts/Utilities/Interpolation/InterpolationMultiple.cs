@@ -14,6 +14,13 @@ public class InterpolationMultiple : Interpolation // MonoBehaviour
     // list of travel points
     public List<Vector3> travelPoints = new List<Vector3>();
 
+    // factor that the increase in t is multiplied by.
+    // if set to '1', t is just increased by deltaTime.
+    public float masterSpeed = 1.0F;
+
+    // if set to 'true', the master speed is applied so that all objects move at the same pace.
+    public bool useMasterSpeed = true;
+
     // becomes 'true' if the interpolation should be paused.
     public bool paused = false;
 
@@ -92,8 +99,12 @@ public class InterpolationMultiple : Interpolation // MonoBehaviour
                 if (member.paused)
                     continue;
 
-                // clamps t value
-                member.t += Time.deltaTime;
+                // clamps t value and applies speed factor based on useMasterSpeed variable.
+                if (useMasterSpeed)
+                    member.t += Time.deltaTime * masterSpeed;
+                else
+                    member.t += Time.deltaTime * member.speed;
+
                 member.t = Mathf.Clamp(member.t, 0.0F, 1.0F);
 
                 // clamps index
