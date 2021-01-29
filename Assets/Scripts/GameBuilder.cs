@@ -8,6 +8,7 @@ public class GameBuilder : MonoBehaviour
     public enum playables { none, dog, cat, bunny, turtle};
 
     // if 'true', the game is loaded.
+    // TODO: rename function.
     public bool loadGame = false;
     
     // the name of the map
@@ -45,6 +46,13 @@ public class GameBuilder : MonoBehaviour
     // loads the game
     public void LoadGame()
     {
+        // game shouldn't be loaded.
+        if(!loadGame)
+        {
+            Debug.Log("Game loading is disabled. Set 'loadGame' to true, and call LoadGame() again.");
+            return;
+        }
+
         // getting the manager from the game - gets or creates the gameplay manager
         if (manager == null)
         {
@@ -276,6 +284,18 @@ public class GameBuilder : MonoBehaviour
 
         // game has been loaded. Turn back on before going to a new scene to load game assets.
         loadGame = false;
+    }
+
+    // checks to see if the game should be loaded.
+    public bool GetLoadGame()
+    {
+        return loadGame;
+    }
+
+    // sets to load the game or not.
+    public void SetLoadGame(bool load)
+    {
+        loadGame = load;
     }
 
     // adds a player to the list
