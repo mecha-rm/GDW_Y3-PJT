@@ -915,7 +915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &192166393
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2732,7 +2732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &579181213
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2772,7 +2772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   switchableObjects:
-  - {fileID: 2086940560}
+  - {fileID: 192166392}
   - {fileID: 1475190861}
   - {fileID: 654974537}
 --- !u!1 &580995236
@@ -4069,17 +4069,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 132760801}
-        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
-        m_MethodName: ChangeScene
-        m_Mode: 5
+      - m_Target: {fileID: 1615420657}
+        m_TargetAssemblyTypeName: GameBuilder, Assembly-CSharp
+        m_MethodName: SetLoadGame
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: GameplayScene
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 132760803}
         m_TargetAssemblyTypeName: MenuAudio, Assembly-CSharp
@@ -4093,17 +4093,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1615420657}
-        m_TargetAssemblyTypeName: GameBuilder, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 132760801}
+        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
+          m_StringArgument: GameplayScene
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &947844627
 MonoBehaviour:
@@ -6038,6 +6038,10 @@ PrefabInstance:
     - target: {fileID: -1464304370684644558, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: map
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -1464304370684644558, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: loadGame
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7284661196071721411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: Mute
