@@ -1116,6 +1116,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 179479802997483594, guid: f1cbe4e904ec7714488744eff94fa05f, type: 3}
+      propertyPath: m_TagString
+      value: SFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 199608068178792712, guid: f1cbe4e904ec7714488744eff94fa05f, type: 3}
+      propertyPath: m_TagString
+      value: SFX
+      objectReference: {fileID: 0}
     - target: {fileID: 768400714958977963, guid: f1cbe4e904ec7714488744eff94fa05f, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1224,9 +1232,17 @@ PrefabInstance:
       propertyPath: observers.Array.data[1]
       value: 
       objectReference: {fileID: 4253221197667926631}
+    - target: {fileID: 5219977753932320065, guid: f1cbe4e904ec7714488744eff94fa05f, type: 3}
+      propertyPath: m_TagString
+      value: SFX
+      objectReference: {fileID: 0}
     - target: {fileID: 5247861276683630461, guid: f1cbe4e904ec7714488744eff94fa05f, type: 3}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5346018506554183611, guid: f1cbe4e904ec7714488744eff94fa05f, type: 3}
+      propertyPath: m_TagString
+      value: SFX
       objectReference: {fileID: 0}
     - target: {fileID: 5377419331360722677, guid: f1cbe4e904ec7714488744eff94fa05f, type: 3}
       propertyPath: m_RootOrder
@@ -1329,6 +1345,10 @@ PrefabInstance:
     - target: {fileID: 7284661196071721411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: m_Volume
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7284661196071721421, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: m_TagString
+      value: BGM
       objectReference: {fileID: 0}
     - target: {fileID: 7284661196444069584, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: m_RootOrder
@@ -1597,6 +1617,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2886877896460267371, guid: 24e58c0d66502384ea1801dfe81960a9, type: 3}
+      propertyPath: m_TagString
+      value: SFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536208170043356483, guid: 24e58c0d66502384ea1801dfe81960a9, type: 3}
+      propertyPath: m_TagString
+      value: SFX
+      objectReference: {fileID: 0}
     - target: {fileID: 3772718574990424221, guid: 24e58c0d66502384ea1801dfe81960a9, type: 3}
       propertyPath: m_Name
       value: Cat Player
@@ -1645,6 +1673,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5410496912438522910, guid: 24e58c0d66502384ea1801dfe81960a9, type: 3}
+      propertyPath: m_TagString
+      value: SFX
+      objectReference: {fileID: 0}
     - target: {fileID: 6781808547747617761, guid: 24e58c0d66502384ea1801dfe81960a9, type: 3}
       propertyPath: playerScoreText
       value: 
@@ -1656,6 +1688,10 @@ PrefabInstance:
     - target: {fileID: 7118459802701622626, guid: 24e58c0d66502384ea1801dfe81960a9, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7169072762520426760, guid: 24e58c0d66502384ea1801dfe81960a9, type: 3}
+      propertyPath: m_TagString
+      value: SFX
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24e58c0d66502384ea1801dfe81960a9, type: 3}

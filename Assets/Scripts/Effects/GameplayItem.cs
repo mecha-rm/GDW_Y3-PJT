@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: have the items be random drops that appear on the field.
 // script for gameplay items
 public abstract class GameplayItem : MonoBehaviour
 {

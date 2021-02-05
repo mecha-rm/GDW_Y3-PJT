@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 85105}
   m_Layer: 0
   m_Name: Death Audio Source
-  m_TagString: Untagged
+  m_TagString: SFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1289,6 +1289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673d71784134cfd48872d202820a56fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraObject: {fileID: 0}
   distance: {x: 0, y: 4, z: -8}
   target: {fileID: 1959659160}
   rotation: {x: 0, y: 0, z: 0}
@@ -1991,6 +1992,7 @@ MonoBehaviour:
   currentStep: 0
   activeList: 1
   addStepChildren: 0
+  hideKey: 104
 --- !u!114 &771292238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3826,7 +3828,7 @@ GameObject:
   - component: {fileID: 1468677945}
   m_Layer: 0
   m_Name: FlagGet Audio Source
-  m_TagString: Untagged
+  m_TagString: SFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4197,7 +4199,7 @@ GameObject:
   - component: {fileID: 1540985116}
   m_Layer: 0
   m_Name: Idle Audio Source
-  m_TagString: Untagged
+  m_TagString: SFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4691,7 +4693,7 @@ GameObject:
   - component: {fileID: 1692273460}
   m_Layer: 0
   m_Name: Run Audio Source
-  m_TagString: Untagged
+  m_TagString: SFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5217,7 +5219,7 @@ GameObject:
   - component: {fileID: 1830430267}
   m_Layer: 0
   m_Name: Audio Source
-  m_TagString: Untagged
+  m_TagString: BGM
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5960,6 +5962,8 @@ MonoBehaviour:
   stateMachine: {fileID: 1959659161}
   playerScore: 0
   playerScoreText: {fileID: 1444465880}
+  rigidBody: {fileID: 0}
+  playerCollider: {fileID: 0}
   movementSpeed: 2500
   jumpForce: 12
   backupFactor: 0.5

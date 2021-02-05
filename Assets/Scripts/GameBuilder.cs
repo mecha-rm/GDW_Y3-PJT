@@ -316,6 +316,12 @@ public class GameBuilder : MonoBehaviour
         map = newMap;
     }
 
+    // updates the volume of all sound efects and BGMs.
+    public void UpdateVolume()
+    {
+        // TODO: mark all audio listeners as either SFX, BGM, or VOICE
+    }
+
     // called when the scene changes
     public void OnLevelWasLoaded(int level)
     {

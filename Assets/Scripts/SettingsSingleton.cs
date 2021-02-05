@@ -11,6 +11,8 @@ public class SettingsSingleton
     // volume control
     // master volume
     private float masterVolume = 1.0F;
+    private float bgmVolume = 1.0F;
+    private float sfxVolume = 1.0F;
 
     // constructor
     private SettingsSingleton()
@@ -36,6 +38,25 @@ public class SettingsSingleton
     {
     }
 
+    // updates volume levels for all audio
+    public void UpdateVolume()
+    {
+        AudioSource[] audios = GameObject.FindObjectsOfType<AudioSource>();
+
+        // update volume levels for all audio
+        foreach(AudioSource audio in audios)
+        {
+            if(audio.tag == "BGM") // background music
+            {
+                audio.volume = bgmVolume;
+            }
+            else if(audio.tag == "SFX") // sound effects
+            {
+                audio.volume = sfxVolume;
+            }
+        }
+    }
+
     // gets the volume
     public float GetMasterVolume()
     {
@@ -47,5 +68,25 @@ public class SettingsSingleton
     {
         masterVolume = Mathf.Clamp(vol, 0.0F, 1.0F);
         AudioListener.volume = masterVolume;
+    }
+
+    // game bgm volume getter and setter
+    public float BgmVolume
+    {
+        get { return bgmVolume; }
+        set 
+        {
+            bgmVolume = Mathf.Clamp(value, 0.0F, 1.0F);
+        }
+    }
+
+    // game sound effect volume getter and setter
+    public float SfxVolume
+    {
+        get { return sfxVolume; }
+        set 
+        {
+            sfxVolume = Mathf.Clamp(value, 0.0F, 1.0F);
+        }
     }
 }
