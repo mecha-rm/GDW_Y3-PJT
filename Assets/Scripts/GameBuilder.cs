@@ -8,9 +8,16 @@ public class GameBuilder : MonoBehaviour
     public enum playables { none, dog, cat, bunny, turtle};
 
     // if 'true', the game is loaded.
-    // TODO: rename function.
+    // Note: this must be set to 'true' before entering a scene in order for it to work.
     public bool loadGame = false;
-    
+
+    // if 'true', the map objects are loaded on entry.
+    // if 'false', nothing is loaded. This should be disabled if using preset levels.
+    public bool loadMapOnEntry = true;
+
+    // if 'true', the audio settings are updated with what's specified in the game settings singleton.
+    public bool adjustAudioOnEntry = true;
+
     // the name of the map
     public int map = 0; // loads the map for the scene.
 
@@ -36,11 +43,16 @@ public class GameBuilder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // game shouldn't be loaded.
-        if (!loadGame)
-            return;
+        // checks to see if the game should be loaded.
+        if (loadGame)
+            LoadGame();
 
-        LoadGame();
+
+        // updates volume of everything in the scene.
+        // this is in the 'Start()' section because this is not dependent on game loading.
+        // plus this doesn't load anything
+        if(adjustAudioOnEntry)
+            UpdateVolume();
     }
 
     // loads the game
@@ -92,6 +104,7 @@ public class GameBuilder : MonoBehaviour
         // create game assets
 
         // LOAD MAP
+        if(loadMapOnEntry) // load map on entry.
         {
             GameObject loadedObjects = new GameObject("Loaded Objects");
             LevelLoader levelLoader = loadedObjects.AddComponent<LevelLoader>();
@@ -100,18 +113,6 @@ public class GameBuilder : MonoBehaviour
             // levelLoader.parent = new GameObject("Loaded Objects");
 
             levelLoader.parent = loadedObjects;
-            // levelLoader.transform = levelLoader.parent.transform;
-            // Stage stageComp = null;
-
-            // if(levelLoader.parent == null || levelLoader.parent.gameObject == null) // no parent set
-            // {
-            //     stage = new GameObject();
-            //     levelLoader.parent = stage;
-            // }
-            // else // parent set
-            // {
-            //     stage = levelLoader.parent;
-            // }
 
 
             levelLoader.loadAsChildren = true;
@@ -145,6 +146,29 @@ public class GameBuilder : MonoBehaviour
             // gets component from children if stage comp wasn't found.
             if (stage == null)
                 stage = levelLoader.GetComponentInChildren<Stage>();
+        }
+        else if(!loadMapOnEntry) // map should not be loaded on entry.
+        {
+            stage = FindObjectOfType<Stage>(); // finds the stage object in the scene.
+
+            // if not set, it searches for the stage object.
+            if(stage == null)
+            {
+                Debug.LogError("No Stage Component Found.");
+
+                // GameObject temp = GameObject.Find("Stage");
+                // 
+                // // if there is no parent object named "stage", then nothing happens
+                // if(temp != null)
+                // {
+                //     // gets the component from the stage
+                //     stage = temp.GetComponent<Stage>();
+                // 
+                //     // if there is no stage component, add one.
+                //     if (stage == null)
+                //         stage = temp.AddComponent<Stage>();
+                // }
+            }
         }
 
         // LOAD CHARACTER ASSETS
@@ -272,7 +296,7 @@ public class GameBuilder : MonoBehaviour
             audioLoop.clipStart = stage.bgmClipStart;
             audioLoop.clipEnd = stage.bgmClipEnd;
 
-            // TODO: safety check?
+            // TODO: safety check
 
         }
 
@@ -298,6 +322,18 @@ public class GameBuilder : MonoBehaviour
         loadGame = load;
     }
 
+    // gets whether to load the stage or not.
+    public bool GetLoadStage()
+    {
+        return loadMapOnEntry;
+    }
+
+    // sets to load the stage.
+    public void SetLoadStage(bool loadStage)
+    {
+        loadMapOnEntry = loadStage;
+    }
+
     // adds a player to the list
     public void AddPlayer(int newPlayer)
     {
@@ -319,7 +355,33 @@ public class GameBuilder : MonoBehaviour
     // updates the volume of all sound efects and BGMs.
     public void UpdateVolume()
     {
-        // TODO: mark all audio listeners as either SFX, BGM, or VOICE
+        // finds all audio sources
+        AudioSource[] audios = FindObjectsOfType<AudioSource>();
+
+        // gets the game settings
+        GameSettings settings = GameSettings.GetInstance();
+
+        // gets the volume for the bgm and the sfx.
+        // the master volume does not need to be set since that's done by Unity.
+        float bgmVolume = settings.GetBgmVolume();
+        float sfxVolume = settings.GetSfxVolume();
+
+        // adjusts the volume settings.
+        foreach (AudioSource audio in audios)
+        {
+            // adjusts volume
+            switch (audio.tag)
+            {
+                case "BGM":
+                    audio.volume = bgmVolume;
+                    break;
+
+                case "SFX":
+                    audio.volume = sfxVolume;
+                    break;
+            }
+        }
+
     }
 
     // called when the scene changes
