@@ -11,11 +11,16 @@ using System.Net.Sockets;
 // UDP Server
 public class UdpServer : MonoBehaviour
 {
+    // server variables
     private static byte[] buffer = new byte[512];
     private static IPEndPoint client = null;
 
+    // server and remote client
     private static Socket server_socket = null;
     private static EndPoint remoteClient = null;
+
+    // the server port numbers
+    private int server_port = 11111;
 
     // receive timeout and send timeout times
     // these determine how long the server should wait for a client to connect.
@@ -36,20 +41,20 @@ public class UdpServer : MonoBehaviour
     void RunServer()
     {
         IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-        IPAddress ip = host.AddressList[1]; // get IP address from list
-        
-        // the IP address can be manually entered using IPAddress.Parse(), which the line of code below shows.
-        // the IP Address can be found by typing "ipconfig" into the Command Line.
-        // IPAddress ip = IPAddress.Parse("000.000.0.000"); // manual entry 
+        // IPAddress ip = host.AddressList[1]; // get IP address from user's system
+        IPAddress ip = IPAddress.Parse("127.0.0.1"); // manually enter IP address (new, unique server IP)
 
-        // prints messages to console
-        if(printMessages)
+        // writes the message
+        if (printMessages)
+        {
             Console.WriteLine("Server name: {0} IP: {1}", host.HostName, ip);
+            // Debug.LogAssertion("Server name: " + host.HostName + " IP: " + ip);
+        }
 
-        // TODO: maybe make the port a variable
-        IPEndPoint localEP = new IPEndPoint(ip, 11111);
+        // using the same port that was used last class.
+        IPEndPoint localEP = new IPEndPoint(ip, server_port);
 
-        // creates the server socket - gets the IP directly from the address family.
+        // last class the family was entered, but you can get from the ip directly the Address family.
         server_socket = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
 
         // 0 for any available port.
@@ -62,18 +67,27 @@ public class UdpServer : MonoBehaviour
             // the server listens and provides a service.
             server_socket.Bind(localEP);
 
-            if(printMessages)
-                Console.WriteLine("Waiting for data...");
+            // Console.WriteLine("Waiting for data...");
+            Debug.LogAssertion("Waiting for Data...");
 
-            // sets timeouts for sending and receiving data
+            // sets timeout variables.
             server_socket.ReceiveTimeout = receiveTimeout;
             server_socket.SendTimeout = sendTimeout;
+
+            // non-blocking
+            server_socket.Blocking = false;
 
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
         }
+    }
+
+    // gets the buffer size in bytes
+    public int GetBufferSize()
+    {
+        return buffer.Length;
     }
 
     // Update is called once per frame
@@ -87,7 +101,12 @@ public class UdpServer : MonoBehaviour
             int rec = server_socket.ReceiveFrom(buffer, ref remoteClient);
 
             // writes data
-            Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(buffer, 0, rec), remoteClient.ToString());
+            if(printMessages)
+            {
+                Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(buffer, 0, rec), remoteClient.ToString());
+                // Debug.LogAssertion("Received: " + Encoding.ASCII.GetString(buffer, 0, rec) + " from Client: " + remoteClient.ToString());
+            }
+            
 
             // use BitConverter to convert bytes to other data types
             // e.g. BitConverter.ToSingle(buffer, 0);
@@ -98,6 +117,7 @@ public class UdpServer : MonoBehaviour
             Console.WriteLine(e.ToString());
         }
     }
+
 
     // shuts down the server
     // OnDestroy is called when the object is deleted.

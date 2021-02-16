@@ -4,7 +4,8 @@ using UnityEngine;
 
 // TODO: have the items be random drops that appear on the field.
 // script for gameplay items
-public abstract class GameplayItem : MonoBehaviour
+// NOTE: this is for items that are being held by a player.
+public abstract class HeldItem : MonoBehaviour
 {
     // determines whether the item's effect is timed or not.
     // if 'true', the item's effect runs out after (X) amount of time has passed.

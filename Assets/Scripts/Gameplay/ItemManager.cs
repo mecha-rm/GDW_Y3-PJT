@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
     // list of items in the pool
-    List<GameplayItem> itemPool;
+    List<HeldItem> itemPool;
 
     // the item prefab
     GameObject ItemPrefab;
