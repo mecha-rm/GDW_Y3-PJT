@@ -75,32 +75,33 @@ public class GameBuilder : MonoBehaviour
                 Destroy(debug.gameObject);
         }
 
-        // getting the manager from the game - gets or creates the gameplay manager
+        // searches for gameplay manager
+        manager = FindObjectOfType<GameplayManager>();
+
+        // if the manager does not exist, then it creates a new one.
         if (manager == null)
         {
-            manager = GetComponent<GameplayManager>();
+            // searches for an object with the manager.
+            GameObject temp = GameObject.Find("Manager");
 
-            // if the manager component was not found...
-            if (manager == null)
+            // if an object with the name "manager" was not found, then it searches for an object called "Gameplay Manager"
+            if (temp == null)
+                temp = GameObject.Find("Gameplay Manager");
+
+            // object doesn't exist, so a new gameplay manager is made.
+            if (temp == null)
             {
-                // searches for an object with the manager.
-                GameObject temp = GameObject.Find("Manager");
+                // generate manager
+                temp = Instantiate((GameObject)(Resources.Load("Prefabs/Gameplay Manager")));
+                manager = temp.GetComponent<GameplayManager>();
+            }
+            else
+            {
+                manager = temp.GetComponent<GameplayManager>();
 
-                // object doesn't exist, so a new gameplay manager is made.
-                if (temp == null)
-                {
-                    // generate manager
-                    temp = Instantiate((GameObject)(Resources.Load("Prefabs/Gameplay Manager")));
-                    manager = temp.GetComponent<GameplayManager>();
-                }
-                else
-                {
-                    manager = temp.GetComponent<GameplayManager>();
-
-                    // if the manager is null, add the component
-                    if (manager == null)
-                        manager = gameObject.AddComponent<GameplayManager>();
-                }
+                // if the manager is null, add the component
+                if (manager == null)
+                    manager = gameObject.AddComponent<GameplayManager>();
             }
         }
         else
@@ -111,10 +112,14 @@ public class GameBuilder : MonoBehaviour
             // manager = temp.GetComponent<GameplayManager>();
         }
 
+        // sets this as the builder that made the manager.
+        if (manager != null)
+            manager.gameBuilder = this;
+
         // create game assets
 
         // LOAD MAP
-        if(loadMapOnEntry) // load map on entry.
+        if (loadMapOnEntry) // load map on entry.
         {
             GameObject loadedObjects = new GameObject("Loaded Objects");
             LevelLoader levelLoader = loadedObjects.AddComponent<LevelLoader>();
@@ -348,6 +353,18 @@ public class GameBuilder : MonoBehaviour
     public void AddPlayer(int newPlayer)
     {
         playerList.Add((playables)newPlayer);
+
+        if (manager != null)
+            manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
+    }
+
+    // adds a player to the game builder.
+    public void AddPlayer(GameBuilder.playables newPlayer)
+    {
+        playerList.Add(newPlayer);
+
+        if (manager != null)
+            manager.CreatePlayer(playerList.Count, newPlayer, true, false);
     }
 
     // gets the stage
@@ -360,6 +377,12 @@ public class GameBuilder : MonoBehaviour
     public void SetStage(int newMap)
     {
         map = newMap;
+    }
+
+    // clears the player list
+    public void ClearPlayerList()
+    {
+        playerList.Clear();
     }
 
     // updates the volume of all sound efects and BGMs.
@@ -412,10 +435,22 @@ public class GameBuilder : MonoBehaviour
 
         LoadGame();
     }
+    
+    // if called, the game builder is deleted.
+    // the title screen makes a new builder everytime, so when ending the game the builder should be destroyed.
+    public void DestroyBuilder()
+    {
+        Destroy(gameObject);
+    }
 
     // Update is called once per frame
     void Update()
     {
         
     }
+
+    // public void OnDestroy()
+    // {
+    //     
+    // }
 }

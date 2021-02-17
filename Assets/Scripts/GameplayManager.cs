@@ -32,6 +32,13 @@ public class GameplayManager : MonoBehaviour
     // the death space attached to the gameplay manager
     public DeathSpace deathSpace = null;
 
+    // the game builder that was used to make this manager.
+    // this exists because you can't search for Don'tDestroyOnLoad objects.
+    public GameBuilder gameBuilder = null;
+
+    // if set to 'true', the game builder is destroyed when the gameplay manager is destroyed.
+    public bool destroyGameBuilder = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -266,47 +273,85 @@ public class GameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // player 1 has won
-        if(p1 != null)
-        {
-            if (p1.playerScore >= winScore)
-                SceneManager.LoadScene("EndScene");
+        // the existing players
+        List<PlayerObject> players = new List<PlayerObject>();
 
-            // death calculation.
-            if (deathSpace.InDeathSpace(p1.gameObject.transform.position))
+        if (p1 != null)
+            players.Add(p1);
+
+        if (p2 != null)
+            players.Add(p2);
+
+        if (p3 != null)
+            players.Add(p3);
+
+        if (p4 != null)
+            players.Add(p4);
+
+
+        // goes through with all the players
+        foreach(PlayerObject px in players)
+        {
+            // player has been found.
+            if (px.playerScore >= winScore)
+            {
+                // searches for game builder
+                GameBuilder gb = FindObjectOfType<GameBuilder>();
+
+                // if game builder exists, then tell it not to load the game again when it exists the scene.
+                if (gb != null)
+                    gb.SetLoadGame(false);
+
+                SceneManager.LoadScene("EndScene");
+            }
+
+            // checks for death
+            if (deathSpace.InDeathSpace(px.gameObject.transform.position))
                 p1.Respawn();
         }
 
-        // player 2 has won
-        if (p2 != null)
-        {
-            if (p2.playerScore >= winScore)
-                SceneManager.LoadScene("EndScene");
-        }
 
-        // player 3 has won
-        if (p3 != null)
-        {
-            if (p3.playerScore >= winScore)
-                SceneManager.LoadScene("EndScene");
-        }
-
-        // player 4 has won
-        if (p4 != null)
-        {
-            if (p4.playerScore >= winScore)
-                SceneManager.LoadScene("EndScene");
-        }
-
-        // goes through all players
-        // TODO: maybe put this in object checks?
-        // foreach(PlayerObject px in players)
+        // player 1 has won
+        // if (p1 != null)
         // {
-        //     // entered death space
-        //     if (deathSpace.InDeathSpace(px.gameObject.transform.position))
-        //     {
-        //         px.Respawn();
-        //     }
+        //     if (p1.playerScore >= winScore)
+        //         SceneManager.LoadScene("EndScene");
+        // 
+        //     // death calculation.
+        //     if (deathSpace.InDeathSpace(p1.gameObject.transform.position))
+        //         p1.Respawn();
         // }
+        // 
+        // // player 2 has won
+        // if (p2 != null)
+        // {
+        //     if (p2.playerScore >= winScore)
+        //         SceneManager.LoadScene("EndScene");
+        // }
+        // 
+        // // player 3 has won
+        // if (p3 != null)
+        // {
+        //     if (p3.playerScore >= winScore)
+        //         SceneManager.LoadScene("EndScene");
+        // }
+        // 
+        // // player 4 has won
+        // if (p4 != null)
+        // {
+        //     if (p4.playerScore >= winScore)
+        //         SceneManager.LoadScene("EndScene");
+        // }
+    }
+
+    // called when the object is being destroyed
+    public void OnDestroy()
+    {
+        // if the game builder should be destroyed when exiting this scene.
+        // it had to be done this way because you can't search for "Don'tDestroyOnLoad" objects.
+        if(destroyGameBuilder && gameBuilder != null)
+        {
+            Destroy(gameBuilder.gameObject);
+        }
     }
 }

@@ -154,7 +154,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7284661196444069584}
   - component: {fileID: -5805919321328091025}
-  - component: {fileID: -1464304370684644558}
   - component: {fileID: 7284661196444069590}
   - component: {fileID: 7284661196444069585}
   - component: {fileID: 6430195780213761676}
@@ -193,23 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7c41916e981ad24499102f7250fc545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-1464304370684644558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7284661196444069586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 282393298c2462647885dfe955dec025, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadGame: 0
-  loadMapOnEntry: 1
-  adjustAudioOnEntry: 1
-  map: 0
-  playerList: 
 --- !u!114 &7284661196444069590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +212,7 @@ MonoBehaviour:
   p3: {fileID: 0}
   p4: {fileID: 0}
   deathSpace: {fileID: 7284661196444069585}
+  destroyGameBuilder: 1
 --- !u!114 &7284661196444069585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +245,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemCount: 10
+  spawnTime: 20
+  spawnCountdown: 0
+  spawnAreaMin: {x: -25, y: -25, z: -25}
+  spawnAreaMax: {x: 100, y: 100, z: 100}
+  autoItemDespawn: 1
   deathSpace: {fileID: 7284661196444069585}
 --- !u!114 &-3004198080248553708
 MonoBehaviour:
