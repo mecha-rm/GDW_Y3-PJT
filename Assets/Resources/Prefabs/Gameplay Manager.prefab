@@ -157,6 +157,7 @@ GameObject:
   - component: {fileID: -1464304370684644558}
   - component: {fileID: 7284661196444069590}
   - component: {fileID: 7284661196444069585}
+  - component: {fileID: 6430195780213761676}
   - component: {fileID: -3004198080248553708}
   m_Layer: 0
   m_Name: Gameplay Manager
@@ -205,6 +206,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadGame: 0
+  loadMapOnEntry: 1
+  adjustAudioOnEntry: 1
   map: 0
   playerList: 
 --- !u!114 &7284661196444069590
@@ -246,6 +249,19 @@ MonoBehaviour:
   lessThanX: 1
   lessThanY: 1
   lessThanZ: 1
+--- !u!114 &6430195780213761676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7284661196444069586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16111b25ac60887479ad292ecd4b1b88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCount: 10
 --- !u!114 &-3004198080248553708
 MonoBehaviour:
   m_ObjectHideFlags: 0

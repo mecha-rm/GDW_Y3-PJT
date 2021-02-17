@@ -17,10 +17,30 @@ public class FieldItem : MonoBehaviour
     // the number of the item
     public itemType itemSet = 0;
 
+    // if 'true', the field item despawns after a certain amount of time.
+    public bool useDespawnTimer = true;
+
+    // timer for despawning the item. 
+    public static float MaxDespawnTime = 50.0F;
+    public float despawnCountdown = 0.0F;
+
+    // the death space of the field item.
+    public DeathSpace deathSpace;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        despawnCountdown = MaxDespawnTime;
+
+        // gets the deaths pace
+        deathSpace = FindObjectOfType<DeathSpace>();
+    }
+
+    // starts the countdown over.
+    public void ResetDespawnCountdown()
+    {
+        // resets the despawn countdown
+        despawnCountdown = MaxDespawnTime;
     }
 
     // gets the total amount of items
@@ -85,6 +105,28 @@ public class FieldItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // if there is a death space
+        if(deathSpace != null)
+        {
+            // if the item box falls into the death space, it is returned to the object pool.
+            if(deathSpace.InDeathSpace(transform.position) == true)
+            {
+                ItemManager.GetInstance().ReturnItem(this);
+            }
+        }
+        // maybe check for the death space if it isn't set?
+
+        // counts down to when this item should despawn
+        if(useDespawnTimer)
+        {
+            despawnCountdown -= Time.deltaTime;
+
+            // returns item to pool.
+            if (despawnCountdown <= 0.0F)
+            {
+                despawnCountdown = 0.0F;
+                ItemManager.GetInstance().ReturnItem(this);
+            }
+        }
     }
 }

@@ -5,6 +5,13 @@ using UnityEngine;
 // the item manager, which is a singleton
 public class ItemManager
 {
+    /// <summary>
+    /// Basic Setup:
+    /// Item boxes save what kind of item components to generate
+    /// When a player hits a box, a component is generated, and it attaches to the player
+    /// The component is also put into the item manager, where it gets managed.
+    /// </summary>
+
     // instance of singleton
     private static ItemManager instance = null;
 
@@ -37,6 +44,12 @@ public class ItemManager
     void Start()
     {
         
+    }
+
+    // gets the item count
+    public int GetItemCount()
+    {
+        return itemPool.Count;
     }
 
     // sets the total amount of items that are available.
@@ -83,6 +96,7 @@ public class ItemManager
         {
             GameObject itemBox = GameObject.Instantiate((GameObject)Resources.Load(itemPrefab));
             FieldItem fieldItem = itemBox.GetComponent<FieldItem>();
+            fieldItem.ResetDespawnCountdown();
             fieldItem.RandomizeItem();
 
             // returns the new filed item.
@@ -91,6 +105,7 @@ public class ItemManager
         else // takes item from the pool
         {
             FieldItem itemBox = itemPool.Dequeue();
+            itemBox.ResetDespawnCountdown();
             itemBox.gameObject.SetActive(true);
             itemBox.RandomizeItem(); // randomize item
 
@@ -102,6 +117,7 @@ public class ItemManager
     // returns the field item
     public void ReturnItem(FieldItem item)
     {
+        // item.ResetDespawnCountdown(); // happens upon being pulled from pool.
         item.gameObject.SetActive(false);
         itemPool.Enqueue(item); // adds item back into pool.
     }
