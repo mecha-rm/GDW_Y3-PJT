@@ -13,8 +13,8 @@ public abstract class HeldItem : MonoBehaviour
     protected bool timedItem = true;
     
     // the maximum effect time and the current effect time.
-    protected float maxEffectTime = 10.0F;
-    private float currEffectTime = 0.0F;
+    public float maxEffectTime = 10.0F;
+    public float currEffectTime = 0.0F;
 
     // the player that activated the effect.
     protected PlayerObject activator = null;

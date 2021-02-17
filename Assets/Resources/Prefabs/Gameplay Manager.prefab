@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemCount: 10
+  deathSpace: {fileID: 7284661196444069585}
 --- !u!114 &-3004198080248553708
 MonoBehaviour:
   m_ObjectHideFlags: 0

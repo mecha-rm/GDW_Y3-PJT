@@ -46,8 +46,8 @@ public class ItemManager
         
     }
 
-    // gets the item count
-    public int GetItemCount()
+    // gets the currenet amount of items in the pool.
+    public int GetItemPoolCount()
     {
         return itemPool.Count;
     }
@@ -86,6 +86,12 @@ public class ItemManager
             }
             while (itemPool.Count < itemCount);
         }
+    }
+
+    // checs to see if the item manageris empty.
+    public bool ItemPoolIsEmpty()
+    {
+        return itemPool.Count == 0;
     }
 
     // gets a field item

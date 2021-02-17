@@ -2582,6 +2582,10 @@ PrefabInstance:
       propertyPath: itemSet
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5069497425929203814, guid: a01c8cd44c439d84fad9cddd84e75442, type: 3}
+      propertyPath: deathSpace
+      value: 
+      objectReference: {fileID: 1029398850}
     - target: {fileID: 5069497425929203815, guid: a01c8cd44c439d84fad9cddd84e75442, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.42
@@ -2787,6 +2791,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMin.x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMin.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMin.z
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMax.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMax.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMax.z
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6439735491323624411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: clipEnd
       value: 260.938

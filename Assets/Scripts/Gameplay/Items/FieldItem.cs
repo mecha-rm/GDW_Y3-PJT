@@ -58,6 +58,17 @@ public class FieldItem : MonoBehaviour
         return itemSet;
     }
 
+    // randomizes the field item's position using a minimum (inclusive) and maximum (inclusive)
+    public void RandomizePosition(Vector3 min, Vector3 max)
+    {
+        // creates a new position.
+        transform.position = new Vector3(
+            Random.Range(min.x, max.x),
+            Random.Range(min.y, max.y),
+            Random.Range(min.z, max.z)
+        );
+    }
+
     // adds the item component to the player
     public HeldItem AddItemComponent(PlayerObject player)
     {
@@ -68,10 +79,28 @@ public class FieldItem : MonoBehaviour
             case 0: // none
                 break;
             case itemType.speedUp: // speed
-                genItem = player.gameObject.AddComponent<SpeedItem>();
+                // checks to see if the player already has a speed item attached.
+                SpeedItem spdItem = player.gameObject.GetComponent<SpeedItem>();
+
+                // if the player already has a speed item, the countdown for it is reset.
+                // if they didn't have a speed item, they are given one.
+                if (spdItem == null)
+                    genItem = player.gameObject.AddComponent<SpeedItem>();
+                else
+                    spdItem.ResetCountdown();
+
                 break;
             case itemType.jumpUp: // jump
-                genItem = player.gameObject.AddComponent<JumpItem>();
+                // checks to see if the player already has a jump item attached.
+                JumpItem jumpItem = player.gameObject.GetComponent<JumpItem>();
+
+                // if the player already has a jump item, the countdown for it is reset.
+                // if they didn't have a jump item, they are given one.
+                if (jumpItem == null)
+                    genItem = player.gameObject.AddComponent<JumpItem>();
+                else
+                    jumpItem.ResetCountdown();
+                
                 break;
         }
 
