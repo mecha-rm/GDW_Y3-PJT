@@ -65,6 +65,16 @@ public class GameBuilder : MonoBehaviour
             return;
         }
 
+        // destroys any debug objects in the scene.
+        {
+            // destroys the debug object and its children.
+            GameObject debug = GameObject.Find("Debug");
+
+            // destroys the parent and the children.
+            if (debug != null)
+                Destroy(debug.gameObject);
+        }
+
         // getting the manager from the game - gets or creates the gameplay manager
         if (manager == null)
         {
