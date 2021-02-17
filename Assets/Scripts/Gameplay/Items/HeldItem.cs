@@ -10,7 +10,7 @@ public abstract class HeldItem : MonoBehaviour
     // determines whether the item's effect is timed or not.
     // if 'true', the item's effect runs out after (X) amount of time has passed.
     // if 'false', the item must be manually turned off by calling DeactivateEffect()
-    bool timedItem = true;
+    protected bool timedItem = true;
     
     // the maximum effect time and the current effect time.
     protected float maxEffectTime = 10.0F;
@@ -25,6 +25,11 @@ public abstract class HeldItem : MonoBehaviour
         
     }
 
+    // checks to see if the item is timed.
+    public bool IsTimedItem()
+    {
+        return timedItem;
+    }
 
     // returns the maximum effect time.
     public float GetMaximumEffectTime()
@@ -37,6 +42,12 @@ public abstract class HeldItem : MonoBehaviour
     protected void SetMaximumEffectTime(float maxTime)
     {
         maxEffectTime = (maxTime >= 0.0F) ? maxTime : maxEffectTime;
+    }
+
+    // resets the countdown until the item times out.
+    public void ResetCountdown()
+    {
+        currEffectTime = maxEffectTime;
     }
 
     // activates the effect for the gameplay item
@@ -56,7 +67,12 @@ public abstract class HeldItem : MonoBehaviour
     {
         currEffectTime = 0.0F;
         RemoveEffect();
-        activator = null;
+
+        // removes this component from the player and destroys itself.
+        Destroy(this);
+
+        // activator = null; // remove player
+        // enabled = false; // de-activate item
     }
 
     // function for removing the effect.
@@ -75,6 +91,7 @@ public abstract class HeldItem : MonoBehaviour
             // if the effect time has run out.
             if (currEffectTime <= 0.0F)
             {
+                // deactivates the effect, and destroies this object.
                 DeactiveEffect();
             }
         }

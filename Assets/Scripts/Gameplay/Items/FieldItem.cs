@@ -75,8 +75,11 @@ public class FieldItem : MonoBehaviour
         // adds the item component.
         AddItemComponent(plyr);
 
-        // deactivates object
-        gameObject.SetActive(false);
+        // returns self to the pool
+        ItemManager.GetInstance().ReturnItem(this);
+
+        // deactivates object (this happens in the return item section)
+        // gameObject.SetActive(false);
     }
 
     // Update is called once per frame

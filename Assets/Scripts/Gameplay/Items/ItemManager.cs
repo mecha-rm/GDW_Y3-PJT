@@ -9,7 +9,7 @@ public class ItemManager
     private static ItemManager instance = null;
 
     // list of items in the pool
-    List<FieldItem> items = new List<FieldItem>();
+    Queue<FieldItem> itemPool = new Queue<FieldItem>();
 
     // the prefab for the item box
     public string itemPrefab = "Prefabs/Item Box";
@@ -43,19 +43,18 @@ public class ItemManager
     public void SetItemCount(int itemCount)
     {
         // there are more items that should be available
-        if(items.Count > itemCount)
+        if(itemPool.Count > itemCount)
         {
             do
             {
                 // removes the item from the list
-                FieldItem item = items[items.Count - 1];
-                items.RemoveAt(items.Count - 1);
-                Object.Destroy(item);
+                FieldItem item = itemPool.Dequeue();
+                Object.Destroy(item.gameObject);
             }
-            while (items.Count > itemCount);
+            while (itemPool.Count > itemCount);
         }
         // there are less items than should be available
-        else if(items.Count < itemCount)
+        else if(itemPool.Count < itemCount)
         {
             do
             {
@@ -63,20 +62,47 @@ public class ItemManager
                 // TODO: check for component being on prefab?
                 GameObject itemBox = GameObject.Instantiate((GameObject)Resources.Load(itemPrefab));
                 FieldItem fieldItem = itemBox.GetComponent<FieldItem>();
+                itemBox.SetActive(false);
 
                 // missing component
                 if (fieldItem == null)
                     fieldItem = itemBox.AddComponent<FieldItem>();
 
                 fieldItem.RandomizeItem();
-                items.Add(fieldItem);
+                itemPool.Enqueue(fieldItem);
             }
-            while (items.Count < itemCount);
+            while (itemPool.Count < itemCount);
         }
+    }
 
-        for(int i = 0; i < itemCount; i++)
+    // gets a field item
+    public FieldItem GetItem()
+    {
+        // generates new item
+        if(itemPool.Count == 0)
         {
+            GameObject itemBox = GameObject.Instantiate((GameObject)Resources.Load(itemPrefab));
+            FieldItem fieldItem = itemBox.GetComponent<FieldItem>();
+            fieldItem.RandomizeItem();
 
+            // returns the new filed item.
+            return fieldItem;
         }
+        else // takes item from the pool
+        {
+            FieldItem itemBox = itemPool.Dequeue();
+            itemBox.gameObject.SetActive(true);
+            itemBox.RandomizeItem(); // randomize item
+
+            // returns item box.
+            return itemBox;
+        }
+    }
+
+    // returns the field item
+    public void ReturnItem(FieldItem item)
+    {
+        item.gameObject.SetActive(false);
+        itemPool.Enqueue(item); // adds item back into pool.
     }
 }
