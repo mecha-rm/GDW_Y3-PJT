@@ -777,6 +777,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMax.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMax.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMax.z
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6439735491323624411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: clipEnd
       value: 260.938
@@ -1105,5 +1121,17 @@ PrefabInstance:
       propertyPath: flag
       value: 
       objectReference: {fileID: 970319896}
+    - target: {fileID: 5325884377365723739, guid: a9588d5c374c1b54183dfb65518f34d3, type: 3}
+      propertyPath: itemSpawnAreaMin.x
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5325884377365723739, guid: a9588d5c374c1b54183dfb65518f34d3, type: 3}
+      propertyPath: itemSpawnAreaMin.z
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5325884377365723739, guid: a9588d5c374c1b54183dfb65518f34d3, type: 3}
+      propertyPath: itemSpawnAreaMin.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9588d5c374c1b54183dfb65518f34d3, type: 3}

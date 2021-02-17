@@ -52,6 +52,8 @@ public class FieldItem : MonoBehaviour
     // randomizes the item number of the 
     public itemType RandomizeItem()
     {
+        // TODO: have adjustable probability rates.
+
         // randomizes the item
         itemSet = (itemType)Random.Range(1, ITEM_COUNT + 1);
 

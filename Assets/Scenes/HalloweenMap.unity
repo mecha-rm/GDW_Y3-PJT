@@ -1330,6 +1330,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMin.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMin.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: spawnAreaMin.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6439735491323624411, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: clipStart
       value: 35.49
@@ -1420,6 +1432,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+--- !u!114 &1164018649 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+  m_PrefabInstance: {fileID: 1164018648}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16111b25ac60887479ad292ecd4b1b88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1279911342
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2567,5 +2590,21 @@ PrefabInstance:
       propertyPath: flag
       value: 
       objectReference: {fileID: 1398358213}
+    - target: {fileID: 7320506948718360935, guid: 39daa8bca49a2a649be1a0ee66fab517, type: 3}
+      propertyPath: itemSpawner
+      value: 
+      objectReference: {fileID: 1164018649}
+    - target: {fileID: 7320506948718360935, guid: 39daa8bca49a2a649be1a0ee66fab517, type: 3}
+      propertyPath: itemSpawnAreaMin.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320506948718360935, guid: 39daa8bca49a2a649be1a0ee66fab517, type: 3}
+      propertyPath: itemSpawnAreaMin.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320506948718360935, guid: 39daa8bca49a2a649be1a0ee66fab517, type: 3}
+      propertyPath: itemSpawnAreaMin.z
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39daa8bca49a2a649be1a0ee66fab517, type: 3}
