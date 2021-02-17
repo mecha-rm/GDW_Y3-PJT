@@ -13,11 +13,11 @@ public abstract class HeldItem : MonoBehaviour
     bool timedItem = true;
     
     // the maximum effect time and the current effect time.
-    private float maxEffectTime = 0.0F;
+    protected float maxEffectTime = 10.0F;
     private float currEffectTime = 0.0F;
 
     // the player that activated the effect.
-    private PlayerObject activator = null;
+    protected PlayerObject activator = null;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +64,7 @@ public abstract class HeldItem : MonoBehaviour
     protected abstract void RemoveEffect();
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         // timed item
         if (timedItem)
