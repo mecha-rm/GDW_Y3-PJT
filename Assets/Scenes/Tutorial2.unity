@@ -1852,6 +1852,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 838216865}
     m_Modifications:
+    - target: {fileID: 2747027042971580054, guid: f753d4bc02373a245b44ff6dc9374105, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 352587590}
     - target: {fileID: 3978860192212530099, guid: f753d4bc02373a245b44ff6dc9374105, type: 3}
       propertyPath: m_Name
       value: Turtle Player
@@ -1933,6 +1937,22 @@ PrefabInstance:
       propertyPath: flag
       value: 
       objectReference: {fileID: 2060118461}
+    - target: {fileID: 941683925577581045, guid: c28a02da5d65b3e47986160990d33a28, type: 3}
+      propertyPath: playerSpawns.Array.data[0].x
+      value: -4.556
+      objectReference: {fileID: 0}
+    - target: {fileID: 941683925577581045, guid: c28a02da5d65b3e47986160990d33a28, type: 3}
+      propertyPath: playerSpawns.Array.data[0].y
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 941683925577581045, guid: c28a02da5d65b3e47986160990d33a28, type: 3}
+      propertyPath: playerSpawns.Array.data[0].z
+      value: 142.884
+      objectReference: {fileID: 0}
+    - target: {fileID: 941683925577581045, guid: c28a02da5d65b3e47986160990d33a28, type: 3}
+      propertyPath: itemSpawner
+      value: 
+      objectReference: {fileID: 5050549912549190280}
     - target: {fileID: 1287470061674438431, guid: c28a02da5d65b3e47986160990d33a28, type: 3}
       propertyPath: m_Name
       value: Stage
@@ -5904,6 +5924,14 @@ PrefabInstance:
       propertyPath: stepListText
       value: 
       objectReference: {fileID: 147784322}
+    - target: {fileID: 5050549912184755923, guid: b597d122611fd7448854a2fe8932c52f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5050549912184755923, guid: b597d122611fd7448854a2fe8932c52f, type: 3}
+      propertyPath: deathSpace
+      value: 
+      objectReference: {fileID: 5050549912549190279}
     - target: {fileID: 5050549912184755924, guid: b597d122611fd7448854a2fe8932c52f, type: 3}
       propertyPath: stepList.Array.data[0]
       value: 
@@ -5978,6 +6006,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b597d122611fd7448854a2fe8932c52f, type: 3}
+--- !u!114 &5050549912549190279 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5050549912184755913, guid: b597d122611fd7448854a2fe8932c52f, type: 3}
+  m_PrefabInstance: {fileID: 5050549912549190278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d114ac8a3d2122946879e64261218aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5050549912549190280 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5050549912184755923, guid: b597d122611fd7448854a2fe8932c52f, type: 3}
+  m_PrefabInstance: {fileID: 5050549912549190278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16111b25ac60887479ad292ecd4b1b88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6431425955985889441
 PrefabInstance:
   m_ObjectHideFlags: 0

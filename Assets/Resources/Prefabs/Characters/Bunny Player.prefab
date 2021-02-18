@@ -723,7 +723,7 @@ MonoBehaviour:
   stateMachine: {fileID: 2863417912992673261}
   playerScore: 0
   playerScoreText: {fileID: 0}
-  rigidBody: {fileID: 0}
+  rigidBody: {fileID: 8870414188071261014}
   movementSpeed: 2500
   jumpForce: 10
   backupFactor: 0.5

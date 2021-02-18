@@ -282,11 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialList: {fileID: 5050549912184755915}
-  stepList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  stepList: []
   stepText: {fileID: 0}
 --- !u!114 &5050549912184755915
 MonoBehaviour:
