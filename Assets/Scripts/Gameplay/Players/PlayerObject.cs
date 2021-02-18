@@ -247,12 +247,13 @@ public class PlayerObject : MonoBehaviour
     // the second collider uses onTrigger, so it does not physically stop the player at all.
 
     // ground collider has been triggered.
-    private void OnTriggerEnter(Collider other)
+    // private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other) // changed to 'Stay' for more reliability.
     {
         if (other.gameObject.tag == "StageObject" || other.gameObject.tag == "Untagged")
             onGround = true;
 
-        Debug.Log("OnGround");
+        // Debug.Log("OnGround");
     }
 
     // ground collider has been left.
@@ -261,7 +262,7 @@ public class PlayerObject : MonoBehaviour
         if (other.gameObject.tag == "StageObject" || other.gameObject.tag == "Untagged")
             onGround = false;
 
-        Debug.Log("OffGround");
+        // Debug.Log("OffGround");
     }
 
     // gets the player number

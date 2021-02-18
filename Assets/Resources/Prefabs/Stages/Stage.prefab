@@ -58,12 +58,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
-  bgm: {fileID: 0}
-  bgmClipStart: 0
-  bgmClipEnd: 0
-  skybox: {fileID: 0}
+  bgm: {fileID: 8300000, guid: cbfd6c0140713074db30d7decf533be1, type: 3}
+  bgmClipStart: 35.49
+  bgmClipEnd: 260.938
+  skybox: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   flag: {fileID: 0}
+  flagPrefab: Prefabs/Flag
   flagSpawn: {x: 0, y: 0, z: 0}
   useFlagPosAsSpawn: 1
   playerSpawns: []
   randomPlayerPos: 0
+  itemSpawner: {fileID: 0}
+  itemSpawnAreaMin: {x: -50, y: -50, z: -50}
+  itemSpawnAreaMax: {x: 50, y: 50, z: 50}
