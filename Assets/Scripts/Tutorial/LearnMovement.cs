@@ -33,6 +33,9 @@ public class LearnMovement : MonoBehaviour
             Prompt.text = "Follow the arrow to the big pumpkin!";
             Instructions.text = "Use the SPACE bar to jump. Use WASD to control where you are heading.";
             learnJump = false;
+
+            // arrow doesn't move over to next step. This was an attempt to fix it (it didn't work).
+            // arrow.transform.position = new Vector3(transform.position.x, arrow.transform.position.y, transform.position.z);
         }
     }
 

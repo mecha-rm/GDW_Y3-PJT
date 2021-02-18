@@ -144,7 +144,7 @@ public class UndoRedoSystem : MonoBehaviour
         // e1 gets the values from the object on e0. This is the same object that's on e1.
         // typeTemp = e0.type;
         // e1.type = e0.type;
-        e1.active = e0.entity.active;
+        e1.active = e0.entity.activeSelf;
         e1.position = e0.entity.transform.position; // copies the object's current position
         e1.rotation = e0.entity.transform.rotation; // copies the object's current rotation
         e1.localScale = e0.entity.transform.localScale; // copies the object's local scale.

@@ -12,6 +12,9 @@ TagManager:
   - Effect
   - Canvas
   - SubUI
+  - Camera
+  - SFX
+  - BGM
   layers:
   - Default
   - TransparentFX

@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: have the items be random drops that appear on the field.
 // script for gameplay items
-public abstract class GameplayItem : MonoBehaviour
+// NOTE: this is for items that are being held by a player.
+public abstract class HeldItem : MonoBehaviour
 {
     // determines whether the item's effect is timed or not.
     // if 'true', the item's effect runs out after (X) amount of time has passed.
     // if 'false', the item must be manually turned off by calling DeactivateEffect()
-    bool timedItem = true;
+    protected bool timedItem = true;
     
     // the maximum effect time and the current effect time.
-    private float maxEffectTime = 0.0F;
-    private float currEffectTime = 0.0F;
+    public float maxEffectTime = 10.0F;
+    public float currEffectTime = 0.0F;
 
     // the player that activated the effect.
-    private PlayerObject activator = null;
+    protected PlayerObject activator = null;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,11 @@ public abstract class GameplayItem : MonoBehaviour
         
     }
 
+    // checks to see if the item is timed.
+    public bool IsTimedItem()
+    {
+        return timedItem;
+    }
 
     // returns the maximum effect time.
     public float GetMaximumEffectTime()
@@ -35,6 +42,12 @@ public abstract class GameplayItem : MonoBehaviour
     protected void SetMaximumEffectTime(float maxTime)
     {
         maxEffectTime = (maxTime >= 0.0F) ? maxTime : maxEffectTime;
+    }
+
+    // resets the countdown until the item times out.
+    public void ResetCountdown()
+    {
+        currEffectTime = maxEffectTime;
     }
 
     // activates the effect for the gameplay item
@@ -54,7 +67,12 @@ public abstract class GameplayItem : MonoBehaviour
     {
         currEffectTime = 0.0F;
         RemoveEffect();
-        activator = null;
+
+        // removes this component from the player and destroys itself.
+        Destroy(this);
+
+        // activator = null; // remove player
+        // enabled = false; // de-activate item
     }
 
     // function for removing the effect.
@@ -62,7 +80,7 @@ public abstract class GameplayItem : MonoBehaviour
     protected abstract void RemoveEffect();
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         // timed item
         if (timedItem)
@@ -73,6 +91,7 @@ public abstract class GameplayItem : MonoBehaviour
             // if the effect time has run out.
             if (currEffectTime <= 0.0F)
             {
+                // deactivates the effect, and destroies this object.
                 DeactiveEffect();
             }
         }

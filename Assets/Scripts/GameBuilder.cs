@@ -8,8 +8,16 @@ public class GameBuilder : MonoBehaviour
     public enum playables { none, dog, cat, bunny, turtle};
 
     // if 'true', the game is loaded.
+    // Note: this must be set to 'true' before entering a scene in order for it to work.
     public bool loadGame = false;
-    
+
+    // if 'true', the map objects are loaded on entry.
+    // if 'false', nothing is loaded. This should be disabled if using preset levels.
+    public bool loadMapOnEntry = true;
+
+    // if 'true', the audio settings are updated with what's specified in the game settings singleton.
+    public bool adjustAudioOnEntry = true;
+
     // the name of the map
     public int map = 0; // loads the map for the scene.
 
@@ -22,6 +30,9 @@ public class GameBuilder : MonoBehaviour
     // the stage parent object
     Stage stage;
 
+    // the stage file directory
+    // string stageFileDirectory;
+
     // states that the object shouldn't be destroyed on load.
     private void Awake()
     {
@@ -32,42 +43,65 @@ public class GameBuilder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // game shouldn't be loaded.
-        if (!loadGame)
-            return;
+        // checks to see if the game should be loaded.
+        if (loadGame)
+            LoadGame();
 
-        LoadGame();
+
+        // updates volume of everything in the scene.
+        // this is in the 'Start()' section because this is not dependent on game loading.
+        // plus this doesn't load anything
+        if(adjustAudioOnEntry)
+            UpdateVolume();
     }
 
     // loads the game
     public void LoadGame()
     {
-        // getting the manager from the game - gets or creates the gameplay manager
+        // game shouldn't be loaded.
+        if(!loadGame)
+        {
+            Debug.Log("Game loading is disabled. Set 'loadGame' to true, and call LoadGame() again.");
+            return;
+        }
+
+        // destroys any debug objects in the scene.
+        {
+            // destroys the debug object and its children.
+            GameObject debug = GameObject.Find("Debug");
+
+            // destroys the parent and the children.
+            if (debug != null)
+                Destroy(debug.gameObject);
+        }
+
+        // searches for gameplay manager
+        manager = FindObjectOfType<GameplayManager>();
+
+        // if the manager does not exist, then it creates a new one.
         if (manager == null)
         {
-            manager = GetComponent<GameplayManager>();
+            // searches for an object with the manager.
+            GameObject temp = GameObject.Find("Manager");
 
-            // if the manager component was not found...
-            if (manager == null)
+            // if an object with the name "manager" was not found, then it searches for an object called "Gameplay Manager"
+            if (temp == null)
+                temp = GameObject.Find("Gameplay Manager");
+
+            // object doesn't exist, so a new gameplay manager is made.
+            if (temp == null)
             {
-                // searches for an object with the manager.
-                GameObject temp = GameObject.Find("Manager");
+                // generate manager
+                temp = Instantiate((GameObject)(Resources.Load("Prefabs/Gameplay Manager")));
+                manager = temp.GetComponent<GameplayManager>();
+            }
+            else
+            {
+                manager = temp.GetComponent<GameplayManager>();
 
-                // object doesn't exist, so a new gameplay manager is made.
-                if (temp == null)
-                {
-                    // generate manager
-                    temp = Instantiate((GameObject)(Resources.Load("Prefabs/Gameplay Manager")));
-                    manager = temp.GetComponent<GameplayManager>();
-                }
-                else
-                {
-                    manager = temp.GetComponent<GameplayManager>();
-
-                    // if the manager is null, add the component
-                    if (manager == null)
-                        manager = gameObject.AddComponent<GameplayManager>();
-                }
+                // if the manager is null, add the component
+                if (manager == null)
+                    manager = gameObject.AddComponent<GameplayManager>();
             }
         }
         else
@@ -78,9 +112,14 @@ public class GameBuilder : MonoBehaviour
             // manager = temp.GetComponent<GameplayManager>();
         }
 
+        // sets this as the builder that made the manager.
+        if (manager != null)
+            manager.gameBuilder = this;
+
         // create game assets
 
         // LOAD MAP
+        if (loadMapOnEntry) // load map on entry.
         {
             GameObject loadedObjects = new GameObject("Loaded Objects");
             LevelLoader levelLoader = loadedObjects.AddComponent<LevelLoader>();
@@ -89,18 +128,6 @@ public class GameBuilder : MonoBehaviour
             // levelLoader.parent = new GameObject("Loaded Objects");
 
             levelLoader.parent = loadedObjects;
-            // levelLoader.transform = levelLoader.parent.transform;
-            // Stage stageComp = null;
-
-            // if(levelLoader.parent == null || levelLoader.parent.gameObject == null) // no parent set
-            // {
-            //     stage = new GameObject();
-            //     levelLoader.parent = stage;
-            // }
-            // else // parent set
-            // {
-            //     stage = levelLoader.parent;
-            // }
 
 
             levelLoader.loadAsChildren = true;
@@ -109,9 +136,11 @@ public class GameBuilder : MonoBehaviour
             switch (map)
             {
                 default:
-                case 0: // no map
+                case 0: // no map, so load the debug scene instead.
                     loadGame = false;
-                    UnityEngine.SceneManagement.SceneManager.LoadScene("GameplayScene"); // TODO: update when you rename scene.
+                    // NOTE: do NOT try to jump to another scene when processing a switch to an exiting scene.
+                    // UnityEngine.SceneManagement.SceneManager.LoadScene("DebugScene"); // TODO: update when you rename scene.
+                    levelLoader.file = "unnamed.dat";
                     break;
 
                 case 1: // halloween stage
@@ -133,6 +162,29 @@ public class GameBuilder : MonoBehaviour
             if (stage == null)
                 stage = levelLoader.GetComponentInChildren<Stage>();
         }
+        else if(!loadMapOnEntry) // map should not be loaded on entry.
+        {
+            stage = FindObjectOfType<Stage>(); // finds the stage object in the scene.
+
+            // if not set, it searches for the stage object.
+            if(stage == null)
+            {
+                Debug.LogError("No Stage Component Found.");
+
+                // GameObject temp = GameObject.Find("Stage");
+                // 
+                // // if there is no parent object named "stage", then nothing happens
+                // if(temp != null)
+                // {
+                //     // gets the component from the stage
+                //     stage = temp.GetComponent<Stage>();
+                // 
+                //     // if there is no stage component, add one.
+                //     if (stage == null)
+                //         stage = temp.AddComponent<Stage>();
+                // }
+            }
+        }
 
         // LOAD CHARACTER ASSETS
 
@@ -141,9 +193,20 @@ public class GameBuilder : MonoBehaviour
         manager.DestroyAllPlayers(); // destroys all players
 
         // creates the player and puts it in the manager
-        for(int i = 0; i < count; i++)
+        if(count == 0) // no playes set, so test player is added.
         {
-            manager.CreatePlayer(i + 1, playerList[i], false);
+            manager.CreatePlayer(0, 0, true, true);
+        }
+        else if(count == 1) // only one player, so use main camera
+        {
+            manager.CreatePlayer(0, playerList[0], false, true);
+        }
+        else
+        {
+            for (int i = 0; i < count; i++)
+            {
+                manager.CreatePlayer(i + 1, playerList[i], false, false);
+            }
         }
 
         manager.playerCount = count;
@@ -228,8 +291,27 @@ public class GameBuilder : MonoBehaviour
             {
                 // add in the clip
                 audioSource.clip = clip;
+                audioSource.mute = false;
                 audioSource.Play();
             }
+
+            // gets the audio loop component.
+            // TODO: maybe save this somewhere to save load time?
+            AudioLoop audioLoop = GetComponentInChildren<AudioLoop>();
+            
+            // looping audio
+            if(audioLoop == null)
+            {
+                audioLoop = gameObject.AddComponent<AudioLoop>();
+            }
+
+            // enables audio loop
+            // TODO: should you check if it's already enabled first?
+            audioLoop.enabled = true;
+            audioLoop.clipStart = stage.bgmClipStart;
+            audioLoop.clipEnd = stage.bgmClipEnd;
+
+            // TODO: safety check
 
         }
 
@@ -243,10 +325,122 @@ public class GameBuilder : MonoBehaviour
         loadGame = false;
     }
 
+    // checks to see if the game should be loaded.
+    public bool GetLoadGame()
+    {
+        return loadGame;
+    }
+
+    // sets to load the game or not.
+    public void SetLoadGame(bool load)
+    {
+        loadGame = load;
+    }
+
+    // gets whether to load the stage or not.
+    public bool GetLoadStage()
+    {
+        return loadMapOnEntry;
+    }
+
+    // sets to load the stage.
+    public void SetLoadStage(bool loadStage)
+    {
+        loadMapOnEntry = loadStage;
+    }
+
     // adds a player to the list
-    public void AddPlayer(playables newPlayer)
+    public void AddPlayer(int newPlayer)
+    {
+        playerList.Add((playables)newPlayer);
+
+        if (manager != null)
+            manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
+    }
+
+    // adds a player to the game builder.
+    public void AddPlayer(GameBuilder.playables newPlayer)
     {
         playerList.Add(newPlayer);
+
+        if (manager != null)
+            manager.CreatePlayer(playerList.Count, newPlayer, true, false);
+    }
+
+    // gets the stage
+    public int GetStage()
+    {
+        return map;
+    }
+
+    // sets the stage
+    public void SetStage(int newMap)
+    {
+        map = newMap;
+    }
+
+    // clears the player list
+    public void ClearPlayerList()
+    {
+        playerList.Clear();
+    }
+
+    // updates the volume of all sound efects and BGMs.
+    public void UpdateVolume()
+    {
+        // finds all audio sources
+        AudioSource[] audios = FindObjectsOfType<AudioSource>();
+
+        // gets the game settings
+        GameSettings settings = GameSettings.GetInstance();
+
+        // gets the volume for the bgm and the sfx.
+        // the master volume does not need to be set since that's done by Unity.
+        float bgmVolume = settings.GetBgmVolume();
+        float sfxVolume = settings.GetSfxVolume();
+
+        // adjusts the volume settings.
+        foreach (AudioSource audio in audios)
+        {
+            // adjusts volume
+            switch (audio.tag)
+            {
+                case "BGM":
+                    audio.volume = bgmVolume;
+                    break;
+
+                case "SFX":
+                    audio.volume = sfxVolume;
+                    break;
+            }
+        }
+
+    }
+
+    // called when the scene changes
+    public void OnLevelWasLoaded(int level)
+    {
+        // TODO: maybe just have this do it on loadGame being true?.
+        // picks from list of loaded scenes
+        // string sceneName = UnityEngine.SceneManagement.SceneManager.GetSceneAt(level).name;
+
+        // TODO: this will cause an infinite loop for some reason. Fix this.
+        // string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        // 
+        // // if the gameplay scene has been entered, or if the game should be loaded.
+        // if(sceneName == "GameplayScene" || loadGame)
+        // {
+        //     LoadGame();
+        // }   
+
+        LoadGame();
+    }
+    
+    // if called, the game builder is deleted.
+    // the title screen makes a new builder everytime, so when ending the game the builder should be destroyed.
+    public void DestroyBuilder()
+    {
+        Destroy(gameObject);
     }
 
     // Update is called once per frame
@@ -254,4 +448,9 @@ public class GameBuilder : MonoBehaviour
     {
         
     }
+
+    // public void OnDestroy()
+    // {
+    //     
+    // }
 }

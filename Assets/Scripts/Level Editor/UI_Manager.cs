@@ -384,11 +384,11 @@ public class UI_Manager : MonoBehaviour
     {
         // sets ui to be active
         if (Input.GetKeyDown(KeyCode.U))
-            ui01.SetActive(!ui01.active);
+            ui01.SetActive(!ui01.activeSelf);
 
         // shows and hides instruction panel
         if (Input.GetKeyDown(KeyCode.I))
-            instructionPanel.SetActive(!instructionPanel.active);
+            instructionPanel.SetActive(!instructionPanel.activeSelf);
 
         // switches the camera (unused)
         // if(Input.GetKeyDown(KeyCode.C))

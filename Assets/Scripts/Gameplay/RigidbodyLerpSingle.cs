@@ -6,7 +6,7 @@ using UnityEngine;
 // if you don't want the platform to tilt, then freeze the rotation.
 // if you don't want the platform to sink, increase its mass so that objects can't weigh it down.
 // these are all handled in the rigidbody.
-public class PlatformMovement : MonoBehaviour
+public class RigidbodyLerpSingle : MonoBehaviour
 {
     // the rigid body of the platform. This will automatically be filled if not provided.
     public Rigidbody rigidBody;
@@ -31,15 +31,19 @@ public class PlatformMovement : MonoBehaviour
     void Start()
     {
         // gets the rigid body
-        rigidBody = GetComponent<Rigidbody>();
-
-        // gets the rigid body if it has not been set, it automatically adds one.
         if (rigidBody == null)
-            rigidBody = gameObject.AddComponent<Rigidbody>();
+        {
+            rigidBody = GetComponent<Rigidbody>();
+
+            // adds rigid body if one has not been found.
+            if (rigidBody == null)
+                rigidBody = gameObject.AddComponent<Rigidbody>();
+
+        }
 
         // adds starting position as destination.
         // doing so will also increase the index to 1 so that 
-        if(addStartPos)
+        if (addStartPos)
         {
             // adds the travel point as the first position.
             travelPoints.Insert(0, transform.position);
@@ -125,7 +129,6 @@ public class PlatformMovement : MonoBehaviour
                 // if this goes out of bounds, it will be corrected on the next update.
                 destIndex++;
             }
-
 
         }
     }

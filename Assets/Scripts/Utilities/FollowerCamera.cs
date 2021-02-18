@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// the follower camera script.
 public class FollowerCamera : MonoBehaviour
 {
+    // the camera object.
+    public Camera cameraObject;
 
     // the camera distance from the target
     public Vector3 distance = new Vector3(0, 0, 0); // camera distance from player
    
     // the target the camera is following.
     public GameObject target;
+
     // the camera's rotation
     public Vector3 rotation = new Vector3(0, 0, 0); // the camera's default orientation
 
@@ -20,12 +24,30 @@ public class FollowerCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // if the camera object has not been set.
+        if (cameraObject == null)
+            cameraObject = GetComponent<Camera>();
+
+
         // if a target has been set, position properly now.
         if (target != null)
         {
             transform.position = target.transform.position + distance;
             transform.LookAt(target.transform);
         }
+    }
+
+    // searches for the camera component
+    public Camera GetCamera()
+    {
+        // if the camera object is null, search for it.
+        if(cameraObject == null)
+        {
+            cameraObject = GetComponent<Camera>();
+        }
+
+        // returns the camera object
+        return cameraObject;
     }
 
     // rotates the camera

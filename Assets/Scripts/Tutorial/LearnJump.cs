@@ -32,7 +32,11 @@ public class LearnJump : MonoBehaviour
             Prompt.text = "Go over to the player with the Candy Basket. Follow the arrow!";
             Instructions.text = "Depending on the party, the object players fight to hold onto changes." +
                 " Go ahead and walk over the Candy Basket to pick it up. ";
+
+            // arrow doesn't move over to next step. This was an attempt to fix it (it didn't work).
+            // arrow.transform.position = new Vector3(transform.position.x, arrow.transform.position.y, transform.position.z);
         }
+
         getFlag = false;
     }
 

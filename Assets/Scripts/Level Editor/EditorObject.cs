@@ -68,7 +68,7 @@ public class EditorObject : MonoBehaviour // SerializableObject
             const int CHAR_COUNT = 10;
 
             // uses 10 characters for the name
-            for (int x = 0; x < 10; x++)
+            for (int x = 0; x < CHAR_COUNT; x++)
             {
                 // determines whether a number or letter is being used.
                 int y = Random.Range(0, 2);
@@ -95,7 +95,7 @@ public class EditorObject : MonoBehaviour // SerializableObject
         // copies the transform infinitely
         preTransform.entity = gameObject;
         preTransform.type = 1;
-        preTransform.active = gameObject.active;
+        preTransform.active = gameObject.activeSelf;
 
         preTransform.position = transform.position;
         preTransform.rotation = transform.rotation;
@@ -211,14 +211,14 @@ public class EditorObject : MonoBehaviour // SerializableObject
     void Update()
     {
         // if something has changed.
-        if (preTransform.active != gameObject.active ||
+        if (preTransform.active != gameObject.activeSelf ||
             preTransform.position != transform.position || preTransform.rotation != transform.rotation || preTransform.localScale != transform.localScale)
         {
             UndoRedoSystem.RecordAction(preTransform);
 
             // saves new values
             preTransform.type = 0; // no creation or destruction this frame
-            preTransform.active = gameObject.active;
+            preTransform.active = gameObject.activeSelf;
             preTransform.position = transform.position;
             preTransform.rotation = transform.rotation;
             preTransform.localScale = transform.localScale;

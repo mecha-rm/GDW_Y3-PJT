@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7284661196071721420}
   - component: {fileID: 7284661196071721411}
+  - component: {fileID: 6439735491323624411}
   m_Layer: 0
   m_Name: Audio Source
-  m_TagString: Untagged
+  m_TagString: BGM
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +128,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6439735491323624411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7284661196071721421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4a50f41e84ca294fbf5ee9d14bf320f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 7284661196071721411}
+  clipStart: 35.49
+  clipEnd: 260.938
+  playAtClipStart: 0
 --- !u!1 &7284661196444069586
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,10 +153,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7284661196444069584}
-  - component: {fileID: -1464304370684644558}
+  - component: {fileID: -5805919321328091025}
   - component: {fileID: 7284661196444069590}
   - component: {fileID: 7284661196444069585}
-  - component: {fileID: 7284661196444069591}
+  - component: {fileID: 6430195780213761676}
   - component: {fileID: -3004198080248553708}
   m_Layer: 0
   m_Name: Gameplay Manager
@@ -163,7 +180,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1464304370684644558
+--- !u!114 &-5805919321328091025
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,12 +189,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7284661196444069586}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 282393298c2462647885dfe955dec025, type: 3}
+  m_Script: {fileID: 11500000, guid: b7c41916e981ad24499102f7250fc545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadGame: 0
-  map: 0
-  playerList: 
 --- !u!114 &7284661196444069590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +212,8 @@ MonoBehaviour:
   p3: {fileID: 0}
   p4: {fileID: 0}
   deathSpace: {fileID: 7284661196444069585}
+  gameBuilder: {fileID: 0}
+  destroyGameBuilder: 1
 --- !u!114 &7284661196444069585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,22 +233,25 @@ MonoBehaviour:
   lessThanX: 1
   lessThanY: 1
   lessThanZ: 1
---- !u!114 &7284661196444069591
+--- !u!114 &6430195780213761676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7284661196444069586}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4a50f41e84ca294fbf5ee9d14bf320f, type: 3}
+  m_Script: {fileID: 11500000, guid: 16111b25ac60887479ad292ecd4b1b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 7284661196071721411}
-  clipStart: 0
-  clipEnd: 0
-  playAtClipStart: 0
+  itemCount: 10
+  spawnTime: 20
+  spawnCountdown: 0
+  spawnAreaMin: {x: -25, y: -25, z: -25}
+  spawnAreaMax: {x: 100, y: 100, z: 100}
+  autoItemDespawn: 1
+  deathSpace: {fileID: 7284661196444069585}
 --- !u!114 &-3004198080248553708
 MonoBehaviour:
   m_ObjectHideFlags: 0

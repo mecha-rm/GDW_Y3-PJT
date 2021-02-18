@@ -32,14 +32,14 @@ public abstract class SerializableObject : MonoBehaviour
     // serialize parent
     public static byte[] SerializeObject(SerializedObject entity)
     {
-        byte[] arr = StringRecordManager.SerializeObject(entity);
+        byte[] arr = DataManager.SerializeObject(entity);
         return arr;
     }
 
     // deserialize parent
     public static SerializedObject DeserializeObject(byte[] arr)
     {
-        object entity = StringRecordManager.DeserializeObject(arr);
+        object entity = DataManager.DeserializeObject(arr);
         SerializedObject parent = (SerializedObject)entity;
         return parent;
     }
