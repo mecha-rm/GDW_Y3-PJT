@@ -5996,7 +5996,6 @@ MonoBehaviour:
   playerScore: 0
   playerScoreText: {fileID: 1444465880}
   rigidBody: {fileID: 0}
-  playerCollider: {fileID: 0}
   movementSpeed: 2500
   jumpForce: 12
   backupFactor: 0.5

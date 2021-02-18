@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 455133026}
   m_Layer: 0
   m_Name: Cube 2
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 745551190}
   m_Layer: 0
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1026,7 +1026,7 @@ GameObject:
   - component: {fileID: 1006230739}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1659,7 +1659,7 @@ GameObject:
   - component: {fileID: 1401074515}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2363,7 +2363,6 @@ MonoBehaviour:
   playerScore: 0
   playerScoreText: {fileID: 1469053268}
   rigidBody: {fileID: 0}
-  playerCollider: {fileID: 788240746}
   movementSpeed: 2500
   jumpForce: 10
   backupFactor: 0.5
@@ -2456,11 +2455,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1908994740}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 0.9, y: 0.1, z: 1.45}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1950855336
 GameObject:
   m_ObjectHideFlags: 0
@@ -2504,7 +2503,7 @@ GameObject:
   - component: {fileID: 2144322858}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
