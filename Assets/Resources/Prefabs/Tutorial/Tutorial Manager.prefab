@@ -320,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 588489194c5055348924bac65dcb7a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  file: Assets/Resources/Saves/metric_log.txt
+  file: Assets/Resources/Saves/tutorial2.txt
   loadFromFile: 1
   saveToFile: 1
 --- !u!114 &5050549912184755922

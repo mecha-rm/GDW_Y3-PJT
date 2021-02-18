@@ -250,8 +250,13 @@ public class PlayerObject : MonoBehaviour
     // private void OnTriggerEnter(Collider other)
     private void OnTriggerStay(Collider other) // changed to 'Stay' for more reliability.
     {
-        if (other.gameObject.tag == "StageObject" || other.gameObject.tag == "Untagged")
-            onGround = true;
+        // this should only be checked if onGround has been set to false.
+        if(!onGround)
+        {
+            if (other.gameObject.tag == "StageObject" || other.gameObject.tag == "Untagged")
+                onGround = true;
+        }
+        
 
         // Debug.Log("OnGround");
     }
