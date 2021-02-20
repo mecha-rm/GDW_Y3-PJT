@@ -1,0 +1,12 @@
+# Blender MTL File: 'GDW_2_Y3 - Flag Indicator.blend'
+# Material Count: 1
+
+newmtl Material
+Ns 323.999994
+Ka 0.456693 0.456693 0.456693
+Kd 1.000000 0.653349 0.007574
+Ks 0.500000 0.500000 0.500000
+Ke 0.053545 0.015098 0.003178
+Ni 1.450000
+d 1.000000
+illum 3
