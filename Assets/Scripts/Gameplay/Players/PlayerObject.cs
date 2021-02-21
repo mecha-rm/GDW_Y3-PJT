@@ -471,6 +471,12 @@ public class PlayerObject : MonoBehaviour
                     rigidBody.AddForce(force, ForceMode.Force);
                     // direcVec += force;
                     stateMachine.SetState(1);
+
+                    //if (rigidBody.velocity.magnitude > 2.8)
+                    //{
+                    //    stateMachine.SetState(2);
+                    //}
+
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
@@ -478,6 +484,10 @@ public class PlayerObject : MonoBehaviour
                     rigidBody.AddForce(force);
                     // direcVec += force;
 
+                }
+                if(Input.GetKey(KeyCode.W) && (rigidBody.velocity.magnitude >= maxVelocity))
+                {
+                    stateMachine.SetState(2);
                 }
 
                 // leftward and rightward movement
