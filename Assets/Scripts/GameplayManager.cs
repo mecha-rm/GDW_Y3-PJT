@@ -307,7 +307,7 @@ public class GameplayManager : MonoBehaviour
 
             // checks for death
             if (deathSpace.InDeathSpace(px.gameObject.transform.position))
-                p1.Respawn();
+                px.Respawn();
         }
 
 

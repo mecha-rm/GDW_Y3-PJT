@@ -24,8 +24,11 @@ public class PlayerObject : MonoBehaviour
 
     // the rigidbody for the player.
     public Rigidbody rigidBody = null; // rigid body (why is this private?)
+    // if 'true', the player can be controlled.
+    public bool controllablePlayer = true;
     // public Collider playerCollider = null;
 
+    // various movement factors
     public float movementSpeed = 2500.0F;
     public float jumpForce = 10.0F;
     public float backupFactor = 0.5F;
@@ -245,6 +248,20 @@ public class PlayerObject : MonoBehaviour
     // the first collider is for general collisions to stop the player from going through obstacles.
     // the second collider is for tracking whether the player is on the ground or not.
     // the second collider uses onTrigger, so it does not physically stop the player at all.
+    
+    // checks to see if the player collided with another player.
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            PlayerObject p2 = collision.gameObject.GetComponent<PlayerObject>();
+
+            // transfers the flag to the other player.
+            if (flag != null)
+                flag.TransferFlag(p2);
+        }
+    }
+
 
     // ground collider has been triggered.
     // private void OnTriggerEnter(Collider other)
@@ -374,6 +391,12 @@ public class PlayerObject : MonoBehaviour
             flag.DetachFromPlayer();
     }
 
+    // checks to see if the player has the flag.
+    public bool HasFlag()
+    {
+        return flag != null;
+    }
+
     // sets the speed multiplier
     public float GetSpeedMultiplier()
     {
@@ -457,227 +480,230 @@ public class PlayerObject : MonoBehaviour
     protected void Update()
     {
         // TODO: take this out; it's unnecessary for the final game, since it will always be momentum based to a point.
-        if (momentumMovement)
+        if (controllablePlayer)
         {
-            // TODO: factor in deltaTime for movement
-            // TODO: lerp camera for rotation
-            
-            // Movement
+            if (momentumMovement)
+            {
+                // TODO: factor in deltaTime for movement
+                // TODO: lerp camera for rotation
+
+                // Movement
+                {
+                    // forward and backward movement
+                    if (Input.GetKey(KeyCode.W))
+                    {
+                        Vector3 force = transform.forward * movementSpeed * speedMult * Time.deltaTime;
+                        rigidBody.AddForce(force, ForceMode.Force);
+                        // direcVec += force;
+                        stateMachine.SetState(1);
+
+                        //if (rigidBody.velocity.magnitude > 2.8)
+                        //{
+                        //    stateMachine.SetState(2);
+                        //}
+
+                    }
+                    else if (Input.GetKey(KeyCode.S))
+                    {
+                        Vector3 force = -transform.forward * movementSpeed * backupFactor * speedMult * Time.deltaTime;
+                        rigidBody.AddForce(force);
+                        // direcVec += force;
+
+                    }
+                    if (Input.GetKey(KeyCode.W) && (rigidBody.velocity.magnitude >= maxVelocity))
+                    {
+                        stateMachine.SetState(2);
+                    }
+
+                    // leftward and rightward movement
+                    if (Input.GetKey(KeyCode.A)) // turn left
+                    {
+                        // if there is no velocity, set the player's rotation to -90 degrees.
+                        if (Input.GetKey(KeyCode.W)) // if the player is going foward
+                        {
+                            Vector3 force = -transform.right * movementSpeed * speedMult * Time.deltaTime;
+                            rigidBody.AddForce(force);
+                            // direcVec += force;
+
+                            transform.Rotate(Vector3.up, -rotSpeed.y * Time.deltaTime);
+                        }
+                        else // the player is not pushing themself forward, so rotate instead.
+                        {
+                            transform.Rotate(Vector3.up, -rotSpeed.y * Time.deltaTime);
+                        }
+                    }
+                    else if (Input.GetKey(KeyCode.D)) // turn right
+                    {
+                        // if there is no velocity, set the player's rotation to -90 degrees.
+                        if (Input.GetKey(KeyCode.W)) // if the player is going foward
+                        {
+                            Vector3 force = transform.right * movementSpeed * speedMult * Time.deltaTime;
+                            rigidBody.AddForce(force);
+                            // direcVec += force;
+
+                            transform.Rotate(Vector3.up, rotSpeed.y * Time.deltaTime);
+                        }
+                        else // the player is not pushing themself forward, so rotate instead.
+                        {
+                            transform.Rotate(Vector3.up, rotSpeed.y * Time.deltaTime);
+                        }
+                    }
+
+                    // unused
+                    // upward and downward movement
+                    // if (Input.GetKey(KeyCode.Q))
+                    // {
+                    //     Vector3 force = Vector3.up * movementSpeed * speedMult;
+                    //     // Vector3 force = transform.up * movementSpeed * speedMult;
+                    //     rigidBody.AddForce(force);
+                    //     direcVec += force;
+                    // }
+                    // if (Input.GetKey(KeyCode.E))
+                    // {
+                    //     Vector3 force = Vector3.down * movementSpeed * speedMult;
+                    //     // Vector3 force = -transform.up * movementSpeed * speedMult;
+                    //     rigidBody.AddForce(force);
+                    //     direcVec += force;
+                    // }
+                }
+
+                // Hard Rotation (Snap)
+                {
+                    // rotate to the left (slow)
+                    if (Input.GetKey(KeyCode.LeftArrow))
+                    {
+                        transform.Rotate(Vector3.up, -rotSpeed.y * Time.deltaTime);
+                    }
+                    // rotate to the right
+                    else if (Input.GetKey(KeyCode.RightArrow))
+                    {
+                        transform.Rotate(Vector3.up, +rotSpeed.y * Time.deltaTime);
+                    }
+
+
+                    // hard rotation
+                    // if (Input.GetKeyDown(KeyCode.LeftArrow))
+                    // {
+                    //     transform.Rotate(Vector3.up, -90.0F);
+                    // }
+                    // else if(Input.GetKeyDown(KeyCode.RightArrow))
+                    // {
+                    //     transform.Rotate(Vector3.up, 90.0F);
+                    // }
+
+                    // hard rotation
+                    // judge player forward distance
+                    // if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+                    // {
+                    //     // hard rotation 90 degrees to the left.
+                    //     if (Input.GetKeyDown(KeyCode.LeftArrow))
+                    //         transform.Rotate(Vector3.up, -90.0F);
+                    // 
+                    //     // hard rotation 90 degrees to the right.
+                    //     if (Input.GetKeyDown(KeyCode.RightArrow))
+                    //         transform.Rotate(Vector3.up, 90.0F);
+                    // 
+                    //     // gets the distance between the four axes to see which one the player is closest too.
+                    //     
+                    // 
+                    //     float distF = Vector3.Distance(transform.forward, Vector3.forward);
+                    //     float distB = Vector3.Distance(transform.forward, Vector3.back);
+                    //     float distL = Vector3.Distance(transform.forward, Vector3.left);
+                    //     float distR = Vector3.Distance(transform.forward, Vector3.right);
+                    // 
+                    //     // gets the shortest distance
+                    //     float shortDist = Mathf.Min(distF, distB, distL, distR);
+                    // 
+                    //     
+                    // 
+                    //     // checks to see what distance the player is closest to.
+                    //     if (shortDist == distF)
+                    //         transform.eulerAngles = new Vector3(0.0F, 0.0F, 0.0F);
+                    //     else if (shortDist == distB)
+                    //         transform.eulerAngles = new Vector3(0.0F, 90.0F, 0.0F);
+                    //     else if (shortDist == distL)
+                    //         transform.eulerAngles = new Vector3(0.0F, 180.0F, 0.0F);
+                    //     else if (shortDist == distR)
+                    //         transform.eulerAngles = new Vector3(0.0F, 270.0F, 0.0F);
+                    // 
+                    // 
+                    // }
+
+                    // turn backwards
+                    if (Input.GetKeyDown(KeyCode.DownArrow))
+                    {
+                        transform.Rotate(Vector3.up, 180.0F);
+                    }
+                }
+
+                // jump
+                {
+
+                    // if the player is on the on the gound, and can jump.
+                    // jump does NOT rely on delta time for consistency sake
+                    if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && onGround)
+                    {
+                        rigidBody.AddForce(Vector3.up * jumpForce * jumpMult, ForceMode.Impulse);
+                        onGround = false;
+                    }
+                }
+
+                // caps velocity
+                // TODO: this might need to be changed for the jump.
+                if (rigidBody.velocity.magnitude > maxVelocity)
+                {
+                    rigidBody.velocity = rigidBody.velocity.normalized * maxVelocity;
+
+                    // float revForce = rigidBody.velocity.magnitude - maxVelocity;
+                    // rigidBody.AddForce(rigidBody.velocity.normalized * -1 * revForce);
+                }
+
+            }
+            else
             {
                 // forward and backward movement
                 if (Input.GetKey(KeyCode.W))
                 {
-                    Vector3 force = transform.forward * movementSpeed * speedMult * Time.deltaTime;
-                    rigidBody.AddForce(force, ForceMode.Force);
-                    // direcVec += force;
-                    stateMachine.SetState(1);
-
-                    //if (rigidBody.velocity.magnitude > 2.8)
-                    //{
-                    //    stateMachine.SetState(2);
-                    //}
-
+                    Vector3 shift = new Vector3(0, 0, movementSpeed * speedMult * Time.deltaTime);
+                    transform.Translate(shift);
+                    // direcVec += shift;
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
-                    Vector3 force = -transform.forward * movementSpeed * backupFactor * speedMult * Time.deltaTime;
-                    rigidBody.AddForce(force);
-                    // direcVec += force;
-
-                }
-                if(Input.GetKey(KeyCode.W) && (rigidBody.velocity.magnitude >= maxVelocity))
-                {
-                    stateMachine.SetState(2);
+                    Vector3 shift = new Vector3(0, 0, -movementSpeed * speedMult * Time.deltaTime);
+                    transform.Translate(shift);
+                    // direcVec += shift;
                 }
 
                 // leftward and rightward movement
-                if (Input.GetKey(KeyCode.A)) // turn left
+                if (Input.GetKey(KeyCode.A))
                 {
-                    // if there is no velocity, set the player's rotation to -90 degrees.
-                    if(Input.GetKey(KeyCode.W)) // if the player is going foward
-                    {
-                        Vector3 force = -transform.right * movementSpeed * speedMult * Time.deltaTime;
-                        rigidBody.AddForce(force);
-                        // direcVec += force;
-
-                        transform.Rotate(Vector3.up, -rotSpeed.y * Time.deltaTime);
-                    }
-                    else // the player is not pushing themself forward, so rotate instead.
-                    {
-                        transform.Rotate(Vector3.up, -rotSpeed.y * Time.deltaTime);
-                    }
+                    Vector3 shift = new Vector3(-movementSpeed * speedMult * Time.deltaTime, 0, 0);
+                    transform.Translate(shift);
+                    // direcVec += shift;
                 }
-                else if (Input.GetKey(KeyCode.D)) // turn right
+                else if (Input.GetKey(KeyCode.D))
                 {
-                    // if there is no velocity, set the player's rotation to -90 degrees.
-                    if (Input.GetKey(KeyCode.W)) // if the player is going foward
-                    {
-                        Vector3 force = transform.right * movementSpeed * speedMult * Time.deltaTime;
-                        rigidBody.AddForce(force);
-                        // direcVec += force;
-                        
-                        transform.Rotate(Vector3.up, rotSpeed.y * Time.deltaTime);
-                    }
-                    else // the player is not pushing themself forward, so rotate instead.
-                    {
-                        transform.Rotate(Vector3.up, rotSpeed.y * Time.deltaTime);
-                    }
+                    Vector3 shift = new Vector3(movementSpeed * speedMult * Time.deltaTime, 0, 0);
+                    transform.Translate(shift);
+                    // direcVec += shift;
                 }
 
-                // unused
                 // upward and downward movement
-                // if (Input.GetKey(KeyCode.Q))
-                // {
-                //     Vector3 force = Vector3.up * movementSpeed * speedMult;
-                //     // Vector3 force = transform.up * movementSpeed * speedMult;
-                //     rigidBody.AddForce(force);
-                //     direcVec += force;
-                // }
-                // if (Input.GetKey(KeyCode.E))
-                // {
-                //     Vector3 force = Vector3.down * movementSpeed * speedMult;
-                //     // Vector3 force = -transform.up * movementSpeed * speedMult;
-                //     rigidBody.AddForce(force);
-                //     direcVec += force;
-                // }
-            }
-
-            // Hard Rotation (Snap)
-            {
-                // rotate to the left (slow)
-                if(Input.GetKey(KeyCode.LeftArrow))
+                if (Input.GetKey(KeyCode.Q))
                 {
-                    transform.Rotate(Vector3.up, -rotSpeed.y * Time.deltaTime);
+                    Vector3 shift = new Vector3(0, movementSpeed * speedMult * Time.deltaTime, 0);
+                    transform.Translate(shift);
+                    // direcVec += shift;
                 }
-                // rotate to the right
-                else if(Input.GetKey(KeyCode.RightArrow))
+                else if (Input.GetKey(KeyCode.E))
                 {
-                    transform.Rotate(Vector3.up, +rotSpeed.y * Time.deltaTime);
+                    Vector3 shift = new Vector3(0, -movementSpeed * speedMult * Time.deltaTime, 0);
+                    transform.Translate(shift);
+                    // direcVec += shift;
                 }
 
-
-                // hard rotation
-                // if (Input.GetKeyDown(KeyCode.LeftArrow))
-                // {
-                //     transform.Rotate(Vector3.up, -90.0F);
-                // }
-                // else if(Input.GetKeyDown(KeyCode.RightArrow))
-                // {
-                //     transform.Rotate(Vector3.up, 90.0F);
-                // }
-
-                // hard rotation
-                // judge player forward distance
-                // if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
-                // {
-                //     // hard rotation 90 degrees to the left.
-                //     if (Input.GetKeyDown(KeyCode.LeftArrow))
-                //         transform.Rotate(Vector3.up, -90.0F);
-                // 
-                //     // hard rotation 90 degrees to the right.
-                //     if (Input.GetKeyDown(KeyCode.RightArrow))
-                //         transform.Rotate(Vector3.up, 90.0F);
-                // 
-                //     // gets the distance between the four axes to see which one the player is closest too.
-                //     
-                // 
-                //     float distF = Vector3.Distance(transform.forward, Vector3.forward);
-                //     float distB = Vector3.Distance(transform.forward, Vector3.back);
-                //     float distL = Vector3.Distance(transform.forward, Vector3.left);
-                //     float distR = Vector3.Distance(transform.forward, Vector3.right);
-                // 
-                //     // gets the shortest distance
-                //     float shortDist = Mathf.Min(distF, distB, distL, distR);
-                // 
-                //     
-                // 
-                //     // checks to see what distance the player is closest to.
-                //     if (shortDist == distF)
-                //         transform.eulerAngles = new Vector3(0.0F, 0.0F, 0.0F);
-                //     else if (shortDist == distB)
-                //         transform.eulerAngles = new Vector3(0.0F, 90.0F, 0.0F);
-                //     else if (shortDist == distL)
-                //         transform.eulerAngles = new Vector3(0.0F, 180.0F, 0.0F);
-                //     else if (shortDist == distR)
-                //         transform.eulerAngles = new Vector3(0.0F, 270.0F, 0.0F);
-                // 
-                // 
-                // }
-
-                // turn backwards
-                if(Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    transform.Rotate(Vector3.up, 180.0F);
-                }
             }
-
-            // jump
-            {
-
-                // if the player is on the on the gound, and can jump.
-                // jump does NOT rely on delta time for consistency sake
-                if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space)) && onGround)
-                {
-                    rigidBody.AddForce(Vector3.up * jumpForce * jumpMult, ForceMode.Impulse);
-                    onGround = false;
-                }
-            }
-
-            // caps velocity
-            // TODO: this might need to be changed for the jump.
-            if (rigidBody.velocity.magnitude > maxVelocity)
-            {
-                rigidBody.velocity = rigidBody.velocity.normalized * maxVelocity;
-
-                // float revForce = rigidBody.velocity.magnitude - maxVelocity;
-                // rigidBody.AddForce(rigidBody.velocity.normalized * -1 * revForce);
-            }
-
-        }
-        else
-        {
-            // forward and backward movement
-            if (Input.GetKey(KeyCode.W))
-            {
-                Vector3 shift = new Vector3(0, 0, movementSpeed * speedMult * Time.deltaTime);
-                transform.Translate(shift);
-                // direcVec += shift;
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                Vector3 shift = new Vector3(0, 0, -movementSpeed * speedMult * Time.deltaTime);
-                transform.Translate(shift);
-                // direcVec += shift;
-            }
-
-            // leftward and rightward movement
-            if (Input.GetKey(KeyCode.A))
-            {
-                Vector3 shift = new Vector3(-movementSpeed * speedMult * Time.deltaTime, 0, 0);
-                transform.Translate(shift);
-                // direcVec += shift;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                Vector3 shift = new Vector3(movementSpeed * speedMult * Time.deltaTime, 0, 0);
-                transform.Translate(shift);
-                // direcVec += shift;
-            }
-
-            // upward and downward movement
-            if (Input.GetKey(KeyCode.Q))
-            {
-                Vector3 shift = new Vector3(0, movementSpeed * speedMult * Time.deltaTime, 0);
-                transform.Translate(shift);
-                // direcVec += shift;
-            }
-            else if (Input.GetKey(KeyCode.E))
-            {
-                Vector3 shift = new Vector3(0, -movementSpeed * speedMult * Time.deltaTime, 0);
-                transform.Translate(shift);
-                // direcVec += shift;
-            }
-
         }
 
         // gets the change in position - player has moved.

@@ -11,6 +11,16 @@ public class FlagObject : MonoBehaviour
     // TODO: replace with vector of spawn positions
     private Vector3 spawnPos;
 
+    // flag transfer cooldown for when the flag goes from one player to another.
+    // private float flagTransferCooldown = 0.0F;
+    // private float FLAG_TRANSFER_COOLDOWN_MAX = 3.0F;
+
+    // used to give the flag from one player to another. It doesn't work otherwise.
+    // this can work at 1, but it's set to 2 just to be safe.
+    private int MAX_WAIT_CYCLES = 2;
+    private int waitCycles = 0;
+    PlayerObject nextPlayer = null;
+
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +47,10 @@ public class FlagObject : MonoBehaviour
     // attaches the flag to the player
     public void AttachToPlayer(PlayerObject po)
     {
+        // if the flag is already owned by someone, then it detaches itself from them.
+        if(owner != null)
+            owner.flag = null;
+
         po.flag = this;
         owner = po;
         // gameObject.SetActive(false); // hide object
@@ -65,9 +79,51 @@ public class FlagObject : MonoBehaviour
         transform.position = spawnPos;
     }
 
+    // transfers the flag to player 2
+    public void TransferFlag(PlayerObject p2)
+    {
+        // cannot transfer flag.
+        if (p2 == null)
+            return;
+
+        DetachFromPlayer();
+        // AttachToPlayer(p2); // this doesn't work
+
+        // moves flag offscreen
+        transform.position = new Vector3(10000.0F, 10000.0F, 10000.0F);
+
+        nextPlayer = p2;
+        waitCycles = MAX_WAIT_CYCLES;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        // countdown to allow the flag to transfer.
+        // if(flagTransferCooldown > 0.0F)
+        // {
+        //     // reduces countdown timer
+        //     flagTransferCooldown -= Time.deltaTime;
+        // 
+        //     // stopping value form going below 0.0F.
+        //     if (flagTransferCooldown < 0.0F)
+        //         flagTransferCooldown = 0.0F;
+        // }
+
+        // reduces wait cycles
+        if(waitCycles > 0)
+        {
+            waitCycles--;
+
+            // wait cycle time has been reached.
+            if (waitCycles <= 0)
+            {
+                waitCycles = 0;
+
+                // attaches flag to new player.
+                if (nextPlayer != null)
+                    AttachToPlayer(nextPlayer);
+            }
+        }
     }
 }
