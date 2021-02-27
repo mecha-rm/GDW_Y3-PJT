@@ -14,12 +14,18 @@ public class CatPlayer : PlayerObject
         {
             // TODO: randomize sound for cat meow
             // Destroy(sfx_Idle.clip); // regular destroy didn't work.
-            DestroyImmediate(sfx_Idle.clip, true);
-            sfx_Idle.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_MEOW_01");
+            if (sfx_Idle.clip == null)
+            {
+                DestroyImmediate(sfx_Idle.clip, true);
+                sfx_Idle.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_MEOW_02");
+            }
 
             // Destroy(sfx_Death.clip);
-            DestroyImmediate(sfx_Death.clip, true);
-            sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_SCREAM");
+            if(sfx_Death.clip == null)
+            {
+                DestroyImmediate(sfx_Death.clip, true);
+                sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_CAT_DEATH");
+            }
         }
 
         speedMult = 1.5F;

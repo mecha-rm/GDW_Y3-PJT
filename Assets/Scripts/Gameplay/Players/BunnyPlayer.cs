@@ -15,9 +15,19 @@ public class BunnyPlayer : PlayerObject
         defenseMult = 1.0F;
 
         // replacing sounds
+
+        // idle sound
+        if(sfx_Idle.clip == null)
         {
-            Destroy(sfx_Idle.clip);
+            // Destroy(sfx_Idle.clip);
             sfx_Idle.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_BUNNY_NOISES_01");
+        }
+
+        // death sound
+        if (sfx_Death.clip == null)
+        {
+            // Destroy(sfx_Idle.clip);
+            sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_BUNNY_DEATH");
         }
     }
 
