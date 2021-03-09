@@ -18,6 +18,9 @@ namespace GDW_Y3_Server
         private Socket server_socket = null;
         private EndPoint remoteClient = null;
 
+        // port
+        // private int port;
+
         // timeout variables
         private int receiveTimeout = 3, sendTimeout = 3;
 
@@ -208,6 +211,8 @@ namespace GDW_Y3_Server
                 server_socket.Shutdown(SocketShutdown.Both);
                 server_socket.Close();
                 running = false;
+
+                Console.WriteLine("Server Shutdown");
             }
             
         }
