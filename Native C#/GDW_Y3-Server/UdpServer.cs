@@ -18,11 +18,19 @@ namespace GDW_Y3_Server
         private Socket server_socket = null;
         private EndPoint remoteClient = null;
 
+        // the ip address for the object.
+        string ipAddress = "";
+
         // port
         // private int port;
 
+        // if 'true', sockets are being blocked.
+        // it errors out if set to false by default when there is no connection being made.
+        private bool blockingSockets = true;
+
         // timeout variables
-        private int receiveTimeout = 3, sendTimeout = 3;
+        // these error out if set to 0 by default when there is no connection being made.
+        private int receiveTimeout = 0, sendTimeout = 0;
 
         // checks to see if the server is running
         private bool running = false;
@@ -57,7 +65,38 @@ namespace GDW_Y3_Server
         // gets the ip address as a string.
         public String GetIPAddress()
         {
-            return ip.ToString();
+            if (ip != null) // references ip object
+                return ip.ToString();
+            else // if the ip object has not been made yet, reference the string.
+                return ipAddress;
+        }
+
+        // sets the IP address
+        public void SetIPAdress(String ipAdd)
+        {
+            ip = IPAddress.Parse(ipAdd); // set server's ip address
+            ipAddress = ipAdd;
+        }
+
+        // checks to see if the server is blocking sockets
+        public bool IsBlockingSockets()
+        {
+            // if the server socket exists, that variable is referenced.
+            // if not, the class variable is used.
+            if (server_socket != null)
+                return server_socket.Blocking;
+            else
+                return blockingSockets;
+        }
+
+        // sets the blocking sockets variable
+        public void SetBlockingSockets(bool blocking)
+        {
+            // sets variable
+            blockingSockets = blocking;
+
+            if (server_socket != null)
+                server_socket.Blocking = blockingSockets;
         }
 
         // getter for send timeout
@@ -117,12 +156,25 @@ namespace GDW_Y3_Server
         // runs the server project
         public void RunServer()
         {
+            // buffer has not been generated
             if (buffer == null)
                 buffer = new byte[512];
 
             // buffer = new byte[512];
-            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-            ip = host.AddressList[1]; // get IP address from list
+            IPHostEntry host;
+
+            // if the ip address has not already been set.
+            if (ipAddress == "")
+            {
+                host = Dns.GetHostEntry(Dns.GetHostName());
+                ip = host.AddressList[1]; // get IP address from list
+            }
+            else
+            {
+                host = Dns.GetHostEntry(Dns.GetHostName());
+                ip = IPAddress.Parse(ipAddress);
+            }
+
             // IPAddress ip = IPAddress.Parse("192.168.2.144"); // manually enter IP address (default).
             
 
@@ -147,11 +199,12 @@ namespace GDW_Y3_Server
                 Console.WriteLine("Waiting for data...");
 
                 // sets timeout variables.
+                // TODO: figue out when to send data on intervals
                 server_socket.ReceiveTimeout = receiveTimeout;
                 server_socket.SendTimeout = sendTimeout;
 
-                // non-blocking
-                server_socket.Blocking = false;
+                // non-blocking if false (recommended)
+                server_socket.Blocking = blockingSockets;
 
                 // the server is running
                 running = true;
@@ -194,6 +247,14 @@ namespace GDW_Y3_Server
 
                 // original
                 Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(buffer, 0, rec), remoteClient.ToString());
+            }
+            catch (ArgumentNullException anexc)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
+            }
+            catch (SocketException sexc)
+            {
+                Console.WriteLine("SocketException: {0}", sexc.ToString());
             }
             catch (Exception e)
             {

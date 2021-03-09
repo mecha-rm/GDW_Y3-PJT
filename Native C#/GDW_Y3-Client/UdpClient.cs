@@ -14,14 +14,17 @@ namespace GDW_Y3_Client
         private IPEndPoint remote = null;
         private Socket client_socket = null;
 
+        // the ip address for the object.
+        string ipAddress = "";
+
         // port
         // private int port;
 
-        // timeout variables
-        private int receiveTimeout = 3, sendTimeout = 3;
+        // if 'true', sockets are being blocked.
+        private bool blockingSockets = false;
 
-        // the ip address for the object.
-        string ipAddress = "";
+        // timeout variables
+        private int receiveTimeout = 0, sendTimeout = 0;
 
         // checks to see if the server is running
         private bool running = false;
@@ -77,7 +80,10 @@ namespace GDW_Y3_Client
         // gets the ip address as a string.
         public String GetIPAddress()
         {
-            return ip.ToString();
+            if (ip != null) // references ip object
+                return ip.ToString();
+            else // if the ip object has not been made yet, reference the string.
+                return ipAddress;
         }
 
         // sets the IP address
@@ -85,6 +91,28 @@ namespace GDW_Y3_Client
         {
             ip = IPAddress.Parse(ipAdd); // set server's ip address
             remote = new IPEndPoint(ip, 11111); // create remote with port
+            ipAddress = ipAdd;
+        }
+
+        // checks to see if the server is blocking sockets
+        public bool IsBlockingSockets()
+        {
+            // if the server socket exists, that variable is referenced.
+            // if not, the class variable is used.
+            if (client_socket != null)
+                return client_socket.Blocking;
+            else
+                return blockingSockets;
+        }
+
+        // sets the blocking sockets variable
+        public void SetBlockingSockets(bool blocking)
+        {
+            // sets variable
+            blockingSockets = blocking;
+
+            if (client_socket != null)
+                client_socket.Blocking = blockingSockets;
         }
 
         // getter for send timeout
@@ -151,7 +179,13 @@ namespace GDW_Y3_Client
             {
                 // uses the localhost
                 if (ipAddress == null || ipAddress == "")
-                    ipAddress = "127.0.0.1";
+                {
+                    // ipAddress = "127.0.0.1"; // local host
+
+                    // grab IP address of system
+                    IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+                    ipAddress = host.AddressList[1].ToString(); // get IP address from list
+                }
 
                 ip = IPAddress.Parse(ipAddress); // your server's public ip address.
 
@@ -163,10 +197,10 @@ namespace GDW_Y3_Client
                 client_socket.SendTimeout = sendTimeout;
 
                 // non-blocking socket for client
-                client_socket.Blocking = false;
+                client_socket.Blocking = blockingSockets;
 
                 // the client is running
-                running = false;
+                running = true;
 
                 try
                 {

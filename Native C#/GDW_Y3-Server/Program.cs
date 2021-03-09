@@ -13,7 +13,9 @@ namespace GDW_Y3_Server
         {
             UdpServer server = new UdpServer();
             server.RunServer();
-            
+
+            // Console.WriteLine(server.GetIPAddress());
+
             // while loop for updates
             while(server.IsRunning())
             {

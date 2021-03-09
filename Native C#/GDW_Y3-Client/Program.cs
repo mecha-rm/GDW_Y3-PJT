@@ -13,12 +13,20 @@ namespace GDW_Y3_Client
             UdpClient client = new UdpClient();
             client.RunClient();
 
+            // while the clent is running
             while(client.IsRunning())
             {
+                Console.WriteLine("Enter Message: ");
+                string str = Console.ReadLine();
 
+                byte[] data = Encoding.ASCII.GetBytes(str);
+                client.SetBufferData(data);
+
+                client.Update();
             }
 
-            Encoding.ASCII.GetString(buffer, 0, rec);
+            client.ShutdownClient();
+            
         }
     }
 }
