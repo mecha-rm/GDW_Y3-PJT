@@ -80,6 +80,19 @@ Native C\+\+/*.dat
 Native C\+\+/*/obj/
 
 Native C\+\+/*/bin/
+
 Assembly-CSharp.csproj
 
 GDW_Y3-PJT.sln
+
+Native C#/*/x64/
+
+Native C#/**/x86/
+
+Native C#/*.txt
+
+Native C#/*.dat
+
+Native C#/*/obj/
+
+Native C#/*/bin/

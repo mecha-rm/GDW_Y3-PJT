@@ -3,7 +3,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
-namespace GDW_Y3_Network
+namespace GDW_Y3_Server
 {
     // this is made static in the DSN work.
     // this isn't static since only one instance of the plugin can exist at a time.
@@ -74,19 +74,41 @@ namespace GDW_Y3_Network
         }
 
         // gets the receiver timeout.
-        public int GetReceieverTimeout()
+        public int GetReceiverTimeout()
         {
             return receiveTimeout;
         }
 
         // sets the receiver timeout.
-        public void SetReceieverTimeout(int newRt)
+        public void SetReceiverTimeout(int newRt)
         {
             receiveTimeout = newRt;
 
             // if the server socket has been generated.
             if (server_socket != null)
                 server_socket.ReceiveTimeout = receiveTimeout;
+        }
+
+        // returns 'true' if the server is running
+        public bool IsRunning()
+        {
+            if (server_socket != null)
+            {
+                return running;
+            }
+
+            return false;
+        }
+
+        // returns 'true' if the server is running
+        public bool IsConnected()
+        {
+            if (server_socket != null)
+            {
+                return server_socket.Connected;
+            }
+
+            return false;
         }
 
         // runs the server project
@@ -156,28 +178,6 @@ namespace GDW_Y3_Network
                 Console.WriteLine(e.ToString());
             }
 
-        }
-
-        // returns 'true' if the server is running
-        public bool IsRunning()
-        {
-            if (server_socket != null)
-            {
-                return running;
-            }
-
-            return false;
-        }
-
-        // returns 'true' if the server is running
-        public bool IsConnected()
-        {
-            if(server_socket != null)
-            {
-                return server_socket.Connected;
-            }
-
-            return false;
         }
 
         // updates the server to listen for a message from the client.
