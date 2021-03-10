@@ -15,19 +15,19 @@ namespace NetworkLibrary
         // gets the buffer size.
         public static int GetBufferSize()
         {
-            return client.GetBufferSize();
+            return client.GetSendBufferSize();
         }
 
         // sets the buffer size.
         public static void SetBufferSize(int size)
         {
-            client.SetBufferSize(size);
+            client.SetSendBufferSize(size);
         }
 
         // gets the buffer data
         public static byte[] GetBufferData()
         {
-            return client.GetBufferData();
+            return client.GetSendBufferData();
         }
 
         // gets the ip address as a string

@@ -29,7 +29,7 @@ namespace GDW_Y3_Server
         string ipAddress = "";
 
         // port
-        // private int port;
+        private int port = 11111;
 
         // if 'true', sockets are being blocked.
         // it errors out if set to false by default when there is no connection being made.
@@ -42,8 +42,6 @@ namespace GDW_Y3_Server
         // checks to see if the server is running
         private bool running = false;
 
-        // the client socket for two-way communication
-        Socket client_socket = null;
 
         // constructor
         public UdpServer()
@@ -52,16 +50,16 @@ namespace GDW_Y3_Server
         }
 
         // gets the communication mode
-        // public mode GetCommunicationMode()
-        // {
-        //     return commMode;
-        // }
-        // 
-        // // sets the communication mode
-        // public void SetCommunicationMode(mode newMode)
-        // {
-        //     commMode = newMode;
-        // }
+        public mode GetCommunicationMode()
+        {
+            return commMode;
+        }
+        
+        // sets the communication mode
+        public void SetCommunicationMode(mode newMode)
+        {
+            commMode = newMode;
+        }
 
         // returns the buffer size.
         public int GetSendBufferSize()
@@ -101,16 +99,16 @@ namespace GDW_Y3_Server
             return outBuffer;
         }
 
+        // sets the receive buffer data
+        public void SetSendBufferData(byte[] data)
+        {
+            outBuffer = data;
+        }
+
         // gets the receive buffer data
         public byte[] GetReceiveBufferData()
         {
             return inBuffer;
-        }
-
-        // sets the receive buffer data
-        public void SetReceiveBufferData(byte[] data)
-        {
-            inBuffer = data;
         }
 
         // gets the ip address as a string.
@@ -127,6 +125,26 @@ namespace GDW_Y3_Server
         {
             ip = IPAddress.Parse(ipAdd); // set server's ip address
             ipAddress = ipAdd;
+        }
+
+        // gets the port number
+        public int GetPort()
+        {
+            return port;
+        }
+
+        // sets the port number
+        // this cannot be changed while a server is running
+        public void SetPort(int newPort)
+        {
+            if(!running) // server is not running
+            {
+                port = newPort;
+            }
+            else // server is running
+            {
+                Console.WriteLine("Port number cannot be changed while the server is running.");
+            }
         }
 
         // checks to see if the server is blocking sockets
@@ -237,7 +255,7 @@ namespace GDW_Y3_Server
             Console.WriteLine("Server name: {0} IP: {1}", host.HostName, ip);
 
             // using the same port that was used last class.
-            IPEndPoint localEP = new IPEndPoint(ip, 11111);
+            IPEndPoint localEP = new IPEndPoint(ip, port);
 
             // last class the family was entered, but you can get from the ip directly the Address family.
             server_socket = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
@@ -318,21 +336,32 @@ namespace GDW_Y3_Server
         {
             try
             {
-                // the variable for sending and reading data
-                int rec;
+                // receives the data if connected
+                // if((commMode == mode.both || commMode == mode.receive) && server_socket.Connected)
+                // {
+                //    int rec = server_socket.ReceiveFrom(inBuffer, ref remoteClient);
+                // 
+                //     Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
+                // }
 
-                // receives the data
-                if(commMode == mode.both || commMode == mode.receive)
-                {
-                    rec = server_socket.ReceiveFrom(inBuffer, ref remoteClient);
-
-                    Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
-                }
+                // NOTE: if put in the if statement, this doesn't work for some reason.
+                int rec = server_socket.ReceiveFrom(inBuffer, ref remoteClient);
+                
+                Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
 
                 // sends the data
                 if (commMode == mode.both || commMode == mode.send)
                 {
-                    client_socket.Send(outBuffer);
+                    // client socket has not been established yet.
+                    // if(client_socket == null)
+                    // {
+                    //     client_socket = server_socket.Accept();
+                    // }
+                    //     
+                    // if(client_socket != null)
+                    //     client_socket.Send(outBuffer);
+
+                    server_socket.SendTo(outBuffer, remoteClient);
                 }
 
             }

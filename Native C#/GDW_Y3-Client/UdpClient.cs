@@ -7,8 +7,15 @@ namespace GDW_Y3_Client
 {
     public class UdpClient
     {
+        // enum for mode
+        public enum mode { both, send, receive };
+
+        // communication mode
+        public mode commMode = mode.send;
+
         // client variables
-        private byte[] buffer;
+        private byte[] outBuffer; // sending data to server
+        private byte[] inBuffer; // getting data from a server
         private IPAddress ip;
 
         private IPEndPoint remote = null;
@@ -18,10 +25,10 @@ namespace GDW_Y3_Client
         string ipAddress = "";
 
         // port
-        // private int port;
+        private int port = 11111;
 
         // if 'true', sockets are being blocked.
-        private bool blockingSockets = false;
+        private bool blockingSockets = true;
 
         // timeout variables
         private int receiveTimeout = 0, sendTimeout = 0;
@@ -35,46 +42,80 @@ namespace GDW_Y3_Client
 
         }
 
-        // returns the buffer size.
-        public int GetBufferSize()
+        // gets the communication mode
+        public mode GetCommunicationMode()
         {
-            if (buffer != null)
-                return buffer.Length;
+            return commMode;
+        }
+
+        // sets the communication mode
+        public void SetCommunicationMode(mode newMode)
+        {
+            commMode = newMode;
+        }
+
+        // returns the buffer size.
+        public int GetSendBufferSize()
+        {
+            if (outBuffer != null)
+                return outBuffer.Length;
             else
                 return 0;
         }
 
         // sets the buffer size for the server
-        public void SetBufferSize(int size)
+        public void SetSendBufferSize(int size)
         {
             if (size > 0)
-                buffer = new byte[size];
+                outBuffer = new byte[size];
+        }
+
+        // returns the buffer size.
+        public int GetReceiveBufferSize()
+        {
+            if (inBuffer != null)
+                return inBuffer.Length;
+            else
+                return 0;
+        }
+
+        // sets the buffer size for the server
+        public void SetReceiveBufferSize(int size)
+        {
+            if (size > 0)
+                inBuffer = new byte[size];
         }
 
         // gets the buffer data
-        public byte[] GetBufferData()
+        public byte[] GetSendBufferData()
         {
-            return buffer;
+            return outBuffer;
         }
 
         // sets the buffer data
-        public void SetBufferData(byte[] data)
+        public void SetSendBufferData(byte[] data)
         {
-            buffer = data;
+            outBuffer = data;
         }
 
         // adds the buffer data
-        public void AddBufferData(byte[] newData)
+        public void AddSendBufferData(byte[] newData)
         {
             // creates the new array
-            byte[] arr = new byte[buffer.Length + newData.Length];
+            byte[] arr = new byte[outBuffer.Length + newData.Length];
 
-            Buffer.BlockCopy(buffer, 0, arr, 0, buffer.Length);
-            Buffer.BlockCopy(newData, 0, arr, buffer.Length, newData.Length);
+            Buffer.BlockCopy(outBuffer, 0, arr, 0, outBuffer.Length);
+            Buffer.BlockCopy(newData, 0, arr, outBuffer.Length, newData.Length);
 
             // sets array of data as new buffer
-            Array.Clear(buffer, 0, buffer.Length);
-            buffer = arr;
+            Array.Clear(outBuffer, 0, outBuffer.Length);
+            outBuffer = arr;
+        }
+
+        // gets the receive buffer data
+        public byte[] GetReceiveBufferData()
+        {
+            return inBuffer;
         }
 
         // gets the ip address as a string.
@@ -90,8 +131,28 @@ namespace GDW_Y3_Client
         public void SetIPAdress(String ipAdd)
         {
             ip = IPAddress.Parse(ipAdd); // set server's ip address
-            remote = new IPEndPoint(ip, 11111); // create remote with port
+            remote = new IPEndPoint(ip, port); // create remote with port
             ipAddress = ipAdd;
+        }
+
+        // gets the port number
+        public int GetPort()
+        {
+            return port;
+        }
+
+        // sets the port number
+        // this cannot be changed while a server is running
+        public void SetPort(int newPort)
+        {
+            if (!running) // server is not running
+            {
+                port = newPort;
+            }
+            else // server is running
+            {
+                Console.WriteLine("Port number cannot be changed while the server is running.");
+            }
         }
 
         // checks to see if the server is blocking sockets
@@ -159,6 +220,7 @@ namespace GDW_Y3_Client
         }
 
         // returns 'true' if the server is running
+        // this does not get set to 'true', even if the UDP server is connected.
         public bool IsConnected()
         {
             if (client_socket != null)
@@ -172,8 +234,13 @@ namespace GDW_Y3_Client
         // runs the client
         public void RunClient()
         {
-            if (buffer == null)
-                buffer = new byte[512];
+            // setting out buffer if it has not been established.
+            if (outBuffer == null)
+                outBuffer = new byte[512];
+
+            // setting up the in buffer
+            if (inBuffer == null)
+                inBuffer = new byte[512];
 
             try
             {
@@ -189,7 +256,7 @@ namespace GDW_Y3_Client
 
                 ip = IPAddress.Parse(ipAddress); // your server's public ip address.
 
-                remote = new IPEndPoint(ip, 11111);
+                remote = new IPEndPoint(ip, port);
                 client_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
                 // sets timeout variables.
@@ -233,7 +300,18 @@ namespace GDW_Y3_Client
             try
             {
                 // sends the data
-                client_socket.SendTo(buffer, remote);
+                if (commMode == mode.both || commMode == mode.send)
+                {
+                    client_socket.SendTo(outBuffer, remote);
+                }
+
+                // receives the data
+                if (commMode == mode.both || commMode == mode.receive)
+                {
+                    int rec = client_socket.Receive(inBuffer);
+
+                    Console.WriteLine("Received: {0} from Serever: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remote.ToString());
+                }
 
             }
             catch (ArgumentNullException anexc)
