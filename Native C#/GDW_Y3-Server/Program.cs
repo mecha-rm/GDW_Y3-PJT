@@ -20,7 +20,7 @@ namespace GDW_Y3_Server
             while(server.IsRunning())
             {
                 server.Update();
-                byte[] data = server.GetBufferData();
+                byte[] data = server.GetSendBufferData();
                 Console.WriteLine(Encoding.ASCII.GetString(data, 0, data.Length));
             }
         

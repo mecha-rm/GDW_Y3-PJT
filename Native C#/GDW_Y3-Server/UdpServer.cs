@@ -10,8 +10,15 @@ namespace GDW_Y3_Server
     // this is a UDP server
     public class UdpServer
     {
+        // enum for mode
+        public enum mode { both, send, receive };
+
+        // communication mode
+        public mode commMode = mode.receive;
+
         // server variables
-        private byte[] buffer;
+        private byte[] outBuffer;
+        private byte[] inBuffer;
         private IPAddress ip;
 
         private IPEndPoint client = null;
@@ -35,31 +42,75 @@ namespace GDW_Y3_Server
         // checks to see if the server is running
         private bool running = false;
 
+        // the client socket for two-way communication
+        Socket client_socket = null;
+
+        // constructor
         public UdpServer()
         {
 
         }
 
+        // gets the communication mode
+        // public mode GetCommunicationMode()
+        // {
+        //     return commMode;
+        // }
+        // 
+        // // sets the communication mode
+        // public void SetCommunicationMode(mode newMode)
+        // {
+        //     commMode = newMode;
+        // }
+
         // returns the buffer size.
-        public int GetBufferSize()
+        public int GetSendBufferSize()
         {
-            if (buffer != null)
-                return buffer.Length;
+            if (outBuffer != null)
+                return outBuffer.Length;
             else
                 return 0;
         }
 
         // sets the buffer size for the server
-        public void SetBufferSize(int size)
+        public void SetSendBufferSize(int size)
         {
             if(size > 0)
-                buffer = new byte[size];
+                outBuffer = new byte[size];
         }
 
-        // gets the buffer data
-        public byte[] GetBufferData()
+        // returns the buffer size.
+        public int GetReceiveBufferSize()
         {
-            return buffer;
+            if (inBuffer != null)
+                return inBuffer.Length;
+            else
+                return 0;
+        }
+
+        // sets the buffer size for the server
+        public void SetReceiveBufferSize(int size)
+        {
+            if (size > 0)
+                inBuffer = new byte[size];
+        }
+
+        // gets the send buffer data
+        public byte[] GetSendBufferData()
+        {
+            return outBuffer;
+        }
+
+        // gets the receive buffer data
+        public byte[] GetReceiveBufferData()
+        {
+            return inBuffer;
+        }
+
+        // sets the receive buffer data
+        public void SetReceiveBufferData(byte[] data)
+        {
+            inBuffer = data;
         }
 
         // gets the ip address as a string.
@@ -156,9 +207,14 @@ namespace GDW_Y3_Server
         // runs the server project
         public void RunServer()
         {
-            // buffer has not been generated
-            if (buffer == null)
-                buffer = new byte[512];
+            // buffers have not been generated
+            // sending out data
+            if (outBuffer == null)
+                outBuffer = new byte[512];
+
+            // reading in data
+            if (inBuffer == null)
+                inBuffer = new byte[512];
 
             // buffer = new byte[512];
             IPHostEntry host;
@@ -196,10 +252,30 @@ namespace GDW_Y3_Server
                 // the server listens and provides a service.
                 server_socket.Bind(localEP);
 
-                Console.WriteLine("Waiting for data...");
+                // for two-way communication
+                // server_socket.Listen(16); // backlog
+
+                // gets the client socket
+                // client_socket = server_socket.Accept();
+
+                // prints different message based on selected mode.
+                switch(commMode)
+                {
+                    case mode.both:
+                        Console.WriteLine("Waiting for, and prepared to send data...");
+                        break;
+
+                    case mode.send:
+                        Console.WriteLine("Ready to send data...");
+                        break;
+
+                    case mode.receive:
+                        Console.WriteLine("Waiting for data...");
+                        break;
+                }
+                
 
                 // sets timeout variables.
-                // TODO: figue out when to send data on intervals
                 server_socket.ReceiveTimeout = receiveTimeout;
                 server_socket.SendTimeout = sendTimeout;
 
@@ -242,11 +318,23 @@ namespace GDW_Y3_Server
         {
             try
             {
-                // receives the data
-                int rec = server_socket.ReceiveFrom(buffer, ref remoteClient);
+                // the variable for sending and reading data
+                int rec;
 
-                // original
-                Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(buffer, 0, rec), remoteClient.ToString());
+                // receives the data
+                if(commMode == mode.both || commMode == mode.receive)
+                {
+                    rec = server_socket.ReceiveFrom(inBuffer, ref remoteClient);
+
+                    Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
+                }
+
+                // sends the data
+                if (commMode == mode.both || commMode == mode.send)
+                {
+                    client_socket.Send(outBuffer);
+                }
+
             }
             catch (ArgumentNullException anexc)
             {

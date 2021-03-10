@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UdpServer.cs" />
     <Compile Include="ServerInterface.cs" />
+    <Compile Include="UdpServer4.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
