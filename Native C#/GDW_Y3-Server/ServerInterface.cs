@@ -12,28 +12,95 @@ namespace NetworkLibrary
         // gets the server
         private static GDW_Y3_Server.UdpServer server = new GDW_Y3_Server.UdpServer();
 
-        // gets the buffer size.
-        public static int GetBufferSize()
+        // gets the communication mode
+        public GDW_Y3_Server.UdpServer.mode GetCommunicationMode()
+        {
+            return server.GetCommunicationMode();
+        }
+
+        // sets the communication mode
+        public void SetCommunicationMode(GDW_Y3_Server.UdpServer.mode newMode)
+        {
+            server.SetCommunicationMode(newMode);
+        }
+
+        // returns the buffer size.
+        public int GetSendBufferSize()
         {
             return server.GetSendBufferSize();
         }
 
-        // sets the buffer size.
-        public static void SetBufferSize(int size)
+        // sets the buffer size for the server
+        public void SetSendBufferSize(int size)
         {
             server.SetSendBufferSize(size);
         }
 
-        // gets the buffer data
-        public static byte[] GetBufferData()
+        // returns the buffer size.
+        public int GetReceiveBufferSize()
+        {
+            return server.GetReceiveBufferSize();
+        }
+
+        // sets the buffer size for the server
+        public void SetReceiveBufferSize(int size)
+        {
+            server.SetReceiveBufferSize(size);
+        }
+
+        // gets the send buffer data
+        public byte[] GetSendBufferData()
         {
             return server.GetSendBufferData();
+        }
+
+        // sets the receive buffer data
+        public void SetSendBufferData(byte[] data)
+        {
+            server.SetSendBufferData(data);
+        }
+
+        // gets the receive buffer data
+        public byte[] GetReceiveBufferData()
+        {
+            return server.GetReceiveBufferData();
         }
 
         // gets the ip address as a string
         public static String GetIPAddress()
         {
             return server.GetIPAddress();
+        }
+
+        // sets the IP address
+        public void SetIPAdress(String ipAdd)
+        {
+            server.SetIPAdress(ipAdd);
+        }
+
+        // gets the port number
+        public int GetPort()
+        {
+            return server.GetPort();
+        }
+
+        // sets the port number
+        // this cannot be changed while a server is running
+        public void SetPort(int newPort)
+        {
+            server.SetPort(newPort);
+        }
+
+        // checks to see if the server is blocking sockets
+        public bool IsBlockingSockets()
+        {
+            return server.IsBlockingSockets();
+        }
+
+        // sets the blocking sockets variable
+        public void SetBlockingSockets(bool blocking)
+        {
+            server.SetBlockingSockets(blocking);
         }
 
         // getter for the send timeout
@@ -49,15 +116,15 @@ namespace NetworkLibrary
         }
 
         // gets the receiver timeout.
-        public static int GetReceiverTimeout()
+        public static int GetReceiveTimeout()
         {
-            return server.GetReceiverTimeout();
+            return server.GetReceiveTimeout();
         }
 
         // sets the receiver timeout.
-        public static void SetReceiverTimeout(int newRt)
+        public static void SetReceiveTimeout(int newRt)
         {
-            server.SetReceiverTimeout(newRt);
+            server.SetReceiveTimeout(newRt);
         }
 
         // checks to see if the server is running

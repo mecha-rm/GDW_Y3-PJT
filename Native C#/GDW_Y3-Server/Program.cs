@@ -12,7 +12,7 @@ namespace GDW_Y3_Server
         static void Main(string[] args)
         {
             UdpServer server = new UdpServer();
-            bool twoWay = true; // two-way connection
+            bool twoWay = false; // two-way connection
 
 
             // NOTE: the server sending data only does not work

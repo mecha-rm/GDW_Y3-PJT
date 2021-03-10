@@ -73,7 +73,14 @@ namespace GDW_Y3_Server
         // sets the buffer size for the server
         public void SetSendBufferSize(int size)
         {
-            if(size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (outBuffer != null)
+                Array.Resize(ref outBuffer, size);
+            else
                 outBuffer = new byte[size];
         }
 
@@ -89,7 +96,14 @@ namespace GDW_Y3_Server
         // sets the buffer size for the server
         public void SetReceiveBufferSize(int size)
         {
-            if (size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (inBuffer != null)
+                Array.Resize<byte>(ref inBuffer, size);
+            else
                 inBuffer = new byte[size];
         }
 
@@ -102,13 +116,27 @@ namespace GDW_Y3_Server
         // sets the receive buffer data
         public void SetSendBufferData(byte[] data)
         {
+            if(outBuffer != null) // out buffer exists
+                Array.Clear(outBuffer, 0, outBuffer.Length);
+            
             outBuffer = data;
         }
+
+        // TODO: add 'AddSendBufferData' function?
 
         // gets the receive buffer data
         public byte[] GetReceiveBufferData()
         {
             return inBuffer;
+        }
+
+        // sets the receive buffer data
+        public void SetReceiveBufferData(byte[] data)
+        {
+            if (inBuffer != null) // in buffer exists
+                Array.Clear(inBuffer, 0, inBuffer.Length);
+
+            inBuffer = data;
         }
 
         // gets the ip address as a string.
@@ -185,13 +213,13 @@ namespace GDW_Y3_Server
         }
 
         // gets the receiver timeout.
-        public int GetReceiverTimeout()
+        public int GetReceiveTimeout()
         {
             return receiveTimeout;
         }
 
         // sets the receiver timeout.
-        public void SetReceiverTimeout(int newRt)
+        public void SetReceiveTimeout(int newRt)
         {
             receiveTimeout = newRt;
 

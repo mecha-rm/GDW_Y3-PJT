@@ -66,7 +66,14 @@ namespace GDW_Y3_Client
         // sets the buffer size for the server
         public void SetSendBufferSize(int size)
         {
-            if (size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (outBuffer != null)
+                Array.Resize(ref outBuffer, size);
+            else
                 outBuffer = new byte[size];
         }
 
@@ -82,40 +89,47 @@ namespace GDW_Y3_Client
         // sets the buffer size for the server
         public void SetReceiveBufferSize(int size)
         {
-            if (size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (inBuffer != null)
+                Array.Resize<byte>(ref inBuffer, size);
+            else
                 inBuffer = new byte[size];
         }
 
-        // gets the buffer data
+        // gets the send buffer data
         public byte[] GetSendBufferData()
         {
             return outBuffer;
         }
 
-        // sets the buffer data
+        // sets the receive buffer data
         public void SetSendBufferData(byte[] data)
         {
+            if (outBuffer != null) // out buffer exists
+                Array.Clear(outBuffer, 0, outBuffer.Length);
+
             outBuffer = data;
         }
 
-        // adds the buffer data
-        public void AddSendBufferData(byte[] newData)
-        {
-            // creates the new array
-            byte[] arr = new byte[outBuffer.Length + newData.Length];
-
-            Buffer.BlockCopy(outBuffer, 0, arr, 0, outBuffer.Length);
-            Buffer.BlockCopy(newData, 0, arr, outBuffer.Length, newData.Length);
-
-            // sets array of data as new buffer
-            Array.Clear(outBuffer, 0, outBuffer.Length);
-            outBuffer = arr;
-        }
+        // TODO: add 'AddSendBufferData' function?
 
         // gets the receive buffer data
         public byte[] GetReceiveBufferData()
         {
             return inBuffer;
+        }
+
+        // sets the receive buffer data
+        public void SetReceiveBufferData(byte[] data)
+        {
+            if (inBuffer != null) // in buffer exists
+                Array.Clear(inBuffer, 0, inBuffer.Length);
+
+            inBuffer = data;
         }
 
         // gets the ip address as a string.

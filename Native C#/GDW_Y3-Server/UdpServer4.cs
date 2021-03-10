@@ -8,23 +8,33 @@ namespace GDW_Y3_Server
     // server with 4 clients
     class UdpServer4
     {
-        // two way communication between a server and its up to 4 clients
-
         // server variables
+        // out buffer to clients
         private byte[] outBuffer;
-        private byte[] inBuffer;
 
+        // in buffer from all clients
+        private byte[] inBuffer1;
+        private byte[] inBuffer2;
+        private byte[] inBuffer3;
+        private byte[] inBuffer4;
+
+        // ip address of server
         private IPAddress ip;
 
-        private IPEndPoint client = null;
+        // private IPEndPoint client = null;
         private Socket server_socket = null;
-        private EndPoint remoteClient = null;
+
+        // remote clients
+        private EndPoint remoteClient1 = null;
+        private EndPoint remoteClient2 = null;
+        private EndPoint remoteClient3 = null;
+        private EndPoint remoteClient4 = null;
 
         // the ip address for the object.
         string ipAddress = "";
 
         // port
-        // private int port;
+        private int port = 11111;
 
         // if 'true', sockets are being blocked.
         // it errors out if set to false by default when there is no connection being made.
@@ -37,8 +47,6 @@ namespace GDW_Y3_Server
         // checks to see if the server is running
         private bool running = false;
 
-        // the client socket for two-way communication
-        Socket client_socket = null;
 
         // constructor
         public UdpServer4()
@@ -46,20 +54,10 @@ namespace GDW_Y3_Server
 
         }
 
-        // gets the communication mode
-        // public mode GetCommunicationMode()
-        // {
-        //     return commMode;
-        // }
-        // 
-        // // sets the communication mode
-        // public void SetCommunicationMode(mode newMode)
-        // {
-        //     commMode = newMode;
-        // }
 
+        // SEND DATA //
         // returns the buffer size.
-        public int GetSendBufferSize()
+        public int GetSendBuffer1Size()
         {
             if (outBuffer != null)
                 return outBuffer.Length;
@@ -68,17 +66,19 @@ namespace GDW_Y3_Server
         }
 
         // sets the buffer size for the server
-        public void SetSendBufferSize(int size)
+        public void SetSendBuffer1Size(int size)
         {
             if (size > 0)
                 outBuffer = new byte[size];
         }
 
+
+        // RECEIVE DATA //
         // returns the buffer size.
-        public int GetReceiveBufferSize()
+        public int GetReceiveBuffer1Size()
         {
-            if (inBuffer != null)
-                return inBuffer.Length;
+            if (inBuffer1 != null)
+                return inBuffer1.Length;
             else
                 return 0;
         }
@@ -87,25 +87,73 @@ namespace GDW_Y3_Server
         public void SetReceiveBufferSize(int size)
         {
             if (size > 0)
-                inBuffer = new byte[size];
+                inBuffer1 = new byte[size];
         }
 
+        public int GetReceiveBuffer2Size()
+        {
+            if (inBuffer1 != null)
+                return inBuffer2.Length;
+            else
+                return 0;
+        }
+
+        // sets the buffer size for the server
+        public void SetReceiveBuffer2Size(int size)
+        {
+            if (size > 0)
+                inBuffer2 = new byte[size];
+        }
+
+        // gets the size of the third buffer
+        public int GetReceiveBuffer3Size()
+        {
+            if (inBuffer3 != null)
+                return inBuffer3.Length;
+            else
+                return 0;
+        }
+
+        // sets the buffer size for the server
+        public void SetReceiveBuffer3Size(int size)
+        {
+            if (size > 0)
+                inBuffer3 = new byte[size];
+        }
+
+        // get receive buffer 4
+        public int GetReceiveBuffer4Size()
+        {
+            if (inBuffer4 != null)
+                return inBuffer4.Length;
+            else
+                return 0;
+        }
+
+        // sets the buffer 4 size for the server
+        public void SetReceiveBuffer4Size(int size)
+        {
+            if (size > 0)
+                inBuffer4 = new byte[size];
+        }
+
+        // SETTER AND GETTER FOR BUFFER DATA
         // gets the send buffer data
         public byte[] GetSendBufferData()
         {
             return outBuffer;
         }
+   
+        // sets the receive buffer data
+        public void SetSendBufferData(byte[] data)
+        {
+            outBuffer = data;
+        }
 
         // gets the receive buffer data
         public byte[] GetReceiveBufferData()
         {
-            return inBuffer;
-        }
-
-        // sets the receive buffer data
-        public void SetReceiveBufferData(byte[] data)
-        {
-            inBuffer = data;
+            return inBuffer1;
         }
 
         // gets the ip address as a string.
@@ -122,6 +170,26 @@ namespace GDW_Y3_Server
         {
             ip = IPAddress.Parse(ipAdd); // set server's ip address
             ipAddress = ipAdd;
+        }
+
+        // gets the port number
+        public int GetPort()
+        {
+            return port;
+        }
+
+        // sets the port number
+        // this cannot be changed while a server is running
+        public void SetPort(int newPort)
+        {
+            if (!running) // server is not running
+            {
+                port = newPort;
+            }
+            else // server is running
+            {
+                Console.WriteLine("Port number cannot be changed while the server is running.");
+            }
         }
 
         // checks to see if the server is blocking sockets
@@ -162,13 +230,13 @@ namespace GDW_Y3_Server
         }
 
         // gets the receiver timeout.
-        public int GetReceiverTimeout()
+        public int GetReceiveTimeout()
         {
             return receiveTimeout;
         }
 
         // sets the receiver timeout.
-        public void SetReceiverTimeout(int newRt)
+        public void SetReceiveTimeout(int newRt)
         {
             receiveTimeout = newRt;
 
@@ -208,8 +276,8 @@ namespace GDW_Y3_Server
                 outBuffer = new byte[512];
 
             // reading in data
-            if (inBuffer == null)
-                inBuffer = new byte[512];
+            if (inBuffer1 == null)
+                inBuffer1 = new byte[512];
 
             // buffer = new byte[512];
             IPHostEntry host;
@@ -232,26 +300,26 @@ namespace GDW_Y3_Server
             Console.WriteLine("Server name: {0} IP: {1}", host.HostName, ip);
 
             // using the same port that was used last class.
-            IPEndPoint localEP = new IPEndPoint(ip, 11111);
+            IPEndPoint localEP = new IPEndPoint(ip, port);
 
             // last class the family was entered, but you can get from the ip directly the Address family.
             server_socket = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
 
             // 0 for any available port.
-            client = new IPEndPoint(IPAddress.Any, 0); // 0 for any available port.
-            remoteClient = (EndPoint)client;
+            // client = new IPEndPoint(IPAddress.Any, 0); // 0 for any available port.
+            remoteClient1 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
+            remoteClient2 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
+            remoteClient3 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
+            remoteClient4 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
 
             // 
             try
             {
                 // the server listens and provides a service.
                 server_socket.Bind(localEP);
-
-                // for two-way communication
-                // server_socket.Listen(16); // backlog
-
-                // gets the client socket
-                // client_socket = server_socket.Accept();
+                
+                // server prepared
+                Console.WriteLine("Waiting for, and prepared to send data...");
 
                 // sets timeout variables.
                 server_socket.ReceiveTimeout = receiveTimeout;
@@ -262,25 +330,6 @@ namespace GDW_Y3_Server
 
                 // the server is running
                 running = true;
-
-                // moved to update loop
-                // // added in while loop 
-                // while (true)
-                // {
-                //     // TCP we use "Receive", and for UDP we use "ReceiveFrom" (you probably wrote this wrong)
-                //     // 'ref' means passing by reference.
-                //     int rec = server.ReceiveFrom(buffer, ref remoteClient);
-                // 
-                //     Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(buffer, 0, rec), remoteClient.ToString());
-                // 
-                //     // would give you a float
-                //     // the client has to convert from float to byte using... BitConverter.GetBytes();
-                //     // BitConverter.ToSingle(buffer, 0);
-                // }
-                // 
-                // // closing server
-                // server.Shutdown(SocketShutdown.Both);
-                // server.Close();
 
             }
             catch (Exception e)
@@ -296,13 +345,14 @@ namespace GDW_Y3_Server
         {
             try
             {
-                // recieves the data
-                int rec = server_socket.ReceiveFrom(inBuffer, ref remoteClient);
 
-                // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
+                // receives data
+                int rec = server_socket.ReceiveFrom(inBuffer1, ref remoteClient1);
 
-                // sends out data
-                client_socket.Send(outBuffer);
+                // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient1.ToString());
+
+                // sends data
+                server_socket.SendTo(outBuffer, remoteClient1);
 
             }
             catch (ArgumentNullException anexc)

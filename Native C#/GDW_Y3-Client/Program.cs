@@ -11,7 +11,7 @@ namespace GDW_Y3_Client
         static void Main(string[] args)
         {
             UdpClient client = new UdpClient();
-            bool twoWay = true; // two-way connection
+            bool twoWay = false; // two-way connection
 
 
             // NOTE: the client sending data only does not work
