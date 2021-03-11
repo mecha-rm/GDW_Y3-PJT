@@ -29,14 +29,14 @@ public class UdpServer : MonoBehaviour
     // call to start runnnig the server
     public void RunServer()
     {
-        NetworkLibrary.ServerInterface.RunServer();
+        NetworkLibrary.UdpServerXInterface.RunServer();
     }
 
     // Update is called once per frame
     void Update()
     {
         // updates the server
-        NetworkLibrary.ServerInterface.Update();
+        NetworkLibrary.UdpServerXInterface.Update();
     }
 
 
@@ -45,6 +45,6 @@ public class UdpServer : MonoBehaviour
     private void OnDestroy()
     {
         // shuts down the server if this sript is destroyed.
-        NetworkLibrary.ServerInterface.ShutdownServer();
+        NetworkLibrary.UdpServerXInterface.ShutdownServer();
     }
 }

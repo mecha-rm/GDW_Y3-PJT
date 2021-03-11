@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
-namespace GDW_Y3_Client
+namespace NetworkLibrary
 {
     public class UdpClient
     {
@@ -16,6 +16,10 @@ namespace GDW_Y3_Client
         // client variables
         private byte[] outBuffer; // sending data to server
         private byte[] inBuffer; // getting data from a server
+
+        // default buffer size
+        private int defaultBufferSize = 512;
+
         private IPAddress ip;
 
         private IPEndPoint remote = null;
@@ -58,6 +62,21 @@ namespace GDW_Y3_Client
         public void SetCommunicationMode(mode newMode)
         {
             commMode = newMode;
+        }
+
+        // get the default buffer size
+        public int GetDefaultBufferSize()
+        {
+            return defaultBufferSize;
+        }
+
+        // sets the default buffer size
+        public void SetDefaultBufferSize(int newSize)
+        {
+            if (newSize < 0)
+                return;
+
+            defaultBufferSize = newSize;
         }
 
         // returns the buffer size.
@@ -113,9 +132,10 @@ namespace GDW_Y3_Client
         }
 
         // sets the receive buffer data
-        public void SetSendBufferData(byte[] data)
+        // if 'deleteOldData' is set to true, the original data is cleared out.
+        public void SetSendBufferData(byte[] data, bool deleteOldData = false)
         {
-            if (outBuffer != null) // out buffer exists
+            if (outBuffer != null && deleteOldData) // out buffer exists
                 Array.Clear(outBuffer, 0, outBuffer.Length);
 
             outBuffer = data;
@@ -130,16 +150,17 @@ namespace GDW_Y3_Client
         }
 
         // sets the receive buffer data
-        public void SetReceiveBufferData(byte[] data)
+        // if 'deleteOldData' is set to 'true', then the original data is not deleted.
+        public void SetReceiveBufferData(byte[] data, bool deleteOldData = false)
         {
-            if (inBuffer != null) // in buffer exists
+            if (inBuffer != null && deleteOldData) // in buffer exists
                 Array.Clear(inBuffer, 0, inBuffer.Length);
 
             inBuffer = data;
         }
 
         // gets the ip address as a string.
-        public String GetIPAddress()
+        public string GetIPAddress()
         {
             if (ip != null) // references ip object
                 return ip.ToString();
@@ -148,7 +169,7 @@ namespace GDW_Y3_Client
         }
 
         // sets the IP address
-        public void SetIPAdress(String ipAdd)
+        public void SetIPAdress(string ipAdd)
         {
             ip = IPAddress.Parse(ipAdd); // set server's ip address
             remote = new IPEndPoint(ip, port); // create remote with port
@@ -256,11 +277,11 @@ namespace GDW_Y3_Client
         {
             // setting out buffer if it has not been established.
             if (outBuffer == null)
-                outBuffer = new byte[512];
+                outBuffer = new byte[defaultBufferSize];
 
             // setting up the in buffer
             if (inBuffer == null)
-                inBuffer = new byte[512];
+                inBuffer = new byte[defaultBufferSize];
 
             try
             {
@@ -330,7 +351,7 @@ namespace GDW_Y3_Client
                 {
                     int rec = client_socket.Receive(inBuffer);
 
-                    Console.WriteLine("Received: {0} from Serever: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remote.ToString());
+                    // Console.WriteLine("Received: {0} from Server: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remote.ToString());
                 }
 
             }

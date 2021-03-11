@@ -4,16 +4,21 @@ using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
 
-namespace GDW_Y3_Server
+namespace NetworkLibrary
 {
     class UdpServerX
     {
-        // server variables
+        // name of server
+        private string serverName = "";
+
+        // default buffer size
+        private int defaultBufferSize = 512;
+
         // out buffer to clients
         private byte[] outBuffer;
 
-        private List<byte[]> inBuffers = new List<byte[]>(1);
-
+        // list of in buffers
+        private List<byte[]> inBuffers = new List<byte[]>();
 
         // ip address of server
         private IPAddress ip;
@@ -22,7 +27,7 @@ namespace GDW_Y3_Server
         private Socket server_socket = null;
 
         // remote clients
-        private List<EndPoint> remoteClients = new List<EndPoint>(1);
+        private List<EndPoint> remoteClients = new List<EndPoint>();
 
         // the ip address for the object.
         string ipAddress = "";
@@ -54,6 +59,26 @@ namespace GDW_Y3_Server
 
         }
 
+        // gets the server name
+        public string GetServerName()
+        {
+            return serverName;
+        }
+
+        // get the default buffer size
+        public int GetDefaultBufferSize()
+        {
+            return defaultBufferSize;
+        }
+
+        // sets the default buffer size
+        public void SetDefaultBufferSize(int newSize)
+        {
+            if (newSize < 0)
+                return;
+
+            defaultBufferSize = newSize;
+        }
 
         // SEND DATA //
         // returns the buffer size.
@@ -116,6 +141,102 @@ namespace GDW_Y3_Server
                     
             }
         }
+        
+        // ADDERS AND REMOVERS FOR CLIENTS
+
+        // Adding and Removing Clients
+        public EndPoint GetRemoteClient(int index)
+        {
+            // index out of bounds
+            if(index < 0 || index >= remoteClients.Count)
+            {
+                return null;
+            }
+
+            return remoteClients[index];
+
+        }
+
+        // adds a remote client with the default buffer size
+        public byte[] AddRemoteClient()
+        {
+            return AddRemoteClient(defaultBufferSize);
+        }
+
+        // adds a remote client with a buffer size
+        // if the buffer size is negative, then the default size is set.
+        public byte[] AddRemoteClient(int bufferSize)
+        {
+            EndPoint newRemote = new IPEndPoint(IPAddress.Any, 0); // any available port
+            remoteClients.Add(newRemote);
+
+            // buffer size is negative
+            if (bufferSize < 0)
+                bufferSize = defaultBufferSize;
+
+            inBuffers.Add(new byte[bufferSize]);
+
+            return inBuffers[inBuffers.Count - 1];
+
+        }
+
+        // adds a remote client with a buffer
+        // this returns the buffer that was just added
+        public byte[] AddRemoteClient(int bufferSize, byte[] buffer)
+        {
+            EndPoint newRemote = new IPEndPoint(IPAddress.Any, 0); // any available port
+            remoteClients.Add(newRemote);
+
+            // buffer size is negative
+            if (bufferSize < 0)
+                bufferSize = defaultBufferSize;
+
+            // setting to new buffer
+            inBuffers.Add(null);
+            inBuffers[inBuffers.Count - 1] = buffer;
+
+            return buffer;
+
+        }
+
+        // removes a remote client and returns its buffer.
+        public byte[] RemoteRemoteClient(int index)
+        {
+            // index out of bounds
+            if (index < 0 || index >= remoteClients.Count)
+            {
+                return null;
+            }
+
+            // removes buffer and remote client
+            remoteClients.RemoveAt(index);
+
+            byte[] buffer = inBuffers[index];
+            inBuffers.RemoveAt(index);
+
+            return buffer;
+        }
+
+        // deletes the remote client
+        public void DeleteRemoteClient(int index)
+        {
+            // index out of bounds
+            if (index < 0 || index >= remoteClients.Count)
+            {
+                return;
+            }
+
+            // remote client (garbage collector will delete this)
+            remoteClients.RemoveAt(index);
+
+
+            // gets the buffer
+            byte[] buffer = inBuffers[index];
+            inBuffers.RemoveAt(index);
+
+            // deletes the buffer data
+            Array.Clear(buffer, 0, buffer.Length);
+        }
 
        
         // SETTER AND GETTER FOR BUFFER DATA
@@ -126,9 +247,9 @@ namespace GDW_Y3_Server
         }
 
         // sets the receive buffer data
-        public void SetSendBufferData(byte[] data)
+        public void SetSendBufferData(byte[] data, bool deleteOldData = false)
         {
-            if (outBuffer != null) // out buffer exists
+            if (outBuffer != null && deleteOldData) // out buffer exists
                 Array.Clear(outBuffer, 0, outBuffer.Length);
 
             outBuffer = data;
@@ -145,11 +266,11 @@ namespace GDW_Y3_Server
         }
 
         // sets the receive buffer data
-        public void SetReceiveBufferData(int index, byte[] data)
+        public void SetReceiveBufferData(int index, byte[] data, bool deleteOldData = false)
         {
             if (index >= 0 && index < inBuffers.Count)
             {
-                if (inBuffers[index] != null) // in buffer exists
+                if (inBuffers[index] != null && deleteOldData) // in buffer exists
                     Array.Clear(inBuffers[index], 0, inBuffers[index].Length);
 
                 inBuffers[index] = data;
@@ -157,7 +278,7 @@ namespace GDW_Y3_Server
         }
 
         // gets the ip address as a string.
-        public String GetIPAddress()
+        public string GetIPAddress()
         {
             if (ip != null) // references ip object
                 return ip.ToString();
@@ -166,7 +287,7 @@ namespace GDW_Y3_Server
         }
 
         // sets the IP address
-        public void SetIPAdress(String ipAdd)
+        public void SetIPAdress(string ipAdd)
         {
             ip = IPAddress.Parse(ipAdd); // set server's ip address
             ipAddress = ipAdd;
@@ -273,14 +394,14 @@ namespace GDW_Y3_Server
             // buffers have not been generated
             // sending out data
             if (outBuffer == null)
-                outBuffer = new byte[512];
+                outBuffer = new byte[defaultBufferSize];
 
 
             // setting data values
             for(int i =  0; i < inBuffers.Count; i++)
             {
                 if (inBuffers[i] == null)
-                    inBuffers[i] = new byte[512];
+                    inBuffers[i] = new byte[defaultBufferSize];
             }    
 
 
@@ -301,7 +422,7 @@ namespace GDW_Y3_Server
 
             // IPAddress ip = IPAddress.Parse("192.168.2.144"); // manually enter IP address (default).
 
-
+            serverName = host.HostName; // server name
             Console.WriteLine("Server name: {0} IP: {1}", host.HostName, ip);
 
             // using the same port that was used last class.
@@ -312,17 +433,6 @@ namespace GDW_Y3_Server
 
             // 0 for any available port.
             // client = new IPEndPoint(IPAddress.Any, 0); // 0 for any available port.
-
-            // TODO: add remote client array
-
-            if (remoteClients.Count == 0)
-                remoteClients.Add(null);
-
-            // Add remote client list
-            // remoteClient1 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
-            // remoteClient2 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
-            // remoteClient3 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
-            // remoteClient4 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
 
             // 
             try
@@ -360,23 +470,21 @@ namespace GDW_Y3_Server
                 // receives data
                 int rec;
 
+                // brings in data from all buffers
+                for(int i = 0; i < inBuffers.Count; i++)
+                {
+                    // gets the remote client
+                    EndPoint ep = remoteClients[i];
 
+                    // receives the data
+                    rec = server_socket.ReceiveFrom(inBuffers[i], ref ep);
+                }
 
-                // gets data from all clients
-                // rec = server_socket.ReceiveFrom(inBuffer1, ref remoteClient1);
-                // rec = server_socket.ReceiveFrom(inBuffer2, ref remoteClient2);
-                // rec = server_socket.ReceiveFrom(inBuffer3, ref remoteClient3);
-                // rec = server_socket.ReceiveFrom(inBuffer4, ref remoteClient4);
-                // 
-                // 
-                // // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient1.ToString());
-                // 
-                // // sends data
-                // server_socket.SendTo(outBuffer, remoteClient1);
-                // server_socket.SendTo(outBuffer, remoteClient2);
-                // server_socket.SendTo(outBuffer, remoteClient3);
-                // server_socket.SendTo(outBuffer, remoteClient4);
-
+                // send out data
+                for(int i = 0; i < remoteClients.Count; i++)
+                {
+                    server_socket.SendTo(outBuffer, remoteClients[i]);
+                }
             }
             catch (ArgumentNullException anexc)
             {

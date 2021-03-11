@@ -10,7 +10,7 @@ namespace GDW_Y3_Client
     {
         static void Main(string[] args)
         {
-            UdpClient client = new UdpClient();
+            NetworkLibrary.UdpClient client = new NetworkLibrary.UdpClient();
             bool twoWay = true; // two-way connection
 
 
@@ -21,9 +21,9 @@ namespace GDW_Y3_Client
 
             // communication mode is send
             if (twoWay)
-                client.SetCommunicationMode(UdpClient.mode.both);
+                client.SetCommunicationMode(NetworkLibrary.UdpClient.mode.both);
             else
-                client.SetCommunicationMode(UdpClient.mode.send); // send by default
+                client.SetCommunicationMode(NetworkLibrary.UdpClient.mode.send); // send by default
 
             // runs the client
             client.RunClient();

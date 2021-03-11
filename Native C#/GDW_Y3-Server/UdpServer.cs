@@ -3,7 +3,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
-namespace GDW_Y3_Server
+namespace NetworkLibrary
 {
     // this is made static in the DSN work.
     // this isn't static since only one instance of the plugin can exist at a time.
@@ -13,14 +13,22 @@ namespace GDW_Y3_Server
         // enum for mode
         public enum mode { both, send, receive };
 
+        // name of server
+        private string serverName = "";
+
         // communication mode
         public mode commMode = mode.receive;
+
+        // default buffer size
+        private int defaultBufferSize = 512;
 
         // server variables
         private byte[] outBuffer;
         private byte[] inBuffer;
-        private IPAddress ip;
 
+
+        // server variables
+        private IPAddress ip;
         private IPEndPoint client = null;
         private Socket server_socket = null;
         private EndPoint remoteClient = null;
@@ -42,11 +50,16 @@ namespace GDW_Y3_Server
         // checks to see if the server is running
         private bool running = false;
 
-
         // constructor
         public UdpServer()
         {
 
+        }
+
+        // gets the server name
+        public string GetServerName()
+        {
+            return serverName;
         }
 
         // gets the communication mode
@@ -59,6 +72,22 @@ namespace GDW_Y3_Server
         public void SetCommunicationMode(mode newMode)
         {
             commMode = newMode;
+        }
+
+        // BUFFER RELATED // 
+        // get the default buffer size
+        public int GetDefaultBufferSize()
+        {
+            return defaultBufferSize;
+        }
+
+        // sets the default buffer size
+        public void SetDefaultBufferSize(int newSize)
+        {
+            if (newSize < 0)
+                return;
+
+            defaultBufferSize = newSize;
         }
 
         // returns the buffer size.
@@ -113,11 +142,10 @@ namespace GDW_Y3_Server
             return outBuffer;
         }
 
-        // TODO: provide option on whether or not to delete existing data
         // sets the receive buffer data
-        public void SetSendBufferData(byte[] data)
+        public void SetSendBufferData(byte[] data, bool deleteOldData = false)
         {
-            if(outBuffer != null) // out buffer exists
+            if(outBuffer != null && deleteOldData) // out buffer exists
                 Array.Clear(outBuffer, 0, outBuffer.Length);
             
             outBuffer = data;
@@ -132,16 +160,16 @@ namespace GDW_Y3_Server
         }
 
         // sets the receive buffer data
-        public void SetReceiveBufferData(byte[] data)
+        public void SetReceiveBufferData(byte[] data, bool deleteOldData = false)
         {
-            if (inBuffer != null) // in buffer exists
+            if (inBuffer != null && deleteOldData) // in buffer exists
                 Array.Clear(inBuffer, 0, inBuffer.Length);
 
             inBuffer = data;
         }
 
         // gets the ip address as a string.
-        public String GetIPAddress()
+        public string GetIPAddress()
         {
             if (ip != null) // references ip object
                 return ip.ToString();
@@ -150,7 +178,7 @@ namespace GDW_Y3_Server
         }
 
         // sets the IP address
-        public void SetIPAdress(String ipAdd)
+        public void SetIPAdress(string ipAdd)
         {
             ip = IPAddress.Parse(ipAdd); // set server's ip address
             ipAddress = ipAdd;
@@ -257,11 +285,11 @@ namespace GDW_Y3_Server
             // buffers have not been generated
             // sending out data
             if (outBuffer == null)
-                outBuffer = new byte[512];
+                outBuffer = new byte[defaultBufferSize];
 
             // reading in data
             if (inBuffer == null)
-                inBuffer = new byte[512];
+                inBuffer = new byte[defaultBufferSize];
 
             // buffer = new byte[512];
             IPHostEntry host;
@@ -279,8 +307,8 @@ namespace GDW_Y3_Server
             }
 
             // IPAddress ip = IPAddress.Parse("192.168.2.144"); // manually enter IP address (default).
-            
 
+            serverName = host.HostName; // server name
             Console.WriteLine("Server name: {0} IP: {1}", host.HostName, ip);
 
             // using the same port that was used last class.
@@ -306,6 +334,7 @@ namespace GDW_Y3_Server
                 // client_socket = server_socket.Accept();
 
                 // prints different message based on selected mode.
+                
                 switch(commMode)
                 {
                     case mode.both:
@@ -376,7 +405,7 @@ namespace GDW_Y3_Server
                 // NOTE: if put in the if statement, this doesn't work for some reason.
                 int rec = server_socket.ReceiveFrom(inBuffer, ref remoteClient);
                 
-                Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
+                // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
 
                 // sends the data
                 if (commMode == mode.both || commMode == mode.send)

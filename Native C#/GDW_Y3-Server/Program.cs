@@ -11,7 +11,7 @@ namespace GDW_Y3_Server
         // main server test
         static void ServerTest(bool twoWay)
         {
-            UdpServer server = new UdpServer();
+            NetworkLibrary.UdpServer server = new NetworkLibrary.UdpServer();
 
 
             // NOTE: the server sending data only does not work
@@ -20,14 +20,14 @@ namespace GDW_Y3_Server
 
             // two way mode
             if (twoWay)
-                server.SetCommunicationMode(UdpServer.mode.both);
+                server.SetCommunicationMode(NetworkLibrary.UdpServer.mode.both);
             else
-                server.SetCommunicationMode(UdpServer.mode.receive); // receive by default
+                server.SetCommunicationMode(NetworkLibrary.UdpServer.mode.receive); // receive by default
 
 
             server.SetBlockingSockets(false);
 
-            // runs the serve
+            // runs the server
             server.RunServer();
 
             // Console.WriteLine(server.GetIPAddress());
@@ -44,6 +44,7 @@ namespace GDW_Y3_Server
                     server.SetSendBufferData(sendData);
                 }
 
+
                 server.Update();
 
                 byte[] data = server.GetReceiveBufferData();
@@ -58,7 +59,7 @@ namespace GDW_Y3_Server
         // 1 to 4 Server Test
         static void Server4Test()
         {
-            UdpServer4 server4 = new UdpServer4();
+            NetworkLibrary.UdpServer4 server4 = new NetworkLibrary.UdpServer4();
 
             // runs the serve
             server4.RunServer();

@@ -7,98 +7,123 @@ using System.Runtime.InteropServices;
 
 namespace NetworkLibrary
 {
-    public class ServerInterface
+    public static class UdpServerInterface
     {
         // gets the server
-        private static GDW_Y3_Server.UdpServer server = new GDW_Y3_Server.UdpServer();
+        private static UdpServer server = new UdpServer();
+
+
+        // gets the server name
+        public static string GetServerName()
+        {
+            return server.GetServerName();
+        }
 
         // gets the communication mode
-        public GDW_Y3_Server.UdpServer.mode GetCommunicationMode()
+        public static UdpServer.mode GetCommunicationMode()
         {
             return server.GetCommunicationMode();
         }
 
         // sets the communication mode
-        public void SetCommunicationMode(GDW_Y3_Server.UdpServer.mode newMode)
+        public static void SetCommunicationMode(UdpServer.mode newMode)
         {
             server.SetCommunicationMode(newMode);
         }
 
+        // get the default buffer size
+        public static int GetDefaultBufferSize()
+        {
+            return server.GetDefaultBufferSize();
+        }
+
+        // sets the default buffer size
+        public static void SetDefaultBufferSize(int newSize)
+        {
+            server.SetDefaultBufferSize(newSize);
+        }
+
         // returns the buffer size.
-        public int GetSendBufferSize()
+        public static int GetSendBufferSize()
         {
             return server.GetSendBufferSize();
         }
 
         // sets the buffer size for the server
-        public void SetSendBufferSize(int size)
+        public static void SetSendBufferSize(int size)
         {
             server.SetSendBufferSize(size);
         }
 
         // returns the buffer size.
-        public int GetReceiveBufferSize()
+        public static int GetReceiveBufferSize()
         {
             return server.GetReceiveBufferSize();
         }
 
         // sets the buffer size for the server
-        public void SetReceiveBufferSize(int size)
+        public static void SetReceiveBufferSize(int size)
         {
             server.SetReceiveBufferSize(size);
         }
 
         // gets the send buffer data
-        public byte[] GetSendBufferData()
+        public static byte[] GetSendBufferData()
         {
             return server.GetSendBufferData();
         }
 
         // sets the receive buffer data
-        public void SetSendBufferData(byte[] data)
+        public static void SetSendBufferData(byte[] data, bool deleteOldData = false)
         {
-            server.SetSendBufferData(data);
+            server.SetSendBufferData(data,deleteOldData);
         }
 
         // gets the receive buffer data
-        public byte[] GetReceiveBufferData()
+        public static byte[] GetReceiveBufferData()
         {
             return server.GetReceiveBufferData();
         }
 
+        // sets the receive buffer data
+        public static void SetReceiveBufferData(byte[] data, bool deleteOldData = false)
+        {
+            server.SetReceiveBufferData(data, deleteOldData);
+        }
+
         // gets the ip address as a string
-        public static String GetIPAddress()
+        public static string GetIPAddress()
         {
             return server.GetIPAddress();
         }
 
         // sets the IP address
-        public void SetIPAdress(String ipAdd)
+        public static void SetIPAdress(string ipAdd)
         {
             server.SetIPAdress(ipAdd);
         }
 
         // gets the port number
-        public int GetPort()
+        public static int GetPort()
         {
             return server.GetPort();
         }
 
         // sets the port number
         // this cannot be changed while a server is running
-        public void SetPort(int newPort)
+        public static void SetPort(int newPort)
         {
             server.SetPort(newPort);
         }
 
         // checks to see if the server is blocking sockets
-        public bool IsBlockingSockets()
+        public static bool IsBlockingSockets()
         {
             return server.IsBlockingSockets();
         }
 
         // sets the blocking sockets variable
-        public void SetBlockingSockets(bool blocking)
+        public static void SetBlockingSockets(bool blocking)
         {
             server.SetBlockingSockets(blocking);
         }
