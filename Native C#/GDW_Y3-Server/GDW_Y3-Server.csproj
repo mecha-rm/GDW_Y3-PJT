@@ -51,6 +51,7 @@
     <Compile Include="UdpServer.cs" />
     <Compile Include="ServerInterface.cs" />
     <Compile Include="UdpServer4.cs" />
+    <Compile Include="UdpServerX.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -18,6 +18,7 @@ namespace GDW_Y3_Server
         private byte[] inBuffer3;
         private byte[] inBuffer4;
 
+
         // ip address of server
         private IPAddress ip;
 
@@ -35,6 +36,12 @@ namespace GDW_Y3_Server
 
         // port
         private int port = 11111;
+
+        /// <summary>
+        /// an exception is thrown if the program is set to either use non-blockng sockets, or timeout variables not set to 0.
+        /// this happens because the program is expecting to get data, but since it's not waiting, it moves onto the next line of code.
+        /// things still work, but the sent data will be harder to read due to messages constantly printing.
+        /// </summary>
 
         // if 'true', sockets are being blocked.
         // it errors out if set to false by default when there is no connection being made.
@@ -57,7 +64,7 @@ namespace GDW_Y3_Server
 
         // SEND DATA //
         // returns the buffer size.
-        public int GetSendBuffer1Size()
+        public int GetSendBufferSize()
         {
             if (outBuffer != null)
                 return outBuffer.Length;
@@ -66,9 +73,16 @@ namespace GDW_Y3_Server
         }
 
         // sets the buffer size for the server
-        public void SetSendBuffer1Size(int size)
+        public void SetSendBufferSize(int size)
         {
-            if (size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (outBuffer != null)
+                Array.Resize(ref outBuffer, size);
+            else
                 outBuffer = new byte[size];
         }
 
@@ -86,10 +100,18 @@ namespace GDW_Y3_Server
         // sets the buffer size for the server
         public void SetReceiveBufferSize(int size)
         {
-            if (size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (inBuffer1 != null)
+                Array.Resize<byte>(ref inBuffer1, size);
+            else
                 inBuffer1 = new byte[size];
         }
 
+        // gets the size of the second buffer
         public int GetReceiveBuffer2Size()
         {
             if (inBuffer1 != null)
@@ -101,7 +123,14 @@ namespace GDW_Y3_Server
         // sets the buffer size for the server
         public void SetReceiveBuffer2Size(int size)
         {
-            if (size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (inBuffer2 != null)
+                Array.Resize<byte>(ref inBuffer2, size);
+            else
                 inBuffer2 = new byte[size];
         }
 
@@ -117,7 +146,14 @@ namespace GDW_Y3_Server
         // sets the buffer size for the server
         public void SetReceiveBuffer3Size(int size)
         {
-            if (size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (inBuffer3 != null)
+                Array.Resize<byte>(ref inBuffer3, size);
+            else
                 inBuffer3 = new byte[size];
         }
 
@@ -133,7 +169,14 @@ namespace GDW_Y3_Server
         // sets the buffer 4 size for the server
         public void SetReceiveBuffer4Size(int size)
         {
-            if (size > 0)
+            // the size value is invalid
+            if (size < 0)
+                return;
+
+            // resizing array
+            if (inBuffer4 != null)
+                Array.Resize<byte>(ref inBuffer4, size);
+            else
                 inBuffer4 = new byte[size];
         }
 
@@ -147,13 +190,70 @@ namespace GDW_Y3_Server
         // sets the receive buffer data
         public void SetSendBufferData(byte[] data)
         {
+            if (outBuffer != null) // out buffer exists
+                Array.Clear(outBuffer, 0, outBuffer.Length);
+
             outBuffer = data;
         }
 
-        // gets the receive buffer data
-        public byte[] GetReceiveBufferData()
+        // gets the receive buffer 1 data
+        public byte[] GetReceiveBuffer1Data()
         {
             return inBuffer1;
+        }
+
+        // sets the receive buffer data
+        public void SetReceiveBuffer1Data(byte[] data)
+        {
+            if (inBuffer1 != null) // in buffer exists
+                Array.Clear(inBuffer1, 0, inBuffer1.Length);
+
+            inBuffer1 = data;
+        }
+
+        // gets the receive buffer 2 data
+        public byte[] GetReceiveBuffer2Data()
+        {
+            return inBuffer2;
+        }
+
+        // sets the receive buffer data
+        public void SetReceiveBuffer2Data(byte[] data)
+        {
+            if (inBuffer2 != null) // in buffer exists
+                Array.Clear(inBuffer2, 0, inBuffer2.Length);
+
+            inBuffer2 = data;
+        }
+
+        // gets the receive buffer 3 data
+        public byte[] GetReceiveBuffer3Data()
+        {
+            return inBuffer3;
+        }
+
+        // sets the receive buffer data
+        public void SetReceiveBuffer3Data(byte[] data)
+        {
+            if (inBuffer3 != null) // in buffer exists
+                Array.Clear(inBuffer3, 0, inBuffer3.Length);
+
+            inBuffer3 = data;
+        }
+
+        // gets the receive buffer 4 data
+        public byte[] GetReceiveBuffer4Data()
+        {
+            return inBuffer4;
+        }
+
+        // sets the receive buffer data
+        public void SetReceiveBuffer4Data(byte[] data)
+        {
+            if (inBuffer4 != null) // in buffer exists
+                Array.Clear(inBuffer4, 0, inBuffer4.Length);
+
+            inBuffer4 = data;
         }
 
         // gets the ip address as a string.
@@ -275,9 +375,21 @@ namespace GDW_Y3_Server
             if (outBuffer == null)
                 outBuffer = new byte[512];
 
-            // reading in data
+            // reading in data from buffer 1
             if (inBuffer1 == null)
                 inBuffer1 = new byte[512];
+
+            // reading in data from buffer 2
+            if (inBuffer2 == null)
+                inBuffer2 = new byte[512];
+
+            // reading in data from buffer 3
+            if (inBuffer3 == null)
+                inBuffer3 = new byte[512];
+
+            // reading in data from buffer 4
+            if (inBuffer4 == null)
+                inBuffer4 = new byte[512];
 
             // buffer = new byte[512];
             IPHostEntry host;
@@ -345,14 +457,23 @@ namespace GDW_Y3_Server
         {
             try
             {
-
                 // receives data
-                int rec = server_socket.ReceiveFrom(inBuffer1, ref remoteClient1);
+                int rec;
+                
+                // gets data from all clients
+                rec = server_socket.ReceiveFrom(inBuffer1, ref remoteClient1);
+                rec = server_socket.ReceiveFrom(inBuffer2, ref remoteClient2);
+                rec = server_socket.ReceiveFrom(inBuffer3, ref remoteClient3);
+                rec = server_socket.ReceiveFrom(inBuffer4, ref remoteClient4);
+
 
                 // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient1.ToString());
 
                 // sends data
                 server_socket.SendTo(outBuffer, remoteClient1);
+                server_socket.SendTo(outBuffer, remoteClient2);
+                server_socket.SendTo(outBuffer, remoteClient3);
+                server_socket.SendTo(outBuffer, remoteClient4);
 
             }
             catch (ArgumentNullException anexc)

@@ -11,7 +11,7 @@ namespace GDW_Y3_Client
         static void Main(string[] args)
         {
             UdpClient client = new UdpClient();
-            bool twoWay = false; // two-way connection
+            bool twoWay = true; // two-way connection
 
 
             // NOTE: the client sending data only does not work
@@ -45,8 +45,6 @@ namespace GDW_Y3_Client
                     data = client.GetReceiveBufferData();
                     Console.WriteLine(Encoding.ASCII.GetString(data, 0, data.Length));
                 }
-
-                
             }
 
             client.ShutdownClient();

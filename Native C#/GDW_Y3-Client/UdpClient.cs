@@ -27,6 +27,12 @@ namespace GDW_Y3_Client
         // port
         private int port = 11111;
 
+        /// <summary>
+        /// an exception is thrown if the program is set to either use non-blockng sockets, or timeout variables not set to 0.
+        /// this happens because the program is expecting to get data, but since it's not waiting, it moves onto the next line of code.
+        /// things still work, but the sent data will be harder to read due to messages constantly printing.
+        /// </summary>
+
         // if 'true', sockets are being blocked.
         private bool blockingSockets = true;
 
