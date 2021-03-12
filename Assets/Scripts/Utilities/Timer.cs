@@ -34,7 +34,7 @@ public class Timer : MonoBehaviour
             // 
             // text.text = "Time: " + min + ":" + sec;
 
-            text.text = "Time: " + timer;
+            text.text = "Time: " + timer.ToString("#");
         }
 
 

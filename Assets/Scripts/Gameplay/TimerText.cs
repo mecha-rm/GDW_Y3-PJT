@@ -73,12 +73,12 @@ public class TimerText : MonoBehaviour
             {
                 case 1: // countdown
                     timer1.paused = paused;
-                    text.text = "Timer: " + timer1.GetCurrentCountdownTime().ToString();
+                    text.text = "Timer: " + timer1.GetCurrentCountdownTime().ToString("F2");
                     break;
 
                 case 2: // stopwatch
                     timer2.paused = paused;
-                    text.text = "Timer: " + timer2.GetCurrentStopwatchTime().ToString();
+                    text.text = "Timer: " + timer2.GetCurrentStopwatchTime().ToString("F2");
                     break;
 
                 default:
