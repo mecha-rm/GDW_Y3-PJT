@@ -69,6 +69,7 @@ public class TimerText : MonoBehaviour
                 timer1.SetCountdownStartTime(countdownStart);
 
             // the number of the timer that should be used.
+            // now formatted with ToString("F2").
             switch (timerNumber)
             {
                 case 1: // countdown

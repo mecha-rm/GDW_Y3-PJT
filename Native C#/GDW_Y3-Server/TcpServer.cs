@@ -1,29 +1,38 @@
 ﻿using System;
+using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 namespace NetworkLibrary
 {
-    public class UdpClient
+    // this is made static in the DSN work.
+    // this isn't static since only one instance of the plugin can exist at a time.
+    // this is a UDP server
+    public class TcpServer
     {
         // enum for mode
         public enum mode { both, send, receive };
 
-        // communication mode
-        public mode commMode = mode.send;
+        // name of server
+        private string serverName = "";
 
-        // client variables
-        private byte[] outBuffer; // sending data to server
-        private byte[] inBuffer; // getting data from a server
+        // communication mode
+        public mode commMode = mode.receive;
 
         // default buffer size
         private int defaultBufferSize = 512;
 
-        private IPAddress ip;
+        // server variables
+        private byte[] outBuffer;
+        private byte[] inBuffer;
 
-        private IPEndPoint remote = null;
+
+        // server variables
+        private IPAddress ip;
+        private IPEndPoint client = null;
+        private Socket server_socket = null;
         private Socket client_socket = null;
+        private IPEndPoint remoteClient = null;
 
         // the ip address for the object.
         string ipAddress = "";
@@ -31,26 +40,27 @@ namespace NetworkLibrary
         // port
         private int port = 11111;
 
-        /// <summary>
-        /// an exception is thrown if the program is set to either use non-blockng sockets, or timeout variables not set to 0.
-        /// this happens because the program is expecting to get data, but since it's not waiting, it moves onto the next line of code.
-        /// things still work, but the sent data will be harder to read due to messages constantly printing.
-        /// </summary>
-
         // if 'true', sockets are being blocked.
-        // this should be left as 'true' on the client side. Only on the server side should this be set to false.
+        // it errors out if set to false by default when there is no connection being made.
         private bool blockingSockets = true;
 
         // timeout variables
+        // these error out if set to 0 by default when there is no connection being made.
         private int receiveTimeout = 0, sendTimeout = 0;
 
         // checks to see if the server is running
         private bool running = false;
 
         // constructor
-        public UdpClient()
+        public TcpServer()
         {
 
+        }
+
+        // gets the server name
+        public string GetServerName()
+        {
+            return serverName;
         }
 
         // gets the communication mode
@@ -65,6 +75,7 @@ namespace NetworkLibrary
             commMode = newMode;
         }
 
+        // BUFFER RELATED // 
         // get the default buffer size
         public int GetDefaultBufferSize()
         {
@@ -133,7 +144,6 @@ namespace NetworkLibrary
         }
 
         // sets the receive buffer data
-        // if 'deleteOldData' is set to true, the original data is cleared out.
         public void SetSendBufferData(byte[] data, bool deleteOldData = false)
         {
             if (outBuffer != null && deleteOldData) // out buffer exists
@@ -151,7 +161,6 @@ namespace NetworkLibrary
         }
 
         // sets the receive buffer data
-        // if 'deleteOldData' is set to 'true', then the original data is not deleted.
         public void SetReceiveBufferData(byte[] data, bool deleteOldData = false)
         {
             if (inBuffer != null && deleteOldData) // in buffer exists
@@ -173,7 +182,6 @@ namespace NetworkLibrary
         public void SetIPAdress(string ipAdd)
         {
             ip = IPAddress.Parse(ipAdd); // set server's ip address
-            remote = new IPEndPoint(ip, port); // create remote with port
             ipAddress = ipAdd;
         }
 
@@ -202,8 +210,8 @@ namespace NetworkLibrary
         {
             // if the server socket exists, that variable is referenced.
             // if not, the class variable is used.
-            if (client_socket != null)
-                return client_socket.Blocking;
+            if (server_socket != null)
+                return server_socket.Blocking;
             else
                 return blockingSockets;
         }
@@ -214,8 +222,8 @@ namespace NetworkLibrary
             // sets variable
             blockingSockets = blocking;
 
-            if (client_socket != null)
-                client_socket.Blocking = blockingSockets;
+            if (server_socket != null)
+                server_socket.Blocking = blockingSockets;
         }
 
         // getter for send timeout
@@ -230,30 +238,30 @@ namespace NetworkLibrary
             sendTimeout = newSt;
 
             // if the server socket has been generated.
-            if (client_socket != null)
-                client_socket.SendTimeout = sendTimeout;
+            if (server_socket != null)
+                server_socket.SendTimeout = sendTimeout;
         }
 
         // gets the receiver timeout.
-        public int GetReceiverTimeout()
+        public int GetReceiveTimeout()
         {
             return receiveTimeout;
         }
 
         // sets the receiver timeout.
-        public void SetReceiverTimeout(int newRt)
+        public void SetReceiveTimeout(int newRt)
         {
             receiveTimeout = newRt;
 
             // if the server socket has been generated.
-            if (client_socket != null)
-                client_socket.ReceiveTimeout = receiveTimeout;
+            if (server_socket != null)
+                server_socket.ReceiveTimeout = receiveTimeout;
         }
 
         // returns 'true' if the server is running
         public bool IsRunning()
         {
-            if (client_socket != null)
+            if (server_socket != null)
             {
                 return running;
             }
@@ -262,97 +270,166 @@ namespace NetworkLibrary
         }
 
         // returns 'true' if the server is running
-        // this does not get set to 'true', even if the UDP server is connected.
         public bool IsConnected()
         {
-            if (client_socket != null)
+            if (server_socket != null)
             {
-                return client_socket.Connected;
+                return server_socket.Connected;
             }
 
             return false;
         }
 
-        // runs the client
-        public void RunClient()
+        // runs the server project
+        public void RunServer()
         {
-            // setting out buffer if it has not been established.
+            // buffers have not been generated
+            // sending out data
             if (outBuffer == null)
                 outBuffer = new byte[defaultBufferSize];
 
-            // setting up the in buffer
+            // reading in data
             if (inBuffer == null)
                 inBuffer = new byte[defaultBufferSize];
 
+            // TODO: move host out of if statement for ipaddress in server files.
+            // buffer = new byte[512];
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+            // if the ip address has not already been set.
+            if (ipAddress == "")
+            {
+                ip = host.AddressList[1]; // get IP address from list
+            }
+            else
+            {
+                ip = IPAddress.Parse(ipAddress);
+            }
+
+            // IPAddress ip = IPAddress.Parse("192.168.2.144"); // manually enter IP address (default).
+
+            serverName = host.HostName; // server name
+            Console.WriteLine("Server name: {0} IP: {1}", host.HostName, ip);
+
+            // using the same port that was used last class.
+            IPEndPoint localEP = new IPEndPoint(ip, port);
+
+            // last class the family was entered, but you can get from the ip directly the Address family.
+            server_socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+            // 
             try
             {
-                // uses the localhost
-                if (ipAddress == null || ipAddress == "")
-                {
-                    // ipAddress = "127.0.0.1"; // local host
+                // the server listens and provides a service.
+                server_socket.Bind(localEP);
 
-                    // grab IP address of system
-                    IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-                    ipAddress = host.AddressList[1].ToString(); // get IP address from list
+                // listening on ip:port
+                server_socket.Listen(16); // backlog
+
+                // 0 for any available port.
+                // client = new IPEndPoint(IPAddress.Any, 0); // 0 for any available port.
+                // remoteClient = (EndPoint)client;
+                client_socket = server_socket.Accept();
+                remoteClient = (IPEndPoint)client_socket.RemoteEndPoint;
+
+                // gets the client socket
+                // client_socket = server_socket.Accept();
+
+                // prints different message based on selected mode.
+
+                switch (commMode)
+                {
+                    case mode.both:
+                        Console.WriteLine("Waiting for, and prepared to send data...");
+                        break;
+
+                    case mode.send:
+                        Console.WriteLine("Ready to send data...");
+                        break;
+
+                    case mode.receive:
+                        Console.WriteLine("Waiting for data...");
+                        break;
                 }
 
-                ip = IPAddress.Parse(ipAddress); // your server's public ip address.
 
-                remote = new IPEndPoint(ip, port);
-                client_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
+                // server
                 // sets timeout variables.
+                server_socket.ReceiveTimeout = receiveTimeout;
+                server_socket.SendTimeout = sendTimeout;
+
+                // non-blocking if false (recommended)
+                server_socket.Blocking = blockingSockets;
+
+                // client
                 client_socket.ReceiveTimeout = receiveTimeout;
                 client_socket.SendTimeout = sendTimeout;
 
-                // non-blocking socket for client
+                // non-blocking if false (recommended)
                 client_socket.Blocking = blockingSockets;
 
-                // the client is running
+                // the server is running
                 running = true;
 
-                try
-                {
-                    // Console.WriteLine("Connection Made");
-                }
-                catch (ArgumentNullException anexc)
-                {
-                    Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
-                }
-                catch (SocketException sexc)
-                {
-                    Console.WriteLine("SocketException: {0}", sexc.ToString());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Unexpected exception: {0}", e.ToString());
-                }
+                // moved to update loop
+                // // added in while loop 
+                // while (true)
+                // {
+                //     // TCP we use "Receive", and for UDP we use "ReceiveFrom" (you probably wrote this wrong)
+                //     // 'ref' means passing by reference.
+                //     int rec = server.ReceiveFrom(buffer, ref remoteClient);
+                // 
+                //     Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(buffer, 0, rec), remoteClient.ToString());
+                // 
+                //     // would give you a float
+                //     // the client has to convert from float to byte using... BitConverter.GetBytes();
+                //     // BitConverter.ToSingle(buffer, 0);
+                // }
+                // 
+                // // closing server
+                // server.Shutdown(SocketShutdown.Both);
+                // server.Close();
 
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: {0}", e.ToString());
+                Console.WriteLine(e.ToString());
             }
+
         }
 
-
-        // updates the client
+        // updates the server to listen for a message from the client.
+        // this gets called each frame by the program using the plugin.
         public void Update()
         {
             try
             {
+                // receives the data if connected
+                // if((commMode == mode.both || commMode == mode.receive) && server_socket.Connected)
+                // {
+                //    int rec = server_socket.ReceiveFrom(inBuffer, ref remoteClient);
+                // 
+                //     Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
+                // }
+
+                // NOTE: if put in the if statement, this doesn't work for some reason.
+                int rec = client_socket.Receive(inBuffer);
+
+                // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
+
                 // sends the data
                 if (commMode == mode.both || commMode == mode.send)
                 {
-                    client_socket.SendTo(outBuffer, remote);
-                }
+                    // client socket has not been established yet.
+                    // if(client_socket == null)
+                    // {
+                    //     client_socket = server_socket.Accept();
+                    // }
+                    //     
+                    // if(client_socket != null)
+                    //     client_socket.Send(outBuffer);
 
-                // receives the data
-                if (commMode == mode.both || commMode == mode.receive)
-                {
-                    int rec = client_socket.Receive(inBuffer);
-
-                    // Console.WriteLine("Received: {0} from Server: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remote.ToString());
+                    client_socket.Send(outBuffer);
                 }
 
             }
@@ -366,29 +443,30 @@ namespace NetworkLibrary
             }
             catch (Exception e)
             {
-                Console.WriteLine("Unexpected exception: {0}", e.ToString());
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
             }
         }
 
-        // shuts down the client
-        public void ShutdownClient()
+        // shuts down the server.
+        public void ShutdownServer()
         {
-            // release the socket if it has been established.
-            if(client_socket != null)
+            // the server socket has not been generated.
+            if (client_socket != null)
             {
                 client_socket.Shutdown(SocketShutdown.Both);
                 client_socket.Close();
                 running = false;
 
-                Console.WriteLine("Client Shutdown");
+                Console.WriteLine("Server Shutdown");
             }
-            
+
         }
 
         // destructor
-        ~UdpClient()
+        ~TcpServer()
         {
-            ShutdownClient();
+            ShutdownServer();
         }
     }
 }
