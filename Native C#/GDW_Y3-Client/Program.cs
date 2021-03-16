@@ -8,11 +8,10 @@ namespace GDW_Y3_Client
 {
     class Program
     {
-        static void Main(string[] args)
+        // udp client test
+        static void UdpClientTest(bool twoWay)
         {
             NetworkLibrary.UdpClient client = new NetworkLibrary.UdpClient();
-            bool twoWay = true; // two-way connection
-
 
             // NOTE: the client sending data only does not work
             // I don't know if I'll bother to fix it though.
@@ -29,7 +28,7 @@ namespace GDW_Y3_Client
             client.RunClient();
 
             // while the clent is running
-            while(client.IsRunning())
+            while (client.IsRunning())
             {
                 Console.WriteLine("Enter Message: ");
                 string str = Console.ReadLine();
@@ -48,7 +47,82 @@ namespace GDW_Y3_Client
             }
 
             client.ShutdownClient();
-            
+        }
+
+        // tests tcp client
+        static void TcpClientTest(bool twoWay)
+        {
+            NetworkLibrary.TcpClient client = new NetworkLibrary.TcpClient();
+
+            // most recent string provided.
+            string recentString = "";
+
+            // if 'true', repeat messages are printed.
+            bool repeatMessages = true;
+
+            // NOTE: the client sending data only does not work
+            // I don't know if I'll bother to fix it though.
+            // Also, setting up delays or non-blocking sockets before the client is running causes it to crash.
+
+
+            // communication mode is send
+            if (twoWay)
+                client.SetCommunicationMode(NetworkLibrary.TcpClient.mode.both);
+            else
+                client.SetCommunicationMode(NetworkLibrary.TcpClient.mode.send); // send by default
+
+            // runs the client
+            client.RunClient();
+
+            // while the clent is running
+            while (client.IsRunning())
+            {
+                Console.WriteLine("Enter Message: ");
+                string str = Console.ReadLine();
+
+                byte[] data = Encoding.ASCII.GetBytes(str);
+                client.SetSendBufferData(data);
+
+                client.Update();
+
+                // if doing two way
+                if (twoWay)
+                {
+                    data = client.GetReceiveBufferData();
+                    
+                    string receivedString = Encoding.ASCII.GetString(data, 0, data.Length);
+
+                    if (data.Length > 0 && (receivedString != recentString || repeatMessages))
+                    {
+                        recentString = receivedString;
+                        Console.WriteLine(receivedString);
+                    }
+
+                    // Console.WriteLine(Encoding.ASCII.GetString(data, 0, data.Length));
+                }
+            }
+
+            client.ShutdownClient();
+        }
+
+        static void Main(string[] args)
+        {
+            // test mode
+            int testMode = 2;
+
+            switch (testMode)
+            {
+                default:
+                case 0: // server (1 way)
+                case 1:
+                    UdpClientTest(true);
+                    break;
+
+                case 2: // server (4 way)
+                    TcpClientTest(true);
+                    break;
+            }
+
         }
     }
 }

@@ -9,7 +9,7 @@ namespace GDW_Y3_Server
     class Program
     {
         // main server test
-        static void ServerTest(bool twoWay)
+        static void UdpServerTest(bool twoWay)
         {
             NetworkLibrary.UdpServer server = new NetworkLibrary.UdpServer();
 
@@ -57,7 +57,7 @@ namespace GDW_Y3_Server
         }
 
         // 1 to 4 Server Test
-        static void Server4Test()
+        static void UdpServer4Test()
         {
             NetworkLibrary.UdpServer4 server4 = new NetworkLibrary.UdpServer4();
 
@@ -111,22 +111,81 @@ namespace GDW_Y3_Server
             server4.ShutdownServer();
         }
 
+        // public void ServerXTest() {}
+
+        // testing out the TCP Server
+        static void TcpSeverTest(bool twoWay)
+        {
+            NetworkLibrary.TcpServer server = new NetworkLibrary.TcpServer();
+
+            // last received string
+            string recentString = "";
+
+            // if 'true', repeat messages are printed.
+            bool repeatMessages = true;
+
+            // two way mode
+            if (twoWay)
+                server.SetCommunicationMode(NetworkLibrary.TcpServer.mode.both);
+            else
+                server.SetCommunicationMode(NetworkLibrary.TcpServer.mode.receive); // receive by default
+
+            // runs the server
+            server.RunServer();
+
+            // while loop for updates
+            while (server.IsRunning())
+            {
+                // if doing two way 
+                if (twoWay)
+                {
+                    Console.WriteLine("Enter Message: ");
+                    string str = Console.ReadLine();
+                    byte[] sendData = Encoding.ASCII.GetBytes(str);
+                    server.SetSendBufferData(sendData);
+                }
+
+                server.Update();
+
+                byte[] data = server.GetReceiveBufferData();
+                string receivedString = Encoding.ASCII.GetString(data, 0, data.Length);
+
+                // new string has been provided.
+                if (data.Length > 0 && (receivedString != recentString || repeatMessages))
+                {
+                    recentString = receivedString;
+                    Console.WriteLine(receivedString);
+                }
+
+                // Console.WriteLine(Encoding.ASCII.GetString(data, 0, data.Length));
+            }
+
+            server.ShutdownServer();
+        }
+
         // uncomment if making DLL
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 0;
+            int testMode = 4;
 
             switch(testMode)
             {
                 default:
                 case 0: // server (1 way)
                 case 1:
-                    ServerTest(true);
+                    UdpServerTest(true);
                     break;
 
                 case 2: // server (4 way)
-                    Server4Test();
+                    UdpServer4Test();
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    TcpSeverTest(true);
                     break;
             }
         }
