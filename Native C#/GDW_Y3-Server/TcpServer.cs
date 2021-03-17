@@ -511,7 +511,8 @@ namespace NetworkLibrary
         // shuts down the server.
         public void ShutdownServer()
         {
-            // the server socket has not been generated.
+            // the client socket has not been generated.
+            // only the client socket gets shutdown.
             if (client_socket != null)
             {
                 client_socket.Shutdown(SocketShutdown.Both);

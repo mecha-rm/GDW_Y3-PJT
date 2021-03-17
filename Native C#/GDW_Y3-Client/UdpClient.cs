@@ -373,16 +373,23 @@ namespace NetworkLibrary
         // shuts down the client
         public void ShutdownClient()
         {
-            // release the socket if it has been established.
-            if(client_socket != null)
+            try
             {
-                client_socket.Shutdown(SocketShutdown.Both);
-                client_socket.Close();
-                running = false;
+                // release the socket if it has been established.
+                if (client_socket != null)
+                {
+                    client_socket.Shutdown(SocketShutdown.Both);
+                    client_socket.Close();
+                    running = false;
 
-                Console.WriteLine("Client Shutdown");
+                    Console.WriteLine("Client Shutdown");
+                }
             }
-            
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
         }
 
         // destructor
