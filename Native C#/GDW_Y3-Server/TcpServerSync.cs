@@ -332,7 +332,12 @@ namespace NetworkLibrary
                 // 0 for any available port.
                 // client = new IPEndPoint(IPAddress.Any, 0); // 0 for any available port.
                 // remoteClient = (EndPoint)client;
+                
+                // TODO: create timeout function for acception of socket.
+                Console.WriteLine("Waiting for a connection...");
                 client_socket = server_socket.Accept();
+                Console.WriteLine("Connection Made.");
+
                 remoteClient = (IPEndPoint)client_socket.RemoteEndPoint;
 
                 // gets the client socket
@@ -407,6 +412,8 @@ namespace NetworkLibrary
         {
             try
             {
+                // TODO: use Socket.available to check for data before trying to call for more.
+
                 // receives the data if connected
                 // if((commMode == mode.both || commMode == mode.receive) && server_socket.Connected)
                 // {

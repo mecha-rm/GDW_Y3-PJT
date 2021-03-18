@@ -494,10 +494,10 @@ namespace NetworkLibrary
             {
                 Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
             }
-            catch (SocketException sexc)
+            catch (SocketException se)
             {
                 if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
-                    Console.WriteLine("SocketException: {0}", sexc.ToString());
+                    Console.WriteLine("SocketException: {0}", se.ToString());
             }
             catch (Exception e)
             {

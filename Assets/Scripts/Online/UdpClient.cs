@@ -41,5 +41,7 @@ public class UdpClient : MonoBehaviour
     // OnDestroy is called when the object is deleted.
     private void OnDestroy()
     {
+        // shuts down the client
+        NetworkLibrary.UdpClientInterface.ShutdownClient();
     }
 }

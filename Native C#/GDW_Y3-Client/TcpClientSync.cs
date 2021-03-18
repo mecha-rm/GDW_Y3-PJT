@@ -302,6 +302,8 @@ namespace NetworkLibrary
                 client_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 // client connects to remote
+                // TODO: create timeout function for connection to socket.
+                Console.WriteLine("Searching for server with IP " + ipAddress + "...");
                 client_socket.Connect(remote);
 
                 // sets timeout variables.
@@ -335,6 +337,8 @@ namespace NetworkLibrary
         {
             try
             {
+                // TODO: use Socket.available to check for data before trying to call for more.
+
                 // sends the data
                 if (commMode == mode.both || commMode == mode.send)
                 {

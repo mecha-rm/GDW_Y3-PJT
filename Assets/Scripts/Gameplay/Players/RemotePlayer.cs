@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,16 +36,190 @@ public class RemotePlayer : MonoBehaviour
             GetComponent<PlayerObject>();
     }
 
+    // packs the player data and returns it.
+    public byte[] GetData()
+    {
+        // size of content
+        byte[] sendData = new byte[NetworkLibrary.UdpServerXInterface.GetSendBufferSize()];
+
+        // index of content
+        int index = 0;
+
+        // Player Number
+        {
+            byte[] data = BitConverter.GetBytes(player.playerNumber);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+  
+
+        // Player Position
+        {
+            byte[] data;
+
+            // x position
+            data = BitConverter.GetBytes(player.transform.position.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y position
+            data = BitConverter.GetBytes(player.transform.position.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z position
+            data = BitConverter.GetBytes(player.transform.position.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Player Scale
+        {
+            byte[] data;
+
+            // x scale
+            data = BitConverter.GetBytes(player.transform.localScale.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y scale
+            data = BitConverter.GetBytes(player.transform.localScale.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z scale
+            data = BitConverter.GetBytes(player.transform.localScale.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Player Rotation
+        {
+            byte[] data;
+
+            // x rotation
+            data = BitConverter.GetBytes(player.transform.rotation.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y rotation
+            data = BitConverter.GetBytes(player.transform.rotation.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z rotation
+            data = BitConverter.GetBytes(player.transform.rotation.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // w value
+            data = BitConverter.GetBytes(player.transform.rotation.w);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Player Score
+        {
+            byte[] data;
+
+            // player score
+            data = BitConverter.GetBytes(player.playerScore);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+        }
+
+        return sendData;
+    }
+
+    // receive player data
+    public void ApplyData(byte[] data)
+    {
+        // index of content
+        int index = 0;
+
+        // Player Number (does not change)
+        {
+            //int pNum = BitConverter.ToInt32(data, index);
+            //index += sizeof(int);
+
+            index += sizeof(int); // skip player number
+        }
+
+        // Player Position
+        {
+            // gets the player position
+            Vector3 newPos = new Vector3();
+
+            // getting position values
+            newPos.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+            
+            newPos.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newPos.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            player.transform.position = newPos;
+        }
+
+        // Player Scale
+        {
+            // gets the player scale
+            Vector3 newScale = new Vector3();
+
+            // getting position values
+            newScale.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newScale.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newScale.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            player.transform.localScale = newScale;
+        }
+
+        // Player Rotation
+        {
+            // gets the player rotation
+            Quaternion newRot = new Quaternion();
+
+            // getting position values
+            newRot.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newRot.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newRot.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newRot.w = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            player.transform.rotation = newRot;
+        }
+
+        // Player Score
+        {
+            float score = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+            player.playerScore = score;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         // player object is set, and the server is running
         if(player != null && NetworkLibrary.UdpServerXInterface.IsRunning())
         {
-            // gets the player number
-            int p = player.playerNumber;
+            
 
-            byte[] data = NetworkLibrary.UdpServerXInterface.GetReceiveBufferData(p - 1);
+
         }
     }
 }

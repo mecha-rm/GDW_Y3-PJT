@@ -129,7 +129,7 @@ namespace GDW_Y3_Server
                 server.SetCommunicationMode(NetworkLibrary.TcpServerSync.mode.receive); // receive by default
 
             // blocking sockets
-            server.SetBlockingSockets(true);
+            server.SetBlockingSockets(false);
             server.ignoreError10035 = true;
 
             // runs the server
@@ -220,7 +220,7 @@ namespace GDW_Y3_Server
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 4;
+            int testMode = 3;
 
             switch(testMode)
             {

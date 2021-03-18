@@ -44,7 +44,7 @@ public class UdpServer : MonoBehaviour
     // OnDestroy is called when the object is deleted.
     private void OnDestroy()
     {
-        // shuts down the server if this sript is destroyed.
+        // shuts down the server if this script is destroyed.
         NetworkLibrary.UdpServerXInterface.ShutdownServer();
     }
 }

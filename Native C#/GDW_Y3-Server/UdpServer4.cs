@@ -509,14 +509,14 @@ namespace NetworkLibrary
                 server_socket.SendTo(outBuffer, remoteClient4);
 
             }
-            catch (ArgumentNullException anexc)
+            catch (ArgumentNullException ane)
             {
-                Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
             }
-            catch (SocketException sexc)
+            catch (SocketException se)
             {
                 if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
-                    Console.WriteLine("SocketException: {0}", sexc.ToString());
+                    Console.WriteLine("SocketException: {0}", se.ToString());
             }
             catch (Exception e)
             {

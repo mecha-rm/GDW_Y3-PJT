@@ -73,6 +73,8 @@ namespace GDW_Y3_Client
             else
                 client.SetCommunicationMode(NetworkLibrary.TcpClientSync.mode.send); // send by default
 
+            client.SetBlockingSockets(false);
+
             // runs the client
             client.RunClient();
 
