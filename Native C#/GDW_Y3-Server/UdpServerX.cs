@@ -45,6 +45,10 @@ namespace NetworkLibrary
         // it errors out if set to false by default when there is no connection being made.
         private bool blockingSockets = true;
 
+        // Error 10035 is a non-blocking socket error
+        // if this variable is set to 'true', exceptions of this number do not print.
+        public bool ignoreError10035 = false;
+
         // timeout variables
         // these error out if set to 0 by default when there is no connection being made.
         private int receiveTimeout = 0, sendTimeout = 0;
@@ -492,7 +496,8 @@ namespace NetworkLibrary
             }
             catch (SocketException sexc)
             {
-                Console.WriteLine("SocketException: {0}", sexc.ToString());
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", sexc.ToString());
             }
             catch (Exception e)
             {

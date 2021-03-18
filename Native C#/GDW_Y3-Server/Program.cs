@@ -112,11 +112,9 @@ namespace GDW_Y3_Server
         }
 
         // public void ServerXTest() {}
-
-        // testing out the TCP Server
-        static void TcpSeverTest(bool twoWay)
+        static void TcpServerSyncTest(bool twoWay)
         {
-            NetworkLibrary.TcpServer server = new NetworkLibrary.TcpServer();
+            NetworkLibrary.TcpServerSync server = new NetworkLibrary.TcpServerSync();
 
             // last received string
             string recentString = "";
@@ -126,9 +124,64 @@ namespace GDW_Y3_Server
 
             // two way mode
             if (twoWay)
-                server.SetCommunicationMode(NetworkLibrary.TcpServer.mode.both);
+                server.SetCommunicationMode(NetworkLibrary.TcpServerSync.mode.both);
             else
-                server.SetCommunicationMode(NetworkLibrary.TcpServer.mode.receive); // receive by default
+                server.SetCommunicationMode(NetworkLibrary.TcpServerSync.mode.receive); // receive by default
+
+            // blocking sockets
+            server.SetBlockingSockets(true);
+            server.ignoreError10035 = true;
+
+            // runs the server
+            server.RunServer();
+
+            // while loop for updates
+            while (server.IsRunning())
+            {
+                // if doing two way 
+                if (twoWay)
+                {
+                    Console.WriteLine("Enter Message: ");
+                    string str = Console.ReadLine();
+                    byte[] sendData = Encoding.ASCII.GetBytes(str);
+                    server.SetSendBufferData(sendData);
+                }
+
+                server.Update();
+
+                byte[] data = server.GetReceiveBufferData();
+                string receivedString = Encoding.ASCII.GetString(data, 0, data.Length);
+
+                // new string has been provided.
+                if (data.Length > 0 && (receivedString != recentString || repeatMessages))
+                {
+                    recentString = receivedString;
+                    Console.WriteLine(receivedString);
+                }
+
+                // Console.WriteLine(Encoding.ASCII.GetString(data, 0, data.Length));
+            }
+
+            server.ShutdownServer();
+        }
+
+
+        // testing out the TCP Server
+        static void TcpServerAsyncTest(bool twoWay)
+        {
+            NetworkLibrary.TcpServerAsync server = new NetworkLibrary.TcpServerAsync();
+
+            // last received string
+            string recentString = "";
+
+            // if 'true', repeat messages are printed.
+            bool repeatMessages = true;
+
+            // two way mode
+            if (twoWay)
+                server.SetCommunicationMode(NetworkLibrary.TcpServerAsync.mode.both);
+            else
+                server.SetCommunicationMode(NetworkLibrary.TcpServerAsync.mode.receive); // receive by default
 
             // runs the server
             server.RunServer();
@@ -182,10 +235,11 @@ namespace GDW_Y3_Server
                     break;
 
                 case 3:
+                    TcpServerSyncTest(true);
                     break;
 
                 case 4:
-                    TcpSeverTest(true);
+                    TcpServerAsyncTest(true);
                     break;
             }
         }

@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TcpClient.cs" />
+    <Compile Include="TcpClientAsync.cs" />
+    <Compile Include="TcpClientSync.cs" />
     <Compile Include="UdpClientInterface.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

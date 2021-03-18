@@ -51,10 +51,10 @@ namespace GDW_Y3_Client
             client.ShutdownClient();
         }
 
-        // tests tcp client
-        static void TcpClientTest(bool twoWay)
+        // tcp client test
+        static void TcpClientSyncTest(bool twoWay)
         {
-            NetworkLibrary.TcpClient client = new NetworkLibrary.TcpClient();
+            NetworkLibrary.TcpClientSync client = new NetworkLibrary.TcpClientSync();
 
             // most recent string provided.
             string recentString = "";
@@ -69,9 +69,65 @@ namespace GDW_Y3_Client
 
             // communication mode is send
             if (twoWay)
-                client.SetCommunicationMode(NetworkLibrary.TcpClient.mode.both);
+                client.SetCommunicationMode(NetworkLibrary.TcpClientSync.mode.both);
             else
-                client.SetCommunicationMode(NetworkLibrary.TcpClient.mode.send); // send by default
+                client.SetCommunicationMode(NetworkLibrary.TcpClientSync.mode.send); // send by default
+
+            // runs the client
+            client.RunClient();
+
+            // while the clent is running
+            while (client.IsRunning())
+            {
+                Console.WriteLine("Enter Message: ");
+                string str = Console.ReadLine();
+
+                byte[] data = Encoding.ASCII.GetBytes(str);
+                client.SetSendBufferData(data);
+
+                client.Update();
+
+                // if doing two way
+                if (twoWay)
+                {
+                    data = client.GetReceiveBufferData();
+
+                    string receivedString = Encoding.ASCII.GetString(data, 0, data.Length);
+
+                    if (data.Length > 0 && (receivedString != recentString || repeatMessages))
+                    {
+                        recentString = receivedString;
+                        Console.WriteLine(receivedString);
+                    }
+
+                    // Console.WriteLine(Encoding.ASCII.GetString(data, 0, data.Length));
+                }
+            }
+
+            client.ShutdownClient();
+        }
+
+        // tests tcp client
+        static void TcpClientAsyncTest(bool twoWay)
+        {
+            NetworkLibrary.TcpClientAsync client = new NetworkLibrary.TcpClientAsync();
+
+            // most recent string provided.
+            string recentString = "";
+
+            // if 'true', repeat messages are printed.
+            bool repeatMessages = true;
+
+            // NOTE: the client sending data only does not work
+            // I don't know if I'll bother to fix it though.
+            // Also, setting up delays or non-blocking sockets before the client is running causes it to crash.
+
+
+            // communication mode is send
+            if (twoWay)
+                client.SetCommunicationMode(NetworkLibrary.TcpClientAsync.mode.both);
+            else
+                client.SetCommunicationMode(NetworkLibrary.TcpClientAsync.mode.send); // send by default
 
             // runs the client
             client.RunClient();
@@ -120,8 +176,12 @@ namespace GDW_Y3_Client
                     UdpClientTest(true);
                     break;
 
-                case 2: // server (4 way)
-                    TcpClientTest(true);
+                case 2: // tcp synchronous server
+                    TcpClientSyncTest(true);
+                    break;
+
+                case 3: // tcp server
+                    TcpClientAsyncTest(true);
                     break;
             }
 

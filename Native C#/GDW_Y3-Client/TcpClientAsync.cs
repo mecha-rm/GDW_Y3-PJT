@@ -1,11 +1,23 @@
-﻿using System;
+﻿/*
+ * Name:
+ * Date:
+ * Description:
+ * References:
+ *  - https://docs.microsoft.com/en-us/dotnet/framework/network-programming/asynchronous-client-socket-example
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
+using System.Threading;
 
 namespace NetworkLibrary
 {
-    public class UdpClient
+    class TcpClientAsync
     {
         // enum for mode
         public enum mode { both, send, receive };
@@ -22,7 +34,7 @@ namespace NetworkLibrary
 
         private IPAddress ip;
 
-        private EndPoint remote = null;
+        private IPEndPoint remote = null;
         private Socket client_socket = null;
 
         // the ip address for the object.
@@ -31,24 +43,19 @@ namespace NetworkLibrary
         // port
         private int port = 11111;
 
-        /// <summary>
-        /// an exception is thrown if the program is set to either use non-blockng sockets, or timeout variables not set to 0.
-        /// this happens because the program is expecting to get data, but since it's not waiting, it moves onto the next line of code.
-        /// things still work, but the sent data will be harder to read due to messages constantly printing.
-        /// </summary>
+        // if 'true', asyncronous sockets are used.
+        // private bool asyncSockets = true;
 
-        // if 'true', sockets are being blocked.
-        // this should be left as 'true' on the client side. Only on the server side should this be set to false.
-        private bool blockingSockets = true;
-
-        // timeout variables
-        private int receiveTimeout = 0, sendTimeout = 0;
+        // event resets
+        private ManualResetEvent resetConnectEvent = new ManualResetEvent(false);
+        private ManualResetEvent resetSendEvent = new ManualResetEvent(false);
+        private ManualResetEvent resetReceiveEvent = new ManualResetEvent(false);
 
         // checks to see if the server is running
         private bool running = false;
 
         // constructor
-        public UdpClient()
+        public TcpClientAsync()
         {
 
         }
@@ -160,6 +167,32 @@ namespace NetworkLibrary
             inBuffer = data;
         }
 
+        // clears the send buffer of its data, replacing it with an array of size 0 if applicable.
+        // if the buffer hasn't been set, nothing happens.
+        public void ClearSendBuffer(bool setSize0 = true)
+        {
+            if (outBuffer == null)
+                return;
+
+            Array.Clear(outBuffer, 0, outBuffer.Length);
+
+            if (setSize0)
+                outBuffer = new byte[0];
+        }
+
+        // clears the send buffer of its data, replacing it with an array of size 0 if applicable.
+        // if the buffer hasn't been set, nothing happens.
+        public void ClearReceiveBuffer(bool setSize0 = true)
+        {
+            if (inBuffer == null)
+                return;
+
+            Array.Clear(inBuffer, 0, inBuffer.Length);
+
+            if (setSize0)
+                inBuffer = new byte[0];
+        }
+
         // gets the ip address as a string.
         public string GetIPAddress()
         {
@@ -197,58 +230,6 @@ namespace NetworkLibrary
             }
         }
 
-        // checks to see if the server is blocking sockets
-        public bool IsBlockingSockets()
-        {
-            // if the server socket exists, that variable is referenced.
-            // if not, the class variable is used.
-            if (client_socket != null)
-                return client_socket.Blocking;
-            else
-                return blockingSockets;
-        }
-
-        // sets the blocking sockets variable
-        public void SetBlockingSockets(bool blocking)
-        {
-            // sets variable
-            blockingSockets = blocking;
-
-            if (client_socket != null)
-                client_socket.Blocking = blockingSockets;
-        }
-
-        // getter for send timeout
-        public int GetSendTimeout()
-        {
-            return sendTimeout;
-        }
-
-        // setter for send timeout
-        public void SetSendTimeout(int newSt)
-        {
-            sendTimeout = newSt;
-
-            // if the server socket has been generated.
-            if (client_socket != null)
-                client_socket.SendTimeout = sendTimeout;
-        }
-
-        // gets the receiver timeout.
-        public int GetReceiverTimeout()
-        {
-            return receiveTimeout;
-        }
-
-        // sets the receiver timeout.
-        public void SetReceiverTimeout(int newRt)
-        {
-            receiveTimeout = newRt;
-
-            // if the server socket has been generated.
-            if (client_socket != null)
-                client_socket.ReceiveTimeout = receiveTimeout;
-        }
 
         // returns 'true' if the server is running
         public bool IsRunning()
@@ -273,6 +254,63 @@ namespace NetworkLibrary
             return false;
         }
 
+        // connect callback
+        private void ConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
+                Socket localSocket = (Socket)ar.AsyncState;
+
+                // connection has been ended.
+                localSocket.EndConnect(ar);
+
+                resetConnectEvent.Set();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        // sends callback
+        private void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // gets socket
+                Socket localSocket = (Socket)ar.AsyncState;
+
+                // gets data
+                int rec = localSocket.EndSend(ar);
+
+                // all bytes have been sent.
+                resetSendEvent.Set();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        // receive callback
+        private void ReceiveCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the state object and the client socket.  
+                Socket localSocket = (Socket)ar.AsyncState;
+
+                // ends receiver 
+                int rec = localSocket.EndReceive(ar);
+
+                resetReceiveEvent.Set();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
         // runs the client
         public void RunClient()
         {
@@ -286,52 +324,43 @@ namespace NetworkLibrary
 
             try
             {
-                // uses the localhost
-                if (ipAddress == null || ipAddress == "")
-                {
-                    // ipAddress = "127.0.0.1"; // local host
+                // host
+                IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
-                    // grab IP address of system
-                    IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-                    ipAddress = host.AddressList[1].ToString(); // get IP address from list
+                // if the ip address has not already been set.
+                if (ipAddress == "")
+                {
+                    ip = host.AddressList[1]; // get IP address from list
+                }
+                else
+                {
+                    ip = IPAddress.Parse(ipAddress);
                 }
 
-                ip = IPAddress.Parse(ipAddress); // your server's public ip address.
-
+                // setting up the two end points
                 remote = new IPEndPoint(ip, port);
-                client_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-                // sets timeout variables.
-                client_socket.ReceiveTimeout = receiveTimeout;
-                client_socket.SendTimeout = sendTimeout;
+                // generates socket
+                client_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-                // non-blocking socket for client
-                client_socket.Blocking = blockingSockets;
+                // connects the tcp socket
+                client_socket.BeginConnect(remote, new AsyncCallback(ConnectCallback), client_socket);
+                resetConnectEvent.WaitOne();
 
-                // the client is running
                 running = true;
 
-                try
-                {
-                    // Console.WriteLine("Connection Made");
-                }
-                catch (ArgumentNullException anexc)
-                {
-                    Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
-                }
-                catch (SocketException sexc)
-                {
-                    Console.WriteLine("SocketException: {0}", sexc.ToString());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Unexpected exception: {0}", e.ToString());
-                }
-
+            }
+            catch (ArgumentNullException anexc)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
+            }
+            catch (SocketException sexc)
+            {
+                Console.WriteLine("SocketException: {0}", sexc.ToString());
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: {0}", e.ToString());
+                Console.WriteLine("Unexpected exception: {0}", e.ToString());
             }
         }
 
@@ -341,17 +370,19 @@ namespace NetworkLibrary
         {
             try
             {
+                // NOTE: this stalls the user for a resposne when they send the first time, but after that they don't have to wiat.
                 // sends the data
                 if (commMode == mode.both || commMode == mode.send)
                 {
-                    client_socket.SendTo(outBuffer, remote);
+                    client_socket.BeginSend(outBuffer, 0, outBuffer.Length, 0, new AsyncCallback(SendCallback), client_socket);
+                    resetSendEvent.WaitOne();
                 }
 
                 // receives the data
                 if (commMode == mode.both || commMode == mode.receive)
                 {
-                    int rec = client_socket.ReceiveFrom(inBuffer, ref remote);
-
+                    client_socket.BeginReceive(inBuffer, 0, inBuffer.Length, 0, new AsyncCallback(ReceiveCallback), client_socket);
+                    resetReceiveEvent.WaitOne();
                     // Console.WriteLine("Received: {0} from Server: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remote.ToString());
                 }
 
@@ -385,7 +416,7 @@ namespace NetworkLibrary
                     Console.WriteLine("Client Shutdown");
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
@@ -393,7 +424,7 @@ namespace NetworkLibrary
         }
 
         // destructor
-        ~UdpClient()
+        ~TcpClientAsync()
         {
             ShutdownClient();
         }
