@@ -26,7 +26,7 @@ public class UdpClient : MonoBehaviour
     }
 
     // runs the client
-    void RunClient()
+    public void RunClient()
     {
         NetworkLibrary.UdpClientInterface.RunClient();
     }

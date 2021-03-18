@@ -29,7 +29,9 @@ public class UdpServer : MonoBehaviour
     // call to start runnnig the server
     public void RunServer()
     {
-        NetworkLibrary.UdpServerXInterface.RunServer();
+        // if the server isn't already running.
+        if(!NetworkLibrary.UdpServerXInterface.IsRunning())
+            NetworkLibrary.UdpServerXInterface.RunServer();
     }
 
     // Update is called once per frame
