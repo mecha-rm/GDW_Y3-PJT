@@ -6,7 +6,9 @@ public class OnlineGameplayManager : MonoBehaviour
 {
     /// <summary>
     /// Format for writing data to the server.
-    /// 
+    /// * Players (1 - 3) (Lowest: 47, Highest: 141)
+    ///     - Send the data
+    ///     
     /// </summary>
 
     /// <summary>
@@ -69,7 +71,9 @@ public class OnlineGameplayManager : MonoBehaviour
 
     void GetDataFromClients()
     {
-
+        // Step 1: Get Info From Players
+        // Step 2: Apply Data
+        // Step 3: Send Off Data
     }
 
     void SendDataToClients()
