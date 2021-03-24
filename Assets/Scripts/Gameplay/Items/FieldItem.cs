@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+
+// TODO: add item number variable so that you know which items have been turned on/off.
 // script for items that are on the field and available for pickup
 public class FieldItem : MonoBehaviour
 {
@@ -26,7 +29,13 @@ public class FieldItem : MonoBehaviour
 
     // the death space of the field item.
     public DeathSpace deathSpace;
-    
+
+    // data size (32 bytes)
+    // Type - 1 Int (4 Bytes)
+    // Position - 3 Floats (12 Bytes)
+    // Rotation - 4 Bytes (16 Bytes)
+    const int DATA_SIZE = 32;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +64,7 @@ public class FieldItem : MonoBehaviour
         // TODO: have adjustable probability rates.
 
         // randomizes the item
-        itemSet = (itemType)Random.Range(1, ITEM_COUNT + 1);
+        itemSet = (itemType)UnityEngine.Random.Range(1, ITEM_COUNT + 1);
 
         return itemSet;
     }
@@ -65,9 +74,9 @@ public class FieldItem : MonoBehaviour
     {
         // creates a new position.
         transform.position = new Vector3(
-            Random.Range(min.x, max.x),
-            Random.Range(min.y, max.y),
-            Random.Range(min.z, max.z)
+            UnityEngine.Random.Range(min.x, max.x),
+            UnityEngine.Random.Range(min.y, max.y),
+            UnityEngine.Random.Range(min.z, max.z)
         );
     }
 
@@ -111,6 +120,132 @@ public class FieldItem : MonoBehaviour
             genItem.ActivateEffect(player);
 
         return genItem;
+    }
+
+    // gets the data for this field item (type, position, and roation)
+    public byte[] GetData()
+    {
+        // Bytes: 32 Total
+        // Type - 1 Int (4 Bytes)
+        // Position - 3 Floats (12 Bytes)
+        // Rotation - 4 Bytes (16 Bytes)
+
+        // TODO: get data from item
+
+        // size of content
+        byte[] sendData = new byte[DATA_SIZE];
+
+        // index of content
+        int index = 0;
+
+        // Item Number
+        {
+            byte[] data = BitConverter.GetBytes((int)itemSet);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+
+        // Player Position
+        {
+            byte[] data;
+
+            // x position
+            data = BitConverter.GetBytes(transform.position.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y position
+            data = BitConverter.GetBytes(transform.position.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z position
+            data = BitConverter.GetBytes(transform.position.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Player Rotation
+        {
+            byte[] data;
+
+            // x rotation
+            data = BitConverter.GetBytes(transform.rotation.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y rotation
+            data = BitConverter.GetBytes(transform.rotation.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z rotation
+            data = BitConverter.GetBytes(transform.rotation.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // w value
+            data = BitConverter.GetBytes(transform.rotation.w);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        return sendData;
+    }
+
+    // applys the data for this field item (type, position, and roation)
+    public void ApplyData(byte[] data)
+    {
+        // index of content
+        int index = 0;
+
+        // Item Number
+        {
+            int type = BitConverter.ToInt32(data, index);
+            itemSet = (itemType)type;
+            index += sizeof(int); // move onto next value
+        }
+
+        // Item Position
+        {
+            // gets the player position
+            Vector3 newPos = new Vector3();
+
+            // getting position values
+            newPos.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newPos.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newPos.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            transform.position = newPos;
+        }
+  
+
+        // Item Rotation
+        {
+            // gets the item rotation
+            Quaternion newRot = new Quaternion();
+
+            // getting position values
+            newRot.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newRot.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newRot.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            newRot.w = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            transform.rotation = newRot;
+        }
     }
 
     // the item box has collided with something.

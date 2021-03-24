@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace NetworkLibrary
 {
-    class TcpClientAsync
+    public class TcpClientAsync
     {
         // enum for mode
         public enum mode { both, send, receive };

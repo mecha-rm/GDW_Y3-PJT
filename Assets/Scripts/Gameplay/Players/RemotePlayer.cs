@@ -28,6 +28,9 @@ public class RemotePlayer : MonoBehaviour
     // player the remote player is attached to.
     PlayerObject player;
 
+    // size of data for sending player information over the internet.
+    const int DATA_SIZE = 48;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,8 +42,9 @@ public class RemotePlayer : MonoBehaviour
     // packs the player data and returns it.
     public byte[] GetData()
     {
+
         // size of content
-        byte[] sendData = new byte[NetworkLibrary.UdpServerXInterface.GetSendBufferSize()];
+        byte[] sendData = new byte[DATA_SIZE];
 
         // index of content
         int index = 0;

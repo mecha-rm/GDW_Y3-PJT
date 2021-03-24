@@ -17,6 +17,8 @@ public class GameplayManager : MonoBehaviour
     // TODO: use this to optimize.
     public int playerCount = 0;
 
+    // TODO: add timer variable.
+
     // the four players
     // TODO: have these get generated instead of just already existing. Done elsewhere.
     // TODO: make this a listi nstead of dedicated varaibles?
@@ -227,6 +229,30 @@ public class GameplayManager : MonoBehaviour
 
         // returns the player object script
         return px;
+    }
+
+    // gets the player based on its number (1 - 4)
+    public PlayerObject GetPlayer(int number)
+    {
+        // returns a player based on its number
+        switch (number)
+        {
+            case 1:
+                return p1;
+                break;
+            case 2:
+                return p2;
+                break;
+            case 3:
+                return p3;
+                break;
+            case 4:
+                return p4;
+                break;
+            default:
+                return null;
+                break;
+        }
     }
 
     // destroys the player mased on their number

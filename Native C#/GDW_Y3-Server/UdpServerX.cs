@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace NetworkLibrary
 {
-    class UdpServerX
+    public class UdpServerX
     {
         // name of server
         private string serverName = "";

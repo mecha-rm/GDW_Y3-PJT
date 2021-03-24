@@ -6,7 +6,7 @@ using System.Net.Sockets;
 namespace NetworkLibrary
 {
     // server with 4 clients
-    class UdpServer4
+    public class UdpServer4
     {
         // name of server
         private string serverName = "";
