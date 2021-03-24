@@ -15,10 +15,6 @@ public class UdpServerX : MonoBehaviour
     // server
     public NetworkLibrary.UdpServerX server;
 
-
-    // the buffer size of the server X
-    public int bufferSize = 512;
-
     // if 'true', the server starts running once the program starts.
     public bool runOnStart = true;
 

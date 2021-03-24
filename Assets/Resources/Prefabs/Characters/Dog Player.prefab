@@ -649,6 +649,7 @@ GameObject:
   - component: {fileID: 6410078288353527664}
   - component: {fileID: 4221945340590554711}
   - component: {fileID: 4419917680613608648}
+  - component: {fileID: -2905271661122176565}
   m_Layer: 0
   m_Name: Dog Player
   m_TagString: Player
@@ -764,6 +765,19 @@ MonoBehaviour:
   - Run
   observers:
   - {fileID: 1432539152009214965}
+--- !u!114 &-2905271661122176565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377133915244594450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f15b6351b34b8040bbe54ce86a9172d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 4221945340590554711}
 --- !u!1001 &1432539151119902503
 PrefabInstance:
   m_ObjectHideFlags: 0

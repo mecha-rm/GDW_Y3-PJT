@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 1982536662827971025}
   - component: {fileID: 2747027042971580054}
   - component: {fileID: 9088542346894408297}
+  - component: {fileID: -5319235699862361246}
   m_Layer: 0
   m_Name: Turtle Player
   m_TagString: Player
@@ -174,6 +175,19 @@ MonoBehaviour:
   - Run
   observers:
   - {fileID: 1040028592440902684}
+--- !u!114 &-5319235699862361246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3978860192212530099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f15b6351b34b8040bbe54ce86a9172d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2747027042971580054}
 --- !u!1 &4565258420496980240
 GameObject:
   m_ObjectHideFlags: 0

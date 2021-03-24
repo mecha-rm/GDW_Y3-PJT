@@ -26,10 +26,10 @@ public class RemotePlayer : MonoBehaviour
     /// </summary>
 
     // player the remote player is attached to.
-    PlayerObject player;
+    public PlayerObject player;
 
     // size of data for sending player information over the internet.
-    const int DATA_SIZE = 48;
+    public const int DATA_SIZE = 48;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +37,12 @@ public class RemotePlayer : MonoBehaviour
         // player not set
         if (player == null)
             GetComponent<PlayerObject>();
+    }
+
+    // gets the data size.
+    public static int GetDataSize()
+    {
+        return DATA_SIZE;
     }
 
     // packs the player data and returns it.
@@ -219,11 +225,11 @@ public class RemotePlayer : MonoBehaviour
     void Update()
     {
         // player object is set, and the server is running
-        if(player != null && NetworkLibrary.UdpServerXInterface.IsRunning())
-        {
-            
-
-
-        }
+        // if(player != null && NetworkLibrary.UdpServerXInterface.IsRunning())
+        // {
+        //     
+        // 
+        // 
+        // }
     }
 }

@@ -649,6 +649,7 @@ GameObject:
   - component: {fileID: 4764659836360844885}
   - component: {fileID: 9188325093911109906}
   - component: {fileID: 2863417912992673261}
+  - component: {fileID: 6131581136813494206}
   m_Layer: 0
   m_Name: Bunny Player
   m_TagString: Player
@@ -764,6 +765,19 @@ MonoBehaviour:
   - Run
   observers:
   - {fileID: 7206377697893587757}
+--- !u!114 &6131581136813494206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7974707485083853879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f15b6351b34b8040bbe54ce86a9172d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 9188325093911109906}
 --- !u!1001 &6276276284939705026
 PrefabInstance:
   m_ObjectHideFlags: 0

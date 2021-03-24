@@ -50,7 +50,7 @@ public class OnlineGameplayManager : MonoBehaviour
     public GameplayManager gameManager;
 
     // if 'true', this player is the host.
-    public bool master;
+    public bool isMaster;
 
     // server
     public UdpServerX server;
@@ -59,7 +59,11 @@ public class OnlineGameplayManager : MonoBehaviour
     public UdpClient client;
 
     // player data to send over to other players.
+    // the controlled player should be in this list.
     public List<RemotePlayer> players = new List<RemotePlayer>();
+
+    // local controlled player.
+    private RemotePlayer localPlayer = null;
 
     // the number of endpoints enabled.
     // this only applies upon activation.
@@ -69,6 +73,9 @@ public class OnlineGameplayManager : MonoBehaviour
     // if 'true', data is communicated.
     public bool dataComm = true;
 
+    // buffer size for clients and servers
+    public int serverBufferSize = 512;
+    public int clientBufferSize = 512;
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +83,9 @@ public class OnlineGameplayManager : MonoBehaviour
         // finds gameplay manager if not set.
         if (gameManager == null)
             gameManager = FindObjectOfType<GameplayManager>();
+
+
+        // TODO: maybe don't generate a server if you aren't the master? Maybe don't make a client if you are the master?
 
         // if server hasn't been set.
         if(server == null)
@@ -87,7 +97,7 @@ public class OnlineGameplayManager : MonoBehaviour
 
             // adds remote clients
             for (int i = 0; i < serverEndpoints; i++)
-                server.server.AddRemoteClient(server.bufferSize);
+                server.server.AddRemoteClient(serverBufferSize);
         }
 
         // if the client hasn't been set.
@@ -108,6 +118,16 @@ public class OnlineGameplayManager : MonoBehaviour
             foreach (RemotePlayer rp in arr)
                 players.Add(rp);
         }
+
+        // finds controlled player
+        foreach(RemotePlayer rp in players)
+        {
+            if(rp.player.controllablePlayer)
+            {
+                localPlayer = rp;
+                break;
+            }    
+        }
             
 
     }
@@ -117,7 +137,7 @@ public class OnlineGameplayManager : MonoBehaviour
     {
         // runs the server or the client based on the expectation.
         // TODO: implement stop to prevent unending attempt to connect with TCP.
-        if (master)
+        if (isMaster)
         {
             // for(int i = 0; i < numOfEndpoints; i++)
             //     server.add
@@ -131,8 +151,10 @@ public class OnlineGameplayManager : MonoBehaviour
             
     }
 
+    // SERVER -> CLIENT (MASTER) //
+
     // gets the data from client
-    void GetDataFromClients()
+    void ReceiveDataFromClients()
     {
         // Step 1: Get Info From Players
         // Step 2: Apply Data
@@ -170,7 +192,7 @@ public class OnlineGameplayManager : MonoBehaviour
         
         
         // data to be sent out to clients.
-        byte[] sendData = new byte[server.bufferSize];
+        byte[] sendData = new byte[serverBufferSize];
         int index = 0;
 
         // Timer
@@ -224,13 +246,131 @@ public class OnlineGameplayManager : MonoBehaviour
         server.server.SetSendBufferData(sendData);
     }
 
+
+    // CLIENT -> SERVER (NOT MASTER) //
+    // sends the client's data to the server.
+    void SendDataToServer()
+    {
+        // gets player position
+        byte[] sendData = new byte[clientBufferSize];
+        int index = 0;
+
+        if (localPlayer == null)
+        {
+            // searches for local player
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerObject p = players[i].player;
+
+                // local player found
+                if (p.controllablePlayer)
+                {
+                    localPlayer = players[i];
+                    break;
+                }
+
+            }
+        }
+
+        // local player is equal to null, so there's nothing to send.
+        if (localPlayer == null)
+            return;
+
+        // copies data
+        byte[] data = localPlayer.GetData();
+
+        Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+        index += data.Length;
+
+        client.client.SetSendBufferData(sendData);
+
+    }
+
+    // receives data from the server.
+    void ReceiveDataFromServer()
+    {
+        // Time (float) - 4 bytes
+        // Number of Players (Int) - 4 Bytes
+        // Number of Active Item Boxes (Int) - 4 bytes
+        // Players
+        // Items
+
+        // data to be sent out to clients.
+        byte[] recData = client.client.GetReceiveBufferData();
+        int index = 0;
+
+        // values
+        float time = -1.0F;
+        int plyrCount = -1;
+        int itemCount = -1;
+
+        // Timer
+        {
+            time = BitConverter.ToSingle(recData, index);
+            // TODO: update timer
+            index += sizeof(float);
+
+        }
+
+        // Number of Players
+        {
+            plyrCount = BitConverter.ToInt32(recData, index);
+            // TODO: check to see if number of players changed?
+            index += sizeof(int);
+        }
+
+        // Number of Item Boxes
+        {
+            itemCount = BitConverter.ToInt32(recData, index);
+            // TODO: adjust item box amount
+            index += sizeof(int);
+        }
+
+        // Players - getting player data
+        for (int i = 0; i < plyrCount; i++)
+        {
+            // the player count is different.
+            if (i > players.Count)
+                continue;
+
+            // if this is the local player, ignore it.
+            if (localPlayer == players[i])
+                continue;
+
+            // gets data section
+            byte[] pData = new byte[RemotePlayer.DATA_SIZE];
+            Buffer.BlockCopy(recData, index, pData, 0, RemotePlayer.DATA_SIZE);
+            index += pData.Length;
+
+            // applies the data.
+            players[i].ApplyData(pData);
+        }
+
+        // TODO: apply item box data.
+
+    }
+
+
     // Update is called once per frame
     void Update()
     {
-        // gets the data from the clients.
-        GetDataFromClients();
+        if (isMaster) // this player is the server
+        {
+            // gets the data from the clients.
+            ReceiveDataFromClients();
 
-        // sends the data from the clients.
-        SendDataToClients();
+            // sends the data from the clients.
+            SendDataToClients();
+        }
+        else // this player is the client.
+        {
+            // sends the data to the server
+            SendDataToServer();
+
+            // receives data from the server.
+            ReceiveDataFromServer();
+        }
+
+        
     }
 }

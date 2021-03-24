@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 2746433492328954313}
   - component: {fileID: 1981951794736692878}
   - component: {fileID: 4881573508434391665}
+  - component: {fileID: 6321302040559336681}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -343,6 +344,7 @@ MonoBehaviour:
   playerScore: 0
   playerScoreText: {fileID: 0}
   rigidBody: {fileID: 2240603355158793418}
+  controllablePlayer: 1
   movementSpeed: 2500
   jumpForce: 10
   backupFactor: 0.5
@@ -381,6 +383,19 @@ MonoBehaviour:
   - Run
   observers:
   - {fileID: 5037479138429511250}
+--- !u!114 &6321302040559336681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768400714958977963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f15b6351b34b8040bbe54ce86a9172d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1981951794736692878}
 --- !u!1 &5219977753932320065
 GameObject:
   m_ObjectHideFlags: 0
