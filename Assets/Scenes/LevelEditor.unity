@@ -7545,6 +7545,7 @@ MonoBehaviour:
   levels:
   - halloween_stage.dat
   - christmas_stage.dat
+  - valentines_day_stage.dat
   - tutorial_1_stage.dat
   - tutorial_2_stage.dat
 --- !u!1001 &44613139312541609

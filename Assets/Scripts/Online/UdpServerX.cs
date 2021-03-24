@@ -58,6 +58,12 @@ public class UdpServerX : MonoBehaviour
             server.RunServer();
     }
 
+    // shuts down the server.
+    public void ShutdownServer()
+    {
+        server.ShutdownServer();
+    }
+
     // Update is called once per frame
     void Update()
     {

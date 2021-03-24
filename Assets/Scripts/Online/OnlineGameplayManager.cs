@@ -50,7 +50,7 @@ public class OnlineGameplayManager : MonoBehaviour
     public GameplayManager gameManager;
 
     // if 'true', this player is the host.
-    public bool isMaster;
+    public bool isMaster = true;
 
     // server
     public UdpServerX server;
@@ -70,6 +70,9 @@ public class OnlineGameplayManager : MonoBehaviour
     // this gets set when the server is run.
     public int serverEndpoints = 1;
 
+    // run server and client on start.
+    public bool runHostOnStart = false;
+
     // if 'true', data is communicated.
     public bool dataComm = true;
 
@@ -85,10 +88,8 @@ public class OnlineGameplayManager : MonoBehaviour
             gameManager = FindObjectOfType<GameplayManager>();
 
 
-        // TODO: maybe don't generate a server if you aren't the master? Maybe don't make a client if you are the master?
-
         // if server hasn't been set.
-        if(server == null)
+        if(server == null && isMaster)
         {
             server = FindObjectOfType<UdpServerX>();
 
@@ -101,12 +102,23 @@ public class OnlineGameplayManager : MonoBehaviour
         }
 
         // if the client hasn't been set.
-        if (client == null)
+        if (client == null && !isMaster)
         {
             client = FindObjectOfType<UdpClient>();
 
             if (client == null)
                 client = new UdpClient();
+
+        }
+
+        // if the server or client should be run on start.
+        // note that if either one is set to 'true' by default, they will override this.
+        if(runHostOnStart)
+        {
+            if (isMaster)
+                server.RunServer();
+            else
+                client.RunClient();
         }
 
         // if the list hasn't had anything put into it.
@@ -350,25 +362,39 @@ public class OnlineGameplayManager : MonoBehaviour
 
     }
 
+    // runs host
+    public void RunHost()
+    {
+        if (isMaster && server != null)
+            server.RunServer();
+        else if (!isMaster && client != null)
+            client.RunClient();
+
+        dataComm = true;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (isMaster) // this player is the server
+        // if data should be communicated.
+        if(dataComm)
         {
-            // gets the data from the clients.
-            ReceiveDataFromClients();
+            if (isMaster && server.server.IsRunning()) // this player is the server
+            {
+                // gets the data from the clients.
+                ReceiveDataFromClients();
 
-            // sends the data from the clients.
-            SendDataToClients();
-        }
-        else // this player is the client.
-        {
-            // sends the data to the server
-            SendDataToServer();
+                // sends the data from the clients.
+                SendDataToClients();
+            }
+            else if(!isMaster && client.client.IsRunning()) // this player is the client.
+            {
+                // sends the data to the server
+                SendDataToServer();
 
-            // receives data from the server.
-            ReceiveDataFromServer();
+                // receives data from the server.
+                ReceiveDataFromServer();
+            }
         }
 
         

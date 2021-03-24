@@ -14,7 +14,7 @@ public class UdpClient : MonoBehaviour
     public NetworkLibrary.UdpClient client;
 
     // if 'true', the server starts running once the program starts.
-    bool runOnStart = true;
+    public bool runOnStart = true;
 
     // if 'true', messages are printed to the console.
     public bool printMessages = true;
@@ -35,7 +35,14 @@ public class UdpClient : MonoBehaviour
     // runs the client
     public void RunClient()
     {
-        client.RunClient();
+        if(!client.IsRunning())
+            client.RunClient();
+    }
+
+    // shuts down the client.
+    public void ShutdownClient()
+    {
+        client.ShutdownClient();
     }
 
     // Update is called once per frame

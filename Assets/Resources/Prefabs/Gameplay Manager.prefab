@@ -158,6 +158,9 @@ GameObject:
   - component: {fileID: 7284661196444069585}
   - component: {fileID: 6430195780213761676}
   - component: {fileID: -3004198080248553708}
+  - component: {fileID: 6007434424230168315}
+  - component: {fileID: 5078838804194682775}
+  - component: {fileID: 7616655281009944988}
   m_Layer: 0
   m_Name: Gameplay Manager
   m_TagString: Manager
@@ -265,3 +268,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paused: 0
+--- !u!114 &6007434424230168315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7284661196444069586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6323b79b7192a664caeead0b2d17c9b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 7284661196444069590}
+  isMaster: 1
+  server: {fileID: 5078838804194682775}
+  client: {fileID: 7616655281009944988}
+  players: []
+  serverEndpoints: 1
+  dataComm: 1
+  serverBufferSize: 512
+  clientBufferSize: 512
+--- !u!114 &5078838804194682775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7284661196444069586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d33d9c602c6f4249bcfd552b53cb4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runOnStart: 0
+  printMessages: 1
+--- !u!114 &7616655281009944988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7284661196444069586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb9f7f1ceb0a3794888461bf90f846bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runOnStart: 0
+  printMessages: 1
