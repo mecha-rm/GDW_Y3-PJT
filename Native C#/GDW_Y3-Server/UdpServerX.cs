@@ -84,6 +84,12 @@ namespace NetworkLibrary
             defaultBufferSize = newSize;
         }
 
+        // get number of endpoints available.
+        public int GetEndPointCount()
+        {
+            return remoteClients.Count;
+        }
+
         // SEND DATA //
         // returns the buffer size.
         public int GetSendBufferSize()
@@ -149,7 +155,7 @@ namespace NetworkLibrary
         // ADDERS AND REMOVERS FOR CLIENTS
 
         // Adding and Removing Clients
-        public EndPoint GetRemoteClient(int index)
+        public EndPoint GetEndPoint(int index)
         {
             // index out of bounds
             if(index < 0 || index >= remoteClients.Count)
@@ -162,14 +168,14 @@ namespace NetworkLibrary
         }
 
         // adds a remote client with the default buffer size
-        public byte[] AddRemoteClient()
+        public byte[] AddEndPoint()
         {
-            return AddRemoteClient(defaultBufferSize);
+            return AddEndPoint(defaultBufferSize);
         }
 
         // adds a remote client with a buffer size
         // if the buffer size is negative, then the default size is set.
-        public byte[] AddRemoteClient(int bufferSize)
+        public byte[] AddEndPoint(int bufferSize)
         {
             EndPoint newRemote = new IPEndPoint(IPAddress.Any, 0); // any available port
             remoteClients.Add(newRemote);
@@ -186,7 +192,7 @@ namespace NetworkLibrary
 
         // adds a remote client with a buffer
         // this returns the buffer that was just added
-        public byte[] AddRemoteClient(int bufferSize, byte[] buffer)
+        public byte[] AddEndPoint(int bufferSize, byte[] buffer)
         {
             EndPoint newRemote = new IPEndPoint(IPAddress.Any, 0); // any available port
             remoteClients.Add(newRemote);
@@ -204,7 +210,7 @@ namespace NetworkLibrary
         }
 
         // removes a remote client and returns its buffer.
-        public byte[] RemoteRemoteClient(int index)
+        public byte[] RemoteEndPoint(int index)
         {
             // index out of bounds
             if (index < 0 || index >= remoteClients.Count)
@@ -222,7 +228,7 @@ namespace NetworkLibrary
         }
 
         // deletes the remote client
-        public void DeleteRemoteClient(int index)
+        public void DeleteEndPoint(int index)
         {
             // index out of bounds
             if (index < 0 || index >= remoteClients.Count)
@@ -471,6 +477,8 @@ namespace NetworkLibrary
         {
             try
             {
+                // TODO: use socket.available to check for data before using it.
+
                 // receives data
                 int rec;
 

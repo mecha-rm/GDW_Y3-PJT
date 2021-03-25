@@ -50,6 +50,12 @@ public class UdpServerX : MonoBehaviour
     //     server.SetReceiveBufferData(index, data);
     // }
 
+    // adds a remote client
+    public void AddRemoteClient()
+    {
+        server.AddRemoteClient();
+    }
+
     // call to start runnnig the server
     public void RunServer()
     {

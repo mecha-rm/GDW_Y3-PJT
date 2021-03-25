@@ -65,39 +65,39 @@ namespace NetworkLibrary
         // Adding and Removing Clients
         public static EndPoint GetRemoteClient(int index)
         {
-            return server.GetRemoteClient(index);
+            return server.GetEndPoint(index);
         }
 
         // adds a remote client with the default buffer size
         public static byte[] AddRemoteClient()
         {
-            return server.AddRemoteClient();
+            return server.AddEndPoint();
         }
 
         // adds a remote client with a buffer size
         // if the buffer size is negative, then the default size is set.
         public static byte[] AddRemoteClient(int bufferSize)
         {
-            return server.AddRemoteClient(bufferSize);
+            return server.AddEndPoint(bufferSize);
         }
 
         // adds a remote client with a buffer
         // this returns the buffer that was just added
         public static byte[] AddRemoteClient(int bufferSize, byte[] buffer)
         {
-            return server.AddRemoteClient(bufferSize, buffer);
+            return server.AddEndPoint(bufferSize, buffer);
         }
 
         // removes a remote client and returns its buffer.
         public static byte[] RemoteRemoteClient(int index)
         {
-            return server.RemoteRemoteClient(index);
+            return server.RemoteEndPoint(index);
         }
 
         // deletes the remote client
         public static void DeleteRemoteClient(int index)
         {
-            server.DeleteRemoteClient(index);
+            server.DeleteEndPoint(index);
         }
 
 

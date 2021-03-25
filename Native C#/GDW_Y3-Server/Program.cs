@@ -111,7 +111,54 @@ namespace GDW_Y3_Server
             server4.ShutdownServer();
         }
 
-        // public void ServerXTest() {}
+        // Server X Test
+        static void UdpServerXTest(int endPoints)
+        {
+            NetworkLibrary.UdpServerX serverX = new NetworkLibrary.UdpServerX();
+
+            // ends endpoints
+            for(int i = 0; i < endPoints; i++)
+                serverX.AddEndPoint();
+
+            // runs the serve
+            serverX.RunServer();
+
+            // Console.WriteLine(server.GetIPAddress());
+
+            // while loop for updates
+            while (serverX.IsRunning())
+            {
+                Console.WriteLine("Enter Message: ");
+                string str = Console.ReadLine();
+                byte[] sendData = Encoding.ASCII.GetBytes(str);
+                serverX.SetSendBufferData(sendData);
+
+                serverX.SetBlockingSockets(false);
+                serverX.Update();
+
+
+                // server4.SetReceiveTimeout(1);
+                // server4.SetSendTimeout(1);
+
+                byte[] data;
+                int epCount = serverX.GetEndPointCount();
+
+                // goes through each endpoint.
+                for (int i = 0; i < epCount; i++)
+                {
+                    // buffer (X)
+                    data = serverX.GetReceiveBufferData(i);
+
+                    if (data != null && data.Length > 0)
+                        Console.WriteLine("Buffer " + i.ToString() + ": " + Encoding.ASCII.GetString(data, 0, data.Length));
+                }
+
+
+            }
+
+            serverX.ShutdownServer();
+        }
+
         static void TcpServerSyncTest(bool twoWay)
         {
             NetworkLibrary.TcpServerSync server = new NetworkLibrary.TcpServerSync();
@@ -234,11 +281,15 @@ namespace GDW_Y3_Server
                     UdpServer4Test();
                     break;
 
-                case 3:
-                    TcpServerSyncTest(true);
+                case 3: // server (infinite remote points)
+                    UdpServerXTest(4);
                     break;
 
                 case 4:
+                    TcpServerSyncTest(true);
+                    break;
+
+                case 5:
                     TcpServerAsyncTest(true);
                     break;
             }
