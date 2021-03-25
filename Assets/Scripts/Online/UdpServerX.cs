@@ -16,7 +16,7 @@ public class UdpServerX : MonoBehaviour
     public NetworkLibrary.UdpServerX server;
 
     // if 'true', the server starts running once the program starts.
-    public bool runOnStart = true;
+    public bool runOnStart = false;
 
     // if 'true', messages are printed to the console.
     public bool printMessages = true;

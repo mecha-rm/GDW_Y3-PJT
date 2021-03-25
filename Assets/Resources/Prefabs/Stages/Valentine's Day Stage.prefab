@@ -1400,9 +1400,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
-  bgm: {fileID: 8300000, guid: cbfd6c0140713074db30d7decf533be1, type: 3}
-  bgmClipStart: 35.49
-  bgmClipEnd: 260.938
+  bgm: {fileID: 8300000, guid: 6e1547ad397420142bb930d42b264c75, type: 3}
+  bgmClipStart: 0
+  bgmClipEnd: 0
   skybox: {fileID: 0}
   flag: {fileID: 0}
   flagPrefab: Prefabs/Flag
