@@ -51,9 +51,9 @@ public class UdpServerX : MonoBehaviour
     // }
 
     // adds a remote client
-    public void AddRemoteClient()
+    public void AddEndPoint()
     {
-        server.AddRemoteClient();
+        server.AddEndPoint();
     }
 
     // call to start runnnig the server

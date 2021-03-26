@@ -210,7 +210,7 @@ namespace NetworkLibrary
         }
 
         // removes a remote client and returns its buffer.
-        public byte[] RemoteEndPoint(int index)
+        public byte[] RemoveEndPoint(int index)
         {
             // index out of bounds
             if (index < 0 || index >= remoteClients.Count)

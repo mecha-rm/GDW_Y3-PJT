@@ -32,6 +32,12 @@ namespace NetworkLibrary
             server.SetDefaultBufferSize(newSize);
         }
 
+        // gets the endpoint.
+        public static int GetEndPointCount()
+        {
+            return server.GetEndPointCount();
+        }
+
         // SEND DATA //
         // returns the buffer size.
         public static int GetSendBufferSize()
@@ -63,39 +69,39 @@ namespace NetworkLibrary
         // ADDERS AND REMOVERS FOR CLIENTS
 
         // Adding and Removing Clients
-        public static EndPoint GetRemoteClient(int index)
+        public static EndPoint GetEndPoint(int index)
         {
             return server.GetEndPoint(index);
         }
 
         // adds a remote client with the default buffer size
-        public static byte[] AddRemoteClient()
+        public static byte[] AddEndPoint()
         {
             return server.AddEndPoint();
         }
 
         // adds a remote client with a buffer size
         // if the buffer size is negative, then the default size is set.
-        public static byte[] AddRemoteClient(int bufferSize)
+        public static byte[] AddEndPoint(int bufferSize)
         {
             return server.AddEndPoint(bufferSize);
         }
 
         // adds a remote client with a buffer
         // this returns the buffer that was just added
-        public static byte[] AddRemoteClient(int bufferSize, byte[] buffer)
+        public static byte[] AddEndPoint(int bufferSize, byte[] buffer)
         {
             return server.AddEndPoint(bufferSize, buffer);
         }
 
         // removes a remote client and returns its buffer.
-        public static byte[] RemoteRemoteClient(int index)
+        public static byte[] RemoveEndPoint(int index)
         {
-            return server.RemoteEndPoint(index);
+            return server.RemoveEndPoint(index);
         }
 
         // deletes the remote client
-        public static void DeleteRemoteClient(int index)
+        public static void DeleteEndPoint(int index)
         {
             server.DeleteEndPoint(index);
         }

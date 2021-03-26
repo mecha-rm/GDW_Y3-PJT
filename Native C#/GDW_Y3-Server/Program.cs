@@ -268,11 +268,11 @@ namespace GDW_Y3_Server
             server.ShutdownServer();
         }
 
-        // uncomment if making DLL
+        // main function - uncomment if making DLL
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 3;
+            int testMode = 1;
 
             switch(testMode)
             {

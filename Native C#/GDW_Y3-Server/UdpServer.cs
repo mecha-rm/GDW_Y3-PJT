@@ -396,6 +396,7 @@ namespace NetworkLibrary
         // this gets called each frame by the program using the plugin.
         public void Update()
         {
+            // RECEIVE
             try
             {
                 // receives the data if connected
@@ -408,9 +409,29 @@ namespace NetworkLibrary
 
                 // NOTE: if put in the if statement, this doesn't work for some reason.
                 int rec = server_socket.ReceiveFrom(inBuffer, ref remoteClient);
-                
+
                 // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
 
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
+            }
+
+
+            // SEND
+            try
+            {
                 // sends the data
                 if (commMode == mode.both || commMode == mode.send)
                 {

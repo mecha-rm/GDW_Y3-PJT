@@ -488,26 +488,13 @@ namespace NetworkLibrary
         // this gets called each frame by the program using the plugin.
         public void Update()
         {
+            int rec = 0;
+
+
+            // RECEIVE 1
             try
             {
-                // receives data
-                int rec;
-                
-                // gets data from all clients
                 rec = server_socket.ReceiveFrom(inBuffer1, ref remoteClient1);
-                rec = server_socket.ReceiveFrom(inBuffer2, ref remoteClient2);
-                rec = server_socket.ReceiveFrom(inBuffer3, ref remoteClient3);
-                rec = server_socket.ReceiveFrom(inBuffer4, ref remoteClient4);
-
-
-                // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient1.ToString());
-
-                // sends data
-                server_socket.SendTo(outBuffer, remoteClient1);
-                server_socket.SendTo(outBuffer, remoteClient2);
-                server_socket.SendTo(outBuffer, remoteClient3);
-                server_socket.SendTo(outBuffer, remoteClient4);
-
             }
             catch (ArgumentNullException ane)
             {
@@ -523,6 +510,187 @@ namespace NetworkLibrary
                 // Console.WriteLine(e.ToString());
                 Console.WriteLine(e.ToString() + " - Client Response Failed");
             }
+
+            // RECEIVE 2
+            try
+            {
+                rec = server_socket.ReceiveFrom(inBuffer2, ref remoteClient2);
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
+            }
+
+            // RECEIVE 3
+            try
+            {
+                rec = server_socket.ReceiveFrom(inBuffer3, ref remoteClient3);
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
+            }
+
+            // RECEIVE 4
+            try
+            {
+                rec = server_socket.ReceiveFrom(inBuffer4, ref remoteClient4);
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
+            }
+
+
+            // ------------------ //
+
+            // SEND 1
+            try
+            {
+                server_socket.SendTo(outBuffer, remoteClient1);
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
+            }
+
+            // SEND 2
+            try
+            {
+                server_socket.SendTo(outBuffer, remoteClient2);
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
+            }
+
+            // SEND 3
+            try
+            {
+                server_socket.SendTo(outBuffer, remoteClient3);
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
+            }
+
+            // SEND 4
+            try
+            {
+                server_socket.SendTo(outBuffer, remoteClient4);
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString() + " - Client Response Failed");
+            }
+
+
+            // ORIGINAL
+            // try
+            // {
+            //     // receives data
+            //     int rec;
+            //     
+            //     // gets data from all clients
+            //     rec = server_socket.ReceiveFrom(inBuffer1, ref remoteClient1);
+            //     rec = server_socket.ReceiveFrom(inBuffer2, ref remoteClient2);
+            //     rec = server_socket.ReceiveFrom(inBuffer3, ref remoteClient3);
+            //     rec = server_socket.ReceiveFrom(inBuffer4, ref remoteClient4);
+            // 
+            // 
+            //     // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient1.ToString());
+            // 
+            //     // sends data
+            //     server_socket.SendTo(outBuffer, remoteClient1);
+            //     server_socket.SendTo(outBuffer, remoteClient2);
+            //     server_socket.SendTo(outBuffer, remoteClient3);
+            //     server_socket.SendTo(outBuffer, remoteClient4);
+            // 
+            // }
+            // catch (ArgumentNullException ane)
+            // {
+            //     Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            // }
+            // catch (SocketException se)
+            // {
+            //     if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+            //         Console.WriteLine("SocketException: {0}", se.ToString());
+            // }
+            // catch (Exception e)
+            // {
+            //     // Console.WriteLine(e.ToString());
+            //     Console.WriteLine(e.ToString() + " - Client Response Failed");
+            // }
         }
 
         // shuts down the server.

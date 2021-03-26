@@ -169,6 +169,7 @@ namespace GDW_Y3_Client
             client.ShutdownClient();
         }
 
+        // main function - uncomment if making DLL
         static void Main(string[] args)
         {
             // test mode

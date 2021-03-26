@@ -5,6 +5,7 @@ using System.Net.Sockets;
 
 namespace NetworkLibrary
 {
+    // TODO: fix blocking sockets
     // this is made static in the DSN work.
     // this isn't static since only one instance of the plugin can exist at a time.
     public class TcpServerSync

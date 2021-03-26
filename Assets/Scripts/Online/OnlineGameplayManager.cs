@@ -98,7 +98,7 @@ public class OnlineGameplayManager : MonoBehaviour
 
             // adds remote clients
             for (int i = 0; i < serverEndpoints; i++)
-                server.server.AddRemoteClient(serverBufferSize);
+                server.server.AddEndPoint(serverBufferSize);
         }
 
         // if the client hasn't been set.
