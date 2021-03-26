@@ -462,9 +462,9 @@ namespace NetworkLibrary
             {
                 // the server listens and provides a service.
                 server_socket.Bind(localEP);
-                
+
                 // server prepared
-                Console.WriteLine("Waiting for, and prepared to send data...");
+                Console.WriteLine("Prepared to receive data from up to four clients, and send data respectively...");
 
                 // sets timeout variables.
                 server_socket.ReceiveTimeout = receiveTimeout;
@@ -488,8 +488,16 @@ namespace NetworkLibrary
         // this gets called each frame by the program using the plugin.
         public void Update()
         {
-            int rec = 0;
+            // checks to see if the server is running.
+            if (!running)
+            {
+                Console.WriteLine("The server has not been started. Call RunServer().");
+                return;
+            }
 
+
+            // gets receiver data
+            int rec = 0;
 
             // RECEIVE 1
             try
@@ -696,6 +704,14 @@ namespace NetworkLibrary
         // shuts down the server.
         public void ShutdownServer()
         {
+            // used to see if the server was ever actually started.
+            if (!running)
+            {
+                Console.WriteLine("The server is not currently running.");
+                return;
+            }
+
+
             // the server socket has not been generated.
             if (server_socket != null)
             {

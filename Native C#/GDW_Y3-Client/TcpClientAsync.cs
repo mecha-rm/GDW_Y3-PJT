@@ -347,6 +347,9 @@ namespace NetworkLibrary
                 client_socket.BeginConnect(remote, new AsyncCallback(ConnectCallback), client_socket);
                 resetConnectEvent.WaitOne();
 
+                // client prepared
+                Console.WriteLine("Prepared to send and receive data from the server respectively...");
+
                 running = true;
 
             }
@@ -368,6 +371,14 @@ namespace NetworkLibrary
         // updates the client
         public void Update()
         {
+            // checks to see if the client is running.
+            if (!running)
+            {
+                Console.WriteLine("The client has not been started. Call RunClient().");
+                return;
+            }
+
+
             try
             {
                 // NOTE: this stalls the user for a resposne when they send the first time, but after that they don't have to wiat.
@@ -404,6 +415,14 @@ namespace NetworkLibrary
         // shuts down the client
         public void ShutdownClient()
         {
+            // used to see if the client was ever actually started.
+            if (!running)
+            {
+                Console.WriteLine("The client is not currently running.");
+                return;
+            }
+
+
             try
             {
                 // release the socket if it has been established.

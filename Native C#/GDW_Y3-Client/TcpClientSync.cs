@@ -306,6 +306,9 @@ namespace NetworkLibrary
                 Console.WriteLine("Searching for server with IP " + ipAddress + "...");
                 client_socket.Connect(remote);
 
+                // client prepared
+                Console.WriteLine("Client now prepared to send and receive data from the server respectively...");
+
                 // sets timeout variables.
                 client_socket.ReceiveTimeout = receiveTimeout;
                 client_socket.SendTimeout = sendTimeout;
@@ -335,6 +338,14 @@ namespace NetworkLibrary
         // updates the client
         public void Update()
         {
+            // checks to see if the client is running.
+            if (!running)
+            {
+                Console.WriteLine("The client has not been started. Call RunClient().");
+                return;
+            }
+
+
             try
             {
                 // TODO: use Socket.available to check for data before trying to call for more.
@@ -371,6 +382,14 @@ namespace NetworkLibrary
         // shuts down the client
         public void ShutdownClient()
         {
+            // used to see if the client was ever actually started.
+            if (!running)
+            {
+                Console.WriteLine("The client is not currently running.");
+                return;
+            }
+
+
             try
             {
                 // release the socket if it has been established.

@@ -446,6 +446,14 @@ namespace NetworkLibrary
         // this gets called each frame by the program using the plugin.
         public void Update()
         {
+            // checks to see if the server is running.
+            if (!running)
+            {
+                Console.WriteLine("The server has not been started. Call RunServer().");
+                return;
+            }
+
+
             try
             {
 
@@ -511,6 +519,14 @@ namespace NetworkLibrary
         // shuts down the server.
         public void ShutdownServer()
         {
+            // used to see if the server was ever actually started.
+            if (!running)
+            {
+                Console.WriteLine("The server is not currently running.");
+                return;
+            }
+
+
             // the client socket has not been generated.
             // only the client socket gets shutdown.
             if (client_socket != null)

@@ -5,7 +5,7 @@ using System.Net.Sockets;
 
 namespace NetworkLibrary
 {
-    // TODO: fix blocking sockets
+    // TODO: fix blocking sockets and check for Accept().
     // this is made static in the DSN work.
     // this isn't static since only one instance of the plugin can exist at a time.
     public class TcpServerSync
@@ -411,6 +411,14 @@ namespace NetworkLibrary
         // this gets called each frame by the program using the plugin.
         public void Update()
         {
+            // checks to see if the server is running.
+            if (!running)
+            {
+                Console.WriteLine("The server has not been started. Call RunServer().");
+                return;
+            }
+
+
             try
             {
                 // TODO: use Socket.available to check for data before trying to call for more.
@@ -465,6 +473,14 @@ namespace NetworkLibrary
         // shuts down the server.
         public void ShutdownServer()
         {
+            // used to see if the server was ever actually started.
+            if (!running)
+            {
+                Console.WriteLine("The server is not currently running.");
+                return;
+            }
+
+
             // the server socket has not been generated.
             if (client_socket != null)
             {

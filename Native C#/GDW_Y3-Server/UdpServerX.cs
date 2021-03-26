@@ -444,14 +444,14 @@ namespace NetworkLibrary
             // 0 for any available port.
             // client = new IPEndPoint(IPAddress.Any, 0); // 0 for any available port.
 
-            // 
+            // binding server.
             try
             {
                 // the server listens and provides a service.
                 server_socket.Bind(localEP);
 
                 // server prepared
-                Console.WriteLine("Waiting for, and prepared to send data...");
+                Console.WriteLine("Prepared to receive data and send data respectively...");
 
                 // sets timeout variables.
                 server_socket.ReceiveTimeout = receiveTimeout;
@@ -475,8 +475,13 @@ namespace NetworkLibrary
         // this gets called each frame by the program using the plugin.
         public void Update()
         {
-            // TODO: use socket.available to check for data before using it.
-            // note: this doesn't seem to work.
+            // checks to see if the server is running.
+            if (!running)
+            {
+                Console.WriteLine("The server has not been started. Call RunServer().");
+                return;
+            }
+
 
             // RECEIVE //
             // brings in data from all buffers
@@ -545,6 +550,14 @@ namespace NetworkLibrary
         // shuts down the server.
         public void ShutdownServer()
         {
+            // used to see if the server was ever actually started.
+            if (!running)
+            {
+                Console.WriteLine("The server is not currently running.");
+                return;
+            }
+
+
             // the server socket has not been generated.
             if (server_socket != null)
             {
