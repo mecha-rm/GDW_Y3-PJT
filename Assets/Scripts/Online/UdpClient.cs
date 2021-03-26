@@ -56,6 +56,7 @@ public class UdpClient : MonoBehaviour
     private void OnDestroy()
     {
         // shuts down the client
-        client.ShutdownClient();
+        if (client.IsRunning())
+            client.ShutdownClient();
     }
 }

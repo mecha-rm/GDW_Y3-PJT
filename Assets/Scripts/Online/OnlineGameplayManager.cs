@@ -144,23 +144,29 @@ public class OnlineGameplayManager : MonoBehaviour
 
     }
 
-    // runs the server (or the client)
-    public void Run()
+    // checks to see if this is the master.
+    public bool IsMaster()
     {
-        // runs the server or the client based on the expectation.
-        // TODO: implement stop to prevent unending attempt to connect with TCP.
-        if (isMaster)
-        {
-            // for(int i = 0; i < numOfEndpoints; i++)
-            //     server.add
+        return isMaster;
+    }
 
+    // sets value of master (if 'true', it's a server, if 'false', it's a client).
+    public void SetMaster(bool value)
+    {
+        isMaster = value;
+    }
+
+
+    // runs the server (or the client)
+    public void RunHost()
+    {
+        // run appropriate host.
+        if (isMaster && server != null)
             server.RunServer();
-        }
-        else
-        {
+        else if (!isMaster && client != null)
             client.RunClient();
-        }
-            
+
+        dataComm = true;
     }
 
     // SERVER -> CLIENT (MASTER) //
@@ -362,15 +368,13 @@ public class OnlineGameplayManager : MonoBehaviour
 
     }
 
-    // runs host
-    public void RunHost()
+    // shuts down theh ost.
+    public void ShutdownHost()
     {
         if (isMaster && server != null)
-            server.RunServer();
+            server.ShutdownServer();
         else if (!isMaster && client != null)
-            client.RunClient();
-
-        dataComm = true;
+            client.ShutdownClient();
     }
 
     // Update is called once per frame

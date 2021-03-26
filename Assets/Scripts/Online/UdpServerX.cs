@@ -74,7 +74,8 @@ public class UdpServerX : MonoBehaviour
     void Update()
     {
         // updates the server
-        server.Update();
+        if(server.IsRunning())
+            server.Update();
     }
 
 
