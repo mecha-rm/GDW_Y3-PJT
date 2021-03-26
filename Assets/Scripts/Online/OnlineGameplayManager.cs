@@ -70,6 +70,9 @@ public class OnlineGameplayManager : MonoBehaviour
     // this gets set when the server is run.
     public int serverEndpoints = 1;
 
+    // sets whether to block on sockets or not for both the server and client.
+    public bool blocking = true;
+
     // run server and client on start.
     public bool runHostOnStart = false;
 
@@ -95,11 +98,19 @@ public class OnlineGameplayManager : MonoBehaviour
 
             if (server == null)
                 server = new UdpServerX();
+        }
+
+        // server is set, so add endpoints.
+        if(server != null)
+        {
+            // set blocking sockets value
+            server.SetBlockingSockets(blocking);
 
             // adds remote clients
             for (int i = 0; i < serverEndpoints; i++)
-                server.server.AddEndPoint(serverBufferSize);
+                server.AddEndPoint(serverBufferSize);
         }
+        
 
         // if the client hasn't been set.
         if (client == null && !isMaster)
@@ -111,9 +122,13 @@ public class OnlineGameplayManager : MonoBehaviour
 
         }
 
+        // set blocking sockets value
+        if(client != null)
+            client.SetBlockingSockets(blocking);
+
         // if the server or client should be run on start.
         // note that if either one is set to 'true' by default, they will override this.
-        if(runHostOnStart)
+        if (runHostOnStart)
         {
             if (isMaster)
                 server.RunServer();
@@ -156,15 +171,54 @@ public class OnlineGameplayManager : MonoBehaviour
         isMaster = value;
     }
 
+    // gets the ip address of the active entity.
+    public string GetIPAddress()
+    {
+        if(isMaster && server != null)
+            return server.GetIPAddress();
+        else if (!isMaster && client != null)
+            return client.GetIPAddress();
+
+        return "";
+    }
+
+    // sets the ip address
+    // if 'setBoth' is set to 'true', the values of both are set (if applicable)
+    public void SetIPAddress(string newIp, bool setBoth)
+    {
+        if ((isMaster || setBoth) && server != null)
+            server.SetIPAddress(newIp);
+        else if ((!isMaster || setBoth) && client != null)
+            client.SetIPAddress(newIp);
+    }
+
+    // gets the port
+    public int GetPort()
+    {
+        return server.GetPort();
+    }
+
+    // sets the port
+    public void SetPort(int newPort)
+    {
+        server.SetPort(newPort);
+    }
 
     // runs the server (or the client)
     public void RunHost()
     {
-        // run appropriate host.
+        // run appropriate host and set sockets for blocking (or not blocking).
         if (isMaster && server != null)
+        {
+            server.SetBlockingSockets(blocking);
             server.RunServer();
+        }   
         else if (!isMaster && client != null)
+        {
+            client.SetBlockingSockets(blocking);
             client.RunClient();
+        }
+            
 
         dataComm = true;
     }

@@ -145,6 +145,11 @@ public class RemotePlayer : MonoBehaviour
     // receive player data
     public void ApplyData(byte[] data)
     {
+        // no data sent.
+        // should account for not having enough data.
+        if (data == null || data.Length == 0)
+            return;
+
         // index of content
         int index = 0;
 

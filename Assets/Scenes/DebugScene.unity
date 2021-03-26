@@ -463,6 +463,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlineManager: {fileID: 713033411}
+  ipAddressInput: {fileID: 1067287848}
+  portInput: {fileID: 1199072748}
 --- !u!1 &278263814
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,8 +837,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 300, y: 130}
-  m_SizeDelta: {x: -620, y: -280}
+  m_AnchoredPosition: {x: 300, y: 15}
+  m_SizeDelta: {x: -620, y: -270}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &538854155
 MonoBehaviour:
@@ -2395,13 +2397,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1199072749}
   m_TextComponent: {fileID: 1127510064}
   m_Placeholder: {fileID: 1597418942}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -4748,6 +4750,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5078838804194682775, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: blocking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007434424230168315, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: blocking
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: spawnAreaMin.x
       value: -10
@@ -4860,6 +4870,10 @@ PrefabInstance:
       propertyPath: p2
       value: 
       objectReference: {fileID: 632908323}
+    - target: {fileID: 7616655281009944988, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: blocking
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
 --- !u!1001 &8868826012457869616

@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UdpConnectionTester : MonoBehaviour
 {
     // online manager.
     public OnlineGameplayManager onlineManager;
+
+    // input fields for ip address and port
+    public InputField ipAddressInput;
+    public InputField portInput;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +29,20 @@ public class UdpConnectionTester : MonoBehaviour
     // runs the host
     public void RunHost()
     {
+        // setting ip address
+        if(ipAddressInput != null)
+        {
+            string str = ipAddressInput.text;
+            onlineManager.SetIPAddress(str, true);
+        }
+
+        // setting port
+        if (ipAddressInput != null)
+        {
+            int val = int.Parse(portInput.text);
+            onlineManager.SetPort(val);
+        }
+
         // onlineManager.isMaster = ;
         onlineManager.RunHost();
     }
