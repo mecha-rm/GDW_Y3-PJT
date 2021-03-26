@@ -41,6 +41,9 @@ namespace NetworkLibrary
         // this should be left as 'true' on the client side. Only on the server side should this be set to false.
         private bool blockingSockets = true;
 
+        // if 'true', this error is not printed.
+        public bool ignoreError10035 = false;
+
         // timeout variables
         private int receiveTimeout = 0, sendTimeout = 0;
 
@@ -321,7 +324,8 @@ namespace NetworkLibrary
                 }
                 catch (SocketException sexc)
                 {
-                    Console.WriteLine("SocketException: {0}", sexc.ToString());
+                    if (!ignoreError10035 || (ignoreError10035 && sexc.ErrorCode != 10035))
+                        Console.WriteLine("SocketException: {0}", sexc.ToString());
                 }
                 catch (Exception e)
                 {
@@ -339,6 +343,7 @@ namespace NetworkLibrary
         // updates the client
         public void Update()
         {
+            // SEND //
             try
             {
                 // sends the data
@@ -346,7 +351,25 @@ namespace NetworkLibrary
                 {
                     client_socket.SendTo(outBuffer, remote);
                 }
+            }
+            catch (ArgumentNullException anexc)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
+            }
+            catch (SocketException sexc)
+            {
+                if (!ignoreError10035 || (ignoreError10035 && sexc.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", sexc.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected exception: {0}", e.ToString());
+            }
 
+
+            // RECEIVE //
+            try
+            {
                 // receives the data
                 if (commMode == mode.both || commMode == mode.receive)
                 {
@@ -362,7 +385,8 @@ namespace NetworkLibrary
             }
             catch (SocketException sexc)
             {
-                Console.WriteLine("SocketException: {0}", sexc.ToString());
+                if (!ignoreError10035 || (ignoreError10035 && sexc.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", sexc.ToString());
             }
             catch (Exception e)
             {

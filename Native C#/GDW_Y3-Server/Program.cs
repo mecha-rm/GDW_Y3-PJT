@@ -120,6 +120,12 @@ namespace GDW_Y3_Server
             for(int i = 0; i < endPoints; i++)
                 serverX.AddEndPoint();
 
+            // block the sockets
+            serverX.SetBlockingSockets(false);
+
+            // ignore this error
+            serverX.ignoreError10035 = true;
+
             // runs the serve
             serverX.RunServer();
 
@@ -133,7 +139,6 @@ namespace GDW_Y3_Server
                 byte[] sendData = Encoding.ASCII.GetBytes(str);
                 serverX.SetSendBufferData(sendData);
 
-                serverX.SetBlockingSockets(false);
                 serverX.Update();
 
 
@@ -282,7 +287,7 @@ namespace GDW_Y3_Server
                     break;
 
                 case 3: // server (infinite remote points)
-                    UdpServerXTest(4);
+                    UdpServerXTest(2);
                     break;
 
                 case 4:

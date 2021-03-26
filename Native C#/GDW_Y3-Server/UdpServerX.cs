@@ -475,43 +475,71 @@ namespace NetworkLibrary
         // this gets called each frame by the program using the plugin.
         public void Update()
         {
-            try
+            // TODO: use socket.available to check for data before using it.
+            // note: this doesn't seem to work.
+
+            // RECEIVE //
+            // brings in data from all buffers
+            for (int i = 0; i < inBuffers.Count; i++)
             {
-                // TODO: use socket.available to check for data before using it.
-
-                // receives data
-                int rec;
-
-                // brings in data from all buffers
-                for(int i = 0; i < inBuffers.Count; i++)
+                try
                 {
+                    int rec = 0; // gets size of data
+
                     // gets the remote client
                     EndPoint ep = remoteClients[i];
 
                     // receives the data
                     rec = server_socket.ReceiveFrom(inBuffers[i], ref ep);
+                    remoteClients[i] = ep; // gets modified endpoint value and puts it into the list.
                 }
-
-                // send out data
-                for(int i = 0; i < remoteClients.Count; i++)
+                catch (ArgumentNullException anexc)
                 {
-                    server_socket.SendTo(outBuffer, remoteClients[i]);
+                    Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
+                }
+                catch (SocketException se)
+                {
+                    if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                        Console.WriteLine("SocketException: {0}", se.ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Exception: {0}", e.ToString());
                 }
             }
-            catch (ArgumentNullException anexc)
+
+
+            // SEND // 
+            if (outBuffer.Length != 0)
             {
-                Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
+                // there is data to send.
+                for (int i = 0; i < remoteClients.Count; i++)
+                {
+                    try
+                    {
+                        // send out data to each buffer
+                        byte[] data = new byte[outBuffer.Length];
+                        outBuffer.CopyTo(data, 0);
+
+                        server_socket.SendTo(outBuffer, remoteClients[i]);
+                    }
+                    catch (ArgumentNullException anexc)
+                    {
+                        Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
+                    }
+                    catch (SocketException se)
+                    {
+                        if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                            Console.WriteLine("SocketException: {0}", se.ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        // Console.WriteLine(e.ToString());
+                        Console.WriteLine(e.ToString() + " - Client Response Failed");
+                    }
+                }
             }
-            catch (SocketException se)
-            {
-                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
-                    Console.WriteLine("SocketException: {0}", se.ToString());
-            }
-            catch (Exception e)
-            {
-                // Console.WriteLine(e.ToString());
-                Console.WriteLine(e.ToString() + " - Client Response Failed");
-            }
+
         }
 
         // shuts down the server.

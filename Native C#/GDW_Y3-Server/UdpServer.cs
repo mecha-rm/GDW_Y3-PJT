@@ -322,8 +322,8 @@ namespace NetworkLibrary
             server_socket = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
 
             // 0 for any available port.
-            client = new IPEndPoint(IPAddress.Any, 0); // 0 for any available port.
-            remoteClient = (EndPoint)client;
+            client = new IPEndPoint(ip, port); // 0 for any available port.
+            remoteClient = client;
 
             // 
             try

@@ -24,7 +24,11 @@ namespace GDW_Y3_Client
             else
                 client.SetCommunicationMode(NetworkLibrary.UdpClient.mode.send); // send by default
 
+            // set the sockets to block
             client.SetBlockingSockets(false);
+
+            // ignore this error
+            client.ignoreError10035 = true;
 
             // runs the client
             client.RunClient();
@@ -168,7 +172,7 @@ namespace GDW_Y3_Client
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 1;
+            int testMode = 0;
 
             switch (testMode)
             {
