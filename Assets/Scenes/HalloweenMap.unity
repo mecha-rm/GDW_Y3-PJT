@@ -5109,8 +5109,24 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8006731308127156347, guid: 51a36cd6108f9fe4f9bd2627966737e2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -225
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006731308127156347, guid: 51a36cd6108f9fe4f9bd2627966737e2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006731308194108125, guid: 51a36cd6108f9fe4f9bd2627966737e2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -225
+      objectReference: {fileID: 0}
     - target: {fileID: 8006731308916139104, guid: 51a36cd6108f9fe4f9bd2627966737e2, type: 3}
       propertyPath: m_MatchWidthOrHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006731308916139104, guid: 51a36cd6108f9fe4f9bd2627966737e2, type: 3}
+      propertyPath: m_ScreenMatchMode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8006731308916139106, guid: 51a36cd6108f9fe4f9bd2627966737e2, type: 3}

@@ -150,6 +150,10 @@ public class RemotePlayer : MonoBehaviour
         if (data == null || data.Length == 0)
             return;
 
+        // if the player has not been set.
+        if (player == null)
+            return;
+
         // index of content
         int index = 0;
 

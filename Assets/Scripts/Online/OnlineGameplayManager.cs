@@ -238,16 +238,38 @@ public class OnlineGameplayManager : MonoBehaviour
         // NOTE: figure out how to track if players get items
         // would be easier just to have each side generate their own items to be honest.
 
-        // goes trhough each player and provides the data
-        for(int i = 0; i < gameManager.playerCount; i++)
+
+        // removes the local player
+        List<RemotePlayer> otherPlayers = new List<RemotePlayer>(players);
+        otherPlayers.Remove(localPlayer); // removes the local player.
+
+        // gets the amount of endpoints
+        int epAmount = server.server.GetEndPointCount();
+
+        // goes through each player and provides the data
+        for (int i = 0; i < epAmount; i++)
         {
+            // remote player object.
+            RemotePlayer rp;
 
-            // TODO: get proper section of data.
+            // bounds check
+            if (i < otherPlayers.Count)
+                rp = otherPlayers[i];
+            else
+                break;
+
+            // if the player is not equal to null.
+            // if (rp.player != null)
+            // {
+            //     // if the player is controllable, then it should be ignored.
+            // 
+            //     if (rp.player.controllablePlayer)
+            //         continue;
+            // }
+
+            // gets the proper data index and sends it to the player.
             byte[] data = server.server.GetReceiveBufferData(i);
-
-            // sends data to remote player object.
-            if (i < players.Count)
-                players[i].ApplyData(data);
+            rp.ApplyData(data);
         }
 
         // TODO: set up item boxes
@@ -371,6 +393,10 @@ public class OnlineGameplayManager : MonoBehaviour
         byte[] recData = client.client.GetReceiveBufferData();
         int index = 0;
 
+        // list of other players
+        List<RemotePlayer> otherPlayers = new List<RemotePlayer>(players);
+        otherPlayers.Remove(localPlayer); // removes local player
+
         // values
         float time = -1.0F;
         int plyrCount = -1;
@@ -398,15 +424,12 @@ public class OnlineGameplayManager : MonoBehaviour
             index += sizeof(int);
         }
 
+
         // Players - getting player data
         for (int i = 0; i < plyrCount; i++)
         {
             // the player count is different.
-            if (i > players.Count)
-                continue;
-
-            // if this is the local player, ignore it.
-            if (localPlayer == players[i])
+            if (i >= otherPlayers.Count)
                 continue;
 
             // gets data section
@@ -415,7 +438,7 @@ public class OnlineGameplayManager : MonoBehaviour
             index += pData.Length;
 
             // applies the data.
-            players[i].ApplyData(pData);
+            otherPlayers[i].ApplyData(pData);
         }
 
         // TODO: apply item box data.
