@@ -33,13 +33,13 @@ public class SceneChanger : MonoBehaviour
    
     // changes the scene using an index.
     // TODO: make static
-    public void ChangeScene(int scene)
+    public static void ChangeScene(int scene)
     {
         SceneManager.LoadScene(scene);
     }
 
     // changes the scene using a string
-    public void ChangeScene(string scene)
+    public static void ChangeScene(string scene)
     {
         SceneManager.LoadScene(scene);
     }
