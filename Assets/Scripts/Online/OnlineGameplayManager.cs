@@ -399,7 +399,12 @@ public class OnlineGameplayManager : MonoBehaviour
 
         // list of other players
         List<RemotePlayer> otherPlayers = new List<RemotePlayer>(players);
-        otherPlayers.Remove(localPlayer); // removes local player
+        // otherPlayers.Remove(localPlayer); // remove local player from list.
+        
+        // list of unmatched data. This should always be of size 1 since the controlled player getsi gnored..
+        List<RemotePlayer.RemotePlayerData> unmatchedData = new List<RemotePlayer.RemotePlayerData>();
+
+        // otherPlayers.Remove(localPlayer); // removes local player
 
         // values
         float time = -1.0F;
@@ -430,7 +435,7 @@ public class OnlineGameplayManager : MonoBehaviour
 
 
         // Players - getting player data
-        for (int i = 0; i < plyrCount; i++)
+        for (int i = 0; i < plyrCount - 1; i++)
         {
             // the player count is different.
             if (i >= otherPlayers.Count)
@@ -439,10 +444,53 @@ public class OnlineGameplayManager : MonoBehaviour
             // gets data section
             byte[] pData = new byte[RemotePlayer.DATA_SIZE];
             Buffer.BlockCopy(recData, index, pData, 0, RemotePlayer.DATA_SIZE);
-            index += pData.Length;
+            index += pData.Length; // move onto next slot.
+
+            // otherPlayers[i].ApplyData(pData);
+
+            // converts data first before finding who it belongs to.
+            RemotePlayer.RemotePlayerData rpd = RemotePlayer.BytesToRemotePlayerData(pData);
+            
+            // checks to see if the data matched.
+            bool matched = false;
+
+            // goes through list to find which player to put it on.
+            // goes through all player data passed.
+            for(int j = 0; j < otherPlayers.Count; j++)
+            {
+                // if the player numbers match, it's the right player.
+                // if the player is being controlled locally, then it's ignored.
+                if(otherPlayers[j].player.playerNumber == rpd.playerNumber && !otherPlayers[j].player.controllablePlayer) // found
+                {
+                    otherPlayers[j].ApplyData(rpd); // applies remote player data
+                    otherPlayers.RemoveAt(j); // removes player since its data has been set.
+                    matched = true; // data was matched.
+                    break;
+                }
+            }
+
+            // saves data if it did not find a match.
+            if (matched == false)
+                unmatchedData.Add(rpd);
+
 
             // applies the data.
-            otherPlayers[i].ApplyData(pData);
+            // otherPlayers[i].ApplyData(pData);
+
+        }
+
+
+        // since the player being controlled isn't changed, this should be a size of 1.
+        // if it's greater than 1, then some data was not matched.
+        if(unmatchedData.Count > 1)
+        {
+            // goes through the unaltered players and applies the data based on index instead.
+            // if a locally controlled player is found, then it's ignored.
+            for(int i = 0; i < otherPlayers.Count && i < unmatchedData.Count; i++)
+            {
+                if (!otherPlayers[i].player.controllablePlayer)
+                    otherPlayers[i].ApplyData(unmatchedData[i]);
+            }
         }
 
         // TODO: apply item box data.
