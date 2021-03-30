@@ -398,8 +398,8 @@ public class OnlineGameplayManager : MonoBehaviour
         int index = 0;
 
         // list of other players
-        // List<RemotePlayer> otherPlayers = new List<RemotePlayer>(players);
-        // otherPlayers.Remove(localPlayer); // removes local player
+        List<RemotePlayer> otherPlayers = new List<RemotePlayer>(players);
+        otherPlayers.Remove(localPlayer); // removes local player
 
         // values
         float time = -1.0F;

@@ -33,6 +33,9 @@ public class UdpClient : MonoBehaviour
         if (client == null)
         {
             client = new NetworkLibrary.UdpClient();
+
+            // two-way communication
+            client.SetCommunicationMode(NetworkLibrary.UdpClient.mode.both);
         }
     }
 

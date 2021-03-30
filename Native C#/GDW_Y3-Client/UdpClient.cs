@@ -11,7 +11,7 @@ namespace NetworkLibrary
         public enum mode { both, send, receive };
 
         // communication mode
-        public mode commMode = mode.send;
+        public mode commMode = mode.both;
 
         // client variables
         private byte[] outBuffer; // sending data to server

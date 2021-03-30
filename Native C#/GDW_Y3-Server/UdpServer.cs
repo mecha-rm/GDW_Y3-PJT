@@ -17,7 +17,7 @@ namespace NetworkLibrary
         private string serverName = "";
 
         // communication mode
-        public mode commMode = mode.receive;
+        public mode commMode = mode.both;
 
         // default buffer size
         private int defaultBufferSize = 512;
