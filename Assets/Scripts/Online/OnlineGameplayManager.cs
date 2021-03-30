@@ -46,6 +46,8 @@ public class OnlineGameplayManager : MonoBehaviour
     /// </summary>
 
 
+    // TODO: create interval
+
     // gets the game manager
     public GameplayManager gameManager;
 
@@ -314,6 +316,8 @@ public class OnlineGameplayManager : MonoBehaviour
 
         // Players
         // getting player data
+        // this sends the data of all four players.
+        // // On the client side, the controlled player ignores the data of the player with the same number. 
         for (int i = 0; i < players.Count; i++)
         {
             byte[] pData = players[i].GetData();
@@ -394,8 +398,8 @@ public class OnlineGameplayManager : MonoBehaviour
         int index = 0;
 
         // list of other players
-        List<RemotePlayer> otherPlayers = new List<RemotePlayer>(players);
-        otherPlayers.Remove(localPlayer); // removes local player
+        // List<RemotePlayer> otherPlayers = new List<RemotePlayer>(players);
+        // otherPlayers.Remove(localPlayer); // removes local player
 
         // values
         float time = -1.0F;

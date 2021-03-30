@@ -6,6 +6,16 @@ using UnityEngine;
 // remote player script for online component
 public class RemotePlayer : MonoBehaviour
 {
+    // struct for remote player data.
+    public struct RemotePlayerData
+    {
+        public int playerNumber;
+        public Vector3 position;
+        public Vector3 scale;
+        public Quaternion rotation;
+        public float playerScore;
+    }
+
     // FORMAT:
     // [0 - 10] - P1 Transform (PosX, PosY, P
 
@@ -48,7 +58,6 @@ public class RemotePlayer : MonoBehaviour
     // packs the player data and returns it.
     public byte[] GetData()
     {
-
         // size of content
         byte[] sendData = new byte[DATA_SIZE];
 
@@ -161,6 +170,7 @@ public class RemotePlayer : MonoBehaviour
         {
             //int pNum = BitConverter.ToInt32(data, index);
             //index += sizeof(int);
+            //player.playerNumber = pNum;
 
             index += sizeof(int); // skip player number
         }
@@ -228,6 +238,194 @@ public class RemotePlayer : MonoBehaviour
             index += sizeof(float);
             player.playerScore = score;
         }
+    }
+
+    // applies remote player data
+    public void ApplyData(RemotePlayerData rpd)
+    {
+        // player number should not be overriddden
+        // player.playerNumber = rpd.playerNumber;
+        player.transform.position = rpd.position;
+        player.transform.localScale = rpd.scale;
+        player.transform.rotation = rpd.rotation;
+        player.playerScore = rpd.playerScore;
+    }
+
+    // converts remote player data to bytes
+    public static byte[] RemotePlayerDataToBytes(RemotePlayerData rpd)
+    {
+        // size of content
+        byte[] sendData = new byte[DATA_SIZE];
+
+        // index of content
+        int index = 0;
+
+        // Player Number
+        {
+            byte[] data = BitConverter.GetBytes(rpd.playerNumber);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+
+        // Player Position
+        {
+            byte[] data;
+
+            // x position
+            data = BitConverter.GetBytes(rpd.position.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y position
+            data = BitConverter.GetBytes(rpd.position.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z position
+            data = BitConverter.GetBytes(rpd.position.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Player Scale
+        {
+            byte[] data;
+
+            // x scale
+            data = BitConverter.GetBytes(rpd.scale.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y scale
+            data = BitConverter.GetBytes(rpd.scale.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z scale
+            data = BitConverter.GetBytes(rpd.scale.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Player Rotation
+        {
+            byte[] data;
+
+            // x rotation
+            data = BitConverter.GetBytes(rpd.rotation.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y rotation
+            data = BitConverter.GetBytes(rpd.rotation.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z rotation
+            data = BitConverter.GetBytes(rpd.rotation.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // w value
+            data = BitConverter.GetBytes(rpd.rotation.w);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Player Score
+        {
+            byte[] data;
+
+            // player score
+            data = BitConverter.GetBytes(rpd.playerScore);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+        }
+
+        return sendData;
+    }
+
+    // converts byte data to remote player data
+    public static RemotePlayerData BytesToRemotePlayerData(byte[] data)
+    {
+        // remote player data
+        RemotePlayerData rpd = new RemotePlayerData();
+        
+        // index
+        int index = 0;
+
+        // no data sent.
+        // should account for not having enough data.
+        if (data == null || data.Length == 0)
+            return rpd;
+
+        // Player Number (does not change)
+        {
+            rpd.playerNumber = BitConverter.ToInt32(data, index);
+            index += sizeof(int);
+        }
+
+        // Player Position
+        {
+            // getting position values
+            // x value
+            rpd.position.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // y value
+            rpd.position.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // z value
+            rpd.position.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+        }
+
+        // Player Scale
+        {
+            // getting position values
+            // x value
+            rpd.scale.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // y value
+            rpd.scale.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // z value
+            rpd.scale.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+        }
+
+        // Player Rotation
+        {
+            // getting position values
+            // x value
+            rpd.rotation.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // y value
+            rpd.rotation.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // z value
+            rpd.rotation.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // w value
+            rpd.rotation.w = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+        }
+
+        // Player Score
+        {
+            rpd.playerScore = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+        }
+
+        return rpd;
     }
 
     // Update is called once per frame
