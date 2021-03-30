@@ -363,7 +363,7 @@ public class RemotePlayer : MonoBehaviour
         int index = 0;
 
         // no data sent.
-        // should account for not having enough data.
+        // TODO: should check for enough data being available.
         if (data == null || data.Length == 0)
             return rpd;
 

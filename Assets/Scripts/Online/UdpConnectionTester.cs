@@ -43,6 +43,21 @@ public class UdpConnectionTester : MonoBehaviour
             onlineManager.SetPort(val);
         }
 
+        // if the online manager isn't the master, disable the item spawner.
+        if(!onlineManager.isMaster) // this is a client, not a server.
+        {
+            // finds the item spanwer
+            ItemSpawner spawner = FindObjectOfType<ItemSpawner>();
+            
+            // if the item spawner exists.
+            if(spawner != null)
+            {
+                // disable spawning operations.
+                // this makes it so that new items are given by the server onyl.
+                spawner.spawnerEnabled = false;
+            }
+        }
+
         // onlineManager.isMaster = ;
         onlineManager.RunHost();
     }

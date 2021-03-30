@@ -8,6 +8,14 @@ using System;
 // script for items that are on the field and available for pickup
 public class FieldItem : MonoBehaviour
 {
+    // struct for field item data.
+    public struct FieldItemData
+    {
+        public int itemSet;
+        public Vector3 position;
+        public Quaternion rotation;
+    }
+
     // enum for available items
     public enum itemType
     {
@@ -34,7 +42,7 @@ public class FieldItem : MonoBehaviour
     // Type - 1 Int (4 Bytes)
     // Position - 3 Floats (12 Bytes)
     // Rotation - 4 Bytes (16 Bytes)
-    const int DATA_SIZE = 32;
+    public const int DATA_SIZE = 32;
 
     // Start is called before the first frame update
     void Start()
@@ -130,8 +138,6 @@ public class FieldItem : MonoBehaviour
         // Position - 3 Floats (12 Bytes)
         // Rotation - 4 Bytes (16 Bytes)
 
-        // TODO: get data from item
-
         // size of content
         byte[] sendData = new byte[DATA_SIZE];
 
@@ -146,7 +152,7 @@ public class FieldItem : MonoBehaviour
         }
 
 
-        // Player Position
+        // Item Position
         {
             byte[] data;
 
@@ -166,7 +172,7 @@ public class FieldItem : MonoBehaviour
             index += data.Length;
         }
 
-        // Player Rotation
+        // Item Rotation
         {
             byte[] data;
 
@@ -200,7 +206,7 @@ public class FieldItem : MonoBehaviour
         // index of content
         int index = 0;
 
-        // Item Number
+        // Item Set
         {
             int type = BitConverter.ToInt32(data, index);
             itemSet = (itemType)type;
@@ -247,6 +253,143 @@ public class FieldItem : MonoBehaviour
             transform.rotation = newRot;
         }
     }
+
+
+    // applys the data for this field item (type, position, and rotation)
+    public void ApplyData(FieldItemData fid)
+    {
+        // copies data
+        itemSet = (itemType)fid.itemSet;
+        transform.position = fid.position;
+        transform.rotation = fid.rotation;
+    }
+
+    // converts remote player data to bytes
+    public static byte[] FieldItemDataToBytes(FieldItemData fid)
+    {
+        // Bytes: 32 Total
+        // Type - 1 Int (4 Bytes)
+        // Position - 3 Floats (12 Bytes)
+        // Rotation - 4 Bytes (16 Bytes)
+
+        // size of content
+        byte[] sendData = new byte[DATA_SIZE];
+
+        // index of content
+        int index = 0;
+
+        // Item Number
+        {
+            byte[] data = BitConverter.GetBytes(fid.itemSet);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+
+        // Item Position
+        {
+            byte[] data;
+
+            // x position
+            data = BitConverter.GetBytes(fid.position.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y position
+            data = BitConverter.GetBytes(fid.position.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z position
+            data = BitConverter.GetBytes(fid.position.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Item Rotation
+        {
+            byte[] data;
+
+            // x rotation
+            data = BitConverter.GetBytes(fid.rotation.x);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // y rotation
+            data = BitConverter.GetBytes(fid.rotation.y);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // z rotation
+            data = BitConverter.GetBytes(fid.rotation.z);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+
+            // w value
+            data = BitConverter.GetBytes(fid.rotation.w);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        return sendData;
+    }
+
+    // converts remote player data to bytes
+    public static FieldItemData BytesToFieldItemData(byte[] data)
+    {
+        // field item
+        FieldItemData fid = new FieldItemData();
+
+        // index of content
+        int index = 0;
+
+        // no data sent.
+        // TODO: should check for enough data being available.
+        if (data == null || data.Length == 0)
+            return fid;
+
+        // Item Set
+        {
+            fid.itemSet = BitConverter.ToInt32(data, index);
+            index += sizeof(int); // move onto next value
+        }
+
+        // Item Position
+        {
+            // getting position values
+            // x value
+            fid.position.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // y value
+            fid.position.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            // z value
+            fid.position.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+        }
+
+
+        // Item Rotation
+        {
+            // getting position values
+            fid.rotation.x = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            fid.rotation.y = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            fid.rotation.z = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+
+            fid.rotation.w = BitConverter.ToSingle(data, index);
+            index += sizeof(float);
+        }
+
+        return fid;
+    }
+
 
     // the item box has collided with something.
     private void OnCollisionEnter(Collision collision)

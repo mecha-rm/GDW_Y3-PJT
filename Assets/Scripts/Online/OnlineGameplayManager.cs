@@ -33,7 +33,7 @@ public class OnlineGameplayManager : MonoBehaviour
     /// SERVER SEND DATA
     /// Keep in mind that a float is 4 bytes long.
     /// * [0 - 47] - Player
-    ///     - [0 - 3] - Player Number (4 bytes per int)
+    ///     - [0 - 3] - Identification Number (4 bytes per int)
     ///     - [4 - 15] - Position (x, y, z) (4 bytes per float, 12 total)
     ///     - [16 - 27] - Scale (x, y, z) (4 bytes per float, 12 total)
     ///     - [28 - 43] - Rotation (x, y, z, w) (4 bytes per float, 16 total)
@@ -50,6 +50,9 @@ public class OnlineGameplayManager : MonoBehaviour
 
     // gets the game manager
     public GameplayManager gameManager;
+
+    // the item spawner.
+    public ItemSpawner itemSpawner;
 
     // if 'true', this player is the host.
     public bool isMaster = true;
@@ -85,12 +88,18 @@ public class OnlineGameplayManager : MonoBehaviour
     public int serverBufferSize = 512;
     public int clientBufferSize = 512;
 
+    // TODO: include timer.
+
     // Start is called before the first frame update
     void Start()
     {
         // finds gameplay manager if not set.
         if (gameManager == null)
             gameManager = FindObjectOfType<GameplayManager>();
+
+        // if the item spawenr has not been set, search for it.
+        if (itemSpawner == null)
+            itemSpawner = FindObjectOfType<ItemSpawner>();
 
 
         // if server hasn't been set.
@@ -269,6 +278,7 @@ public class OnlineGameplayManager : MonoBehaviour
             //         continue;
             // }
 
+            // TODO: convert to use identification numbers?
             // gets the proper data index and sends it to the player.
             byte[] data = server.server.GetReceiveBufferData(i);
             rp.ApplyData(data);
@@ -291,6 +301,9 @@ public class OnlineGameplayManager : MonoBehaviour
         byte[] sendData = new byte[serverBufferSize];
         int index = 0;
 
+        // gets all items currently on the field.
+        FieldItem[] spawnedItems = FindObjectsOfType<FieldItem>(false);
+
         // Timer
         {
             // TODO: replace with actual timer.
@@ -308,8 +321,7 @@ public class OnlineGameplayManager : MonoBehaviour
 
         // Number of Item Boxes
         {
-            // TODO: replace with number of item boxes.
-            byte[] data = BitConverter.GetBytes(0);
+            byte[] data = BitConverter.GetBytes(spawnedItems.Length); // number of items
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
             index += data.Length;
         }
@@ -325,20 +337,17 @@ public class OnlineGameplayManager : MonoBehaviour
             index += pData.Length;
         }
 
-        // TODO: figure out how to track other players getting items
 
         // Item Boxes
-        // {
-        //     // TODO: get item manager.
-        //     FieldItem[] items = FindObjectsOfType<FieldItem>();
-        // 
-        //     for(int i = 0; i < items.Length; i++)
-        //     {
-        //         byte[] iData = items[i].GetData();
-        //         iData.CopyTo(sendData, index);
-        //         index += iData.Length;
-        //     }
-        // }
+        {
+            // copies the transformation data into the array (type, position, and rotation).
+            for(int i = 0; i < spawnedItems.Length; i++)
+            {
+                byte[] iData = spawnedItems[i].GetData();
+                iData.CopyTo(sendData, index);
+                index += iData.Length;
+            }
+        }
 
         // sets the send buffer data
         server.server.SetSendBufferData(sendData);
@@ -494,8 +503,58 @@ public class OnlineGameplayManager : MonoBehaviour
             }
         }
 
-        // TODO: apply item box data.
+        // Item Box Data
+        // TODO: turn off item spawner for client so that it doesn't make new items.
+        if(itemSpawner != null) // item spawner must be available for this to work.
+        {
+            FieldItem[] activeItems = FindObjectsOfType<FieldItem>(false);
+            List<FieldItem.FieldItemData> recItems = new List<FieldItem.FieldItemData>();
+            int arrIndex = 0;
 
+            // gets all item transformation data.
+            for (int i = 0; i < itemCount; i++)
+            {
+                // gets data section
+                byte[] iData = new byte[FieldItem.DATA_SIZE];
+                Buffer.BlockCopy(recData, index, iData, 0, FieldItem.DATA_SIZE);
+                recItems.Add(FieldItem.BytesToFieldItemData(iData)); // adds data to list.
+
+                index += iData.Length; // move onto next slot.
+            }
+
+            // while the array index is less than the amount of active items and received items.
+            while(arrIndex < activeItems.Length && arrIndex < recItems.Count)
+            {
+                activeItems[arrIndex].ApplyData(recItems[arrIndex]);
+                arrIndex++; // increment.
+            }
+
+            // gets the instance
+            ItemManager im = ItemManager.GetInstance();
+
+            // more items on the field than there should be.
+            if (arrIndex < activeItems.Length)
+            {
+                // returns the item, and increments it.
+                while(arrIndex < activeItems.Length)
+                {
+                    im.ReturnItem(activeItems[arrIndex]);
+                    arrIndex++;
+                }
+            }
+            // less items on the field than there should be.
+            else if(arrIndex < recItems.Count)
+            {
+                // gets a new item, and adds it in.
+                while (arrIndex < recItems.Count)
+                {
+                    FieldItem fieldItem = im.GetItem();
+                    fieldItem.ApplyData(recItems[arrIndex]);
+                    arrIndex++;
+                }
+
+            }
+        }
     }
 
     // shuts down theh ost.

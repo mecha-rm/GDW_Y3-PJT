@@ -4329,7 +4329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1908994741}
-  idNumber: 0
+  idNumber: -1
 --- !u!1 &1943413917
 GameObject:
   m_ObjectHideFlags: 0
@@ -4439,6 +4439,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2091546566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+  m_PrefabInstance: {fileID: 7284661197845155227}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16111b25ac60887479ad292ecd4b1b88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2144322857
 GameObject:
   m_ObjectHideFlags: 0
@@ -4763,6 +4774,10 @@ PrefabInstance:
       propertyPath: blocking
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6007434424230168315, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
+      propertyPath: itemSpawner
+      value: 
+      objectReference: {fileID: 2091546566}
     - target: {fileID: 6430195780213761676, guid: e8d0b2cb6d806974fb27cec87250a31c, type: 3}
       propertyPath: spawnAreaMin.x
       value: -10
