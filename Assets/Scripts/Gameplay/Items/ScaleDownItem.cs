@@ -27,6 +27,7 @@ public class ScaleDownItem : HeldItem
     {
         // restores base speed.
         activator.transform.localScale = baseScale;
+        activator.transform.position += new Vector3(0.0F, 5.0F, 0.0F); // TODO: this probably shouldn't be hardcoded.
     }
 
     // Update is called once per frame

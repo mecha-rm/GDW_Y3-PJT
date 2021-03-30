@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// this should only be used in the debug scene.
 public class UdpConnectionTester : MonoBehaviour
 {
     // online manager.

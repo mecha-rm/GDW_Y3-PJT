@@ -507,6 +507,9 @@ public class OnlineGameplayManager : MonoBehaviour
         // TODO: turn off item spawner for client so that it doesn't make new items.
         if(itemSpawner != null) // item spawner must be available for this to work.
         {
+            // disables the spawner
+            // itemSpawner.spawnerEnabled = false;
+
             FieldItem[] activeItems = FindObjectsOfType<FieldItem>(false);
             List<FieldItem.FieldItemData> recItems = new List<FieldItem.FieldItemData>();
             int arrIndex = 0;

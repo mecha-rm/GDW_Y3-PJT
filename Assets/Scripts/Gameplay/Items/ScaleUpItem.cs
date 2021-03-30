@@ -19,6 +19,7 @@ public class ScaleUpItem : HeldItem
     protected override void ApplyEffect()
     {
         baseScale = activator.transform.localScale;
+        activator.transform.position += new Vector3(0.0F, 5.0F, 0.0F); // TODO: this probably shouldn't be hardcoded.
         activator.transform.localScale = newScale;
     }
 
