@@ -778,6 +778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 9188325093911109906}
+  idNumber: -1
 --- !u!1001 &6276276284939705026
 PrefabInstance:
   m_ObjectHideFlags: 0

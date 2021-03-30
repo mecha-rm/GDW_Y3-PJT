@@ -9,7 +9,7 @@ public class RemotePlayer : MonoBehaviour
     // struct for remote player data.
     public struct RemotePlayerData
     {
-        public int playerNumber;
+        public int idNumber;
         public Vector3 position;
         public Vector3 scale;
         public Quaternion rotation;
@@ -28,7 +28,7 @@ public class RemotePlayer : MonoBehaviour
     /// Format for reading data from the server.
     /// Keep in mind that a float is 4 bytes long.
     /// * [0 - 47] - Player
-    ///     - [0 - 3] - Player Number (4 bytes per int)
+    ///     - [0 - 3] - Identification Number (4 bytes per int)
     ///     - [4 - 15] - Position (x, y, z) (4 bytes per float, 12 total)
     ///     - [16 - 27] - Scale (x, y, z) (4 bytes per float, 12 total)
     ///     - [28 - 43] - Rotation (x, y, z, w) (4 bytes per float, 16 total)
@@ -37,6 +37,11 @@ public class RemotePlayer : MonoBehaviour
 
     // player the remote player is attached to.
     public PlayerObject player;
+
+    // the identification number for updating the remote player
+    // this should be setup and provided by the server. This should stay the same for the whole round.
+    // id numbers should be random, and only be made positive.
+    public int idNumber = -1;
 
     // size of data for sending player information over the internet.
     public const int DATA_SIZE = 48;
@@ -47,6 +52,10 @@ public class RemotePlayer : MonoBehaviour
         // player not set
         if (player == null)
             GetComponent<PlayerObject>();
+
+        // randomizes the id number for the remote player.
+        if (idNumber < 0)
+            idNumber = UnityEngine.Random.Range(0, int.MaxValue);
     }
 
     // gets the data size.
@@ -64,9 +73,9 @@ public class RemotePlayer : MonoBehaviour
         // index of content
         int index = 0;
 
-        // Player Number
+        // Identification Number
         {
-            byte[] data = BitConverter.GetBytes(player.playerNumber);
+            byte[] data = BitConverter.GetBytes(idNumber);
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
             index += data.Length;
         }
@@ -166,13 +175,10 @@ public class RemotePlayer : MonoBehaviour
         // index of content
         int index = 0;
 
-        // Player Number (does not change)
+        // Identification Number
         {
-            //int pNum = BitConverter.ToInt32(data, index);
-            //index += sizeof(int);
-            //player.playerNumber = pNum;
-
-            index += sizeof(int); // skip player number
+            idNumber = BitConverter.ToInt32(data, index);
+            index += sizeof(int);
         }
 
         // Player Position
@@ -244,7 +250,7 @@ public class RemotePlayer : MonoBehaviour
     public void ApplyData(RemotePlayerData rpd)
     {
         // player number should not be overriddden
-        // player.playerNumber = rpd.playerNumber;
+        idNumber = rpd.idNumber;
         player.transform.position = rpd.position;
         player.transform.localScale = rpd.scale;
         player.transform.rotation = rpd.rotation;
@@ -260,9 +266,9 @@ public class RemotePlayer : MonoBehaviour
         // index of content
         int index = 0;
 
-        // Player Number
+        // Identification Number
         {
-            byte[] data = BitConverter.GetBytes(rpd.playerNumber);
+            byte[] data = BitConverter.GetBytes(rpd.idNumber);
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
             index += data.Length;
         }
@@ -361,9 +367,9 @@ public class RemotePlayer : MonoBehaviour
         if (data == null || data.Length == 0)
             return rpd;
 
-        // Player Number (does not change)
+        // ID Number
         {
-            rpd.playerNumber = BitConverter.ToInt32(data, index);
+            rpd.idNumber = BitConverter.ToInt32(data, index);
             index += sizeof(int);
         }
 

@@ -11,6 +11,10 @@ public class ItemSpawner : MonoBehaviour
     // spawns item into the scene.
     public int itemCount = 10; // the 10 items
 
+    // if 'true', the spawner operates.
+    // use this to disable the spawner on other systems.
+    public bool spawnerEnabled = true;
+
     // spawn time (in seconds), and countdown to when to spawn another object.
     public float spawnTime = 20.0F;
     public float spawnCountdown = 0.0F;
@@ -55,24 +59,28 @@ public class ItemSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // countdown to spawn another item.
-        spawnCountdown -= Time.deltaTime;
-        
-        // another itme should be spawned.
-        if(spawnCountdown <= 0.0F)
+        // checks to see if the spawner is enabled.
+        if(spawnerEnabled)
         {
-            spawnCountdown = 0.0F;
+            // countdown to spawn another item.
+            spawnCountdown -= Time.deltaTime;
 
-            // if there are items in the pool, then something can be spawned.
-            if(!itemManager.ItemPoolIsEmpty())
+            // another itme should be spawned.
+            if (spawnCountdown <= 0.0F)
             {
-                spawnCountdown = spawnTime;
+                spawnCountdown = 0.0F;
 
-                // randomizes the position
-                FieldItem newItem = itemManager.GetItem();
-                newItem.RandomizePosition(spawnAreaMin, spawnAreaMax);
-                newItem.useDespawnTimer = autoItemDespawn;
+                // if there are items in the pool, then something can be spawned.
+                if (!itemManager.ItemPoolIsEmpty())
+                {
+                    spawnCountdown = spawnTime;
+
+                    // randomizes the position
+                    FieldItem newItem = itemManager.GetItem();
+                    newItem.RandomizePosition(spawnAreaMin, spawnAreaMax);
+                    newItem.useDespawnTimer = autoItemDespawn;
+                }
             }
-        }
+        } 
     }
 }

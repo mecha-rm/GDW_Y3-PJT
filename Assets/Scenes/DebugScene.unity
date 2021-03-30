@@ -276,6 +276,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2905271661122176565, guid: e4c06a4882bae8740bbdb5a2119c0c3f, type: 3}
+      propertyPath: idNumber
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 263561231312750479, guid: e4c06a4882bae8740bbdb5a2119c0c3f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.34
@@ -342,7 +346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5865286733226926447, guid: e4c06a4882bae8740bbdb5a2119c0c3f, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8377133915244594450, guid: e4c06a4882bae8740bbdb5a2119c0c3f, type: 3}
       propertyPath: m_Name
@@ -4325,6 +4329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1908994741}
+  idNumber: 0
 --- !u!1 &1943413917
 GameObject:
   m_ObjectHideFlags: 0
