@@ -4,13 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // timer - uses DLL.
-public class Timer : MonoBehaviour
+public class TextTimerBehaviour : MonoBehaviour
 {
     // timer text
     public Text text;
 
+    // start and end of text string.
+    public string strStart = "Time: ";
+    public string strEnd = "";
+
     // timer
     float timer = 0.0F;
+
+    // speed of the timer
+    // a negative number will make it go down, a positive number will make it go up.
+    float speed = 1.0F;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +31,7 @@ public class Timer : MonoBehaviour
     void Update()
     {
         // adds to timer
-        timer += Time.deltaTime;
+        timer += Time.deltaTime * speed;
 
         // if there is a text object
         if (text != null)
@@ -35,7 +43,7 @@ public class Timer : MonoBehaviour
             // text.text = "Time: " + min + ":" + sec;
 
             // now formatted.
-            text.text = "Time: " + timer.ToString("#");
+            text.text = strStart + timer.ToString("#") + strEnd;
         }
 
 

@@ -17,6 +17,7 @@ public class FieldItem : MonoBehaviour
     }
 
     // enum for available items
+    // TODO: add more item types
     public enum itemType
     {
         none, speedUp, jumpUp
@@ -111,12 +112,12 @@ public class FieldItem : MonoBehaviour
                 break;
             case itemType.jumpUp: // jump
                 // checks to see if the player already has a jump item attached.
-                JumpItem jumpItem = player.gameObject.GetComponent<JumpItem>();
+                JumpUpItem jumpItem = player.gameObject.GetComponent<JumpUpItem>();
 
                 // if the player already has a jump item, the countdown for it is reset.
                 // if they didn't have a jump item, they are given one.
                 if (jumpItem == null)
-                    genItem = player.gameObject.AddComponent<JumpItem>();
+                    genItem = player.gameObject.AddComponent<JumpUpItem>();
                 else
                     jumpItem.ResetCountdown();
                 

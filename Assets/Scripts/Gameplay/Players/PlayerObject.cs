@@ -34,6 +34,10 @@ public class PlayerObject : MonoBehaviour
     public float backupFactor = 0.5F;
     public bool momentumMovement = true;
 
+    // force applied when two players collide.
+    // the knockback and the defense multipliers are applied here.
+    public float bounceForce = 7.25F;
+
     // camera controls
     public FollowerCamera playerCamera; // the player's camera (TODO: generate a dedicated camera for the player)
     public Vector3 cameraDistance = new Vector3(0, 3, -7); // the offset for the camera that's attached to the player.
@@ -259,6 +263,18 @@ public class PlayerObject : MonoBehaviour
             // transfers the flag to the other player.
             if (flag != null)
                 flag.TransferFlag(p2);
+
+            // bounce back between players.
+            // Vector3 diff = transform.position - p2.transform.position;
+            // rigidBody.AddExplosionForce(diff); // explosive
+            // p2.rigidBody.AddExplosionForce(diff.Scale(new Vector3(-1, -1, -1))); // explosive
+            
+            // applies an explosive force to move the player back.
+            // the knockback strength of player 2 is applied 
+            rigidBody.AddExplosionForce(bounceForce * p2.knockbackMult / defenseMult, p2.transform.position, 10.0F, 1.0F, ForceMode.Impulse);
+            // rigidBody.AddExplosionForce(bounceForce * p2.knockbackMult / defenseMult, collision.GetContact(0).point, 10.0F, 1.0F, ForceMode.Impulse);
+
+            // p2.rigidBody.AddExplosionForce(bounceForce, transform.position, 35.0F, 2.0F, ForceMode.Impulse);
         }
     }
 

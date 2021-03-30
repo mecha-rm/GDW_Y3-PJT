@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // jump item
-public class JumpItem : HeldItem
+public class JumpUpItem : HeldItem
 {
     // Start is called before the first frame update
     // the base speed and the speed multiplayer
     private float baseJump = 1.0F;
-    private float jumpMult = 2.28F;
+    private float jumpMult = 2.0F;
 
     // Start is called before the first frame update
     void Start()
