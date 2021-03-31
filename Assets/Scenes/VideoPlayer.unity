@@ -380,6 +380,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vp: {fileID: 628681296}
   nextScene: Title
+  waitTime: 3
+  allottedTime: 0
 --- !u!114 &628681298
 MonoBehaviour:
   m_ObjectHideFlags: 0

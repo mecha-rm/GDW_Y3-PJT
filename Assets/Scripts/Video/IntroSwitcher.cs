@@ -69,6 +69,10 @@ public class IntroSwitcher : MonoBehaviour
                 currTime += Time.deltaTime;
                 currTime = Mathf.Clamp(currTime, 0, waitTime);
             }
+            else if (countOnTitleActive && !titleSet) // title is not active, so reset timer to zero.
+            {
+                currTime = 0.0F;
+            }
         }        
 
         // intro should be played.

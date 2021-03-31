@@ -13,8 +13,13 @@ public class VideoSceneExit : MonoBehaviour
     // leads to the next scene.
     public string nextScene = "";
 
-    // in order for the video scene exit to work properly, the script must wait one update cycle.
-    private int waitCycles = 5;
+    // in order for the video scene exit to work properly, the script must wait a few update cycles.
+    // if this doesn't load in time, the scene will exit without the video playing.
+    // as such, this has been changed to be based off of delta time (in econds).
+    public float waitTime = 5.0F;
+    
+    // the alloted itme that has passed.
+    public float allottedTime = 0.0F;
 
     // Start is called before the first frame update
     void Start()
@@ -28,10 +33,10 @@ public class VideoSceneExit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // waits for at least one cycle.
-        // this is done because it is programed to finish once the video finishes.
-        // however, without waiting for the video to start, it would leave automatically.
-        if(waitCycles <= 0)
+        // programmed to exit the scene once the video fnishes playing.
+        // however, a delay is used in order to give time for the video to actually start.
+        // without waiting for the video to start, it would leave immediately.
+        if(allottedTime >= waitTime)
         {
             // Debug.Log("Skip Available");
 
@@ -49,12 +54,8 @@ public class VideoSceneExit : MonoBehaviour
         }
         else
         {
-            // reduces wait cycle countdown
-            waitCycles--;
-
-            // below 0
-            if (waitCycles < 0)
-                waitCycles = 0;
+            // increase alloted time.
+            allottedTime += Time.deltaTime;
         }
 
     }
