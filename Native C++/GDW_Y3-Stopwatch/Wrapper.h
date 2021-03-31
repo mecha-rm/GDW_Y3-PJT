@@ -10,6 +10,9 @@ extern "C" // convert to C code.
 	// gets the current time.
 	PLUGIN_API float GetCurrentTime();
 
+	// sets the current time
+	PLUGIN_API void SetCurrentTime(float newTime);
+
 	// resets the timer
 	PLUGIN_API void ResetTimer();
 

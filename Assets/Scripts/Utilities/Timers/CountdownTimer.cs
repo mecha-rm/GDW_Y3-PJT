@@ -11,9 +11,17 @@ public class CountdownTimer : MonoBehaviour
 
     // functions from the DLL
 
-    // get current time
+    // gets the current time
     [DllImport(DLL_NAME)]
     private static extern float GetCurrentTime();
+
+    // sets the current time
+    [DllImport(DLL_NAME)]
+    private static extern void SetCurrentTime(float newTime);
+
+    // resets the timer
+    [DllImport(DLL_NAME)]
+    private static extern void ResetTimer();
 
     // sets the start time
     [DllImport(DLL_NAME)]
@@ -44,6 +52,18 @@ public class CountdownTimer : MonoBehaviour
     public float GetCurrentCountdownTime()
     {
         return GetCurrentTime();
+    }
+
+    // sets hte current countdown time.
+    public void SetCurrentCountdownTime(float time)
+    {
+        SetCurrentTime(time);
+    }
+
+    // resets the countdown timer.
+    public void ResetCountdownTimer()
+    {
+        ResetTimer();
     }
 
     // sets the start time

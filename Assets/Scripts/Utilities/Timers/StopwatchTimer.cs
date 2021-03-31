@@ -11,9 +11,13 @@ public class StopwatchTimer : MonoBehaviour
 
     // functions from the DLL
 
-    // gets the current time.
+    // gets the current time
     [DllImport(DLL_NAME)]
     private static extern float GetCurrentTime();
+
+    // sets the current time
+    [DllImport(DLL_NAME)]
+    private static extern void SetCurrentTime(float newTime);
 
     // resets the timer
     [DllImport(DLL_NAME)]
@@ -53,6 +57,12 @@ public class StopwatchTimer : MonoBehaviour
     public float GetCurrentStopwatchTime()
     {
         return GetCurrentTime();
+    }
+
+    // sets hte current countdown time.
+    public void SetCurrentCountdownTime(float time)
+    {
+        SetCurrentTime(time);
     }
 
     // resets the stopwatch

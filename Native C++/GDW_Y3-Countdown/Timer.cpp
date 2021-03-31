@@ -5,11 +5,18 @@ Timer::Timer()
 {
 }
 
-// returns the current time
+// returns the current time.
 float Timer::GetCurrentTime() const
 {
 	return currTime;
 }
+
+// sets the current time.
+void Timer::SetCurrentTime(float newTime)
+{
+	currTime = newTime;
+}
+
 
 // STOP WATCH //
 
@@ -71,11 +78,17 @@ CountdownTimer::CountdownTimer() : Timer()
 {
 }
 
+// resets the start timer.
+void CountdownTimer::ResetTimer()
+{
+	currTime = startTime;
+}
+
 // set the start time
 void CountdownTimer::SetStartTime(float time)
 {
 	startTime = (time > 0.0F) ? time : 0.0F; // time can't be negative.
-	currTime = startTime;
+	// currTime = startTime; // call ResetTimer() to change start time.
 }
 
 // gets the start time

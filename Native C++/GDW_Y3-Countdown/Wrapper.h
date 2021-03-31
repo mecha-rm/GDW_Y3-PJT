@@ -9,6 +9,12 @@ extern "C" // convert to C code.
 	// get current time
 	PLUGIN_API float GetCurrentTime();
 
+	// sets the current itme.
+	PLUGIN_API void SetCurrentTime(float newTime);
+
+	// resets the timer.
+	PLUGIN_API void ResetTimer();
+
 	// sets the start time
 	PLUGIN_API void SetStartTime(float time);
 

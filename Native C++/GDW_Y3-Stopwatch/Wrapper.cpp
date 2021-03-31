@@ -1,10 +1,18 @@
 #include "Wrapper.h"
+
+// stopwatch timer
 StopwatchTimer swt;
 
 // gets the current time
 PLUGIN_API float GetCurrentTime()
 {
     return swt.GetCurrentTime();
+}
+
+// sets the current time
+PLUGIN_API void SetCurrentTime(float newTime)
+{
+    swt.SetCurrentTime(newTime);
 }
 
 // resets the timer

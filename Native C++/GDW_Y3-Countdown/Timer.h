@@ -12,6 +12,9 @@ public:
 	// gets the current time.
 	float GetCurrentTime() const;
 
+	// sets the current time.
+	void SetCurrentTime(float newTime);
+
 	// update timer with how much time has passed.
 	// to pause the timer, just don't update it.
 	virtual void UpdateTimer(float deltaTime) = 0;
@@ -31,6 +34,9 @@ class PLUGIN_API CountdownTimer : public Timer
 public:
 	// constructor
 	CountdownTimer();
+
+	// resets the countdown timer, putting itb ack to its start.
+	void ResetTimer();
 
 	// sets the start time.
 	// this sets the current time to the start time.

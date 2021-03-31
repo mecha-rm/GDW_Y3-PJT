@@ -9,6 +9,18 @@ PLUGIN_API float GetCurrentTime()
     return cdt.GetCurrentTime();
 }
 
+// sets the current time
+PLUGIN_API void SetCurrentTime(float newTime)
+{
+    cdt.SetCurrentTime(newTime);
+}
+
+// resets the timer
+PLUGIN_API void ResetTimer()
+{
+    return cdt.ResetTimer();
+}
+
 // sets the start time
 PLUGIN_API void SetStartTime(float time)
 {
