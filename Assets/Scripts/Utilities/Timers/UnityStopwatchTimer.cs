@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnityStopwatchTimer : TimerBehaviour
+public class UnityStopwatchTimer : TimerObject
 {
     // current time
-    public float currentTime = 0.0F;
-
-    // the split.
-    float split = 0.0F;
+    public float currentTime = 0.0F; 
 
     // splits the time
     public List<float> splits = new List<float>();

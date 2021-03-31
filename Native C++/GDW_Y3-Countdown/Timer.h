@@ -89,9 +89,6 @@ private:
 	// splits the time
 	std::vector<float> splits;
 
-	// the split
-	float split = 0.0F;
-
 	// the total time that has passed.
 	float totalTime = 0.0F;
 

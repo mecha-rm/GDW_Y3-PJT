@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // behaviour for timers.
-public abstract class TimerBehaviour : MonoBehaviour
+public abstract class TimerObject : MonoBehaviour
 {
     // gets the current time value
     public abstract float GetCurrentTimeValue();

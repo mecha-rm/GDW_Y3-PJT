@@ -54,6 +54,12 @@ public class OnlineGameplayManager : MonoBehaviour
     // the item spawner.
     public ItemSpawner itemSpawner;
 
+    // the timer being used.
+    public TimerObject timer;
+
+    // TODO: use to correct the amount of time
+    // private float timeDiff = 0.0F;
+
     // if 'true', this player is the host.
     public bool isMaster = true;
 
@@ -87,8 +93,6 @@ public class OnlineGameplayManager : MonoBehaviour
     // buffer size for clients and servers
     public int serverBufferSize = 512;
     public int clientBufferSize = 512;
-
-    // TODO: include timer.
 
     // Start is called before the first frame update
     void Start()
@@ -306,8 +310,15 @@ public class OnlineGameplayManager : MonoBehaviour
 
         // Timer
         {
-            // TODO: replace with actual timer.
-            byte[] data = BitConverter.GetBytes(0);
+            // timer data
+            byte[] data;
+            
+            // if the timer has been set, get the current time.
+            if(timer != null)
+                data = BitConverter.GetBytes(timer.GetCurrentTimeValue());
+            else // no timer
+                data = BitConverter.GetBytes(-1);
+
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
             index += data.Length;
         }
@@ -423,7 +434,10 @@ public class OnlineGameplayManager : MonoBehaviour
         // Timer
         {
             time = BitConverter.ToSingle(recData, index);
-            // TODO: update timer
+
+            // TODO: check to see if the difference is great enough to make a change.
+            // sets time.
+            timer.SetCurrentTimeValue(time);
             index += sizeof(float);
 
         }

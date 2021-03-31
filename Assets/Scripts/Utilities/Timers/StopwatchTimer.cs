@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 // stopwatch timer (uses DLL)
-public class StopwatchTimer : MonoBehaviour
+public class StopwatchTimer : TimerObject
 {
     // dll name
     const string DLL_NAME = "GDW_Y3-Stopwatch";
@@ -53,14 +53,26 @@ public class StopwatchTimer : MonoBehaviour
         ResetTimer();
     }
 
-    // get current time
+    // gets the current time value (inherited)
+    public override float GetCurrentTimeValue()
+    {
+        return GetCurrentTime();
+    }
+
+    // sets the current time value
+    public override void SetCurrentTimeValue(float time)
+    {
+        SetCurrentTime(time);
+    }
+
+    // get current time (same as GetCurrentTimeValue)
     public float GetCurrentStopwatchTime()
     {
         return GetCurrentTime();
     }
 
-    // sets hte current countdown time.
-    public void SetCurrentCountdownTime(float time)
+    // sets hte current countdown time (same as SetCurrentStopwatchTime)
+    public void SetCurrentStopwatchTime(float time)
     {
         SetCurrentTime(time);
     }

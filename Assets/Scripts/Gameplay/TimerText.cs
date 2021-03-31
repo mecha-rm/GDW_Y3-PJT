@@ -58,6 +58,69 @@ public class TimerText : MonoBehaviour
         }
     }
 
+
+    // gets the active timer.
+    public TimerObject GetActiveTimer()
+    {
+        // gets the actve timer.
+        TimerObject timeObject = null;
+
+        switch (timerNumber)
+        {
+            case 1: // countdown
+                timeObject = timer1;
+                break;
+
+            case 2: // stopwatch
+                timeObject = timer2;
+                break;
+
+            default:
+                break;
+        }
+
+        return timeObject;
+    }
+
+
+    // pauses the active timer
+    public void PauseActiveTimer()
+    {
+        // checks timer number
+        switch (timerNumber)
+        {
+            case 1: // countdown
+                timer1.paused = true;
+                break;
+
+            case 2: // stopwatch
+                timer2.paused = true;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    // unpauses the active timer
+    public void UnpauseActiveTimer()
+    {
+        // checks timer number
+        switch (timerNumber)
+        {
+            case 1: // countdown
+                timer1.paused = false;
+                break;
+
+            case 2: // stopwatch
+                timer2.paused = false;
+                break;
+
+            default:
+                break;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

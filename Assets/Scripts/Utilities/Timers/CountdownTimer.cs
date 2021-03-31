@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 // countdown timer (uses DLL)
-public class CountdownTimer : MonoBehaviour
+public class CountdownTimer : TimerObject
 {
     // dll name
     const string DLL_NAME = "GDW_Y3-Countdown";
@@ -46,6 +46,18 @@ public class CountdownTimer : MonoBehaviour
     void Start()
     {
 
+    }
+
+    // get current time value
+    public override float GetCurrentTimeValue()
+    {
+        return GetCurrentTime();
+    }
+
+    // set current time value
+    public override void SetCurrentTimeValue(float time)
+    {
+        SetCurrentTime(time);
     }
 
     // gets the current time

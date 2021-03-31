@@ -59,6 +59,34 @@ public class UdpConnectionTester : MonoBehaviour
             }
         }
 
+        // if the timer has not been set.
+        if(onlineManager.timer == null)
+        {
+            // finds timer text
+            TimerText timerText = FindObjectOfType<TimerText>();
+
+            // timer text found.
+            if(timerText != null)
+            {
+                TimerObject timerObject = timerText.GetActiveTimer();
+
+                // checks to see if the timer object is set.
+                if (timerObject != null)
+                {
+                    // sets timer for online manager.
+                    onlineManager.timer = timerObject;
+                }
+
+                // if this isn't the master, disable the timer.
+                if (!onlineManager.isMaster)
+                {
+                    // pauses the active timer
+                    timerText.PauseActiveTimer();
+                }
+            }
+            
+        }
+
         // onlineManager.isMaster = ;
         onlineManager.RunHost();
     }

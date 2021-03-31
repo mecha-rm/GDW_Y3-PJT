@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnityCountdownTimer : TimerBehaviour
+public class UnityCountdownTimer : TimerObject
 {
     // current time
     public float currentTime = 0.0F;
