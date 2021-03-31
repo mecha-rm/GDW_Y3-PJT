@@ -258,8 +258,14 @@ public class OnlineGameplayManager : MonoBehaviour
         List<RemotePlayer> otherPlayers = new List<RemotePlayer>(players);
         otherPlayers.Remove(localPlayer); // removes the local player.
 
+        // list of data that hasn't been matched.
+        List<RemotePlayer.RemotePlayerData> unmatchedData = new List<RemotePlayer.RemotePlayerData>();
+
         // gets the amount of endpoints
         int epAmount = server.server.GetEndPointCount();
+        int playerCount = otherPlayers.Count; // amount of players
+
+        // TODO: maybe check something with player count?
 
         // goes through each player and provides the data
         for (int i = 0; i < epAmount; i++)
@@ -273,6 +279,8 @@ public class OnlineGameplayManager : MonoBehaviour
             else
                 break;
 
+
+
             // if the player is not equal to null.
             // if (rp.player != null)
             // {
@@ -282,13 +290,55 @@ public class OnlineGameplayManager : MonoBehaviour
             //         continue;
             // }
 
-            // TODO: convert to use identification numbers?
+            // original
+            // this didn't fix the problem, making restore original?
             // gets the proper data index and sends it to the player.
+            // TODO: models keep flickering because the endpoint they match up with keeps getting changed.
             byte[] data = server.server.GetReceiveBufferData(i);
-            rp.ApplyData(data);
+            // rp.ApplyData(data); // original
+
+            // converted data.
+            RemotePlayer.RemotePlayerData rpd = RemotePlayer.BytesToRemotePlayerData(data);
+
+            // if the scale is 0, that means that no data was received.
+            // you know this because under no circumstance should the scale EVER be zero.
+            // this fix didn't stop the models swapping positions constantly.
+            if(rpd.scale == Vector3.zero)
+            {
+                // since no data was received, skip.
+                continue;
+            }
+
+            // checks to see if the data was matched with anything.
+            bool matched = false;
+
+            // goes through list to find which player to apply the data to.
+            for (int j = 0; j < otherPlayers.Count; j++)
+            {
+                // if the id numbers match, apply the data.
+                if (otherPlayers[j].idNumber == rpd.idNumber)
+                {
+                    otherPlayers[j].ApplyData(rpd); // applies data
+                    otherPlayers.RemoveAt(j); // removes matched player
+                    matched = true; // data matched.
+                    break;
+                }
+            }
+
+            // saves data if it did not find a match.
+            if (matched == false)
+                unmatchedData.Add(rpd);
         }
 
-        // TODO: set up item boxes
+        // unmatched data is applied to any remaining objects.
+        if (unmatchedData.Count != 0 && otherPlayers.Count != 0)
+        {
+            // applies data based on placement in list.
+            for (int i = 0; i < otherPlayers.Count && i < unmatchedData.Count; i++)
+            {
+                otherPlayers[i].ApplyData(unmatchedData[i]);
+            }
+        }
     }
 
     // sends the data to the clients
@@ -473,6 +523,15 @@ public class OnlineGameplayManager : MonoBehaviour
 
             // converts data first before finding who it belongs to.
             RemotePlayer.RemotePlayerData rpd = RemotePlayer.BytesToRemotePlayerData(pData);
+
+            // if the scale is 0, that means that no data was received.
+            // you know this because under no circumstance should the scale EVER be zero.
+            // TODO: this fix didn't stop the models swapping positions constantly.
+            if (rpd.scale == Vector3.zero)
+            {
+                // since no data was received, skip.
+                continue;
+            }
 
             // if the id number for the provided data is the same as that for the local player it is ignored. 
             // The list otherPlayers will always be one less than plyrCount due to the local player already being removed.

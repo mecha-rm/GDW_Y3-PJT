@@ -17,13 +17,6 @@ public class RemotePlayer : MonoBehaviour
     }
 
     // FORMAT:
-    // [0 - 10] - P1 Transform (PosX, PosY, P
-
-    /// <summary>
-    /// Format for writing data to the server.
-    /// 
-    /// </summary>
-
     /// <summary>
     /// Format for reading data from the server.
     /// Keep in mind that a float is 4 bytes long.

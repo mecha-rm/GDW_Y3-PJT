@@ -249,6 +249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemCount: 10
+  spawnerEnabled: 1
   spawnTime: 20
   spawnCountdown: 0
   spawnAreaMin: {x: -25, y: -25, z: -25}
@@ -281,14 +282,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 7284661196444069590}
+  itemSpawner: {fileID: 0}
+  timer: {fileID: 0}
   isMaster: 1
   server: {fileID: 5078838804194682775}
   client: {fileID: 7616655281009944988}
   players: []
   serverEndpoints: 1
+  blocking: 1
+  runHostOnStart: 0
   dataComm: 1
-  serverBufferSize: 512
-  clientBufferSize: 512
+  serverBufferSize: 1024
+  clientBufferSize: 1024
 --- !u!114 &5078838804194682775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d33d9c602c6f4249bcfd552b53cb4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blocking: 1
   runOnStart: 0
   printMessages: 1
 --- !u!114 &7616655281009944988
@@ -315,5 +321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9f7f1ceb0a3794888461bf90f846bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blocking: 1
   runOnStart: 0
   printMessages: 1
