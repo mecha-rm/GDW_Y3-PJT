@@ -261,23 +261,27 @@ public class OnlineGameplayManager : MonoBehaviour
         // list of data that hasn't been matched.
         List<RemotePlayer.RemotePlayerData> unmatchedData = new List<RemotePlayer.RemotePlayerData>();
 
+        // the list of found id values.
+        List<int> foundIds = new List<int>();
+
         // gets the amount of endpoints
         int epAmount = server.server.GetEndPointCount();
-        int playerCount = otherPlayers.Count; // amount of players
+        // int playerCount = otherPlayers.Count; // amount of players
+        int playerCount = gameManager.playerCount; // amount of players
 
         // TODO: maybe check something with player count?
 
-        // goes through each player and provides the data
+        // goes through each endpoint to get the data. There is a max of 3.
         for (int i = 0; i < epAmount; i++)
         {
             // remote player object.
-            RemotePlayer rp;
-
-            // bounds check
-            if (i < otherPlayers.Count)
-                rp = otherPlayers[i];
-            else
-                break;
+            // RemotePlayer rp;
+            // 
+            // // bounds check for getting other player
+            // if (i < otherPlayers.Count)
+            //     rp = otherPlayers[i];
+            // else
+            //     break;
 
 
 
@@ -309,6 +313,13 @@ public class OnlineGameplayManager : MonoBehaviour
                 continue;
             }
 
+            // if the id exists in the list, then it's that data has already been used.
+            // as such, the data should be ignored.
+            if(foundIds.Contains(rpd.idNumber))
+            {
+                continue;
+            }
+
             // checks to see if the data was matched with anything.
             bool matched = false;
 
@@ -321,6 +332,9 @@ public class OnlineGameplayManager : MonoBehaviour
                     otherPlayers[j].ApplyData(rpd); // applies data
                     otherPlayers.RemoveAt(j); // removes matched player
                     matched = true; // data matched.
+
+                    // adds the id to the list so that you know the data hasn't been set twice.
+                    foundIds.Add(rpd.idNumber);
                     break;
                 }
             }
@@ -334,10 +348,24 @@ public class OnlineGameplayManager : MonoBehaviour
         if (unmatchedData.Count != 0 && otherPlayers.Count != 0)
         {
             // applies data based on placement in list.
-            for (int i = 0; i < otherPlayers.Count && i < unmatchedData.Count; i++)
+            do
             {
-                otherPlayers[i].ApplyData(unmatchedData[i]);
+                // Debug.Log("In Unmatched Data");
+
+                // this should match the id number, meaning that it shouldn't be matched here ever again.
+                otherPlayers[0].ApplyData(unmatchedData[0]);
+                unmatchedData.RemoveAt(0);
+                otherPlayers.RemoveAt(0);
             }
+            while (unmatchedData.Count != 0 && otherPlayers.Count != 0);
+
+            // // applies data based on placement in list.
+            // for (int i = 0; i < otherPlayers.Count && i < unmatchedData.Count; i++)
+            // {
+            //     // this should match the id number, meaning that it shouldn't be matched here ever again.
+            //     otherPlayers[i].ApplyData(unmatchedData[i]);
+            //     unmatchedData.RemoveAt(i);
+            // }
         }
     }
 
@@ -474,7 +502,8 @@ public class OnlineGameplayManager : MonoBehaviour
         // list of unmatched data. This should always be of size 1 since the controlled player getsi gnored..
         List<RemotePlayer.RemotePlayerData> unmatchedData = new List<RemotePlayer.RemotePlayerData>();
 
-        // otherPlayers.Remove(localPlayer); // removes local player
+        // the list of found id values.
+        List<int> foundIds = new List<int>();
 
         // values
         float time = -1.0F;
@@ -533,6 +562,13 @@ public class OnlineGameplayManager : MonoBehaviour
                 continue;
             }
 
+            // if the id exists in the list, then it's that data has already been used.
+            // as such, the data should be ignored.
+            if (foundIds.Contains(rpd.idNumber))
+            {
+                continue;
+            }
+
             // if the id number for the provided data is the same as that for the local player it is ignored. 
             // The list otherPlayers will always be one less than plyrCount due to the local player already being removed.
             if (rpd.idNumber == localPlayer.idNumber)
@@ -551,6 +587,10 @@ public class OnlineGameplayManager : MonoBehaviour
                     otherPlayers[j].ApplyData(rpd); // applies data
                     otherPlayers.RemoveAt(j); // removes matched player
                     matched = true; // data matched.
+
+                    // adds the id to the list so that you know the data hasn't been set twice.
+                    foundIds.Add(rpd.idNumber);
+
                     break; 
                 }
             }
@@ -570,10 +610,20 @@ public class OnlineGameplayManager : MonoBehaviour
         if(unmatchedData.Count != 0 && otherPlayers.Count != 0)
         {
             // applies data based on placement in list.
-            for(int i = 0; i < otherPlayers.Count && i < unmatchedData.Count; i++)
+            do
             {
-                otherPlayers[i].ApplyData(unmatchedData[i]);
+                // this should match the id number, meaning that it shouldn't be matched here ever again.
+                otherPlayers[0].ApplyData(unmatchedData[0]);
+                unmatchedData.RemoveAt(0);
+                otherPlayers.RemoveAt(0);
             }
+            while (unmatchedData.Count != 0 && otherPlayers.Count != 0);
+
+            // // applies data based on placement in list.
+            // for(int i = 0; i < otherPlayers.Count && i < unmatchedData.Count; i++)
+            // {
+            //     otherPlayers[i].ApplyData(unmatchedData[i]);
+            // }
         }
 
         // Item Box Data

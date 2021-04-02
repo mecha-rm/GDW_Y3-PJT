@@ -36,6 +36,9 @@ public class RemotePlayer : MonoBehaviour
     // id numbers should be random, and only be made positive.
     public int idNumber = -1;
 
+    // randomize the id number on start.
+    public bool randomizeIdOnStart = true;
+
     // size of data for sending player information over the internet.
     public const int DATA_SIZE = 48;
 
@@ -46,9 +49,15 @@ public class RemotePlayer : MonoBehaviour
         if (player == null)
             GetComponent<PlayerObject>();
 
-        // randomizes the id number for the remote player.
-        if (idNumber < 0)
-            idNumber = UnityEngine.Random.Range(0, int.MaxValue);
+        // randomizes the id number for the remote player that goes from 1 to the max value.
+        if (randomizeIdOnStart)
+            RandomizeIdNumber();
+    }
+
+    // randomizes the ID number.
+    public void RandomizeIdNumber()
+    {
+        idNumber = UnityEngine.Random.Range(1, int.MaxValue);
     }
 
     // gets the data size.
