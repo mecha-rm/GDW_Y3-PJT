@@ -332,8 +332,43 @@ public class PlayerObject : MonoBehaviour
             if(cam != null)
                 playerCamera.cameraObject.targetDisplay = newNumber;
         }
-            
     }
+
+    // positions the player icon using player spaces based on player number.
+    public void ParentIconToPlayerSpace()
+    {
+        // no player icon set.
+        if (playerIcon == null)
+            return;
+
+        // space object.
+        GameObject pSpace = null;
+
+        switch(playerNumber)
+        {
+            case 0:
+            case 1: // p1 space
+                pSpace = GameObject.Find("Player 1 Space");
+                break;
+
+            case 2: // p2 space
+                pSpace = GameObject.Find("Player 2 Space");
+                break;
+
+            case 3: // p3 space
+                pSpace = GameObject.Find("Player 3 Space");
+                break;
+
+            case 4: // p4 space
+                pSpace = GameObject.Find("Player 4 Space");
+                break;
+        }
+
+        // sets parent.
+        if (playerIcon != null && pSpace != null)
+            playerIcon.transform.parent = pSpace.transform;
+    }
+
 
     // makes the provided camera the follower camera.
     // this does NOT change the target display.

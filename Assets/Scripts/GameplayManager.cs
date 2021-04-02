@@ -159,7 +159,9 @@ public class GameplayManager : MonoBehaviour
         PlayerObject px = newPlayer.GetComponent<PlayerObject>();
         number = Mathf.Clamp(number, 0, 4);
 
-        px.playerNumber = number;
+        px.SetPlayerNumber(number);
+        px.ParentIconToPlayerSpace();
+        // px.playerNumber = number;
 
         // if the number is greater than 0, set the target display to it.
         if (number > 0 && !useMainCamera)

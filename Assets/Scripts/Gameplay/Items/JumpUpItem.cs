@@ -9,6 +9,7 @@ public class JumpUpItem : HeldItem
     // the base speed and the speed multiplayer
     private float baseJump = 1.0F;
     private float jumpMult = 2.0F;
+
     GameObject itemIcon;
     string itemname = "jumpup";
 

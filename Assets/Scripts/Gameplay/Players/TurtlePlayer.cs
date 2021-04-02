@@ -45,20 +45,20 @@ public class TurtlePlayer : PlayerObject
             playerScoreText = playerIcon.GetComponentInChildren<Text>();
         }
 
-        //icons
-        GameObject parentObject = GameObject.Find("Players");
-        int childCount = parentObject.transform.childCount;
+        ////icons
+        //GameObject parentObject = GameObject.Find("Players");
+        //int childCount = parentObject.transform.childCount;
 
-        for (int index = 0; index < childCount; index++)
-        {
-            GameObject childObject = parentObject.transform.GetChild(index).gameObject;
-            if (childObject.name == playername)
-            {
-                childObject.SetActive(true);
-                playerIcon = childObject;
-            }
+        //for (int index = 0; index < childCount; index++)
+        //{
+        //    GameObject childObject = parentObject.transform.GetChild(index).gameObject;
+        //    if (childObject.name == playername)
+        //    {
+        //        childObject.SetActive(true);
+        //        playerIcon = childObject;
+        //    }
         
-        }
+        //}
     }
 
     // Update is called once per frame

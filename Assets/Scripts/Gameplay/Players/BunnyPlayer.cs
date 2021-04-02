@@ -46,19 +46,19 @@ public class BunnyPlayer : PlayerObject
         }
 
 
-        GameObject parentObject = GameObject.Find("Players");
-        int childCount = parentObject.transform.childCount;
+        //GameObject parentObject = GameObject.Find("Players");
+        //int childCount = parentObject.transform.childCount;
 
-        for (int index = 0; index < childCount; index++)
-        {
-            GameObject childObject = parentObject.transform.GetChild(index).gameObject;
-            if (childObject.name == playername)
-            {
-                childObject.SetActive(true);
-                playerIcon = childObject;
-            }
+        //for (int index = 0; index < childCount; index++)
+        //{
+        //    GameObject childObject = parentObject.transform.GetChild(index).gameObject;
+        //    if (childObject.name == playername)
+        //    {
+        //        childObject.SetActive(true);
+        //        playerIcon = childObject;
+        //    }
   
-        }
+        //}
 
     }
 

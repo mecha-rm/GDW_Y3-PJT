@@ -7,6 +7,8 @@ using System.Net.Sockets;
 // the ip encryptor and decryptor
 public class IPCryptor : MonoBehaviour
 {
+    // TODO: the array does not always get the right value due to formatting.
+
     // gets the system IP address.
     public static string GetSystemIPAddress()
     {
