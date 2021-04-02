@@ -5,6 +5,9 @@ using UnityEngine;
 public class TurtlePlayer : PlayerObject
 {
     // Start is called before the first frame update
+    GameObject playerIcon;
+    string playername = "turtlebox";
+
     void Start()
     {
         base.Start();
@@ -28,6 +31,21 @@ public class TurtlePlayer : PlayerObject
         {
             // Destroy(sfx_Idle.clip);
             sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_TURTLE_DEATH");
+        }
+
+        //icons
+        GameObject parentObject = GameObject.Find("Players");
+        int childCount = parentObject.transform.childCount;
+
+        for (int index = 0; index < childCount; index++)
+        {
+            GameObject childObject = parentObject.transform.GetChild(index).gameObject;
+            if (childObject.name == playername)
+            {
+                childObject.SetActive(true);
+                playerIcon = childObject;
+            }
+        
         }
     }
 

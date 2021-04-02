@@ -6,6 +6,9 @@ public class CatPlayer : PlayerObject
 {
     // Start is called before the first frame update
 
+    GameObject playerIcon;
+    string playername = "catbox";
+
     void Start()
     {
         base.Start();
@@ -32,6 +35,22 @@ public class CatPlayer : PlayerObject
         knockbackMult = 1.0F;
         jumpMult = 1.0F;
         defenseMult = 1.0F;
+
+        //icons
+        GameObject parentObject = GameObject.Find("Players");
+        int childCount = parentObject.transform.childCount;
+
+        for (int index = 0; index < childCount; index++)
+        {
+            GameObject childObject = parentObject.transform.GetChild(index).gameObject;
+            if (childObject.name == playername)
+            {
+                childObject.SetActive(true);
+                playerIcon = childObject;
+            }
+ 
+        }
+
     }
 
     // Update is called once per frame

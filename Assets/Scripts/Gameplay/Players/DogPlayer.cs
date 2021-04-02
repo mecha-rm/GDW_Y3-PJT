@@ -5,6 +5,9 @@ using UnityEngine;
 public class DogPlayer : PlayerObject
 {
     // Start is called before the first frame update
+    GameObject playerIcon;
+    string playername = "Dogbox";
+
     void Start()
     {
         base.Start();
@@ -20,6 +23,21 @@ public class DogPlayer : PlayerObject
             // Destroy(sfx_Idle.clip);
             sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_DOG_DEATH");
         }
+        //icons
+        GameObject parentObject = GameObject.Find("Players");
+        int childCount = parentObject.transform.childCount;
+
+        for (int index = 0; index < childCount; index++)
+        {
+            GameObject childObject = parentObject.transform.GetChild(index).gameObject;
+            if (childObject.name == playername)
+            {
+                childObject.SetActive(true);
+                playerIcon = childObject;
+            }
+      
+        }
+
     }
 
     // Update is called once per frame

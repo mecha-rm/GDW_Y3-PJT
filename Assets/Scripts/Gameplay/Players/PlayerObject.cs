@@ -87,6 +87,9 @@ public class PlayerObject : MonoBehaviour
 
     // public AudioSource sfx_FlagLoss = null;
 
+    // item icon to be activated upon being applied.
+    protected GameObject playerIcon = null;
+
     // Start is called before the first frame update
     protected void Start()
     {
