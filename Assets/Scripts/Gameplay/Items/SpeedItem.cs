@@ -7,11 +7,28 @@ public class SpeedItem : HeldItem
     // the base speed and the speed multiplayer
     private float baseSpeed = 1.0F;
     private float speedMult = 2.28F;
+    GameObject itemIcon;
+    string itemname = "speedup";
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject parentObject = GameObject.Find("Item");
+        int childCount = parentObject.transform.childCount;
+
+        for (int index  = 0; index < childCount; index++)
+        {
+            GameObject childObject = parentObject.transform.GetChild(index).gameObject;
+            if (childObject.name == itemname)
+            {
+                childObject.SetActive(true);
+                itemIcon = childObject;
+            }
+            else
+            {
+                childObject.SetActive(false);
+            }
+        }
     }
 
     // apply the effect to the game object
@@ -25,6 +42,11 @@ public class SpeedItem : HeldItem
     protected override void RemoveEffect()
     {
         // restores base speed.
+        if (itemIcon != null)
+        {
+        itemIcon.SetActive(false);
+        }
+
         activator.speedMult = baseSpeed;
     }
 
