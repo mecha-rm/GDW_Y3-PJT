@@ -23,11 +23,25 @@ public class IPCryptor : MonoBehaviour
     }
 
     // generates a system ip address.
-    public static IPAddress GenerateSystemIPAddress()
+    public static IPAddress GenerateSystemIPAddressObject()
     {
         IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
         IPAddress ip = host.AddressList[1]; // get IP address from list
         return ip;
+    }
+
+
+    // ENCRYPTION
+    // encrypts the system ip address.
+    public static string EncryptSystemIP()
+    {
+        return EncryptIP(GetSystemIPAddress());
+    }
+
+    // encrpyts the ip address.
+    public static string EncryptIP(IPAddress ip)
+    {
+        return EncryptIP(ip.ToString());
     }
 
     // encrypts the ip address to create a room code.
@@ -38,6 +52,19 @@ public class IPCryptor : MonoBehaviour
         // TODO: encrypt ip address
 
         return ipE;
+    }
+
+
+    // DECRYPTION
+    // decrpyts the ip address.
+    public static IPAddress DecryptIPToObject(string ipE)
+    {
+        // decrypts the IP address.
+        string ipStr = DecryptIP(ipE);
+        IPAddress ipObject = IPAddress.Parse(ipStr);
+
+        // returns ip object.
+        return ipObject;
     }
 
     // decrypts a room to create a room code.

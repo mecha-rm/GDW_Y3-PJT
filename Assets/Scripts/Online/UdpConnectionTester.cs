@@ -27,6 +27,13 @@ public class UdpConnectionTester : MonoBehaviour
         onlineManager.isMaster = value;
     }
 
+    // sets the ip address
+    public void ApplySystemIPAddress()
+    {
+        // applies system ip
+        ipAddressInput.text = IPCryptor.GetSystemIPAddress();
+    }
+
     // runs the host
     public void RunHost()
     {

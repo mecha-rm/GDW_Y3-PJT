@@ -495,6 +495,9 @@ public class PlayerObject : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        // sets 'hasChanged' to false to check if the object's transform has been updated later.
+        transform.hasChanged = false;
+
         // TODO: take this out; it's unnecessary for the final game, since it will always be momentum based to a point.
         if (controllablePlayer)
         {
