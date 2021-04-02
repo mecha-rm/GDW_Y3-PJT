@@ -19,6 +19,9 @@ public abstract class HeldItem : MonoBehaviour
     // the player that activated the effect.
     protected PlayerObject activator = null;
 
+    // item icon to be activated upon being applied.
+    protected GameObject itemIcon = null;
+
     // Start is called before the first frame update
     void Start()
     {
