@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+
+// cat
 public class CatPlayer : PlayerObject
 {
     // Start is called before the first frame update
@@ -33,6 +36,16 @@ public class CatPlayer : PlayerObject
         knockbackMult = 1.0F;
         jumpMult = 1.0F;
         defenseMult = 1.0F;
+
+        // instantiates the game object.
+        playerIconPrefab = "Prefabs/UI/Cat Box";
+        playerIcon = Instantiate(Resources.Load(playerIconPrefab)) as GameObject;
+
+        // gets text object.
+        if (playerIcon != null)
+        {
+            playerScoreText = playerIcon.GetComponentInChildren<Text>();
+        }
 
         //icons
         GameObject parentObject = GameObject.Find("Players");

@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+
+// bunny
 public class BunnyPlayer : PlayerObject
 {
     string playername = "bunnybox";
@@ -31,6 +34,17 @@ public class BunnyPlayer : PlayerObject
             // Destroy(sfx_Idle.clip);
             sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_BUNNY_DEATH");
         }
+
+        // instantiates the game object.
+        playerIconPrefab = "Prefabs/UI/Bunny Box";
+        playerIcon = Instantiate(Resources.Load(playerIconPrefab)) as GameObject;
+        
+        // gets text object.
+        if(playerIcon != null)
+        {
+            playerScoreText = playerIcon.GetComponentInChildren<Text>();
+        }
+
 
         GameObject parentObject = GameObject.Find("Players");
         int childCount = parentObject.transform.childCount;

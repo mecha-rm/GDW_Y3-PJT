@@ -90,6 +90,10 @@ public class PlayerObject : MonoBehaviour
     // item icon to be activated upon being applied.
     protected GameObject playerIcon = null;
 
+    // the prefab for the player icon
+    protected string playerIconPrefab = "";
+
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -110,6 +114,7 @@ public class PlayerObject : MonoBehaviour
             stateMachine = gameObject.GetComponent<StateMachine>();
 
         // state machine hasn't been set.
+        // TODO: take this out.
         if (playerScoreText == null)
         {
 

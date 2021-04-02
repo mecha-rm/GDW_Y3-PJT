@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+
+// turtle
 public class TurtlePlayer : PlayerObject
 {
     // Start is called before the first frame update
@@ -30,6 +33,16 @@ public class TurtlePlayer : PlayerObject
         {
             // Destroy(sfx_Idle.clip);
             sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_TURTLE_DEATH");
+        }
+
+        // instantiates the game object.
+        playerIconPrefab = "Prefabs/UI/Turtle Box";
+        playerIcon = Instantiate(Resources.Load(playerIconPrefab)) as GameObject;
+
+        // gets text object.
+        if (playerIcon != null)
+        {
+            playerScoreText = playerIcon.GetComponentInChildren<Text>();
         }
 
         //icons

@@ -387,6 +387,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 6083646375538522389}
+  strStart: 'Time: '
+  strEnd: 
 --- !u!114 &6083646375538522472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,6 +429,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6083646374467275352}
     m_Modifications:
+    - target: {fileID: 8563200559616699960, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: Bunny Icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200559702414437, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: TimeTag
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200559886255008, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: Dog Icon
+      objectReference: {fileID: 0}
     - target: {fileID: 8563200560339494292, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
       propertyPath: m_Name
       value: HUD
@@ -474,6 +488,34 @@ PrefabInstance:
     - target: {fileID: 8563200560339494293, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200560426084542, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: Turtle Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200560426084542, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200560458914807, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: Turtle Icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200560888295170, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: Bunny Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200561311608532, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: Dog Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200561479748523, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: Cat Icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8563200561559843402, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}
+      propertyPath: m_Name
+      value: Cat Box
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90eb9329903e89a4ebddfecb87b5b2f8, type: 3}

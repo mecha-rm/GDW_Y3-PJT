@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+
+// dog
 public class DogPlayer : PlayerObject
 {
     // Start is called before the first frame update
@@ -22,6 +25,17 @@ public class DogPlayer : PlayerObject
             // Destroy(sfx_Idle.clip);
             sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_DOG_DEATH");
         }
+
+        // instantiates the game object.
+        playerIconPrefab = "Prefabs/UI/Dog Box";
+        playerIcon = Instantiate(Resources.Load(playerIconPrefab)) as GameObject;
+
+        // gets text object.
+        if (playerIcon != null)
+        {
+            playerScoreText = playerIcon.GetComponentInChildren<Text>();
+        }
+
         //icons
         GameObject parentObject = GameObject.Find("Players");
         int childCount = parentObject.transform.childCount;
