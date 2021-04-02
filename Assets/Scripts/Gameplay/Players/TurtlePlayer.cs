@@ -5,7 +5,6 @@ using UnityEngine;
 public class TurtlePlayer : PlayerObject
 {
     // Start is called before the first frame update
-    GameObject playerIcon;
     string playername = "turtlebox";
 
     void Start()

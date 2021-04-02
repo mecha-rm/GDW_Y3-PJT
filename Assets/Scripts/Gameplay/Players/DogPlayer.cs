@@ -5,7 +5,6 @@ using UnityEngine;
 public class DogPlayer : PlayerObject
 {
     // Start is called before the first frame update
-    GameObject playerIcon;
     string playername = "Dogbox";
 
     void Start()

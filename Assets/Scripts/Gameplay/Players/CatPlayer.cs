@@ -5,8 +5,6 @@ using UnityEngine;
 public class CatPlayer : PlayerObject
 {
     // Start is called before the first frame update
-
-    GameObject playerIcon;
     string playername = "catbox";
 
     void Start()

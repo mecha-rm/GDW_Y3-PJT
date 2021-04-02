@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BunnyPlayer : PlayerObject
 {
-    GameObject playerIcon;
     string playername = "bunnybox";
 
     // Start is called before the first frame update
