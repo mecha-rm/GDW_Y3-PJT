@@ -12,12 +12,6 @@ namespace NetworkLibrary
     // client sync
     class TcpClientSyncX
     {
-        // enum for mode
-        public enum mode { both, send, receive };
-
-        // communication mode
-        public mode commMode = mode.send;
-
         // client variables
         private byte[] outBuffer; // sending data to server
         private byte[] inBuffer; // getting data from a server
@@ -25,8 +19,10 @@ namespace NetworkLibrary
         // default buffer size
         private int defaultBufferSize = 512;
 
+        // ip address
         private IPAddress ip;
 
+        // remote
         private IPEndPoint remote = null;
         private Socket client_socket = null;
 
@@ -49,6 +45,10 @@ namespace NetworkLibrary
         // timeout variables
         private int receiveTimeout = 0, sendTimeout = 0;
 
+        // delay on acceptions in microseconds
+        // a -1 value indicates to wait indefinitely (same as called Accept() like nomal).
+        public int connectTimeout = 1000000; // 1 second
+
         // checks to see if the server is running
         private bool running = false;
 
@@ -56,18 +56,6 @@ namespace NetworkLibrary
         public TcpClientSyncX()
         {
 
-        }
-
-        // gets the communication mode
-        public mode GetCommunicationMode()
-        {
-            return commMode;
-        }
-
-        // sets the communication mode
-        public void SetCommunicationMode(mode newMode)
-        {
-            commMode = newMode;
         }
 
         // get the default buffer size
@@ -164,6 +152,32 @@ namespace NetworkLibrary
 
             inBuffer = data;
         }
+
+        // get number of endpoints available (in MICROSECONDS)
+        public int GetConnectTimeout()
+        {
+            return connectTimeout;
+        }
+
+        // sets the accept timeout (in MICROSECONDS)
+        public void SetConnectTimeout(int microseconds)
+        {
+            connectTimeout = microseconds;
+        }
+
+        // gets the accept timeout in seconds
+        public int GetConnectTimeoutInSeconds()
+        {
+            // 1 second = 1,000,000 microseconds
+            return connectTimeout / 1000000;
+        }
+
+        // sets the accept timeout in seconds
+        public void SetConnectTimeoutInSeconds(int seconds)
+        {
+            connectTimeout = seconds * 1000000;
+        }
+
 
         // gets the ip address as a string.
         public string GetIPAddress()
@@ -356,20 +370,11 @@ namespace NetworkLibrary
             {
                 // TODO: use Socket.available to check for data before trying to call for more.
 
-                // sends the data
-                if (commMode == mode.both || commMode == mode.send)
-                {
-                    client_socket.Send(outBuffer);
-                }
+                // TODO: put in seperate try-catch
+                client_socket.Send(outBuffer);
 
-                // receives the data
-                if (commMode == mode.both || commMode == mode.receive)
-                {
-                    int rec = client_socket.Receive(inBuffer);
-
-                    // Console.WriteLine("Received: {0} from Server: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remote.ToString());
-                }
-
+                
+                int rec = client_socket.Receive(inBuffer);
             }
             catch (ArgumentNullException anexc)
             {

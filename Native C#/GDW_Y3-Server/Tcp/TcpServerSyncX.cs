@@ -56,8 +56,9 @@ namespace NetworkLibrary
         // these error out if set to 0 by default when there is no connection being made.
         private int receiveTimeout = 0, sendTimeout = 0;
 
-        // delay on acceptions in milliseconds
-        public int acceptDelay = 1000000; // 1 second
+        // delay on acceptions in microseconds
+        // a -1 value indicates to wait indefinitely (same as called Accept() like nomal).
+        public int acceptTimeout = 1000000; // 1 second
 
         // checks to see if the server is running
         private bool running = false;
@@ -153,7 +154,33 @@ namespace NetworkLibrary
 
 
         // ADDERS AND REMOVERS FOR CLIENTS
-        // get number of endpoints available.
+        // get number of endpoints available (in MICROSECONDS)
+        public int GetAcceptTimeout()
+        {
+            return acceptTimeout;
+        }
+
+        // sets the accept timeout (in MICROSECONDS)
+        public void SetAcceptTimeout(int microseconds)
+        {
+            acceptTimeout = microseconds;
+        }
+
+        // gets the accept timeout in seconds
+        public int GetAcceptTimeoutInSeconds()
+        {
+            // 1 second = 1,000,000 microseconds
+            return acceptTimeout / 1000000;
+        }
+
+        // sets the accept timeout in seconds
+        public void SetAcceptTimeoutInSeconds(int seconds)
+        {
+            acceptTimeout = seconds * 1000000;
+        }
+
+
+        // gets the endpoint count.
         public int GetEndPointCount()
         {
             return remoteClients.Count;
@@ -188,30 +215,56 @@ namespace NetworkLibrary
 
             try
             {
-                // objects
-                Socket cs = server_socket.Accept();
-                IPEndPoint ep = (IPEndPoint)cs.RemoteEndPoint;
+                List<Socket> sockets = new List<Socket>();
+                Socket newSocket;
+                IPEndPoint endPoint;
                 byte[] buffer;
 
-                // client receive and send timeouts
-                cs.ReceiveTimeout = receiveTimeout;
-                cs.SendTimeout = sendTimeout;
+                // socket list.
+                // sets to be blocking so that Accept can function.
+                server_socket.Blocking = true;
+                sockets.Add(server_socket);
 
+                // only sockets with connection requests remain.
+                // delay
+                Socket.Select(sockets, null, null, acceptTimeout);
+
+                // nothing to connect to.
+                if(sockets.Count == 0)
+                {
+                    Console.WriteLine("No client connected in time. Endpoint creation failure.");
+                    return null;
+                }
+
+                // accepts the request.
+                newSocket = sockets[0].Accept();
+                newSocket.Blocking = blockingSockets;
+                endPoint = (IPEndPoint)newSocket.RemoteEndPoint;                
+
+                // returning server socket settings.
+                server_socket = sockets[0];
+                server_socket.Blocking = blockingSockets;
+
+                // client socket settings
                 // non-blocking if false (recommended)
-                cs.Blocking = blockingSockets;
+                newSocket.ReceiveTimeout = receiveTimeout;
+                newSocket.SendTimeout = sendTimeout;
+                newSocket.Blocking = blockingSockets;
 
-
+                // creating the buffer
                 // buffer size is negative
                 if (bufferSize < 0)
                     bufferSize = defaultBufferSize;
 
-                // buffer
+                // create buffer data
                 buffer = new byte[bufferSize];
 
                 // adds content to lists
-                client_sockets.Add(cs);
-                remoteClients.Add(ep);
+                client_sockets.Add(newSocket);
+                remoteClients.Add(endPoint);
                 inBuffers.Add(buffer);
+
+                Console.WriteLine("Endpoint Created Succesfully");
 
                 // returns the buffer
                 return buffer;
@@ -233,103 +286,6 @@ namespace NetworkLibrary
             return null;
         }
 
-        // adds a remote client with a buffer
-        // this returns the buffer that was just added
-        // public byte[] AddEndPoint(int bufferSize, byte[] buffer)
-        // {
-        //     // server socket not set.
-        //     if (server_socket == null)
-        //         Console.WriteLine("Server has not been run.");
-        // 
-        //     Socket cs = server_socket.Accept();
-        //     IPEndPoint ep = (IPEndPoint)cs.RemoteEndPoint;
-        // 
-        //     // buffer size is negative
-        //     if (bufferSize < 0)
-        //         bufferSize = defaultBufferSize;
-        // 
-        //     // buffer
-        //     buffer = new byte[bufferSize];
-        // 
-        //     // adds content to lists
-        //     client_sockets.Add(cs);
-        //     remoteClients.Add(ep);
-        //     inBuffers.Add(buffer);
-        // 
-        //     // returns the buffer
-        //     return buffer;
-        // 
-        // }
-
-        // connects endpoint
-        public void ConnectEndpoint()
-        {
-            // TODO: fix problem here.
-            Socket cs = server_socket.Accept();
-            IPEndPoint ep = (IPEndPoint)cs.RemoteEndPoint;
-            byte[] buffer = new byte[defaultBufferSize];
-
-            // adds to lists
-            client_sockets.Add(cs);
-            remoteClients.Add(ep);
-            inBuffers.Add(buffer);
-
-            // calls connect
-            ConnectEndpoint(client_sockets.Count - 1);
-        }
-        
-
-        // connects the endpoint (must already be in list)
-        public void ConnectEndpoint(int index)
-        {
-            // index out of bounds
-            if (index < 0 || index >= client_sockets.Count)
-                return;
-
-            // connect the endpoint.
-            // ConnectEndpoint(client_sockets[index]);
-
-            // Socket.Select(client_sockets, null, null, acceptDelay);
-            List<Socket> sockets = new List<Socket>();
-            IPEndPoint endPoint;
-
-            // socket list.
-            sockets.Add(client_sockets[index]);
-
-            try
-            {
-                // only sockets with connection requests remain.
-                // delay
-                Socket.Select(sockets, null, null, acceptDelay);
-
-                // calls accept.
-                if (sockets.Count != 0)
-                {
-                    Socket newSocket = sockets[0].Accept();
-                    endPoint = (IPEndPoint)sockets[0].RemoteEndPoint;
-
-                    // sets socket and endpoint.
-                    client_sockets[index] = newSocket;
-                    remoteClients[index] = endPoint;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            catch (ArgumentNullException ane) // null
-            {
-                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
-            }
-            catch (SocketException se) // socket
-            {
-                Console.WriteLine("SocketException: {0}", se.ToString());
-            }
-            catch (Exception e) // generic
-            {
-                Console.WriteLine("SocketException: {0}", e.ToString());
-            }
-        }
 
         // removes a remote client and returns its buffer.
         public byte[] RemoveEndPoint(int index)
@@ -626,15 +582,10 @@ namespace NetworkLibrary
                     IPEndPoint ep = remoteClients[i];
                     byte[] buffer = inBuffers[i];
 
-                    // if the endpoint isn't connected.
+                    // if the endpoint isn't connected, don't do anything.
                     if (!cs.Connected)
                     {
-                        // tries to connect endpoint.
-                        ConnectEndpoint(i);
-
-                        // endpoint still not connected.
-                        if (!cs.Connected)
-                            continue;
+                        Console.WriteLine("Endpoint is not connected.");
                     }
 
                     // if there's no data to get.

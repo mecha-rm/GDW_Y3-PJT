@@ -169,6 +169,56 @@ namespace GDW_Y3_Client
             client.ShutdownClient();
         }
 
+        // tcp client x test (with non-blocking)
+        public void TcpClientXTest()
+        {
+            NetworkLibrary.TcpClientSyncX client = new NetworkLibrary.TcpClientSyncX();
+
+            // most recent string provided.
+            string recentString = "";
+
+            // if 'true', repeat messages are printed.
+            bool repeatMessages = true;
+
+            // NOTE: the client sending data only does not work
+            // I don't know if I'll bother to fix it though.
+            // Also, setting up delays or non-blocking sockets before the client is running causes it to crash.
+            client.SetBlockingSockets(false);
+            // client.connectTimeout = 5000000;
+            client.SetConnectTimeoutInSeconds(5);
+
+            // runs the client
+            client.RunClient();
+
+            // while the clent is running
+            while (client.IsRunning())
+            {
+                Console.WriteLine("Enter Message: ");
+                string str = Console.ReadLine();
+
+                byte[] data = Encoding.ASCII.GetBytes(str);
+                client.SetSendBufferData(data);
+
+                // send and receive data
+                client.Update();
+
+                data = client.GetReceiveBufferData();
+
+                // receives data
+                string receivedString = Encoding.ASCII.GetString(data, 0, data.Length);
+
+                if (data.Length > 0 && (receivedString != recentString || repeatMessages))
+                {
+                    recentString = receivedString;
+                    Console.WriteLine(receivedString);
+                }
+
+                // Console.WriteLine(Encoding.ASCII.GetString(data, 0, data.Length));
+            }
+
+            client.ShutdownClient();
+        }
+
         // main function - uncomment if making DLL
         static void Main(string[] args)
         {
@@ -189,6 +239,10 @@ namespace GDW_Y3_Client
 
                 case 3: // tcp server
                     TcpClientAsyncTest(true);
+                    break;
+                
+                case 4: // tcp syncronous server (non-blocking)
+
                     break;
             }
 
