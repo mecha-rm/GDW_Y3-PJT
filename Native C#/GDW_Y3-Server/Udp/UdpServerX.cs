@@ -84,12 +84,6 @@ namespace NetworkLibrary
             defaultBufferSize = newSize;
         }
 
-        // get number of endpoints available.
-        public int GetEndPointCount()
-        {
-            return remoteClients.Count;
-        }
-
         // SEND DATA //
         // returns the buffer size.
         public int GetSendBufferSize()
@@ -151,8 +145,13 @@ namespace NetworkLibrary
                     
             }
         }
-        
+
         // ADDERS AND REMOVERS FOR CLIENTS
+        // get number of endpoints available.
+        public int GetEndPointCount()
+        {
+            return remoteClients.Count;
+        }
 
         // Adding and Removing Clients
         public EndPoint GetEndPoint(int index)

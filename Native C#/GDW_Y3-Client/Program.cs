@@ -173,7 +173,7 @@ namespace GDW_Y3_Client
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 1;
+            int testMode = 2;
 
             switch (testMode)
             {

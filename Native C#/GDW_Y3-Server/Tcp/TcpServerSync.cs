@@ -362,6 +362,7 @@ namespace NetworkLibrary
                 }
 
 
+                // note that send and receive timeouts don't do anything to accept, but false blocking does.
                 // server
                 // sets timeout variables.
                 server_socket.ReceiveTimeout = receiveTimeout;

@@ -116,7 +116,7 @@ namespace GDW_Y3_Server
         {
             NetworkLibrary.UdpServerX serverX = new NetworkLibrary.UdpServerX();
 
-            // ends endpoints
+            // adds endpoints
             for(int i = 0; i < endPoints; i++)
                 serverX.AddEndPoint();
 
@@ -164,6 +164,7 @@ namespace GDW_Y3_Server
             serverX.ShutdownServer();
         }
 
+        // tcp server sync test
         static void TcpServerSyncTest(bool twoWay)
         {
             NetworkLibrary.TcpServerSync server = new NetworkLibrary.TcpServerSync();
@@ -268,11 +269,70 @@ namespace GDW_Y3_Server
             server.ShutdownServer();
         }
 
+        // Tcp X Test
+        static void TcpServerSyncXTest(int endPoints)
+        {
+            NetworkLibrary.TcpServerSyncX serverX = new NetworkLibrary.TcpServerSyncX();
+
+
+            // block the sockets
+            serverX.SetBlockingSockets(false);
+
+            // server must be run first.
+            serverX.RunServer();
+
+            // adds endpoints
+            for (int i = 0; i < endPoints; i++)
+                serverX.AddEndPoint();
+
+
+            // ignore this error
+            serverX.ignoreError10035 = true;
+
+            // runs the serve
+            serverX.RunServer();
+
+            // Console.WriteLine(server.GetIPAddress());
+
+            // while loop for updates
+            while (serverX.IsRunning())
+            {
+                Console.WriteLine("Enter Message: ");
+                string str = Console.ReadLine();
+                byte[] sendData = Encoding.ASCII.GetBytes(str);
+                serverX.SetSendBufferData(sendData);
+
+                serverX.Update();
+
+
+                // server4.SetReceiveTimeout(1);
+                // server4.SetSendTimeout(1);
+
+                byte[] data;
+                int epCount = serverX.GetEndPointCount();
+
+                // goes through each endpoint.
+                for (int i = 0; i < epCount; i++)
+                {
+                    // buffer (X)
+                    data = serverX.GetReceiveBufferData(i);
+
+                    if (data != null && data.Length > 0)
+                        Console.WriteLine("Buffer " + i.ToString() + ": " + Encoding.ASCII.GetString(data, 0, data.Length));
+                }
+
+
+            }
+
+            serverX.ShutdownServer();
+        }
+
+
         // main function - uncomment if making DLL
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 4;
+            int testMode = 6;
 
             switch(testMode)
             {
@@ -296,6 +356,10 @@ namespace GDW_Y3_Server
 
                 case 5:
                     TcpServerAsyncTest(true);
+                    break;
+
+                case 6: // tcp sync X test
+                    TcpServerSyncXTest(1);
                     break;
             }
         }

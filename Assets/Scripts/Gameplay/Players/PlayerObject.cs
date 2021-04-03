@@ -334,6 +334,25 @@ public class PlayerObject : MonoBehaviour
         }
     }
 
+    // loads the player icon
+    public void LoadPlayerIcon(string prefab)
+    {
+        playerIconPrefab = prefab;
+        LoadPlayerIcon();
+    }
+
+    // loads the player icon
+    public void LoadPlayerIcon()
+    {
+        playerIcon = Instantiate(Resources.Load(playerIconPrefab)) as GameObject;
+
+        // gets text object.
+        if (playerIcon != null)
+        {
+            playerScoreText = playerIcon.GetComponentInChildren<Text>();
+        }
+    }
+
     // positions the player icon using player spaces based on player number.
     public void ParentIconToPlayerSpace()
     {

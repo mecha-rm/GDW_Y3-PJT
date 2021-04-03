@@ -12,6 +12,7 @@ public class DogPlayer : PlayerObject
 
     void Start()
     {
+        // call object.
         base.Start();
 
         speedMult = 1.0F;
@@ -26,15 +27,8 @@ public class DogPlayer : PlayerObject
             sfx_Death.clip = (AudioClip)Resources.Load("Audio/Cat/SFX_DOG_DEATH");
         }
 
-        // instantiates the game object.
-        playerIconPrefab = "Prefabs/UI/Dog Box";
-        playerIcon = Instantiate(Resources.Load(playerIconPrefab)) as GameObject;
-
-        // gets text object.
-        if (playerIcon != null)
-        {
-            playerScoreText = playerIcon.GetComponentInChildren<Text>();
-        }
+        // loads the player icon
+        LoadPlayerIcon("Prefabs/UI/Dog Box");
 
         //icons
         //GameObject parentObject = GameObject.Find("Players");
@@ -48,7 +42,7 @@ public class DogPlayer : PlayerObject
         //        childObject.SetActive(true);
         //        playerIcon = childObject;
         //    }
-      
+
         //}
 
     }

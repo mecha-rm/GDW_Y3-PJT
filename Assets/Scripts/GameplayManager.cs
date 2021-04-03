@@ -161,6 +161,7 @@ public class GameplayManager : MonoBehaviour
 
         px.SetPlayerNumber(number);
         px.ParentIconToPlayerSpace();
+
         // px.playerNumber = number;
 
         // if the number is greater than 0, set the target display to it.
