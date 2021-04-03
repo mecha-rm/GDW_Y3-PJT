@@ -282,7 +282,7 @@ namespace GDW_Y3_Server
             // ignore this error
             serverX.ignoreError10035 = true;
             // serverX.acceptTimeout = 5000000;
-            serverX.SetAcceptTimeoutInSeconds(5);
+            serverX.SetAcceptTimeoutInSeconds(25); // 5
 
             // server must be run first.
             serverX.RunServer();

@@ -52,6 +52,9 @@ namespace NetworkLibrary
         // if 'true', an attempt to connect is done when the client is run.
         public bool connectOnRun = true;
 
+        // event reset
+        // private ManualResetEvent resetConnectEvent = new ManualResetEvent(false);
+
         // checks to see if the server is running
         private bool running = false;
 
@@ -129,7 +132,29 @@ namespace NetworkLibrary
         }
 
 
-        // CONNECT
+        // CONNECT FUNCTIONS
+
+        // connect callback
+        // private void ConnectCallback(IAsyncResult ar)
+        // {
+        //     try
+        //     {
+        //         Socket localSocket = (Socket)ar.AsyncState;
+        // 
+        //         // connection has been ended.
+        //         localSocket.EndConnect(ar);
+        // 
+        //         resetConnectEvent.Set();
+        // 
+        //         client_socket = localSocket;
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Console.WriteLine(e.ToString());
+        //     }
+        // }
+
+
         // connects to endpoint (requires 'Run' to be called).
         public bool Connect()
         {
@@ -141,20 +166,28 @@ namespace NetworkLibrary
             }
 
 
+            // connects the tcp socket
+            // client_socket.BeginConnect(remote, new AsyncCallback(ConnectCallback), client_socket);
+            // resetConnectEvent.WaitOne();
+            // 
+            // return false;
+
+            // ORIGINAL
             try
             {
                 // list of sockets.
-                List<Socket> sockets = new List<Socket>();
-                sockets.Add(client_socket);
+                // List<Socket> sockets = new List<Socket>();
+                // sockets.Add(client_socket);
+                // 
+                // // checks for an endpoint to connect to.
+                // client_socket.Blocking = true;
 
-                // checks for an endpoint to connect to.
-                client_socket.Blocking = true;
-
-                client_socket.ReceiveTimeout = receiveTimeout;
-                client_socket.SendTimeout = sendTimeout;
+                // client_socket.ReceiveTimeout = receiveTimeout;
+                // client_socket.SendTimeout = sendTimeout;
+                // Socket.Select(sockets, null, null, connectTimeout);
                 // Socket.Select(sockets, null, null, connectTimeout);
 
-                IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+                // IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
                 // nothing to connect to
                 // if (sockets.Count == 0)
@@ -168,10 +201,11 @@ namespace NetworkLibrary
 
                 // makes connection
                 // sockets[0].Connect(remote); // connect
+                // sockets[0].ConnectAsync(remote);
                 // client_socket.ReceiveTimeout = 5;
-                // client_socket.Connect(remote);
+                client_socket.Connect(remote);
                 // client_socket.ConnectAsync(host.HostName, port);
-                client_socket.Connect(host.HostName, port);
+                // client_socket.Connect(host.HostName, port);
                 // client_socket.ConnectAsync(remote);
                 // client_socket.ConnectAsync(remote);
 
@@ -182,6 +216,9 @@ namespace NetworkLibrary
                     client_socket.Blocking = blockingSockets;
                     return false;
                 }
+
+                // save socket.
+                // client_socket = sockets[0];
 
                 // timeouts
                 client_socket.ReceiveTimeout = receiveTimeout;
