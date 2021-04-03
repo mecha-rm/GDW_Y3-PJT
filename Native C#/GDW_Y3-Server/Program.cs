@@ -272,11 +272,15 @@ namespace GDW_Y3_Server
         // Tcp X Test
         static void TcpServerSyncXTest(int endPoints)
         {
+            // object.
             NetworkLibrary.TcpServerSyncX serverX = new NetworkLibrary.TcpServerSyncX();
-
 
             // block the sockets
             serverX.SetBlockingSockets(false);
+
+
+            // ignore this error
+            serverX.ignoreError10035 = true;
 
             // server must be run first.
             serverX.RunServer();
@@ -284,13 +288,6 @@ namespace GDW_Y3_Server
             // adds endpoints
             for (int i = 0; i < endPoints; i++)
                 serverX.AddEndPoint();
-
-
-            // ignore this error
-            serverX.ignoreError10035 = true;
-
-            // runs the serve
-            serverX.RunServer();
 
             // Console.WriteLine(server.GetIPAddress());
 

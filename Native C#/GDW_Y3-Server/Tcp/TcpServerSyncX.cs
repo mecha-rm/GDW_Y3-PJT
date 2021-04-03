@@ -186,66 +186,85 @@ namespace NetworkLibrary
             if (server_socket == null)
                 Console.WriteLine("Server has not been run.");
 
-            // objects
-            Socket cs = server_socket.Accept();
-            IPEndPoint ep = (IPEndPoint)cs.RemoteEndPoint;
-            byte[] buffer;
+            try
+            {
+                // objects
+                Socket cs = server_socket.Accept();
+                IPEndPoint ep = (IPEndPoint)cs.RemoteEndPoint;
+                byte[] buffer;
 
-            // client receive and send timeouts
-            cs.ReceiveTimeout = receiveTimeout;
-            cs.SendTimeout = sendTimeout;
+                // client receive and send timeouts
+                cs.ReceiveTimeout = receiveTimeout;
+                cs.SendTimeout = sendTimeout;
 
-            // non-blocking if false (recommended)
-            cs.Blocking = blockingSockets;
+                // non-blocking if false (recommended)
+                cs.Blocking = blockingSockets;
 
 
-            // buffer size is negative
-            if (bufferSize < 0)
-                bufferSize = defaultBufferSize;
+                // buffer size is negative
+                if (bufferSize < 0)
+                    bufferSize = defaultBufferSize;
 
-            // buffer
-            buffer = new byte[bufferSize];
+                // buffer
+                buffer = new byte[bufferSize];
 
-            // adds content to lists
-            client_sockets.Add(cs);
-            remoteClients.Add(ep);
-            inBuffers.Add(buffer);
+                // adds content to lists
+                client_sockets.Add(cs);
+                remoteClients.Add(ep);
+                inBuffers.Add(buffer);
 
-            // returns the buffer
-            return buffer;
+                // returns the buffer
+                return buffer;
+            }
+            catch (ArgumentNullException ane) // null
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se) // socket
+            {
+                Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e) // generic
+            {
+                Console.WriteLine("SocketException: {0}", e.ToString());
+            }
+
+            // exception encountered.
+            return null;
         }
 
         // adds a remote client with a buffer
         // this returns the buffer that was just added
-        public byte[] AddEndPoint(int bufferSize, byte[] buffer)
-        {
-            // server socket not set.
-            if (server_socket == null)
-                Console.WriteLine("Server has not been run.");
-
-            Socket cs = server_socket.Accept();
-            IPEndPoint ep = (IPEndPoint)cs.RemoteEndPoint;
-
-            // buffer size is negative
-            if (bufferSize < 0)
-                bufferSize = defaultBufferSize;
-
-            // buffer
-            buffer = new byte[bufferSize];
-
-            // adds content to lists
-            client_sockets.Add(cs);
-            remoteClients.Add(ep);
-            inBuffers.Add(buffer);
-
-            // returns the buffer
-            return buffer;
-
-        }
+        // public byte[] AddEndPoint(int bufferSize, byte[] buffer)
+        // {
+        //     // server socket not set.
+        //     if (server_socket == null)
+        //         Console.WriteLine("Server has not been run.");
+        // 
+        //     Socket cs = server_socket.Accept();
+        //     IPEndPoint ep = (IPEndPoint)cs.RemoteEndPoint;
+        // 
+        //     // buffer size is negative
+        //     if (bufferSize < 0)
+        //         bufferSize = defaultBufferSize;
+        // 
+        //     // buffer
+        //     buffer = new byte[bufferSize];
+        // 
+        //     // adds content to lists
+        //     client_sockets.Add(cs);
+        //     remoteClients.Add(ep);
+        //     inBuffers.Add(buffer);
+        // 
+        //     // returns the buffer
+        //     return buffer;
+        // 
+        // }
 
         // connects endpoint
         public void ConnectEndpoint()
         {
+            // TODO: fix problem here.
             Socket cs = server_socket.Accept();
             IPEndPoint ep = (IPEndPoint)cs.RemoteEndPoint;
             byte[] buffer = new byte[defaultBufferSize];
