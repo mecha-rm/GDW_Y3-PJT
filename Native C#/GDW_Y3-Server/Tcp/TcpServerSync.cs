@@ -437,6 +437,28 @@ namespace NetworkLibrary
 
                 // Console.WriteLine("Received: {0} from Client: {1}", Encoding.ASCII.GetString(inBuffer, 0, rec), remoteClient.ToString());
 
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                // Error: WSAEWOULDBLOCK - 10035
+                // this error is expected if you are using non-blocking sockets.
+                if(!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                    Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                // Console.WriteLine(e.ToString());
+                Console.WriteLine("Exception: {0}", e.ToString());
+            }
+
+
+            // SEND DATA
+            try
+            {
                 // sends the data
                 if (commMode == mode.both || commMode == mode.send)
                 {
@@ -448,6 +470,7 @@ namespace NetworkLibrary
                     //     
                     // if(client_socket != null)
                     //     client_socket.Send(outBuffer);
+
 
                     client_socket.Send(outBuffer);
                 }
@@ -461,7 +484,7 @@ namespace NetworkLibrary
             {
                 // Error: WSAEWOULDBLOCK - 10035
                 // this error is expected if you are using non-blocking sockets.
-                if(!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
+                if (!ignoreError10035 || (ignoreError10035 && se.ErrorCode != 10035))
                     Console.WriteLine("SocketException: {0}", se.ToString());
             }
             catch (Exception e)

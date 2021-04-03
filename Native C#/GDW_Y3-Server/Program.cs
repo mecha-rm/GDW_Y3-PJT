@@ -282,7 +282,7 @@ namespace GDW_Y3_Server
             // ignore this error
             serverX.ignoreError10035 = true;
             // serverX.acceptTimeout = 5000000;
-            serverX.SetAcceptTimeoutInSeconds(10);
+            serverX.SetAcceptTimeoutInSeconds(5);
 
             // server must be run first.
             serverX.RunServer();
@@ -336,12 +336,12 @@ namespace GDW_Y3_Server
             switch(testMode)
             {
                 default:
-                case 0: // server (1 way)
+                case 0: // server (udp 1 way)
                 case 1:
                     UdpServerTest(true);
                     break;
 
-                case 2: // server (4 way)
+                case 2: // server (udp 4 way)
                     UdpServer4Test();
                     break;
 
@@ -349,15 +349,15 @@ namespace GDW_Y3_Server
                     UdpServerXTest(2);
                     break;
 
-                case 4:
+                case 4: // server (tcp synchronous)
                     TcpServerSyncTest(true);
                     break;
 
-                case 5:
+                case 5: // server (tcp asynchronous)
                     TcpServerAsyncTest(true);
                     break;
 
-                case 6: // tcp sync X test
+                case 6: // server (tcp synchronous)
                     TcpServerSyncXTest(1);
                     break;
             }

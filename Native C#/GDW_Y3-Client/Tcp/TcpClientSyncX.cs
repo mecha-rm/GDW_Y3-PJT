@@ -49,6 +49,9 @@ namespace NetworkLibrary
         // a -1 value indicates to wait indefinitely (same as called Accept() like nomal).
         public int connectTimeout = 1000000; // 1 second
 
+        // if 'true', an attempt to connect is done when the client is run.
+        public bool connectOnRun = true;
+
         // checks to see if the server is running
         private bool running = false;
 
@@ -124,6 +127,91 @@ namespace NetworkLibrary
         {
             return outBuffer;
         }
+
+
+        // CONNECT
+        // connects to endpoint (requires 'Run' to be called).
+        public bool Connect()
+        {
+            // run has not been called.
+            if (client_socket == null || remote == null)
+            {
+                Console.WriteLine("Client has not been run.");
+                return false;
+            }
+
+
+            try
+            {
+                // list of sockets.
+                List<Socket> sockets = new List<Socket>();
+                sockets.Add(client_socket);
+
+                // checks for an endpoint to connect to.
+                client_socket.Blocking = true;
+
+                client_socket.ReceiveTimeout = receiveTimeout;
+                client_socket.SendTimeout = sendTimeout;
+                // Socket.Select(sockets, null, null, connectTimeout);
+
+                IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+                // nothing to connect to
+                // if (sockets.Count == 0)
+                // {
+                //     Console.WriteLine("No available endpoint found. Connection failure.");
+                //     client_socket.Blocking = blockingSockets;
+                // 
+                //     // connection failed.
+                //     return false;
+                // }
+
+                // makes connection
+                // sockets[0].Connect(remote); // connect
+                // client_socket.ReceiveTimeout = 5;
+                // client_socket.Connect(remote);
+                // client_socket.ConnectAsync(host.HostName, port);
+                client_socket.Connect(host.HostName, port);
+                // client_socket.ConnectAsync(remote);
+                // client_socket.ConnectAsync(remote);
+
+                // no connection made.
+                if (!client_socket.Connected)
+                {
+                    Console.WriteLine("No endpoint found. Connection failed.");
+                    client_socket.Blocking = blockingSockets;
+                    return false;
+                }
+
+                // timeouts
+                client_socket.ReceiveTimeout = receiveTimeout;
+                client_socket.SendTimeout = sendTimeout;
+
+                // non-blocking socket for client
+                client_socket.Blocking = blockingSockets;
+
+                // connection successful
+                Console.WriteLine("Connection made Succesfully");
+                return true;
+
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                Console.WriteLine("SocketException: {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected exception: {0}", e.ToString());
+            }
+
+            // returns false
+            return false;
+        }
+
 
         // sets the receive buffer data
         // if 'deleteOldData' is set to true, the original data is cleared out.
@@ -322,19 +410,26 @@ namespace NetworkLibrary
 
                 // client connects to remote
                 // TODO: create timeout function for connection to socket.
-                Console.WriteLine("Searching for server with IP " + ipAddress + "...");
-                client_socket.Connect(remote);
+                // Console.WriteLine("Searching for server with IP " + ipAddress + "...");
+                // client_socket.Connect(remote);
+                // 
+                // // client prepared
+                // Console.WriteLine("Client now prepared to send and receive data from the server respectively...");
+                // 
+                // // these must go AFTER 'Connect' is called, otherwise it crashes.
+                // // sets timeout variables.
+                // client_socket.ReceiveTimeout = receiveTimeout;
+                // client_socket.SendTimeout = sendTimeout;
+                // 
+                // // non-blocking socket for client
+                // client_socket.Blocking = blockingSockets;
 
-                // client prepared
-                Console.WriteLine("Client now prepared to send and receive data from the server respectively...");
-
-                // these must go AFTER 'Connect' is called, otherwise it crashes.
-                // sets timeout variables.
-                client_socket.ReceiveTimeout = receiveTimeout;
-                client_socket.SendTimeout = sendTimeout;
-
-                // non-blocking socket for client
-                client_socket.Blocking = blockingSockets;
+                // attempts connection
+                if(connectOnRun)
+                {
+                    Console.WriteLine("Attempting connection...");
+                    Connect();
+                }
 
                 // the client is running
                 running = true;
@@ -365,16 +460,43 @@ namespace NetworkLibrary
                 return;
             }
 
+            // attempts to connect if no connection exists.
+            if(!client_socket.Connected)
+            {
+                Console.WriteLine("No active connection. Attempting to connect.");
+                Connect();
+            }
 
+            
+            // SEND DATA
             try
             {
-                // TODO: use Socket.available to check for data before trying to call for more.
-
-                // TODO: put in seperate try-catch
+                // sends the data
                 client_socket.Send(outBuffer);
+            }
+            catch (ArgumentNullException anexc)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", anexc.ToString());
+            }
+            catch (SocketException sexc)
+            {
+                Console.WriteLine("SocketException: {0}", sexc.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected exception: {0}", e.ToString());
+            }
 
-                
-                int rec = client_socket.Receive(inBuffer);
+
+            // RECEIVE DATA
+            try
+            {
+                // receives data
+                int rec;
+
+                // if there's data available.
+                if (client_socket.Available != 0)
+                    rec = client_socket.Receive(inBuffer);
             }
             catch (ArgumentNullException anexc)
             {

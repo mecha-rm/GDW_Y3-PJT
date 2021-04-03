@@ -233,6 +233,7 @@ namespace NetworkLibrary
                 if(sockets.Count == 0)
                 {
                     Console.WriteLine("No client connected in time. Endpoint creation failure.");
+                    server_socket.Blocking = blockingSockets;
                     return null;
                 }
 

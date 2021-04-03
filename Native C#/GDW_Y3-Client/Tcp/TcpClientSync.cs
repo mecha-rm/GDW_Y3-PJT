@@ -349,7 +349,7 @@ namespace NetworkLibrary
 
             try
             {
-                // TODO: use Socket.available to check for data before trying to call for more.
+                // TODO: use Socket.Available to check for data before trying to call for more.
 
                 // sends the data
                 if (commMode == mode.both || commMode == mode.send)

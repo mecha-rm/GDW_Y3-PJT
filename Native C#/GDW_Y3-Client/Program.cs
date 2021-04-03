@@ -170,7 +170,7 @@ namespace GDW_Y3_Client
         }
 
         // tcp client x test (with non-blocking)
-        public void TcpClientXTest()
+        static void TcpClientSyncXTest()
         {
             NetworkLibrary.TcpClientSyncX client = new NetworkLibrary.TcpClientSyncX();
 
@@ -185,7 +185,7 @@ namespace GDW_Y3_Client
             // Also, setting up delays or non-blocking sockets before the client is running causes it to crash.
             client.SetBlockingSockets(false);
             // client.connectTimeout = 5000000;
-            client.SetConnectTimeoutInSeconds(5);
+            client.SetConnectTimeoutInSeconds(2);
 
             // runs the client
             client.RunClient();
@@ -223,7 +223,7 @@ namespace GDW_Y3_Client
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 2;
+            int testMode = 4;
 
             switch (testMode)
             {
@@ -242,7 +242,7 @@ namespace GDW_Y3_Client
                     break;
                 
                 case 4: // tcp syncronous server (non-blocking)
-
+                    TcpClientSyncXTest();
                     break;
             }
 
