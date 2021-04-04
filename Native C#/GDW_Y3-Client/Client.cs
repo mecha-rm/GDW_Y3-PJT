@@ -11,7 +11,7 @@ using System.Net.Sockets;
 namespace NetworkLibrary
 {
     // server class
-    public abstract class Server
+    public abstract class Client
     {
         // gets local host for ipv4 (ip: 127.0.0.1)
         public static IPAddress LocalHostIPv4
@@ -65,7 +65,7 @@ namespace NetworkLibrary
                     return ip;
                 }
             }
-            
+
             // not found.
             Console.WriteLine("IPv4 not found.");
             return null;
@@ -119,12 +119,13 @@ namespace NetworkLibrary
         }
 
         // runs the server
-        public abstract void RunServer();
+        public abstract void RunClient();
 
         // updates the server
         public abstract void Update();
 
         // shuts down the server.
-        public abstract void ShutdownServer();
+        public abstract void ShutdownClient();
     }
 }
+

@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace NetworkLibrary
 {
-    public class TcpClientAsync
+    public class TcpClientAsync : Client
     {
         // enum for mode
         public enum mode { both, send, receive };
@@ -312,7 +312,7 @@ namespace NetworkLibrary
         }
 
         // runs the client
-        public void RunClient()
+        public override void RunClient()
         {
             // setting out buffer if it has not been established.
             if (outBuffer == null)
@@ -324,18 +324,43 @@ namespace NetworkLibrary
 
             try
             {
-                // host
-                IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-
                 // if the ip address has not already been set.
                 if (ipAddress == "")
                 {
-                    ip = host.AddressList[1]; // get IP address from list
+                    // looks for ipv4
+                    Console.WriteLine("Acquiring IPv4");
+                    ip = GetLocalIPv4Address();
+
+                    if (ip == null) // ipv4 not found.
+                    {
+                        Console.WriteLine("IPv4 not found. Acquiring IPv6");
+                        ip = GetLocalIPv6Address();
+
+                        if (ip == null) // ipv6 not found.
+                        {
+                            Console.WriteLine("IPv4 and IPv6 not found. Setting to local host.");
+                            ip = LocalHostIPv4;
+
+                            // no local host ipv4, so get ipv6
+                            if (ip == null)
+                                ip = LocalHostIPv6;
+                        }
+
+                        // saving string
+                        ipAddress = ip.ToString();
+                    }
+                    else
+                    {
+                        // saving to string
+                        ipAddress = ip.ToString();
+                    }
                 }
                 else
                 {
+                    // parses saved ip
                     ip = IPAddress.Parse(ipAddress);
                 }
+
 
                 // setting up the two end points
                 remote = new IPEndPoint(ip, port);
@@ -369,7 +394,7 @@ namespace NetworkLibrary
 
 
         // updates the client
-        public void Update()
+        public override void Update()
         {
             // checks to see if the client is running.
             if (!running)
@@ -413,7 +438,7 @@ namespace NetworkLibrary
         }
 
         // shuts down the client
-        public void ShutdownClient()
+        public override void ShutdownClient()
         {
             // used to see if the client was ever actually started.
             if (!running)

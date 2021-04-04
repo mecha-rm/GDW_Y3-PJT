@@ -424,22 +424,45 @@ namespace NetworkLibrary
             if (inBuffer4 == null)
                 inBuffer4 = new byte[defaultBufferSize];
 
-            // buffer = new byte[512];
-            IPHostEntry host;
+            // host
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
             // if the ip address has not already been set.
             if (ipAddress == "")
             {
-                host = Dns.GetHostEntry(Dns.GetHostName());
-                ip = host.AddressList[1]; // get IP address from list
+                // looks for ipv4
+                Console.WriteLine("Acquiring IPv4");
+                ip = GetLocalIPv4Address();
+
+                if (ip == null) // ipv4 not found.
+                {
+                    Console.WriteLine("IPv4 not found. Acquiring IPv6");
+                    ip = GetLocalIPv6Address();
+
+                    if (ip == null) // ipv6 not found.
+                    {
+                        Console.WriteLine("IPv4 and IPv6 not found. Setting to local host.");
+                        ip = LocalHostIPv4;
+
+                        // no local host ipv4, so get ipv6
+                        if (ip == null)
+                            ip = LocalHostIPv6;
+                    }
+
+                    // saving string
+                    ipAddress = ip.ToString();
+                }
+                else
+                {
+                    // saving to string
+                    ipAddress = ip.ToString();
+                }
             }
             else
             {
-                host = Dns.GetHostEntry(Dns.GetHostName());
+                // parses saved ip
                 ip = IPAddress.Parse(ipAddress);
             }
-
-            // IPAddress ip = IPAddress.Parse("192.168.2.144"); // manually enter IP address (default).
 
             serverName = host.HostName; // server name
             Console.WriteLine("Server name: {0} IP: {1}", host.HostName, ip);
@@ -457,7 +480,7 @@ namespace NetworkLibrary
             remoteClient3 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
             remoteClient4 = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
 
-            // 
+            // binding
             try
             {
                 // the server listens and provides a service.

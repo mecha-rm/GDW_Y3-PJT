@@ -7,20 +7,28 @@ using System.Net.Sockets;
 // the ip encryptor and decryptor
 public class IPCryptor : MonoBehaviour
 {
-    // TODO: the array does not always get the right value due to formatting.
-
-    // gets the system IP address.
-    public static string GetSystemIPAddress()
-    {
-        return GetSystemIPAddress(1);
-    }
-
     // gets the system IP address.
     // provides 'address list index'
-    public static string GetSystemIPAddress(int alIndex)
+    public static string GetSystemIPAddress()
     {
-        IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-        IPAddress ip = host.AddressList[alIndex]; // get IP address from list ([1])
+        IPAddress ip = NetworkLibrary.Server.GetLocalIPv4Address();
+
+        // no ipv4
+        if(ip == null)
+        {
+            Debug.LogError("Ipv4 not found. Trying Ipv6");
+
+            // search for ipv6
+            ip = NetworkLibrary.Server.GetLocalIPv6Address();
+
+            // ipv6 not found
+            if(ip == null)
+            {
+                Debug.LogError("Ipv6 not found, returning empty string.");
+                return "";
+            }
+        }
+
         return ip.ToString();
     }
 

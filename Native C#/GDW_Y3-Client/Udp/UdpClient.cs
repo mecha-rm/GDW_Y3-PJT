@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NetworkLibrary
 {
-    public class UdpClient
+    public class UdpClient : Client
     {
         // enum for mode
         public enum mode { both, send, receive };
@@ -277,7 +277,7 @@ namespace NetworkLibrary
         }
 
         // runs the client
-        public void RunClient()
+        public override void RunClient()
         {
             // setting out buffer if it has not been established.
             if (outBuffer == null)
@@ -289,17 +289,43 @@ namespace NetworkLibrary
 
             try
             {
-                // uses the localhost
-                if (ipAddress == null || ipAddress == "")
+                // if the ip address has not already been set.
+                if (ipAddress == "")
                 {
-                    // ipAddress = "127.0.0.1"; // local host
+                    // looks for ipv4
+                    Console.WriteLine("Acquiring IPv4");
+                    ip = GetLocalIPv4Address();
 
-                    // grab IP address of system
-                    IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-                    ipAddress = host.AddressList[1].ToString(); // get IP address from list
+                    if (ip == null) // ipv4 not found.
+                    {
+                        Console.WriteLine("IPv4 not found. Acquiring IPv6");
+                        ip = GetLocalIPv6Address();
+
+                        if (ip == null) // ipv6 not found.
+                        {
+                            Console.WriteLine("IPv4 and IPv6 not found. Setting to local host.");
+                            ip = LocalHostIPv4;
+
+                            // no local host ipv4, so get ipv6
+                            if (ip == null)
+                                ip = LocalHostIPv6;
+                        }
+
+                        // saving string
+                        ipAddress = ip.ToString();
+                    }
+                    else
+                    {
+                        // saving to string
+                        ipAddress = ip.ToString();
+                    }
+                }
+                else
+                {
+                    // parses saved ip
+                    ip = IPAddress.Parse(ipAddress);
                 }
 
-                ip = IPAddress.Parse(ipAddress); // your server's public ip address.
 
                 remote = new IPEndPoint(ip, port);
                 client_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -344,7 +370,7 @@ namespace NetworkLibrary
 
 
         // updates the client
-        public void Update()
+        public override void Update()
         {
             // checks to see if the client is running.
             if (!running)
@@ -406,7 +432,7 @@ namespace NetworkLibrary
         }
 
         // shuts down the client
-        public void ShutdownClient()
+        public override void ShutdownClient()
         {
             // used to see if the client was ever actually started.
             if(!running)

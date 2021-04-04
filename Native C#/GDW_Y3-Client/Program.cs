@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Team Outkasts
+ * Description: client libraries
+ * References:
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -228,20 +234,20 @@ namespace GDW_Y3_Client
             switch (testMode)
             {
                 default:
-                case 0: // server (1 way)
+                case 0: // client (1 way)
                 case 1:
                     UdpClientTest(true);
                     break;
 
-                case 2: // tcp synchronous server
+                case 2: // tcp synchronous client
                     TcpClientSyncTest(true);
                     break;
 
-                case 3: // tcp server
+                case 3: // tcp client
                     TcpClientAsyncTest(true);
                     break;
                 
-                case 4: // tcp syncronous server (non-blocking)
+                case 4: // tcp syncronous client (non-blocking)
                     TcpClientSyncXTest();
                     break;
             }

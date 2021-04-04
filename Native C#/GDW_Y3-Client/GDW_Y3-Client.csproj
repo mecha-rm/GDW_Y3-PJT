@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="Tcp\TcpClientAsync.cs" />
     <Compile Include="Tcp\TcpClientSync.cs" />
     <Compile Include="Tcp\TcpClientSyncX.cs" />

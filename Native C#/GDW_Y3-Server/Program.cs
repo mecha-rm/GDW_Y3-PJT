@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Team Outkasts
+ * Description: server libraries
+ * References:
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -331,7 +337,7 @@ namespace GDW_Y3_Server
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 1;
+            int testMode = 3;
 
             switch(testMode)
             {

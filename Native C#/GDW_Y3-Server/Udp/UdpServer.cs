@@ -295,7 +295,7 @@ namespace NetworkLibrary
             if (inBuffer == null)
                 inBuffer = new byte[defaultBufferSize];
 
-            // buffer = new byte[512];
+            // host
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
             // if the ip address has not already been set.
@@ -334,8 +334,6 @@ namespace NetworkLibrary
                 // parses saved ip
                 ip = IPAddress.Parse(ipAddress);
             }
-
-            // IPAddress ip = IPAddress.Parse("192.168.2.144"); // manually enter IP address (default).
 
             serverName = host.HostName; // server name
             Console.WriteLine("Server name: {0} IP: {1}", host.HostName, ip);
