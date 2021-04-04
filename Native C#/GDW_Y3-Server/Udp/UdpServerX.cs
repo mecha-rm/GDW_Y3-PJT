@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace NetworkLibrary
 {
-    public class UdpServerX
+    public class UdpServerX : Server
     {
         // name of server
         private string serverName = "";
@@ -398,7 +398,7 @@ namespace NetworkLibrary
         }
 
         // runs the server project
-        public void RunServer()
+        public override void RunServer()
         {
             // buffers have not been generated
             // sending out data
@@ -472,7 +472,7 @@ namespace NetworkLibrary
 
         // updates the server to listen for a message from the client.
         // this gets called each frame by the program using the plugin.
-        public void Update()
+        public override void Update()
         {
             // checks to see if the server is running.
             if (!running)
@@ -547,7 +547,7 @@ namespace NetworkLibrary
         }
 
         // shuts down the server.
-        public void ShutdownServer()
+        public override void ShutdownServer()
         {
             // used to see if the server was ever actually started.
             if (!running)

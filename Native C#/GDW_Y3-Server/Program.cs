@@ -331,7 +331,7 @@ namespace GDW_Y3_Server
         static void Main(string[] args)
         {
             // test mode
-            int testMode = 6;
+            int testMode = 1;
 
             switch(testMode)
             {

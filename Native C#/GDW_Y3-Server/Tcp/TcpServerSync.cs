@@ -8,7 +8,7 @@ namespace NetworkLibrary
     // TODO: fix blocking sockets and check for Accept().
     // this is made static in the DSN work.
     // this isn't static since only one instance of the plugin can exist at a time.
-    public class TcpServerSync
+    public class TcpServerSync : Server
     {
         // enum for mode
         public enum mode { both, send, receive };
@@ -285,7 +285,7 @@ namespace NetworkLibrary
         }
 
         // runs the server project
-        public void RunServer()
+        public override void RunServer()
         {
             // buffers have not been generated
             // sending out data
@@ -410,7 +410,7 @@ namespace NetworkLibrary
 
         // updates the server to listen for a message from the client.
         // this gets called each frame by the program using the plugin.
-        public void Update()
+        public override void Update()
         {
             // checks to see if the server is running.
             if (!running)
@@ -495,7 +495,7 @@ namespace NetworkLibrary
         }
 
         // shuts down the server.
-        public void ShutdownServer()
+        public override void ShutdownServer()
         {
             // used to see if the server was ever actually started.
             if (!running)

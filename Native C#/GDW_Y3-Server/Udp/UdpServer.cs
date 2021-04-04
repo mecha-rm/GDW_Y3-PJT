@@ -8,7 +8,7 @@ namespace NetworkLibrary
     // this is made static in the DSN work.
     // this isn't static since only one instance of the plugin can exist at a time.
     // this is a UDP server
-    public class UdpServer
+    public class UdpServer : Server
     {
         // enum for mode
         public enum mode { both, send, receive };
@@ -284,7 +284,7 @@ namespace NetworkLibrary
         }
 
         // runs the server project
-        public void RunServer()
+        public override void RunServer()
         {
             // buffers have not been generated
             // sending out data
@@ -296,17 +296,42 @@ namespace NetworkLibrary
                 inBuffer = new byte[defaultBufferSize];
 
             // buffer = new byte[512];
-            IPHostEntry host;
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
             // if the ip address has not already been set.
             if (ipAddress == "")
             {
-                host = Dns.GetHostEntry(Dns.GetHostName());
-                ip = host.AddressList[1]; // get IP address from list
+                // looks for ipv4
+                Console.WriteLine("Acquiring IPv4");
+                ip = GetLocalIPv4Address();
+
+                if(ip == null) // ipv4 not found.
+                {
+                    Console.WriteLine("IPv4 not found. Acquiring IPv6");
+                    ip = GetLocalIPv6Address();
+
+                    if(ip == null) // ipv6 not found.
+                    {
+                        Console.WriteLine("IPv4 and IPv6 not found. Setting to local host.");
+                        ip = LocalHostIPv4;
+
+                        // no local host ipv4, so get ipv6
+                        if (ip == null)
+                            ip = LocalHostIPv6;
+                    }
+
+                    // saving string
+                    ipAddress = ip.ToString();
+                }
+                else
+                {
+                    // saving to string
+                    ipAddress = ip.ToString();
+                }
             }
             else
             {
-                host = Dns.GetHostEntry(Dns.GetHostName());
+                // parses saved ip
                 ip = IPAddress.Parse(ipAddress);
             }
 
@@ -394,7 +419,7 @@ namespace NetworkLibrary
 
         // updates the server to listen for a message from the client.
         // this gets called each frame by the program using the plugin.
-        public void Update()
+        public override void Update()
         {
             // checks to see if the server is running.
             if (!running)
@@ -473,7 +498,7 @@ namespace NetworkLibrary
         }
 
         // shuts down the server.
-        public void ShutdownServer()
+        public override void ShutdownServer()
         {
             // used to see if the server was ever actually started.
             if (!running)
