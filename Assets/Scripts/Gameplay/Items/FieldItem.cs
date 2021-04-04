@@ -32,7 +32,7 @@ public class FieldItem : MonoBehaviour
     // if 'true', the field item despawns after a certain amount of time.
     public bool useDespawnTimer = true;
 
-    // timer for despawning the item. 
+    // timer for despawning the item (in seconds).
     public static float MaxDespawnTime = 50.0F;
     public float despawnCountdown = 0.0F;
 
