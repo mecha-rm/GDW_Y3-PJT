@@ -57,7 +57,13 @@ public class PlayerObject : MonoBehaviour
     // private Vector3 camRot = new Vector3(0.0F, 0.0F, 0.0F);
     private Vector3 rotSpeed = new Vector3(150.0F, 150.0F, 150.0F);
     private Vector2 xRotLimit = new Vector2(-50.0F, 50.0F);
+
+    // normal max velocity is the normal speed limit.
+    // flag held velocity is used when the player is holding the flag.
+    // flag held factor reduces acceleration when holding the flag.
     private float maxVelocity = 50.0F;
+    private float flagMaxVelocity = 45.0F;
+    private float flagHeldFactor = 0.85F;
 
     // animal characteristics
     // TODO: set these to protected for production build
@@ -557,6 +563,12 @@ public class PlayerObject : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        // the max velocity is different depending on whether the flag is being held or not.
+        float speedLimit = (flag == null) ? maxVelocity : flagMaxVelocity;
+
+        // factor by which the user is slowed. If not holding the flag, the user moves at normal speed.
+        float slowedFactor = (flag == null) ? 1.0F : flagHeldFactor;
+
         // sets 'hasChanged' to false to check if the object's transform has been updated later.
         transform.hasChanged = false;
 
@@ -573,7 +585,7 @@ public class PlayerObject : MonoBehaviour
                     // forward and backward movement
                     if (Input.GetKey(KeyCode.W))
                     {
-                        Vector3 force = transform.forward * movementSpeed * speedMult * Time.deltaTime;
+                        Vector3 force = transform.forward * movementSpeed * slowedFactor * speedMult * Time.deltaTime;
                         rigidBody.AddForce(force, ForceMode.Force);
                         // direcVec += force;
                         stateMachine.SetState(1);
@@ -586,12 +598,12 @@ public class PlayerObject : MonoBehaviour
                     }
                     else if (Input.GetKey(KeyCode.S))
                     {
-                        Vector3 force = -transform.forward * movementSpeed * backupFactor * speedMult * Time.deltaTime;
+                        Vector3 force = -transform.forward * movementSpeed * backupFactor * slowedFactor * speedMult * Time.deltaTime;
                         rigidBody.AddForce(force);
                         // direcVec += force;
 
                     }
-                    if (Input.GetKey(KeyCode.W) && (rigidBody.velocity.magnitude >= maxVelocity))
+                    if (Input.GetKey(KeyCode.W) && (rigidBody.velocity.magnitude >= speedLimit))
                     {
                         stateMachine.SetState(2);
                     }
@@ -602,7 +614,7 @@ public class PlayerObject : MonoBehaviour
                         // if there is no velocity, set the player's rotation to -90 degrees.
                         if (Input.GetKey(KeyCode.W)) // if the player is going foward
                         {
-                            Vector3 force = -transform.right * movementSpeed * speedMult * Time.deltaTime;
+                            Vector3 force = -transform.right * movementSpeed * slowedFactor * speedMult * Time.deltaTime;
                             rigidBody.AddForce(force);
                             // direcVec += force;
 
@@ -618,7 +630,7 @@ public class PlayerObject : MonoBehaviour
                         // if there is no velocity, set the player's rotation to -90 degrees.
                         if (Input.GetKey(KeyCode.W)) // if the player is going foward
                         {
-                            Vector3 force = transform.right * movementSpeed * speedMult * Time.deltaTime;
+                            Vector3 force = transform.right * movementSpeed * slowedFactor * speedMult * Time.deltaTime;
                             rigidBody.AddForce(force);
                             // direcVec += force;
 
@@ -731,9 +743,9 @@ public class PlayerObject : MonoBehaviour
 
                 // caps velocity
                 // TODO: this might need to be changed for the jump.
-                if (rigidBody.velocity.magnitude > maxVelocity)
+                if (rigidBody.velocity.magnitude > speedLimit)
                 {
-                    rigidBody.velocity = rigidBody.velocity.normalized * maxVelocity;
+                    rigidBody.velocity = rigidBody.velocity.normalized * speedLimit;
 
                     // float revForce = rigidBody.velocity.magnitude - maxVelocity;
                     // rigidBody.AddForce(rigidBody.velocity.normalized * -1 * revForce);
@@ -745,13 +757,13 @@ public class PlayerObject : MonoBehaviour
                 // forward and backward movement
                 if (Input.GetKey(KeyCode.W))
                 {
-                    Vector3 shift = new Vector3(0, 0, movementSpeed * speedMult * Time.deltaTime);
+                    Vector3 shift = new Vector3(0, 0, movementSpeed * slowedFactor * speedMult * Time.deltaTime);
                     transform.Translate(shift);
                     // direcVec += shift;
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
-                    Vector3 shift = new Vector3(0, 0, -movementSpeed * speedMult * Time.deltaTime);
+                    Vector3 shift = new Vector3(0, 0, -movementSpeed * slowedFactor * speedMult * Time.deltaTime);
                     transform.Translate(shift);
                     // direcVec += shift;
                 }
@@ -759,13 +771,13 @@ public class PlayerObject : MonoBehaviour
                 // leftward and rightward movement
                 if (Input.GetKey(KeyCode.A))
                 {
-                    Vector3 shift = new Vector3(-movementSpeed * speedMult * Time.deltaTime, 0, 0);
+                    Vector3 shift = new Vector3(-movementSpeed * slowedFactor * speedMult * Time.deltaTime, 0, 0);
                     transform.Translate(shift);
                     // direcVec += shift;
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
-                    Vector3 shift = new Vector3(movementSpeed * speedMult * Time.deltaTime, 0, 0);
+                    Vector3 shift = new Vector3(movementSpeed * slowedFactor * speedMult * Time.deltaTime, 0, 0);
                     transform.Translate(shift);
                     // direcVec += shift;
                 }
@@ -773,13 +785,13 @@ public class PlayerObject : MonoBehaviour
                 // upward and downward movement
                 if (Input.GetKey(KeyCode.Q))
                 {
-                    Vector3 shift = new Vector3(0, movementSpeed * speedMult * Time.deltaTime, 0);
+                    Vector3 shift = new Vector3(0, movementSpeed * slowedFactor * speedMult * Time.deltaTime, 0);
                     transform.Translate(shift);
                     // direcVec += shift;
                 }
                 else if (Input.GetKey(KeyCode.E))
                 {
-                    Vector3 shift = new Vector3(0, -movementSpeed * speedMult * Time.deltaTime, 0);
+                    Vector3 shift = new Vector3(0, -movementSpeed * slowedFactor * speedMult * Time.deltaTime, 0);
                     transform.Translate(shift);
                     // direcVec += shift;
                 }

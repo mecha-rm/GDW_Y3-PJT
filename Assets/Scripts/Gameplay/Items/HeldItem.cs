@@ -22,6 +22,9 @@ public abstract class HeldItem : MonoBehaviour
     // item icon to be activated upon being applied.
     protected GameObject itemIcon = null;
 
+    // item icon name
+    protected string itemIconName;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,6 +63,53 @@ public abstract class HeldItem : MonoBehaviour
         activator = player;
         ApplyEffect();
     }
+
+    // actiates item icon with name
+    public void ActivateItemIcon(string iconName)
+    {
+        itemIconName = iconName;
+        ActivateItemIcon();
+    }
+
+    // enables item icon
+    public void ActivateItemIcon()
+    {
+        // finds parent object.
+        // TODO: this should save the parent to be optimized.
+        GameObject parentObject = GameObject.Find("Item");
+        int childCount = parentObject.transform.childCount;
+
+        // turns off all children.
+        for (int index = 0; index < childCount; index++)
+        {
+            GameObject childObject = parentObject.transform.GetChild(index).gameObject;
+            if (childObject.name == itemIconName)
+            {
+                childObject.SetActive(true);
+                itemIcon = childObject;
+            }
+            else
+            {
+                childObject.SetActive(false);
+            }
+        }
+    }
+
+    // disables item icon
+    public void DeactivateItemIcon()
+    {
+        // deactivates item icon
+        if (itemIcon != null)
+        {
+            itemIcon.SetActive(false);
+        }
+        else
+        {
+            Debug.LogAssertion("No item icon set.");
+            
+        }
+    }
+
 
     // applies an effect for the item.
     // the activator is set before calling this function.

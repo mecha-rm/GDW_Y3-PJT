@@ -100,12 +100,12 @@ public class FieldItem : MonoBehaviour
                 break;
             case itemType.speedUp: // speed
                 // checks to see if the player already has a speed item attached.
-                SpeedItem spdItem = player.gameObject.GetComponent<SpeedItem>();
+                SpeedUpItem spdItem = player.gameObject.GetComponent<SpeedUpItem>();
 
                 // if the player already has a speed item, the countdown for it is reset.
                 // if they didn't have a speed item, they are given one.
                 if (spdItem == null)
-                    genItem = player.gameObject.AddComponent<SpeedItem>();
+                    genItem = player.gameObject.AddComponent<SpeedUpItem>();
                 else
                     spdItem.ResetCountdown();
 

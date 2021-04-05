@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// jump up item
-public class JumpUpItem : HeldItem
+// speed up
+public class SpeedUpItem : HeldItem
 {
-    // Start is called before the first frame update
     // the base speed and the speed multiplayer
-    private float baseJump = 1.0F;
-    private float jumpMult = 2.0F;
+    private float baseSpeed = 1.0F;
+    private float speedMult = 2.28F;
 
     // Start is called before the first frame update
     void Start()
     {
-        itemIconName = "jumpup";
+        itemIconName = "speedup";
 
         // activates item icon
         ActivateItemIcon();
@@ -22,8 +21,8 @@ public class JumpUpItem : HeldItem
     // apply the effect to the game object
     protected override void ApplyEffect()
     {
-        baseJump = activator.jumpMult;
-        activator.jumpMult = activator.speedMult * jumpMult;
+        baseSpeed = activator.speedMult;
+        activator.speedMult = activator.speedMult * speedMult;
     }
 
     // apply the effect to the player
@@ -32,8 +31,7 @@ public class JumpUpItem : HeldItem
         // deactivates icon.
         DeactivateItemIcon();
 
-        // restores base speed.
-        activator.jumpMult = baseJump;
+        activator.speedMult = baseSpeed;
     }
 
     // Update is called once per frame

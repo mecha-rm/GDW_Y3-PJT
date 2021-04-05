@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// jump up item
-public class JumpUpItem : HeldItem
+// jump down item
+public class JumpDownItem : HeldItem
 {
     // Start is called before the first frame update
     // the base speed and the speed multiplayer
     private float baseJump = 1.0F;
-    private float jumpMult = 2.0F;
+    private float jumpMult = 0.80F;
 
     // Start is called before the first frame update
     void Start()
     {
-        itemIconName = "jumpup";
-
         // activates item icon
-        ActivateItemIcon();
+        ActivateItemIcon("jumpdown");
     }
 
     // apply the effect to the game object

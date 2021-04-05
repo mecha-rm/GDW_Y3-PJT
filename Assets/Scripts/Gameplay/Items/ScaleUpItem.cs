@@ -7,28 +7,14 @@ public class ScaleUpItem : HeldItem
     // the base speed and the speed multiplayer
     private Vector3 baseScale;
     private Vector3 newScale = new Vector3(4.0F, 4.0F, 4.0F);
-    GameObject itemIcon;
-    string itemname = "scaleup";
 
     // Start is called before the first frame update
     void Start()
     {
-        GameObject parentObject = GameObject.Find("Item");
-        int childCount = parentObject.transform.childCount;
+        itemIconName = "scaleup";
 
-        for (int index = 0; index < childCount; index++)
-        {
-            GameObject childObject = parentObject.transform.GetChild(index).gameObject;
-            if (childObject.name == itemname)
-            {
-                childObject.SetActive(true);
-                itemIcon = childObject;
-            }
-            else
-            {
-                childObject.SetActive(false);
-            }
-        }
+        // activates item icon
+        ActivateItemIcon();
     }
 
     // apply the effect to the game object
@@ -42,10 +28,10 @@ public class ScaleUpItem : HeldItem
     // apply the effect to the player
     protected override void RemoveEffect()
     {
-        if (itemIcon != null)
-        {
-            itemIcon.SetActive(false);
-        }
+        // deactivates icon.
+        DeactivateItemIcon();
+
+
         // restores base speed.
         activator.transform.localScale = baseScale;
     }
