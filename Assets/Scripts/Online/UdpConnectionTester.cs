@@ -95,7 +95,21 @@ public class UdpConnectionTester : MonoBehaviour
         }
 
         // onlineManager.isMaster = ;
-        onlineManager.RunHost();
+        bool success = onlineManager.RunHost();
+
+        // display messages
+        if(onlineManager.isMaster && success) // server running
+        {
+            Debug.Log("Server Running");
+        }
+        else if (!onlineManager.isMaster && success) // client running
+        {
+            Debug.Log("Client Running");
+        }
+        else if (!success) // nothing running.
+        {
+            Debug.LogError("Host Run Failed.");
+        }
     }
 
     // shuts donw the host

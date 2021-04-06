@@ -63,6 +63,12 @@ public class OnlineGameplayManager : MonoBehaviour
     // if 'true', this player is the host.
     public bool isMaster = true;
 
+    // generates the server if one has not been set.
+    public bool generateServer = true;
+
+    // generates the client if it has not been set.
+    public bool generateClient = true;
+
     // server
     public UdpServerX server;
 
@@ -108,11 +114,12 @@ public class OnlineGameplayManager : MonoBehaviour
 
 
         // if server hasn't been set.
-        if(server == null && isMaster)
+        if(server == null)
         {
             server = FindObjectOfType<UdpServerX>();
 
-            if (server == null)
+            // no server object exists, so make one (if applicable)
+            if (server == null && generateServer)
                 server = new UdpServerX();
         }
 
@@ -128,11 +135,12 @@ public class OnlineGameplayManager : MonoBehaviour
         }
 
         // if the client hasn't been set.
-        if (client == null && !isMaster)
+        if (client == null)
         {
             client = FindObjectOfType<UdpClient>();
 
-            if (client == null)
+            // makes client if one does not exist (if applicable)
+            if (client == null && generateClient)
                 client = new UdpClient();
 
         }
@@ -224,22 +232,30 @@ public class OnlineGameplayManager : MonoBehaviour
     }
 
     // runs the server (or the client)
-    public void RunHost()
+    public bool RunHost()
     {
         // run appropriate host and set sockets for blocking (or not blocking).
         if (isMaster && server != null)
         {
             server.SetBlockingSockets(blocking);
             server.RunServer();
+            dataComm = true;
+
+            // server is now running
+            return server.server.IsRunning();
         }   
         else if (!isMaster && client != null)
         {
             client.SetBlockingSockets(blocking);
             client.RunClient();
-        }
-            
+            dataComm = true;
 
-        dataComm = true;
+            // client is now running
+            return client.client.IsRunning();
+        }
+
+        // nothing has been run.
+        return false;
     }
 
     // SERVER -> CLIENT (MASTER) //

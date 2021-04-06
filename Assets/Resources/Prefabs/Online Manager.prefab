@@ -46,7 +46,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323e31560f52e3b44b113ba1f83da244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  master: 0
+  isMaster: 0
+  server: {fileID: 0}
+  client: {fileID: 0}
+  serverEndpoints: 1
+  blocking: 0
+  dataComm: 1
+  serverBufferSize: 1024
+  clientBufferSize: 1024
+  ipAddress: 
+  stage: 1
+  p1: 0
+  p2: 0
+  p3: 0
+  p4: 0
+  startTime: 0
 --- !u!114 &9115964154999892296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,7 +80,7 @@ MonoBehaviour:
   server: {fileID: 0}
   client: {fileID: 0}
   players: []
-  serverEndpoints: 3
+  startupEndpoints: 1
   blocking: 0
   runHostOnStart: 0
   dataComm: 1
