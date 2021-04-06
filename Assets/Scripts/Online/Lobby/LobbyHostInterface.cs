@@ -143,7 +143,7 @@ public class LobbyHostInterface : MonoBehaviour
     }
 
     // starts the game
-    public void StartGame()
+    public void OnStartGame()
     {
        
     }

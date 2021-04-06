@@ -30,6 +30,24 @@ public class SceneChanger : MonoBehaviour
     //     keepList.Add(entity);
     // }
     
+    // gets the name of the active scene
+    public static string GetActiveSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
+
+    // gets the scene name
+    public static string GetSceneName(int index)
+    {
+        // scene
+        Scene scene = SceneManager.GetSceneAt(index);
+
+        // if scene was found.
+        if (scene != null)
+            return scene.name;
+        else
+            return null;
+    }
    
     // changes the scene using an index.
     // TODO: make static

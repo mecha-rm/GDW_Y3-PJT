@@ -88,6 +88,11 @@ public class OnlineLobbyManager : MonoBehaviour
     // win count for all players
     private int p1Wins = 0, p2Wins = 0, p3Wins = 0, p4Wins = 0;
 
+    // the online gameplay manager.
+    public OnlineGameplayManager onlineGameManager;
+
+    // TODO: add game builder.
+
     // states that the object shouldn't be destroyed on load.
     private void Awake()
     {
@@ -127,6 +132,11 @@ public class OnlineLobbyManager : MonoBehaviour
 
 
         }
+
+
+        // finds online gameplay manager.
+        if (onlineGameManager == null)
+            onlineGameManager = FindObjectOfType<OnlineGameplayManager>(true);
     }
 
 
@@ -412,7 +422,42 @@ public class OnlineLobbyManager : MonoBehaviour
     // called when level is loaded.
     private void OnLevelWasLoaded(int level)
     {
-        
+        // name of the level.
+        string levelName = SceneChanger.GetSceneName(level);
+       
+        // gameplay scene loaded
+        if(levelName == "HalloweenMap" || levelName == "ChristmasMap" || levelName == "ValentinesMap")
+        {
+            // finds gameplay manager.
+            // GameplayManager ogm = FindObjectOfType<GameplayManager>(true);
+
+            // finds online game manager if not set.
+            if (onlineGameManager == null)
+                onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
+
+            // activates gameplay manager.
+            if(onlineGameManager != null)
+                onlineGameManager.gameObject.SetActive(true);
+
+            OnMatchStart();
+        }
+        else if(levelName == "LobbyScene") // lobby loaded.
+        {
+            // finds online game manager if not set.
+            if (onlineGameManager == null)
+                onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
+
+            // online manager
+            if (onlineGameManager != null)
+                onlineGameManager.gameObject.SetActive(false);
+        }
+
+        // lobby loaded
+    }
+
+    public void OnMatchStart()
+    {
+
     }
 
     // Update is called once per frame

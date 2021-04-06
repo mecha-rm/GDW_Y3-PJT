@@ -2,8 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// switches lobby
 public class LobbySwitcher : MonoBehaviour
 {
+    // the scene to exit to.
+    private string exitScene = "Title";
+
+    // online manager
+    public OnlineLobbyManager lobbyManager;
+
     // host object
     public GameObject hostObject;
 
@@ -13,6 +20,10 @@ public class LobbySwitcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // finds online manager.
+        if (lobbyManager == null)
+            lobbyManager = FindObjectOfType<OnlineLobbyManager>();
+
         // looks for host object
         if (hostObject == null)
             GameObject.Find("Host");
@@ -63,5 +74,26 @@ public class LobbySwitcher : MonoBehaviour
     {
         hostObject.SetActive(false);
         joinObject.SetActive(true);
+    }
+
+    // starts the round.
+    public void StartMatch()
+    {
+        lobbyManager.StartMatch();
+    }
+
+    // exists the lobby.
+    public void ExitLobby()
+    {
+        // changes the scene.
+        SceneChanger.ChangeScene(exitScene);
+    }
+
+    // on destroying the lobby switcher
+    public void OnDestroy()
+    {
+        // destroys online manager upon exit.
+        if (lobbyManager != null)
+            Destroy(lobbyManager.gameObject);
     }
 }
