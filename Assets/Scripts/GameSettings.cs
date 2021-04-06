@@ -9,6 +9,12 @@ public class GameSettings
     // instance of singleton
     private static GameSettings instance = null;
 
+    // the saved name of the system.
+    private string screenName = "";
+
+    // the maximum name length
+    public const int SCREEN_NAME_MAX_LEN = 16;
+
     // volume control
     // master volume
     private float masterVolume = 1.0F;
@@ -37,7 +43,34 @@ public class GameSettings
     // start function
     void Start()
     {
+        // the saved name of the player
+        if(screenName == "")
+        {
+            // ranomizes name
+            for (int i = 1; i <= SCREEN_NAME_MAX_LEN; i++)
+                screenName += (Random.Range(0, 10)).ToString();
+        }
+
     }
+
+    // gets the screen name.
+    public string GetScreenName()
+    {
+        return screenName;
+    }
+
+    // sets the screen name
+    public void SetScreenName(string str)
+    {
+        // empty string passed.
+        if (str.Length == 0 || str.Replace(" ", "").Length == 0)
+            return;
+
+        // saves new string
+        int len = Mathf.Min(str.Length, SCREEN_NAME_MAX_LEN);
+        screenName = str.Substring(0, len);
+    }
+
 
     // updates volume levels for all audio
     public void UpdateVolume()

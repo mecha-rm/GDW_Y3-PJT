@@ -28,6 +28,10 @@ public class OnlineLobbyManager : MonoBehaviour
     ///     - [144 - 147] - Player 2 Character (if applicable)
     ///     - [148 - 151] - Player 3 Character (if applicable)
     ///     - [152 - 155] - Player 4 Character (if applicable)
+    ///     - [156 - 159] - Player 1 Win Count
+    ///     - [160 - 163] - Player 2 Win Count (if applicable)
+    ///     - [164 - 167] - Player 3 Win Count (if applicable)
+    ///     - [168 - 171] - Player 4 Win Count (if applicable)
     /// </summary>
 
     /// FORMAT: CLIENT TO SERVER
@@ -40,6 +44,7 @@ public class OnlineLobbyManager : MonoBehaviour
     ///     - [4 - 35] - Name (char = 2 bytes, 16 chars, which is 32 bytes)
     ///     - [36 - 39] - Stage Choice
     ///     - [40 - 43] - Player Choice
+    ///     - [44 - 47] - Win Count
     /// </summary>
 
     // checks to see if this is the one hosting or not.
@@ -65,10 +70,23 @@ public class OnlineLobbyManager : MonoBehaviour
     // ip address
     public string ipAddress;
 
-    // checks to see if the following connections are being used.
-    // TODO: implement.
-    private bool join1 = false, join2 = false, join3 = false;
+    // selected stage
+    public GameBuilder.stages stage;
 
+    // the saved name of the player
+    private string p1Name = "", p2Name = "", p3Name = "", p4Name = "";
+
+    // players
+    public GameBuilder.playables p1, p2, p3, p4;
+
+    // start time for timer
+    public int startTime;
+
+    // checks to see if the following connections are being used.
+    private bool p2Join = false, p3Join = false, p4Join = false;
+
+    // win count for all players
+    private int p1Wins = 0, p2Wins = 0, p3Wins = 0, p4Wins = 0;
 
     // states that the object shouldn't be destroyed on load.
     private void Awake()
@@ -82,6 +100,9 @@ public class OnlineLobbyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // sets player name
+        p1Name = GameSettings.GetInstance().GetScreenName();
+
         // if server hasn't been set.
         if (server == null && isMaster)
         {
@@ -281,6 +302,8 @@ public class OnlineLobbyManager : MonoBehaviour
         byte[] sendData = new byte[clientBufferSize];
         int index = 0;
 
+
+
     }
 
     // receives data from the server.
@@ -324,16 +347,42 @@ public class OnlineLobbyManager : MonoBehaviour
     }
 
 
+    // value setters
+    // on stage selection
+    public void SetStage(GameBuilder.stages stageEnum)
+    {
+        stage = stageEnum;
+    }
+
+    // on stage selection
+    public void SetStage(int stageNum)
+    {
+        stage = (GameBuilder.stages)stageNum;
+    }
+
+    // sets the local player
+    public void SetLocalPlayer(GameBuilder.playables plyr)
+    {
+        p1 = plyr;
+    }
+
+    // sets the local palyer
+    public void SetLocalPlayer(int plyr)
+    {
+        p1 = (GameBuilder.playables)plyr;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
-        if(isMaster)
+        if(isMaster) // acting as server
         {
-
+             //
         }
         else
         {
-
+            // acting as client
         }
         
     }

@@ -5,7 +5,11 @@ using UnityEngine;
 // builds the game
 public class GameBuilder : MonoBehaviour
 {
+    // the playables
     public enum playables { none, dog, cat, bunny, turtle};
+
+    // the stages
+    public enum stages { none, halloween, christmas, valentines};
 
     // if 'true', the game is loaded.
     // Note: this must be set to 'true' before entering a scene in order for it to work.
@@ -19,7 +23,7 @@ public class GameBuilder : MonoBehaviour
     public bool adjustAudioOnEntry = true;
 
     // the name of the map
-    public int map = 0; // loads the map for the scene.
+    public stages map = 0; // loads the map for the scene.
 
     // the amount of players
     public List<playables> playerList = new List<playables>();
@@ -136,19 +140,23 @@ public class GameBuilder : MonoBehaviour
             switch (map)
             {
                 default:
-                case 0: // no map, so load the debug scene instead.
+                case stages.none: // no map, so load the debug scene instead.
                     loadGame = false;
                     // NOTE: do NOT try to jump to another scene when processing a switch to an exiting scene.
                     // UnityEngine.SceneManagement.SceneManager.LoadScene("DebugScene"); // TODO: update when you rename scene.
                     levelLoader.file = "unnamed.dat";
                     break;
 
-                case 1: // halloween stage
+                case stages.halloween: // halloween stage
                     levelLoader.file = "halloween_stage.dat";
                     break;
 
-                case 2: // christmas stage
+                case stages.christmas: // christmas stage
                     levelLoader.file = "christmas_stage.dat";
+                    break;
+
+                case stages.valentines: // valentine's day stage
+                    levelLoader.file = "valentines_day_stage.dat";
                     break;
             }
 
@@ -367,14 +375,26 @@ public class GameBuilder : MonoBehaviour
             manager.CreatePlayer(playerList.Count, newPlayer, true, false);
     }
 
-    // gets the stage
-    public int GetStage()
+    // gets the stage.
+    public stages GetStage()
     {
         return map;
     }
 
+    // gets the stage
+    public int GetStageAsInt()
+    {
+        return (int)map;
+    }
+
     // sets the stage
     public void SetStage(int newMap)
+    {
+        map = (stages)newMap;
+    }
+
+    // sets the stage
+    public void SetStage(stages newMap)
     {
         map = newMap;
     }

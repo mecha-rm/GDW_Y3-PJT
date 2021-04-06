@@ -1527,9 +1527,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12b45b073f6b58d47b88f005041a75f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyManager: {fileID: 0}
   roomCodeInputField: {fileID: 1716886915}
   roomSizeText: {fileID: 253887662}
   roomSizeSlider: {fileID: 18800306}
+  timeSelect: {fileID: 1350655073}
 --- !u!4 &211867099
 Transform:
   m_ObjectHideFlags: 0
@@ -1556,6 +1558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a9b09fb65adf2c47bca410d04735840, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyManager: {fileID: 512647103}
 --- !u!114 &211867101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2647,6 +2650,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4dbbb05253afb44289e0813237b798e, type: 3}
+--- !u!114 &512647103 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9115964154999892294, guid: a4dbbb05253afb44289e0813237b798e, type: 3}
+  m_PrefabInstance: {fileID: 512647102}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 323e31560f52e3b44b113ba1f83da244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &516114761
 GameObject:
   m_ObjectHideFlags: 0
@@ -3274,7 +3288,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 623347554}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512647103}
+        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+        m_MethodName: SetLocalPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &623347554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4432,7 +4458,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 799886579}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512647103}
+        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+        m_MethodName: SetStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &799886579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6436,7 +6474,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1249857922}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512647103}
+        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+        m_MethodName: SetLocalPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1249857922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6642,7 +6692,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1295476803}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512647103}
+        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+        m_MethodName: SetStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1295476803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7094,7 +7156,19 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
+        m_MethodName: SetStartTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1350655074
 MonoBehaviour:
@@ -9464,7 +9538,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1733510797}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512647103}
+        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+        m_MethodName: SetStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1733510797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10665,7 +10751,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1937584550}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512647103}
+        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+        m_MethodName: SetLocalPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1937584550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11298,7 +11396,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2099446962}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 512647103}
+        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+        m_MethodName: SetLocalPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2099446962
 MonoBehaviour:
   m_ObjectHideFlags: 0

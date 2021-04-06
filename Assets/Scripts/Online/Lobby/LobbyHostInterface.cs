@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LobbyHostManager : MonoBehaviour
+
+// this is used to manage user interface functions on the host side.
+// shared operations are put in the OnlineLobbyManager script.
+public class LobbyHostInterface : MonoBehaviour
 {
+    // the lobby manager
+    public OnlineLobbyManager lobbyManager;
+
     // room code text
     public InputField roomCodeInputField;
 
@@ -12,6 +18,9 @@ public class LobbyHostManager : MonoBehaviour
     public Text roomSizeText;
     public Slider roomSizeSlider;
     private int roomSize;
+
+    // time selection
+    public Dropdown timeSelect;
 
     // objects for host
     // public GameObject hostPane;
@@ -22,6 +31,10 @@ public class LobbyHostManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // lobby manager
+        if (lobbyManager == null)
+            lobbyManager = FindObjectOfType<OnlineLobbyManager>();
+
         // Room Code InputField
         if(roomCodeInputField == null)
         {
@@ -62,6 +75,23 @@ public class LobbyHostManager : MonoBehaviour
         // gets the room size in integer form.
         if (roomSizeText != null)
             roomSize = int.Parse(roomSizeText.text);
+
+
+        // gets the time dropdown
+        if(timeSelect == null)
+        {
+            // searches for object.
+            GameObject temp = GameObject.Find("Time Dropdown");
+
+            // gets component
+            if (temp != null)
+                timeSelect = temp.GetComponent<Dropdown>();
+
+            // sets the start time
+            if (timeSelect != null)
+                SetStartTime();
+        }
+
     }
 
     // gets the room size.
@@ -96,6 +126,20 @@ public class LobbyHostManager : MonoBehaviour
     public void GenerateAndSetRoomCode()
     {
         roomCodeInputField.text = GenerateRoomCode();
+    }
+
+    // sets the start time using the dialogue box value
+    public void SetStartTime()
+    {
+        string str = timeSelect.options[timeSelect.value].text; // get current option
+        int val = int.Parse(str); // get value
+        lobbyManager.startTime = val; // set value
+    }
+
+    // sets the start time using the dialogue box value
+    public void SetStartTime(int st)
+    {
+        lobbyManager.startTime = st;
     }
 
     // Update is called once per frame
