@@ -27,6 +27,10 @@ public class CountdownTimer : TimerObject
     [DllImport(DLL_NAME)]
     private static extern void SetStartTime(float time);
 
+    // sets the start time and resets timer
+    [DllImport(DLL_NAME)]
+    private static extern void SetStartTimeAndResetTimer(float time, bool resetTimer);
+
     // returns the start time
     [DllImport(DLL_NAME)]
     private static extern float GetStartTime();
@@ -45,7 +49,6 @@ public class CountdownTimer : TimerObject
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // get current time value
@@ -82,6 +85,12 @@ public class CountdownTimer : TimerObject
     public void SetCountdownStartTime(float time)
     {
         SetStartTime(time);
+    }
+
+    // sets the countdown start time nad resets the timer.
+    public void SetCountdownStartTime(float time, bool resetTimer)
+    {
+        SetStartTimeAndResetTimer(time, resetTimer);
     }
 
     // returns the start time

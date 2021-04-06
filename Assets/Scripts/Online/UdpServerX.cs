@@ -72,22 +72,35 @@ public class UdpServerX : MonoBehaviour
         server.SetPort(newPort);
     }
 
-    // public NetworkLibrary.UdpServerXInterface GetServer()
-    // {
-    //     NetworkLibrary.UdpServerXInterface x = ;
-    // }
+    // gets the send data
+    public byte[] GetSendData()
+    {
+        return server.GetSendBufferData();
+    }
 
-    // gets the data
-    // public byte[] GetData(int index)
-    // {
-    //     return server.GetReceiveBufferData(index);
-    // }
-    // 
-    // // sets the data
-    // public void SetData(int index, byte[] data)
-    // {
-    //     server.SetReceiveBufferData(index, data);
-    // }
+    // sets the receive data
+    public void SetSendData(byte[] data)
+    {
+        server.SetSendBufferData(data);
+    }
+
+    // gets the receive data
+    public byte[] GetReceiveData(int index)
+    {
+        return server.GetReceiveBufferData(index);
+    }
+    
+    // sets the receive data
+    public void SetReceiveData(int index, byte[] data)
+    {
+        server.SetReceiveBufferData(index, data);
+    }
+
+    // gets number of endpoints
+    public int GetEndPointCount()
+    {
+        return server.GetEndPointCount();
+    }
 
     // adds a remote client
     public void AddEndPoint()
@@ -115,6 +128,12 @@ public class UdpServerX : MonoBehaviour
         server.SetBlockingSockets(blocking);
     }
 
+    // returns 'true' if the server is running.
+    public bool IsRunning()
+    {
+        return server.IsRunning();
+    }
+
     // call to start runnnig the server
     public void RunServer()
     {
@@ -132,6 +151,7 @@ public class UdpServerX : MonoBehaviour
     {
         server.ShutdownServer();
     }
+
 
     // Update is called once per frame
     void Update()

@@ -27,6 +27,12 @@ PLUGIN_API void SetStartTime(float time)
     return cdt.SetStartTime(time);
 }
 
+// sets the start time and resets the timer.
+PLUGIN_API void SetStartTimeAndResetTimer(float time, bool resetTimer)
+{
+    return cdt.SetStartTime(time, resetTimer);
+}
+
 // gets the start time
 PLUGIN_API float GetStartTime()
 {

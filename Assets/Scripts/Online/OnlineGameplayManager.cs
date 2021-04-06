@@ -76,10 +76,10 @@ public class OnlineGameplayManager : MonoBehaviour
     // local controlled player.
     private RemotePlayer localPlayer = null;
 
-    // the number of endpoints enabled.
+    // the number of endpoints added on start.
     // this only applies upon activation.
     // this gets set when the server is run.
-    public int serverEndpoints = 1;
+    public int startupEndpoints = 1;
 
     // sets whether to block on sockets or not for both the server and client.
     public bool blocking = true;
@@ -91,8 +91,9 @@ public class OnlineGameplayManager : MonoBehaviour
     public bool dataComm = true;
 
     // buffer size for clients and servers
-    public int serverBufferSize = 512;
-    public int clientBufferSize = 512;
+    public int serverBufferSize = 1024;
+    public int clientBufferSize = 1024;
+
 
     // Start is called before the first frame update
     void Start()
@@ -122,10 +123,9 @@ public class OnlineGameplayManager : MonoBehaviour
             server.SetBlockingSockets(blocking);
 
             // adds remote clients
-            for (int i = 0; i < serverEndpoints; i++)
+            for (int i = 0; i < startupEndpoints; i++)
                 server.AddEndPoint(serverBufferSize);
         }
-        
 
         // if the client hasn't been set.
         if (client == null && !isMaster)
@@ -150,6 +150,10 @@ public class OnlineGameplayManager : MonoBehaviour
             else
                 client.RunClient();
         }
+
+        // timer not set.
+        if (timer == null)
+            timer = FindObjectOfType<TimerObject>();
 
         // if the list hasn't had anything put into it.
         if (players.Count == 0)

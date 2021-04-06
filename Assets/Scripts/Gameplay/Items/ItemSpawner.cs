@@ -39,6 +39,11 @@ public class ItemSpawner : MonoBehaviour
 
         // sets the spawn time
         // spawnCountdown = spawnTime;
+
+        // finds deathspace if not set.
+        if (deathSpace == null)
+            deathSpace = FindObjectOfType<DeathSpace>();
+
     }
 
     // gets the item count

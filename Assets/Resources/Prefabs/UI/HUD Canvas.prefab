@@ -1759,9 +1759,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 0}
-  timerNumber: 2
+  timerNumber: 1
   timer1: {fileID: 0}
-  countdownStart: 0
+  countdownStart: 100
   timer2: {fileID: 0}
   paused: 0
 --- !u!114 &7879728692389026653
@@ -1777,7 +1777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
+  m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
 --- !u!1 &6359906595944431038
 GameObject:

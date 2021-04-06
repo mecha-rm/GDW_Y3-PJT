@@ -18,6 +18,9 @@ extern "C" // convert to C code.
 	// sets the start time
 	PLUGIN_API void SetStartTime(float time);
 
+	// sets the start time and resets the timer.
+	PLUGIN_API void SetStartTimeAndResetTimer(float time, bool resetTimer);
+
 	// returns the start time
 	PLUGIN_API float GetStartTime();
 

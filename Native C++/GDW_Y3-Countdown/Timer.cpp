@@ -91,6 +91,17 @@ void CountdownTimer::SetStartTime(float time)
 	// currTime = startTime; // call ResetTimer() to change start time.
 }
 
+// sets the star time and resets the timer.
+void CountdownTimer::SetStartTime(float time, bool resetTimer)
+{
+	// sets start time.
+	startTime = (time > 0.0F) ? time : 0.0F;
+
+	// resets timer is 'true'. 
+	if (resetTimer)
+		ResetTimer();
+}
+
 // gets the start time
 float CountdownTimer::GetStartTime() const
 {

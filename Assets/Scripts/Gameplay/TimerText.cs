@@ -32,23 +32,27 @@ public class TimerText : MonoBehaviour
             text = GetComponent<Text>();
         }
 
-
+        // countdown timer
         if (timer1 == null)
         {
             // searches for countdown timer attached to object.
-            timer1 = GetComponent<CountdownTimer>();
+            timer1 = FindObjectOfType<CountdownTimer>();
 
             // if no timer is attached, a new one is made.
             if (timer1 == null)
             {
                 timer1 = gameObject.AddComponent(typeof(CountdownTimer)) as CountdownTimer;
             }
+
+            // sets countdown start time.
+            timer1.SetCountdownStartTime(countdownStart, true);
         }
 
+        // stopwatch timer.
         if (timer2 == null)
         {
             // searches for a stopwatch timer attached to the object.
-            timer2 = GetComponent<StopwatchTimer>();
+            timer2 = FindObjectOfType<StopwatchTimer>();
 
             // if no timer is attached, a new one is made.
             if (timer2 == null)

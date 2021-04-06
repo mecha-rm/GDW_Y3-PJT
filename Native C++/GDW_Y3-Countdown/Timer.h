@@ -42,6 +42,9 @@ public:
 	// this sets the current time to the start time.
 	void SetStartTime(float time);
 
+	// sets the start time and resets the timer.
+	void SetStartTime(float time, bool resetTimer);
+
 	// returns the start time
 	float GetStartTime() const;
 
