@@ -142,6 +142,12 @@ public class LobbyHostInterface : MonoBehaviour
         lobbyManager.startTime = st;
     }
 
+    // starts the game
+    public void StartGame()
+    {
+       
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -197,26 +197,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4955327316313822366, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
   m_PrefabInstance: {fileID: 4955327316652271741}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &162700123 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6083646375538522387, guid: 402e01d7cd0a6bc4b9b2efb6f8d1eb0b, type: 3}
-  m_PrefabInstance: {fileID: 939717552}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &162700125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162700123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!1001 &167684612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1725,6 +1705,10 @@ PrefabInstance:
     - target: {fileID: 6083646375538522388, guid: 402e01d7cd0a6bc4b9b2efb6f8d1eb0b, type: 3}
       propertyPath: m_SizeDelta.x
       value: 181.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6083646375538522472, guid: 402e01d7cd0a6bc4b9b2efb6f8d1eb0b, type: 3}
+      propertyPath: timerNumber
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 402e01d7cd0a6bc4b9b2efb6f8d1eb0b, type: 3}

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
+// gameplay manager
 public class GameplayManager : MonoBehaviour
 {
     // the winning score
@@ -17,7 +18,12 @@ public class GameplayManager : MonoBehaviour
     // TODO: use this to optimize.
     public int playerCount = 0;
 
-    // TODO: add timer variable.
+    // timer values
+    // timer object - game will only time out if it's a countdown timer.
+    public CountdownTimer countdownTimer;
+
+    // bool used to end game if time reaches 0 or less.
+    public bool timedGame = false;
 
     // the four players
     // TODO: have these get generated instead of just already existing. Done elsewhere.
@@ -33,6 +39,9 @@ public class GameplayManager : MonoBehaviour
 
     // the death space attached to the gameplay manager
     public DeathSpace deathSpace = null;
+
+    // the next scene after ending the game.
+    public string nextScene = "EndScene";
 
     // the game builder that was used to make this manager.
     // this exists because you can't search for Don'tDestroyOnLoad objects.
@@ -121,6 +130,10 @@ public class GameplayManager : MonoBehaviour
 
             }
         }
+
+        // checks for countdown timer.
+        if (countdownTimer == null)
+            countdownTimer = FindObjectOfType<CountdownTimer>();
     }
 
     // creates the players
@@ -331,7 +344,7 @@ public class GameplayManager : MonoBehaviour
                 if (gb != null)
                     gb.SetLoadGame(false);
 
-                SceneManager.LoadScene("EndScene");
+                SceneManager.LoadScene(nextScene);
             }
 
             // checks for death
@@ -339,6 +352,19 @@ public class GameplayManager : MonoBehaviour
                 px.Respawn();
         }
 
+        // if the game is timed.
+        if(timedGame && countdownTimer != null)
+        {
+            // if the timer has hit zero, end the game.
+            float currTime = countdownTimer.GetCurrentTimeValue();
+
+            // checks to see if time has reached 0.
+            if (currTime == 0.0F)
+            {
+                // loads scene.
+                SceneManager.LoadScene(nextScene);
+            }
+        }
 
         // player 1 has won
         // if (p1 != null)

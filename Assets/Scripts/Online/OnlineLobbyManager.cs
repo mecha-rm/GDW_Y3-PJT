@@ -70,8 +70,8 @@ public class OnlineLobbyManager : MonoBehaviour
     // ip address
     public string ipAddress;
 
-    // selected stage
-    public GameBuilder.stages stage;
+    // selected stage (defaults to halloween)
+    public GameBuilder.stages stage = GameBuilder.stages.halloween;
 
     // the saved name of the player
     private string p1Name = "", p2Name = "", p3Name = "", p4Name = "";
@@ -372,6 +372,48 @@ public class OnlineLobbyManager : MonoBehaviour
         p1 = (GameBuilder.playables)plyr;
     }
 
+    // changes the scene.
+    public void StartMatch()
+    {
+        // the scene name
+        string sceneName = "";
+
+        // if no players have joined.
+        // if((p2Join || p3Join || p4Join) == false)
+        // {
+        //     Debug.LogAssertion("No players have joined.");
+        //     return;
+        // }
+
+        // stage
+        switch(stage)
+        {
+            case GameBuilder.stages.halloween: // halloween stage
+                sceneName = "HalloweenMap";
+                break;
+
+            case GameBuilder.stages.christmas: // christmas stage
+                sceneName = "ChristmasMap";
+                break;
+
+            case GameBuilder.stages.valentines: // valentine's stage
+                sceneName = "ValentinesMap";
+                break;
+        }
+
+        // no round to start
+        if (sceneName != null)
+            Debug.LogError("No match to start.");
+
+        // change the scene.
+        SceneChanger.ChangeScene(sceneName);
+    }
+
+    // called when level is loaded.
+    private void OnLevelWasLoaded(int level)
+    {
+        
+    }
 
     // Update is called once per frame
     void Update()
