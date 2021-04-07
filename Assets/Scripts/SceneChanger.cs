@@ -39,8 +39,8 @@ public class SceneChanger : MonoBehaviour
     // gets the scene name
     public static string GetSceneName(int index)
     {
-        // scene
-        Scene scene = SceneManager.GetSceneAt(index);
+        // gets the scene.
+        Scene scene = SceneManager.GetSceneByBuildIndex(index);
 
         // if scene was found.
         if (scene != null)

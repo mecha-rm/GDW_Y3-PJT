@@ -358,21 +358,36 @@ public class GameBuilder : MonoBehaviour
     }
 
     // adds a player to the list
-    public void AddPlayer(int newPlayer)
+    public PlayerObject AddPlayer(int newPlayer)
     {
         playerList.Add((playables)newPlayer);
 
         if (manager != null)
-            manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
+            return manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
+        else
+            return null;
     }
 
     // adds a player to the game builder.
-    public void AddPlayer(GameBuilder.playables newPlayer)
+    public PlayerObject AddPlayer(GameBuilder.playables newPlayer)
     {
         playerList.Add(newPlayer);
 
         if (manager != null)
-            manager.CreatePlayer(playerList.Count, newPlayer, true, false);
+            return manager.CreatePlayer(playerList.Count, newPlayer, true, false);
+        else
+            return null;
+    }
+
+    // adds a player to the game builder.
+    public PlayerObject AddPlayer(int number, GameBuilder.playables newPlayer)
+    {
+        playerList.Add(newPlayer);
+
+        if (manager != null)
+            return manager.CreatePlayer(number, newPlayer, true, false);
+        else
+            return null;
     }
 
     // gets the stage.

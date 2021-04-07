@@ -92,6 +92,7 @@ public class OnlineLobbyManager : MonoBehaviour
     public OnlineGameplayManager onlineGameManager;
 
     // TODO: add game builder.
+    public GameBuilder gameBuilder;
 
     // states that the object shouldn't be destroyed on load.
     private void Awake()
@@ -137,6 +138,9 @@ public class OnlineLobbyManager : MonoBehaviour
         // finds online gameplay manager.
         if (onlineGameManager == null)
             onlineGameManager = FindObjectOfType<OnlineGameplayManager>(true);
+
+        // sets the game builder
+        SetGameBuilder(true);
     }
 
 
@@ -382,11 +386,52 @@ public class OnlineLobbyManager : MonoBehaviour
         p1 = (GameBuilder.playables)plyr;
     }
 
+    // finds gmae builder, generating a new one if it doesn't exist.
+    private GameBuilder SetGameBuilder(bool makeIfNotExists = true)
+    {
+        // if the game builder does not exist.
+        if (gameBuilder == null)
+        {
+            // find a game builder
+            gameBuilder = FindObjectOfType<GameBuilder>(true);
+
+            // no game builder exists.
+            if (gameBuilder == null && makeIfNotExists)
+            {
+                GameObject newObject = Instantiate(Resources.Load("Prefabs/Title Game Builder") as GameObject);
+
+                // gets component.
+                if (newObject != null)
+                {
+                    gameBuilder = newObject.GetComponent<GameBuilder>();
+                }
+                else // makes game builder.
+                {
+                    Debug.LogError("Game Builder Prefab Not Found.");
+                    newObject = new GameObject();
+                    gameBuilder = newObject.AddComponent<GameBuilder>();
+                }
+
+            }
+            else
+            {
+                Debug.LogError("No Game Builder Found.");
+            }
+        }
+
+        // returns game builder
+        return gameBuilder;
+    }
+
     // changes the scene.
     public void StartMatch()
     {
         // the scene name
         string sceneName = "";
+
+        // finds game builder if not set.
+        if (gameBuilder == null)
+            SetGameBuilder();
 
         // if no players have joined.
         // if((p2Join || p3Join || p4Join) == false)
@@ -395,8 +440,49 @@ public class OnlineLobbyManager : MonoBehaviour
         //     return;
         // }
 
+        // players
+        int plyrCount = 0;
+
+        // goes through each player
+        for(int i = 1; i <= serverEndpoints + 1; i++)
+        {
+            GameBuilder.playables p = GameBuilder.playables.none;
+            bool joined = false;
+
+            // gets player
+            switch(i)
+            {
+                case 1:
+                    p = p1;
+                    joined = true;
+                    break;
+                case 2:
+                    p = p2;
+                    joined = p2Join;
+                    break;
+                case 3:
+                    p = p3;
+                    joined = p3Join;
+                    break;
+                case 4:
+                    p = p4;
+                    joined = p4Join;
+                    break;
+            }
+
+            // if the player is set to none, it means it wasn't set.
+            // TODO: change to use joined.
+            if (p == GameBuilder.playables.none)
+                continue;
+            else
+                plyrCount++;
+
+            // adds player to game builder.
+            gameBuilder.AddPlayer(i, p);
+        }
+
         // stage
-        switch(stage)
+        switch (stage)
         {
             case GameBuilder.stages.halloween: // halloween stage
                 sceneName = "HalloweenMap";
@@ -447,16 +533,20 @@ public class OnlineLobbyManager : MonoBehaviour
             if (onlineGameManager == null)
                 onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
 
-            // online manager
+            // turn off online gameplay manager
+            // TODO: maybe delete and readd component?
             if (onlineGameManager != null)
-                onlineGameManager.gameObject.SetActive(false);
+                onlineGameManager.enabled = false;
         }
-
-        // lobby loaded
     }
 
     public void OnMatchStart()
     {
+        if(gameBuilder == null)
+        {
+
+            return;
+        }
 
     }
 
