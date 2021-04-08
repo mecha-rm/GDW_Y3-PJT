@@ -24,6 +24,7 @@ public class LobbySwitcher : MonoBehaviour
         if (lobbyManager == null)
             lobbyManager = FindObjectOfType<OnlineLobbyManager>();
 
+
         // looks for host object
         if (hostObject == null)
             GameObject.Find("Host");
@@ -31,6 +32,57 @@ public class LobbySwitcher : MonoBehaviour
         // looks for join object.
         if (joinObject == null)
             GameObject.Find("Host");
+    }
+
+    public void SetLobbyManager(bool makeIfNotExists = true)
+    {
+        // // if the game builder does not exist.
+        // if (lobbyManager == null)
+        // {
+        //     // find the lobby manager.
+        //     // this ignores the inactive version since it gets regenerated.
+        //     lobbyManager = FindObjectOfType<OnlineLobbyManager>(false);
+        // 
+        //     // if the lobby manager was not found, it searches for an inactive.
+        //     if(lobbyManager == null)
+        //     {
+        //         lobbyManager = FindObjectOfType<OnlineLobbyManager>(true);
+        // 
+        //         if (lobbyManager != null)
+        //         {
+        //         }
+        //     }
+        //     else
+        //     {
+        // 
+        //     }
+        // 
+        //     // no lobby exists
+        //     if (lobbyManager == null && makeIfNotExists)
+        //     {
+        //         GameObject newObject = Instantiate(Resources.Load("Prefabs/Title Game Builder") as GameObject);
+        // 
+        //         // gets component.
+        //         if (newObject != null)
+        //         {
+        //             gameBuilder = newObject.GetComponent<GameBuilder>();
+        //         }
+        //         else // makes game builder.
+        //         {
+        //             Debug.LogError("Game Builder Prefab Not Found.");
+        //             newObject = new GameObject();
+        //             gameBuilder = newObject.AddComponent<GameBuilder>();
+        //         }
+        // 
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError("Lobby Manager not Found.");
+        //     }
+        // }
+        // 
+        // // returns game builder
+        // return lobbyManager;
     }
 
     // swaps host and join object activities.
@@ -79,12 +131,16 @@ public class LobbySwitcher : MonoBehaviour
     // starts the round.
     public void StartMatch()
     {
-        lobbyManager.StartMatch();
+        lobbyManager.PreMatchStart();
     }
 
     // exists the lobby.
     public void ExitLobby()
     {
+        // destroys online manager upon exit.
+        if (lobbyManager != null)
+            Destroy(lobbyManager.gameObject);
+
         // changes the scene.
         SceneChanger.ChangeScene(exitScene);
     }
@@ -92,8 +148,5 @@ public class LobbySwitcher : MonoBehaviour
     // on destroying the lobby switcher
     public void OnDestroy()
     {
-        // destroys online manager upon exit.
-        if (lobbyManager != null)
-            Destroy(lobbyManager.gameObject);
     }
 }

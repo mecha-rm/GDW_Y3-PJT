@@ -30,6 +30,31 @@ public class SceneChanger : MonoBehaviour
     //     keepList.Add(entity);
     // }
     
+    // checks if a scene exists in the build list.
+    // NOTE: this doesn't seem to work.
+    public static bool SceneExists(string sceneName)
+    {
+        // gets scene count
+        int sceneCount = SceneManager.sceneCountInBuildSettings;
+
+        // goes through each scene.
+        for(int i = 0; i < sceneCount; i++)
+        {
+            Scene scene = SceneManager.GetSceneByBuildIndex(i);
+
+            // scene found.
+            if(scene != null)
+            {
+                // scene names match
+                if (sceneName == scene.name)
+                    return true;
+            }
+            
+        }
+
+        return false;
+    }
+
     // gets the name of the active scene
     public static string GetActiveSceneName()
     {

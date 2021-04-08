@@ -1659,7 +1659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12b45b073f6b58d47b88f005041a75f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyManager: {fileID: 0}
+  lobbyManager: {fileID: 512647103}
   roomCodeInputField: {fileID: 1716886915}
   roomSizeText: {fileID: 253887662}
   roomSizeSlider: {fileID: 18800306}

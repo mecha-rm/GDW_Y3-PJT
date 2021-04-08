@@ -77,7 +77,7 @@ public class OnlineLobbyManager : MonoBehaviour
     private string p1Name = "", p2Name = "", p3Name = "", p4Name = "";
 
     // players
-    public GameBuilder.playables p1, p2, p3, p4;
+    public GameBuilder.playables p1 = GameBuilder.playables.dog, p2, p3, p4;
 
     // start time for timer
     public int startTime;
@@ -423,11 +423,39 @@ public class OnlineLobbyManager : MonoBehaviour
         return gameBuilder;
     }
 
-    // changes the scene.
-    public void StartMatch()
+    // called when the match is about to start (changes scene at the end of the function).
+    public void PreMatchStart()
     {
         // the scene name
         string sceneName = "";
+
+        // stage (checks to see if stage exists)
+        switch (stage)
+        {
+            case GameBuilder.stages.halloween: // halloween stage
+                sceneName = "HalloweenMap";
+                break;
+
+            case GameBuilder.stages.christmas: // christmas stage
+                sceneName = "ChristmasMap";
+                break;
+
+            case GameBuilder.stages.valentines: // valentine's stage
+                sceneName = "ValentinesMap";
+                break;
+
+            default: // nothing set.
+                sceneName = "";
+                break;
+        }
+
+        // no round to start
+        if (sceneName == "")
+        {
+            Debug.LogError("No match to start. Start failure.");
+            return;
+        }
+
 
         // finds game builder if not set.
         if (gameBuilder == null)
@@ -481,25 +509,10 @@ public class OnlineLobbyManager : MonoBehaviour
             gameBuilder.AddPlayer(i, p);
         }
 
-        // stage
-        switch (stage)
-        {
-            case GameBuilder.stages.halloween: // halloween stage
-                sceneName = "HalloweenMap";
-                break;
-
-            case GameBuilder.stages.christmas: // christmas stage
-                sceneName = "ChristmasMap";
-                break;
-
-            case GameBuilder.stages.valentines: // valentine's stage
-                sceneName = "ValentinesMap";
-                break;
-        }
-
-        // no round to start
-        if (sceneName != null)
-            Debug.LogError("No match to start.");
+        // set to load the game.
+        gameBuilder.SetLoadGame(true);
+        gameBuilder.SetLoadStage(false);
+        gameBuilder.sceneAfterGame = "LobbyScene";
 
         // change the scene.
         SceneChanger.ChangeScene(sceneName);
@@ -514,17 +527,6 @@ public class OnlineLobbyManager : MonoBehaviour
         // gameplay scene loaded
         if(levelName == "HalloweenMap" || levelName == "ChristmasMap" || levelName == "ValentinesMap")
         {
-            // finds gameplay manager.
-            // GameplayManager ogm = FindObjectOfType<GameplayManager>(true);
-
-            // finds online game manager if not set.
-            if (onlineGameManager == null)
-                onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
-
-            // activates gameplay manager.
-            if(onlineGameManager != null)
-                onlineGameManager.gameObject.SetActive(true);
-
             OnMatchStart();
         }
         else if(levelName == "LobbyScene") // lobby loaded.
@@ -540,27 +542,31 @@ public class OnlineLobbyManager : MonoBehaviour
         }
     }
 
-    public void OnMatchStart()
+    // called when the match is started.
+    private void OnMatchStart()
     {
-        if(gameBuilder == null)
-        {
+        // finds online game manager if not set.
+        if (onlineGameManager == null)
+            onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
 
-            return;
-        }
-
+        // activates gameplay manager.
+        if (onlineGameManager != null)
+            onlineGameManager.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isMaster) // acting as server
-        {
-             //
-        }
-        else
-        {
-            // acting as client
-        }
+        // if(isMaster) // acting as server
+        // {
+        //     ReceiveDataFromClients();
+        //     SendDataToClients();
+        // }
+        // else // acting as client
+        // {
+        //     SendDataToServer();
+        //     ReceiveDataFromServer();
+        // }
         
     }
 

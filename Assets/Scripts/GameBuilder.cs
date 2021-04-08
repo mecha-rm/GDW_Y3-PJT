@@ -34,6 +34,9 @@ public class GameBuilder : MonoBehaviour
     // the stage parent object
     Stage stage;
 
+    // next scene once game is started.
+    public string sceneAfterGame = "EndScene";
+
     // the stage file directory
     // string stageFileDirectory;
 
@@ -327,6 +330,15 @@ public class GameBuilder : MonoBehaviour
         {
             if (stage.skybox != null)
                 RenderSettings.skybox = stage.skybox;
+        }
+
+        // next scene.
+        if (sceneAfterGame != "")
+        {
+            // sets next scene if it exists. Leaves alone if not available.
+            // if (SceneChanger.SceneExists(sceneAfterGame))
+            
+            manager.nextScene = sceneAfterGame;
         }
 
         // game has been loaded. Turn back on before going to a new scene to load game assets.
