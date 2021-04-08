@@ -20,11 +20,15 @@ public class FieldItem : MonoBehaviour
     // TODO: add more item types
     public enum itemType
     {
-        none, speedUp, jumpUp
+        none, speedUp, jumpUp, scaleUp
     }
 
+    // scale down has been taken out because it can glitch if scale up is set.
+    // ideally you'd fix that.
+    // scaleDown
+
     // number of items available
-    private const int ITEM_COUNT = 2;
+    private const int ITEM_COUNT = 3;
 
     // the number of the item
     public itemType itemSet = 0;
@@ -122,6 +126,29 @@ public class FieldItem : MonoBehaviour
                     jumpItem.ResetCountdown();
                 
                 break;
+            case itemType.scaleUp: // scale up
+                // checks to see if the player already has a jump item attached.
+                ScaleUpItem scaleUp = player.gameObject.GetComponent<ScaleUpItem>();
+
+                // if the player already has this item, it adds to its time. If they don't, then they're given one.
+                if (scaleUp == null)
+                    genItem = player.gameObject.AddComponent<ScaleUpItem>();
+                else
+                    scaleUp.ResetCountdown();
+
+                break;
+            
+            // case itemType.scaleDown: // scale down
+            //     // checks to see if the player already has a jump item attached.
+            //     ScaleDownItem scaleDown = player.gameObject.GetComponent<ScaleDownItem>();
+            // 
+            //     // if the player already has this item, it adds to its time. If they don't, then they're given one.
+            //     if (scaleDown == null)
+            //         genItem = player.gameObject.AddComponent<ScaleDownItem>();
+            //     else
+            //         scaleDown.ResetCountdown();
+            // 
+            //     break;
         }
 
         // activates the effect.

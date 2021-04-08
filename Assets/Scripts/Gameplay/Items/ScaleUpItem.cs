@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// makes user larger.
 public class ScaleUpItem : HeldItem
 {
     // the base speed and the speed multiplayer
+    // dying turns this power off for some reason.
     private Vector3 baseScale;
-    private Vector3 newScale = new Vector3(4.0F, 4.0F, 4.0F);
+    private Vector3 newScale = new Vector3(2.5F, 2.5F, 2.5F);
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +23,7 @@ public class ScaleUpItem : HeldItem
     protected override void ApplyEffect()
     {
         baseScale = activator.transform.localScale;
-        activator.transform.position += new Vector3(0.0F, 5.0F, 0.0F); // TODO: this probably shouldn't be hardcoded.
+        activator.transform.position += new Vector3(0.0F, 2.5F, 0.0F); // TODO: this probably shouldn't be hardcoded.
         activator.transform.localScale = newScale;
     }
 
