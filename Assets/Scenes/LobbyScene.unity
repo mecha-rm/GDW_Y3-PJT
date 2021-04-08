@@ -390,7 +390,7 @@ GameObject:
   - component: {fileID: 60534765}
   - component: {fileID: 60534764}
   m_Layer: 5
-  m_Name: Number 1 Text
+  m_Name: Host Number Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: H
 --- !u!222 &60534765
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1146,7 +1146,7 @@ GameObject:
   - component: {fileID: 151439034}
   - component: {fileID: 151439033}
   m_Layer: 5
-  m_Name: Room Code InputField
+  m_Name: Room Join Code InputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1541,6 +1541,7 @@ RectTransform:
   - {fileID: 912088412}
   - {fileID: 1212399164}
   - {fileID: 151439032}
+  - {fileID: 1466905166}
   - {fileID: 964736920}
   - {fileID: 2060078498}
   - {fileID: 481347313}
@@ -1663,13 +1664,14 @@ MonoBehaviour:
   roomCodeInputField: {fileID: 1716886915}
   roomSizeText: {fileID: 253887662}
   roomSizeSlider: {fileID: 18800306}
+  roomIndict: {fileID: 1592124164}
   timeSelect: {fileID: 1350655073}
   scoreSelect: {fileID: 1402225134}
   scoreText: {fileID: 692842611}
-  p1Label: {fileID: 0}
-  p2Label: {fileID: 0}
-  p3Label: {fileID: 0}
-  p4Label: {fileID: 0}
+  p1Label: {fileID: 657253234}
+  p2Label: {fileID: 1506767784}
+  p3Label: {fileID: 1923083945}
+  p4Label: {fileID: 2130084161}
 --- !u!4 &211867099
 Transform:
   m_ObjectHideFlags: 0
@@ -1698,6 +1700,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lobbyManager: {fileID: 512647103}
+  roomCodeInputField: {fileID: 151439033}
+  roomIndict: {fileID: 1466905167}
+  hostLabel: {fileID: 1796842177}
+  join1Label: {fileID: 377329691}
+  join2Label: {fileID: 1175122777}
+  join3Label: {fileID: 1367321861}
 --- !u!114 &211867101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2396,7 +2404,7 @@ GameObject:
   - component: {fileID: 377329692}
   - component: {fileID: 377329691}
   m_Layer: 5
-  m_Name: Player 2 Name Text
+  m_Name: Join 1 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2454,7 +2462,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join Name
+  m_Text: Join 1 (Local) Name
 --- !u!222 &377329692
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2746,7 +2754,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Open/Close Room
+  m_Text: Open Room
 --- !u!222 &478649201
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2791,7 +2799,7 @@ RectTransform:
   - {fileID: 2139535223}
   - {fileID: 1226873683}
   m_Father: {fileID: 191919832}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3966,7 +3974,7 @@ GameObject:
   - component: {fileID: 657253235}
   - component: {fileID: 657253234}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Player 1 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4392,6 +4400,85 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 34.999996}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &751985997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 751985998}
+  - component: {fileID: 751986000}
+  - component: {fileID: 751985999}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &751985998
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751985997}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1466905166}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 15, y: 0}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &751985999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751985997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Room Status
+--- !u!222 &751986000
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751985997}
+  m_CullTransparentMesh: 0
 --- !u!1 &764369995
 GameObject:
   m_ObjectHideFlags: 0
@@ -4664,7 +4751,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 784377413}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
+        m_MethodName: OpenRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &784377413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5778,7 +5877,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &964736920
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5792,7 +5891,7 @@ RectTransform:
   m_Children:
   - {fileID: 32361579}
   m_Father: {fileID: 191919832}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6761,7 +6860,7 @@ GameObject:
   - component: {fileID: 1101068710}
   - component: {fileID: 1101068709}
   m_Layer: 5
-  m_Name: Number 3 Text
+  m_Name: Join 2 Number Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6819,7 +6918,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: J2
 --- !u!222 &1101068710
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6918,7 +7017,7 @@ GameObject:
   - component: {fileID: 1122760855}
   - component: {fileID: 1122760854}
   m_Layer: 5
-  m_Name: Number 2 Text
+  m_Name: Join 1 Number Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6976,7 +7075,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: J1
 --- !u!222 &1122760855
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7108,7 +7207,7 @@ GameObject:
   - component: {fileID: 1175122778}
   - component: {fileID: 1175122777}
   m_Layer: 5
-  m_Name: Player 3 Name Text
+  m_Name: Join 2 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7166,7 +7265,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join Name
+  m_Text: Join 2 (Remote) Name
 --- !u!222 &1175122778
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7419,9 +7518,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 211867098}
-        m_TargetAssemblyTypeName: LobbyHostManager, Assembly-CSharp
-        m_MethodName: GenerateAndSetRoomCode
+      - m_Target: {fileID: 211867100}
+        m_TargetAssemblyTypeName: LobbyJoinInterface, Assembly-CSharp
+        m_MethodName: FindRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8562,7 +8661,7 @@ GameObject:
   - component: {fileID: 1367321862}
   - component: {fileID: 1367321861}
   m_Layer: 5
-  m_Name: Player 4 Name Text
+  m_Name: Join 3 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8620,7 +8719,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join Name
+  m_Text: Join 3 (Remote) Name
 --- !u!222 &1367321862
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8641,7 +8740,7 @@ GameObject:
   - component: {fileID: 1388384147}
   - component: {fileID: 1388384146}
   m_Layer: 5
-  m_Name: Number 4 Text
+  m_Name: Join 3 Number Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8699,7 +8798,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 4
+  m_Text: J3
 --- !u!222 &1388384147
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9434,6 +9533,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1464457285}
   m_CullTransparentMesh: 0
+--- !u!1 &1466905165
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1466905166}
+  - component: {fileID: 1466905168}
+  - component: {fileID: 1466905167}
+  m_Layer: 5
+  m_Name: Room Join Status
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1466905166
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466905165}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 12.200001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 751985998}
+  m_Father: {fileID: 191919832}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 105, y: 130}
+  m_SizeDelta: {x: 145, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1466905167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466905165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1466905168
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466905165}
+  m_CullTransparentMesh: 0
 --- !u!1 &1482114066
 GameObject:
   m_ObjectHideFlags: 0
@@ -9734,7 +9909,7 @@ GameObject:
   - component: {fileID: 1506767785}
   - component: {fileID: 1506767784}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Player 2 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10316,7 +10491,7 @@ GameObject:
   - component: {fileID: 1592124165}
   - component: {fileID: 1592124164}
   m_Layer: 5
-  m_Name: Room Status
+  m_Name: Room Open Status
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10797,7 +10972,7 @@ GameObject:
   - component: {fileID: 1716886916}
   - component: {fileID: 1716886915}
   m_Layer: 5
-  m_Name: Room Code InputField
+  m_Name: Room Host Code InputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11513,7 +11688,7 @@ GameObject:
   - component: {fileID: 1796842178}
   - component: {fileID: 1796842177}
   m_Layer: 5
-  m_Name: Player 1 Name Text
+  m_Name: Host Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11979,7 +12154,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter Code
+  m_Text: Find Room
 --- !u!222 &1880027919
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12158,7 +12333,7 @@ GameObject:
   - component: {fileID: 1923083946}
   - component: {fileID: 1923083945}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Player 3 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12787,7 +12962,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2060078498
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12803,7 +12978,7 @@ RectTransform:
   - {fileID: 1511317432}
   - {fileID: 632210027}
   m_Father: {fileID: 191919832}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -13396,7 +13571,7 @@ GameObject:
   - component: {fileID: 2130084162}
   - component: {fileID: 2130084161}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Player 4 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

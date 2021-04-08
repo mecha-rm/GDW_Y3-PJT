@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323e31560f52e3b44b113ba1f83da244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMaster: 0
+  isMaster: 1
   server: {fileID: 9115964154999892297}
   client: {fileID: 9115964154999892298}
   serverEndpoints: 1

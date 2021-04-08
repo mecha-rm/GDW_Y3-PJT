@@ -20,6 +20,11 @@ public class LobbyHostInterface : MonoBehaviour
     public Slider roomSizeSlider;
     private int roomSize;
 
+    // room indicator
+    public Image roomIndict;
+    private Color roomIndictOff; // sets to room indicator colour
+    private Color roomIndictOn = new Color(102.0F / 255.0F, 255.0F / 255.0F, 149.0F / 255.0F);
+
     // time selection
     public Dropdown timeSelect;
 
@@ -48,7 +53,7 @@ public class LobbyHostInterface : MonoBehaviour
         if(roomCodeInputField == null)
         {
             // searches for object.
-            GameObject temp = GameObject.Find("Room Code InputField");
+            GameObject temp = GameObject.Find("Room Host Code InputField");
 
             // object found
             if(temp != null)
@@ -82,6 +87,25 @@ public class LobbyHostInterface : MonoBehaviour
         // gets the room size in integer form.
         if (roomSizeText != null)
             roomSize = int.Parse(roomSizeText.text);
+
+
+        // room indicator colour
+        if (roomIndict == null)
+        {
+            GameObject temp = GameObject.Find("Room Open Status");
+            roomIndict = temp.GetComponent<Image>();
+        }
+
+        // room indicator found.
+        if(roomIndict != null)
+        {
+            // gets 'off' colour.
+            roomIndictOff = roomIndict.color;
+
+            // this not set.
+            if (roomIndictOn == Color.black)
+                roomIndictOn = roomIndictOff;
+        }
 
 
         // gets the time dropdown
@@ -122,47 +146,8 @@ public class LobbyHostInterface : MonoBehaviour
                 OnScoreChange();
         }
 
-        // player name text labels
-        // player 1
-        if (p1Label == null)
-        {
-            GameObject temp = GameObject.Find("Player 1 Name Text");
-
-            // gets text
-            if (temp != null)
-                p1Label = temp.GetComponent<Text>();
-        }
-
-        // player 2
-        if (p2Label == null)
-        {
-            GameObject temp = GameObject.Find("Player 2 Name Text");
-
-            // gets text
-            if (temp != null)
-                p2Label = temp.GetComponent<Text>();
-        }
-
-        // player 3
-        if (p3Label == null)
-        {
-            GameObject temp = GameObject.Find("Player 3 Name Text");
-
-            // gets text
-            if (temp != null)
-                p3Label = temp.GetComponent<Text>();
-        }
-
-        // player 4
-        if (p4Label == null)
-        {
-            GameObject temp = GameObject.Find("Player 4 Name Text");
-
-            // gets text
-            if (temp != null)
-                p4Label = temp.GetComponent<Text>();
-        }
-
+        // player names
+        UpdatePlayerNameText();
     }
 
     // gets the room size.
@@ -244,6 +229,47 @@ public class LobbyHostInterface : MonoBehaviour
     // updates the player name text.
     public void UpdatePlayerNameText()
     {
+        // player name text labels
+        // player 1
+        if (p1Label == null)
+        {
+            GameObject temp = GameObject.Find("Player 1 Name Text");
+
+            // gets text
+            if (temp != null)
+                p1Label = temp.GetComponent<Text>();
+        }
+
+        // player 2
+        if (p2Label == null)
+        {
+            GameObject temp = GameObject.Find("Player 2 Name Text");
+
+            // gets text
+            if (temp != null)
+                p2Label = temp.GetComponent<Text>();
+        }
+
+        // player 3
+        if (p3Label == null)
+        {
+            GameObject temp = GameObject.Find("Player 3 Name Text");
+
+            // gets text
+            if (temp != null)
+                p3Label = temp.GetComponent<Text>();
+        }
+
+        // player 4
+        if (p4Label == null)
+        {
+            GameObject temp = GameObject.Find("Player 4 Name Text");
+
+            // gets text
+            if (temp != null)
+                p4Label = temp.GetComponent<Text>();
+        }
+
         // player 1
         if (p1Label != null)
             p1Label.text = lobbyManager.player1Name;
@@ -259,6 +285,32 @@ public class LobbyHostInterface : MonoBehaviour
         // player 4
         if (p4Label != null)
             p4Label.text = lobbyManager.player4Name;
+    }
+
+    // opens the room (runs server)
+    public void OpenRoom()
+    {
+        // checks to see if the room is open.
+        bool roomOpened = false;
+
+        // if ip has not been set.
+        if (roomCodeInputField.text == "")
+            GenerateAndSetRoomCode();
+
+        // sets ip address.
+        lobbyManager.isMaster = true;
+        lobbyManager.ipAddress = IPCryptor.DecryptIP(roomCodeInputField.text);
+        roomOpened = lobbyManager.RunHost();
+
+        // room has been opened.
+        if(roomOpened)
+        {
+            roomIndict.color = roomIndictOn; // on colour
+        }
+        else
+        {
+            roomIndict.color = roomIndictOff; // off colour
+        }
     }
 
     // starts the game

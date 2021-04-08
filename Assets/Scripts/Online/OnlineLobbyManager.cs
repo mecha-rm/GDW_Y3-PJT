@@ -59,7 +59,7 @@ public class OnlineLobbyManager : MonoBehaviour
     /// </summary>
 
     // checks to see if this is the one hosting or not.
-    public bool isMaster;
+    public bool isMaster = true;
 
     // udp server and client
     public UdpServerX server;
@@ -293,56 +293,78 @@ public class OnlineLobbyManager : MonoBehaviour
     }
 
     // used for searching for a hosted game to join.
-    public void RunHost()
+    public bool RunHost()
     {
-        if(isMaster) // run server
+        // ip address is not set.
+        if(ipAddress == "")
+        {
+            Debug.LogError("No IP Address Set.");
+            return false;
+        }
+
+        if(isMaster && server != null) // run server
         {
             // server is already running
             if (server.server.IsRunning())
             {
                 Debug.LogAssertion("Server is already running");
-                return;
+                return false;
             }
 
             // checks for valid ip address.
             if (!ValidIPAddress(ipAddress))
             {
                 Debug.LogAssertion("Invalid room code.");
-                return;
+                return false;
             }
 
 
             // sets the ip address and runs the server.
             server.SetIPAddress(ipAddress);
+            server.SetBlockingSockets(blocking);
             server.RunServer();
+
+            // message
+            Debug.Log("Server is now running");
+
+            return server.server.IsRunning();
         }
-        else // run client.
+        else if (!isMaster && client != null) // run client.
         {
             // server is already running
             if (client.client.IsRunning())
             {
                 Debug.LogAssertion("Server is already running");
-                return;
+                return false;
             }
 
             // checks for valid ip address.
             if (!ValidIPAddress(ipAddress))
             {
                 Debug.LogAssertion("Invalid room code.");
-                return;
+                return false;
             }
 
             // host not available
             if (!CheckHostAvailability())
             {
                 Debug.LogAssertion("Host not available");
-                return;
+                return false;
             }
 
+
+            // set client
             client.SetIPAddress(ipAddress);
+            client.SetBlockingSockets(blocking);
             client.RunClient();
+
+            // message
+            Debug.Log("Client is now running");
+
+            return client.client.IsRunning();
         }
 
+        return false;
     }
 
     // UTILITY - truncates or extends string if too large.
@@ -1142,6 +1164,7 @@ public class OnlineLobbyManager : MonoBehaviour
         inLobby = true;
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -1152,27 +1175,27 @@ public class OnlineLobbyManager : MonoBehaviour
         // if in the lobby, recieve data from clients and send data to them.
         if(inLobby)
         {
-            // if(isMaster) // acting as server
-            // {
-            //     ReceiveDataFromClients();
-            //     SendDataToClients();
-            // }
-            // else // acting as client
-            // {
-            //     // moved onto gameplay.
-            //     if(client.client.GetReceiveBufferSize() != clientBufferSize)
-            //     {
-            //         // calls for prematch start.
-            //         PreMatchStart();
-            //     }
-            //     else
-            //     {
-            //         SendDataToServer();
-            //         ReceiveDataFromServer();
-            //     }
-            // 
-            //     
-            // }
+           if(isMaster) // acting as server
+           {
+               ReceiveDataFromClients();
+               SendDataToClients();
+           }
+           else // acting as client
+           {
+               // moved onto gameplay.
+               if(client.client.GetReceiveBufferSize() != clientBufferSize)
+               {
+                   // calls for prematch start.
+                   PreMatchStart();
+               }
+               else
+               {
+                   SendDataToServer();
+                   ReceiveDataFromServer();
+               }
+           
+               
+           }
         
         }
     }
