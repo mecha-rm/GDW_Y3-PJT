@@ -181,12 +181,28 @@ public class LobbyJoinInterface : MonoBehaviour
     // finds the room (runs client)
     public void FindRoom()
     {
+        // search for room code input field.
+        if(roomCodeInputField.text == "")
+        {
+            Debug.LogError("No Room Code Set.");
+            return;
+        }
+
         // checks to see if the room is open.
         bool searchStarted = false;
 
         // sets ip address.
         lobbyManager.isMaster = false;
         lobbyManager.ipAddress = IPCryptor.DecryptIP(roomCodeInputField.text);
+       
+        // ip address parse failed.
+        if(lobbyManager.ipAddress == "")
+        {
+            // ip address not set
+            Debug.LogError("IPAddress not set.");
+            return;
+        }
+        
         searchStarted = lobbyManager.RunHost();
 
         // room has been opened.

@@ -40,6 +40,14 @@ public class IPCryptor : MonoBehaviour
         return ip;
     }
 
+    // checks to see if the p address is valid.
+    public static bool ValidateIPAddress(string ipAddress)
+    {
+        // ip address not valid.
+        IPAddress nullAddress = null;
+        return IPAddress.TryParse(ipAddress, out nullAddress);
+    }
+
     // HELPER FUNCTIONS
     public static string ReverseString(string str)
     {

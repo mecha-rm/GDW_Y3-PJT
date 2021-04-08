@@ -58,6 +58,16 @@ public class OnlineLobbyManager : MonoBehaviour
     ///     - [44 - 47] - Win Count
     /// </summary>
 
+    // recieved character
+    private struct recChar
+    {
+        public string name;
+        public GameBuilder.playables character;
+        public GameBuilder.stages stage;
+        public int wins;
+    }
+
+
     // checks to see if this is the one hosting or not.
     public bool isMaster = true;
 
@@ -471,12 +481,16 @@ public class OnlineLobbyManager : MonoBehaviour
 
                 // no data to get.
                 if (status == 0)
+                {
+                    // Debug.Log("Zero Status");
                     continue;
+                }
+                    
             }
             
-            // name 
+            // name (conversion is broken)
             {
-                string recName = BitConverter.ToString(data, index, NAME_CHAR_LIMIT * sizeof(char));
+                string recName = Encoding.UTF8.GetString(data, index, NAME_CHAR_LIMIT);
 
                 // lenght of the name times size of chars.
                 index += (recName.Length * sizeof(char));
@@ -620,7 +634,7 @@ public class OnlineLobbyManager : MonoBehaviour
             // if (p1Name != "")
             {
                 nameStr = SetStringLength(p1Name, NAME_CHAR_LIMIT);
-                byte[] data = Encoding.ASCII.GetBytes(nameStr);
+                byte[] data = Encoding.UTF8.GetBytes(nameStr);
                 Buffer.BlockCopy(data, 0, sendData, index, data.Length);
                 index += data.Length;
             }
@@ -756,7 +770,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // Name
         {
             string nameStr = SetStringLength(p1Name, NAME_CHAR_LIMIT);
-            byte[] data = Encoding.ASCII.GetBytes(nameStr);
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(nameStr);
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
             index += data.Length;
         }
@@ -827,7 +841,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // player names
         for(int i = 1; i <= plyrCount; i++)
         {
-            string recName = BitConverter.ToString(recData, index, NAME_CHAR_LIMIT * sizeof(char));
+            string recName = System.Text.Encoding.UTF8.GetString(recData, index, NAME_CHAR_LIMIT);
 
             // saves name to right variable.
             // NOTE: need identifiers for this.
@@ -1183,12 +1197,12 @@ public class OnlineLobbyManager : MonoBehaviour
            else // acting as client
            {
                // moved onto gameplay.
-               if(client.client.GetReceiveBufferSize() != clientBufferSize)
-               {
-                   // calls for prematch start.
-                   PreMatchStart();
-               }
-               else
+               // if(client.client.GetReceiveBufferSize() != clientBufferSize)
+               // {
+               //     // calls for prematch start.
+               //     PreMatchStart();
+               // }
+               // else
                {
                    SendDataToServer();
                    ReceiveDataFromServer();
