@@ -27,7 +27,11 @@ public class LobbyHostInterface : MonoBehaviour
     public Slider scoreSelect;
     public Text scoreText;
 
-    // objects for host
+    // players
+    // labels for player names
+    public Text p1Label, p2Label, p3Label, p4Label;
+
+
     // public GameObject hostPane;
     // public GameObject join1Pane;
     // public GameObject join2Pane;
@@ -117,6 +121,48 @@ public class LobbyHostInterface : MonoBehaviour
             if (scoreSelect != null)
                 OnScoreChange();
         }
+
+        // player name text labels
+        // player 1
+        if (p1Label == null)
+        {
+            GameObject temp = GameObject.Find("Player 1 Name Text");
+
+            // gets text
+            if (temp != null)
+                p1Label = temp.GetComponent<Text>();
+        }
+
+        // player 2
+        if (p2Label == null)
+        {
+            GameObject temp = GameObject.Find("Player 2 Name Text");
+
+            // gets text
+            if (temp != null)
+                p2Label = temp.GetComponent<Text>();
+        }
+
+        // player 3
+        if (p3Label == null)
+        {
+            GameObject temp = GameObject.Find("Player 3 Name Text");
+
+            // gets text
+            if (temp != null)
+                p3Label = temp.GetComponent<Text>();
+        }
+
+        // player 4
+        if (p4Label == null)
+        {
+            GameObject temp = GameObject.Find("Player 4 Name Text");
+
+            // gets text
+            if (temp != null)
+                p4Label = temp.GetComponent<Text>();
+        }
+
     }
 
     // gets the room size.
@@ -195,6 +241,26 @@ public class LobbyHostInterface : MonoBehaviour
         lobbyManager.SetLocalPlayer(plyr);
     }
 
+    // updates the player name text.
+    public void UpdatePlayerNameText()
+    {
+        // player 1
+        if (p1Label != null)
+            p1Label.text = lobbyManager.player1Name;
+
+        // player 2
+        if (p2Label != null)
+            p2Label.text = lobbyManager.player2Name;
+
+        // player 3
+        if (p3Label != null)
+            p3Label.text = lobbyManager.player3Name;
+
+        // player 4
+        if (p4Label != null)
+            p4Label.text = lobbyManager.player4Name;
+    }
+
     // starts the game
     public void OnStartGame()
     {
@@ -208,5 +274,6 @@ public class LobbyHostInterface : MonoBehaviour
         if (lobbyManager == null)
             lobbyManager = FindObjectOfType<OnlineLobbyManager>();
 
+        UpdatePlayerNameText();
     }
 }

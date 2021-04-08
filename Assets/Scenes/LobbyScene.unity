@@ -1666,6 +1666,10 @@ MonoBehaviour:
   timeSelect: {fileID: 1350655073}
   scoreSelect: {fileID: 1402225134}
   scoreText: {fileID: 692842611}
+  p1Label: {fileID: 0}
+  p2Label: {fileID: 0}
+  p3Label: {fileID: 0}
+  p4Label: {fileID: 0}
 --- !u!4 &211867099
 Transform:
   m_ObjectHideFlags: 0
@@ -2392,7 +2396,7 @@ GameObject:
   - component: {fileID: 377329692}
   - component: {fileID: 377329691}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Player 2 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7104,7 +7108,7 @@ GameObject:
   - component: {fileID: 1175122778}
   - component: {fileID: 1175122777}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Player 3 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8558,7 +8562,7 @@ GameObject:
   - component: {fileID: 1367321862}
   - component: {fileID: 1367321861}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Player 4 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11508,7 +11512,7 @@ GameObject:
   - component: {fileID: 1796842178}
   - component: {fileID: 1796842177}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Player 1 Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

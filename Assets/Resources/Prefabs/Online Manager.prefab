@@ -47,20 +47,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMaster: 0
-  server: {fileID: 0}
-  client: {fileID: 0}
+  server: {fileID: 9115964154999892297}
+  client: {fileID: 9115964154999892298}
   serverEndpoints: 1
   blocking: 0
   dataComm: 1
-  serverBufferSize: 1024
-  clientBufferSize: 1024
+  serverBufferSize: 256
+  clientBufferSize: 256
   ipAddress: 
-  stage: 1
+  p1Stage: 1
+  p2Stage: 0
+  p3Stage: 0
+  p4Stage: 0
+  recStage: 0
   p1: 1
   p2: 0
   p3: 0
   p4: 0
   startTime: 0
+  winScore: 0
   onlineGameManager: {fileID: 0}
   gameBuilder: {fileID: 0}
 --- !u!114 &9115964154999892296

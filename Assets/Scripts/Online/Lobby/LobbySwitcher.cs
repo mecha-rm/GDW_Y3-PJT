@@ -93,24 +93,28 @@ public class LobbySwitcher : MonoBehaviour
         {
             hostObject.SetActive(false);
             joinObject.SetActive(true);
+            lobbyManager.isMaster = false;
         }
         // host is not active, but the join is.
         else if (!hostObject.activeSelf && joinObject.activeSelf)
         {
             hostObject.SetActive(true);
             joinObject.SetActive(false);
+            lobbyManager.isMaster = true;
         }
         // both are active
         else if (hostObject.activeSelf && joinObject.activeSelf)
         {
             // deactivates join object.
             joinObject.SetActive(false);
+            lobbyManager.isMaster = true;
         }
-        // both are in active
+        // both are inactive
         else if (!hostObject.activeSelf && !joinObject.activeSelf)
         {
             // activates join object.
             hostObject.SetActive(true);
+            lobbyManager.isMaster = true;
         }
     }
 

@@ -1,16 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 using System.Net;
 using System.Net.NetworkInformation;
-using System;
+using UnityEngine;
+using System.Text;
 
 // manages online lobby
 public class OnlineLobbyManager : MonoBehaviour
 {
     // if the size changes, or if the status is different, then the games load.
 
-    /// FORMAT: SERVER TO CLIENT
+    /// FORMAT: CLIENTS TO SERVER
+    /// <summary>
+    /// 1. Status
+    /// 2. Names (1 - 3)
+    /// 3. Stages (1 - 3)
+    /// 4. Characters (1 -3)
+    /// 5. Wins (1 - 3)
+    /// </summary>
+
+
+    /// FORMAT: SERVER TO CLIENTS
     /// <summary>
     /// Total Bytes: ??? (Array size 256)
     /// Format: Sending Data to Clients
@@ -33,6 +42,8 @@ public class OnlineLobbyManager : MonoBehaviour
     ///     - [164 - 167] - Player 3 Win Count (if applicable)
     ///     - [168 - 171] - Player 4 Win Count (if applicable)
     /// </summary>
+
+
 
     /// FORMAT: CLIENT TO SERVER
     /// <summary>
@@ -64,16 +75,23 @@ public class OnlineLobbyManager : MonoBehaviour
     public bool dataComm = true;
 
     // buffer size for clients and servers
-    public int serverBufferSize = 512;
-    public int clientBufferSize = 512;
+    public int serverBufferSize = 256;
+    public int clientBufferSize = 256;
 
     // ip address
     public string ipAddress;
 
     // selected stage (defaults to halloween)
-    public GameBuilder.stages stage = GameBuilder.stages.halloween;
+    public GameBuilder.stages p1Stage = GameBuilder.stages.halloween;
+    // other stages
+    public GameBuilder.stages p2Stage, p3Stage, p4Stage;
+
+    // stage received from server
+    public GameBuilder.stages recStage;
 
     // the saved name of the player
+    private const int NAME_CHAR_LIMIT = 16; //
+    private const string NO_NAME_CHAR = "-";
     private string p1Name = "", p2Name = "", p3Name = "", p4Name = "";
 
     // players
@@ -125,6 +143,9 @@ public class OnlineLobbyManager : MonoBehaviour
     {
         // sets player name
         p1Name = GameSettings.GetInstance().GetScreenName();
+        p2Name = NO_NAME_CHAR;
+        p3Name = NO_NAME_CHAR;
+        p4Name = NO_NAME_CHAR;
 
         // if server hasn't been set.
         if (server == null && isMaster)
@@ -148,9 +169,7 @@ public class OnlineLobbyManager : MonoBehaviour
             for (int i = defEpCount; i < serverEndpoints; i++)
                 server.AddEndPoint(serverBufferSize);
 
-
         }
-
 
         // finds online gameplay manager.
         if (onlineGameManager == null)
@@ -158,6 +177,42 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // sets the game builder
         SetGameBuilder(true);
+    }
+
+    // player 1 name
+    public string player1Name
+    {
+        get
+        {
+            return p1Name;
+        }
+    }
+
+    // player 2 name
+    public string player2Name
+    {
+        get
+        {
+            return p2Name;
+        }
+    }
+
+    // player 3 name
+    public string player3Name
+    {
+        get
+        {
+            return p3Name;
+        }
+    }
+
+    // player 4 name
+    public string player4Name
+    {
+        get
+        {
+            return p4Name;
+        }
     }
 
 
@@ -290,6 +345,35 @@ public class OnlineLobbyManager : MonoBehaviour
 
     }
 
+    // UTILITY - truncates or extends string if too large.
+    public static string SetStringLength(string str, int charCount, string fillChar = " ")
+    {
+        if (str.Length == charCount) // no changes
+        {
+            return str;
+        }
+        else if (str.Length > charCount) // too large
+        {
+            return str.Substring(0, charCount);
+        }
+        else if (str.Length < charCount) // too small
+        {
+            // string 2
+            string str2 = str;
+
+            do
+            {
+                // extend string.
+                str2 += fillChar;
+            }
+            while (str2.Length < charCount);
+
+            return str2;
+        }
+
+        return str;
+    }
+
 
     // COMMUNICATION //
     // SERVER -> CLIENT (MASTER) //
@@ -306,6 +390,145 @@ public class OnlineLobbyManager : MonoBehaviour
         // goes through each endpoint to get the data. There is a max of 3.
         for (int i = 0; i < epAmount; i++)
         {
+            // gets buffer data
+            byte[] data = server.server.GetReceiveBufferData(i);
+            int index = 0;
+
+            // 1. Status
+            // 2. Names
+            // 3. Stages
+            // 4. Characters
+            // 5. Wins
+
+            // status (0 = unconnected, 1 = connected, 2 = enter play)
+            {
+                int status = BitConverter.ToInt32(data, index);
+                index += sizeof(int);
+
+                // status
+                switch (status)
+                {
+                    case 0: // not connected.
+                        // TODO: change colour to show not connected.
+                        switch (i) // change name to show there's no connection.
+                        {
+                            case 0:
+                                p2Name = NO_NAME_CHAR;
+                                p2Join = false;
+                                break;
+                            case 1:
+                                p3Name = NO_NAME_CHAR;
+                                p3Join = false;
+                                break;
+                            case 2:
+                                p4Name = NO_NAME_CHAR;
+                                p4Join = false;
+                                break;
+                        }
+
+                        break;
+                    case 1: // connected
+                        switch (i) // change join values
+                        {
+                            case 0: // p2
+                                p2Join = true;
+                                break;
+                            case 1: // p3
+                                p3Join = true;
+                                break;
+                            case 2: // p4
+                                p4Join = true;
+                                break;
+                        }
+                        break;
+                    case 2: // entered game (should not be used)
+                        break;
+                    default:
+                        break;
+                }
+
+                // no data to get.
+                if (status == 0)
+                    continue;
+            }
+            
+            // name 
+            {
+                string recName = BitConverter.ToString(data, index, NAME_CHAR_LIMIT * sizeof(char));
+
+                // lenght of the name times size of chars.
+                index += (recName.Length * sizeof(char));
+                
+            }
+
+            // stage
+            {
+                // stage
+                int stageInt = BitConverter.ToInt32(data, index);
+                
+                // sets stage information
+                switch(i)
+                {
+                    case 0:
+                        p2Stage = (GameBuilder.stages)(stageInt);
+                        break;
+                    case 1:
+                        p3Stage = (GameBuilder.stages)(stageInt);
+                        break;
+                    case 2:
+                        p4Stage = (GameBuilder.stages)(stageInt);
+                        break;
+                }
+
+                // next
+                index += sizeof(int);
+            }
+
+            // character
+            {
+                // character number
+                int charValue = BitConverter.ToInt32(data, index);
+
+                // sets stage information
+                switch (i)
+                {
+                    case 0:
+                        p2 = (GameBuilder.playables)(charValue);
+                        break;
+                    case 1:
+                        p3 = (GameBuilder.playables)(charValue);
+                        break;
+                    case 2:
+                        p4 = (GameBuilder.playables)(charValue);
+                        break;
+                }
+
+                // next
+                index += sizeof(int);
+            }
+
+            // win count
+            {
+                // win count
+                int winCount = BitConverter.ToInt32(data, index);
+
+                // sets win count information
+                switch (i)
+                {
+                    case 0:
+                        p2Wins = winCount;
+                        break;
+                    case 1:
+                        p3Wins = winCount;
+                        break;
+                    case 2:
+                        p4Wins = winCount;
+                        break;
+                }
+
+                // next
+                index += sizeof(int);
+            }
 
         }
 
@@ -315,10 +538,168 @@ public class OnlineLobbyManager : MonoBehaviour
     // sends the data to the clients
     void SendDataToClients()
     {
-
         // data to be sent out to clients.
         byte[] sendData = new byte[serverBufferSize];
         int index = 0;
+
+        // 1. Status
+        // 2. Player Count
+        // 3. Stage Choice
+        // 4. Player Name
+        // 5. Player Character
+        // 6. Player Win Count
+
+        // status
+        {
+            // becomes set to '2' when going onto another scene.
+            int status = 1; // TODO: have parameter for 2
+
+            byte[] data = BitConverter.GetBytes(status);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Player Count
+        {
+            // becomes set to '2' when going onto another scene.
+            int pCount = 1; // TODO: have parameter for 2
+
+            // player 2 has joined.
+            if (p2Join)
+                pCount++;
+
+            // player 3 has joined.
+            if (p3Join)
+                pCount++;
+
+            // player 4 has joined.
+            if (p4Join)
+                pCount++;
+
+            byte[] data = BitConverter.GetBytes(pCount);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // stage
+        {
+            // TODO: randomize instead of using P1s.
+            byte[] data = BitConverter.GetBytes((int)p1Stage);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // name
+        {
+            // temporary string.
+            string nameStr;
+
+            // p1
+            // if (p1Name != "")
+            {
+                nameStr = SetStringLength(p1Name, NAME_CHAR_LIMIT);
+                byte[] data = Encoding.ASCII.GetBytes(nameStr);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // p2
+            if (p2Join)
+            {
+                nameStr = SetStringLength(p2Name, NAME_CHAR_LIMIT);
+                byte[] data = Encoding.ASCII.GetBytes(nameStr);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // p3
+            if (p3Join)
+            {
+                nameStr = SetStringLength(p3Name, NAME_CHAR_LIMIT);
+                byte[] data = Encoding.ASCII.GetBytes(nameStr);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // p4
+            if (p4Join)
+            {
+                nameStr = SetStringLength(p4Name, NAME_CHAR_LIMIT);
+                byte[] data = Encoding.ASCII.GetBytes(nameStr);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+        }
+
+        // character
+        {
+            // player 1 has joined.
+            // if (p1 != GameBuilder.playables.none)
+            {   
+                byte[] data = BitConverter.GetBytes((int)p1);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // player 2 has joined.
+            if (p2Join)
+            {
+                byte[] data = BitConverter.GetBytes((int)p2);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // player 3 has joined.
+            if (p3Join)
+            {
+                byte[] data = BitConverter.GetBytes((int)p3);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // player 4 has joined.
+            if(p4Join)
+            {
+                byte[] data = BitConverter.GetBytes((int)p4);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+        }
+
+        // wins
+        {
+            // player 1 has joined.
+            // if (p1 != GameBuilder.playables.none)
+            {
+                byte[] data = BitConverter.GetBytes(p1Wins);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // player 2 has joined.
+            if (p2Join)
+            {
+                byte[] data = BitConverter.GetBytes(p2Wins);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // player 3 has joined.
+            if (p3Join)
+            {
+                byte[] data = BitConverter.GetBytes(p3Wins);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+
+            // player 4 has joined.
+            if (p4Join)
+            {
+                byte[] data = BitConverter.GetBytes(p4Wins);
+                Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+                index += data.Length;
+            }
+        }
 
         // sets the send buffer data
         server.server.SetSendBufferData(sendData);
@@ -333,29 +714,197 @@ public class OnlineLobbyManager : MonoBehaviour
         byte[] sendData = new byte[clientBufferSize];
         int index = 0;
 
+        // 1. Status
+        // 2. Name
+        // 3. Stages
+        // 4. Characters
+        // 5. Wins
 
 
+        // Status
+        {
+            // becomes set to '2' when going onto another scene.
+            int status = 1; // TODO: have parameter for 2
+
+            byte[] data = BitConverter.GetBytes(status);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Name
+        {
+            string nameStr = SetStringLength(p1Name, NAME_CHAR_LIMIT);
+            byte[] data = Encoding.ASCII.GetBytes(nameStr);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Stage
+        {
+            byte[] data = BitConverter.GetBytes((int)p1Stage);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Character
+        {
+            byte[] data = BitConverter.GetBytes((int)p1);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+        // Wins
+        {
+            byte[] data = BitConverter.GetBytes(p1Wins);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
+
+        // sets data
+        client.client.SetSendBufferData(sendData);
     }
 
     // receives data from the server.
     void ReceiveDataFromServer()
     {
-        // Time (float) - 4 bytes
-        // Number of Players (Int) - 4 Bytes
-        // Number of Active Item Boxes (Int) - 4 bytes
-        // Players
-        // Items
+        // 1. Status
+        // 2. Player Count
+        // 3. Stage Choice
+        // 4. Player Names
+        // 5. Player Character
+        // 6. Player Win Count
 
         // data to be sent out to clients.
         byte[] recData = client.client.GetReceiveBufferData();
         int index = 0;
 
+        int status = -1;
+        int plyrCount = -1;
+        int stageInt = -1;
 
-        // Players - getting player data
-        // for (int i = 0; i < plyrCount; i++)
-        // {
-        // 
-        // }
+        // status
+        {
+            status = BitConverter.ToInt32(recData, index);
+            index += sizeof(int);
+        }
+
+        // player count
+        {
+            plyrCount = BitConverter.ToInt32(recData, index);
+            index += sizeof(int);
+        }
+
+        // stage choice (from server)
+        {
+            stageInt = BitConverter.ToInt32(recData, index);
+            recStage = (GameBuilder.stages)stageInt;
+            index += sizeof(int);
+        }
+
+        // player names
+        for(int i = 1; i <= plyrCount; i++)
+        {
+            string recName = BitConverter.ToString(recData, index, NAME_CHAR_LIMIT * sizeof(char));
+
+            // saves name to right variable.
+            // NOTE: need identifiers for this.
+            switch(i)
+            {
+                case 1: // p1
+                    p1Name = recName;
+                    break;
+
+                case 2: // p2 (on the local side p2 is player 1)
+                    p2Name = recName;
+                    break;
+
+                case 3: // p3
+                    p3Name = recName;
+                    break;
+
+                case 4: // p4
+                    p4Name = recName;
+                    break;
+
+                default:
+                    break;
+            }
+
+            // lenght of the name times size of chars.
+            index += (recName.Length * sizeof(char));
+        }
+
+
+        // player characters
+        for (int i = 1; i <= plyrCount; i++)
+        {
+            int pChar = BitConverter.ToInt32(recData, index);
+
+            // saves name to right variable.
+            // NOTE: need identifiers for this.
+            switch (i)
+            {
+                case 1: // p1
+                    p1 = (GameBuilder.playables)(pChar);
+                    break;
+
+                case 2: // p2 (on the local side p2 is player 1)
+                    p2 = (GameBuilder.playables)(pChar);
+                    break;
+
+                case 3: // p3
+                    p3 = (GameBuilder.playables)(pChar);
+                    break;
+
+                case 4: // p4
+                    p4 = (GameBuilder.playables)(pChar);
+                    break;
+
+                default:
+                    break;
+            }
+
+            // lenght of the name times size of chars.
+            index += sizeof(int);
+        }
+
+        // win count
+        for (int i = 1; i <= plyrCount; i++)
+        {
+            int winCount = BitConverter.ToInt32(recData, index);
+
+            // saves name to right variable.
+            // NOTE: need identifiers for this.
+            switch (i)
+            {
+                case 1: // p1
+                    p1Wins = winCount;
+                    break;
+
+                case 2: // p2 (on the local side p2 is player 1)
+                    p2Wins = winCount;
+                    break;
+
+                case 3: // p3
+                    p3Wins = winCount;
+                    break;
+
+                case 4: // p4
+                    p4Wins = winCount;
+                    break;
+
+                default:
+                    break;
+            }
+
+            // lenght of the name times size of chars.
+            index += sizeof(int);
+        }
+
+        // Move Onto Gameplay Scene
+        if (status == 2)
+            PreMatchStart();
     }
 
     
@@ -382,13 +931,13 @@ public class OnlineLobbyManager : MonoBehaviour
     // on stage selection
     public void SetStage(GameBuilder.stages stageEnum)
     {
-        stage = stageEnum;
+        p1Stage = stageEnum;
     }
 
     // on stage selection
     public void SetStage(int stageNum)
     {
-        stage = (GameBuilder.stages)stageNum;
+        p1Stage = (GameBuilder.stages)stageNum;
     }
 
     // sets the local player
@@ -447,7 +996,7 @@ public class OnlineLobbyManager : MonoBehaviour
         string sceneName = "";
 
         // stage (checks to see if stage exists)
-        switch (stage)
+        switch (p1Stage)
         {
             case GameBuilder.stages.halloween: // halloween stage
                 sceneName = "HalloweenMap";
@@ -563,6 +1112,7 @@ public class OnlineLobbyManager : MonoBehaviour
         if (onlineGameManager != null)
         {
             onlineGameManager.enabled = true;
+            onlineGameManager.isMaster = isMaster;
         }
 
         // now in lobby
@@ -598,21 +1148,33 @@ public class OnlineLobbyManager : MonoBehaviour
         if (gameBuilder == null)
             SetGameBuilder();
 
+        // TODO: add identifiers for the game.
         // if in the lobby, recieve data from clients and send data to them.
-        // if(inLobby)
-        // {
-        //     if(isMaster) // acting as server
-        //     {
-        //         ReceiveDataFromClients();
-        //         SendDataToClients();
-        //     }
-        //     else // acting as client
-        //     {
-        //         SendDataToServer();
-        //         ReceiveDataFromServer();
-        //     }
-        // 
-        // }
+        if(inLobby)
+        {
+            // if(isMaster) // acting as server
+            // {
+            //     ReceiveDataFromClients();
+            //     SendDataToClients();
+            // }
+            // else // acting as client
+            // {
+            //     // moved onto gameplay.
+            //     if(client.client.GetReceiveBufferSize() != clientBufferSize)
+            //     {
+            //         // calls for prematch start.
+            //         PreMatchStart();
+            //     }
+            //     else
+            //     {
+            //         SendDataToServer();
+            //         ReceiveDataFromServer();
+            //     }
+            // 
+            //     
+            // }
+        
+        }
     }
 
     // OnDestroy is called when an object is being destroyed.
