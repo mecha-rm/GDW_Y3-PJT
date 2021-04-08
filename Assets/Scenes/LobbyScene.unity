@@ -2291,7 +2291,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 347554234}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867100}
+        m_TargetAssemblyTypeName: LobbyJoinInterface, Assembly-CSharp
+        m_MethodName: SetStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &347554234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3300,7 +3312,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 260, y: 140}
+  m_AnchoredPosition: {x: 285, y: 140}
   m_SizeDelta: {x: 35, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &603572527
@@ -3423,8 +3435,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 512647103}
-        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
         m_MethodName: SetLocalPlayer
         m_Mode: 3
         m_Arguments:
@@ -4593,8 +4605,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 512647103}
-        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
         m_MethodName: SetStage
         m_Mode: 3
         m_Arguments:
@@ -4724,7 +4736,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 839553431}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867100}
+        m_TargetAssemblyTypeName: LobbyJoinInterface, Assembly-CSharp
+        m_MethodName: SetLocalPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &839553431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4939,7 +4963,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 920393255}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867100}
+        m_TargetAssemblyTypeName: LobbyJoinInterface, Assembly-CSharp
+        m_MethodName: SetLocalPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &920393255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7047,8 +7083,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 512647103}
-        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
         m_MethodName: SetLocalPlayer
         m_Mode: 3
         m_Arguments:
@@ -7265,8 +7301,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 512647103}
-        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
         m_MethodName: SetStage
         m_Mode: 3
         m_Arguments:
@@ -7350,7 +7386,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 225, y: 75}
+  m_AnchoredPosition: {x: 240, y: 75}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1298118893
@@ -7390,7 +7426,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -8329,7 +8365,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1447761986}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867100}
+        m_TargetAssemblyTypeName: LobbyJoinInterface, Assembly-CSharp
+        m_MethodName: SetLocalPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1447761986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8710,7 +8758,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1484979695}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867100}
+        m_TargetAssemblyTypeName: LobbyJoinInterface, Assembly-CSharp
+        m_MethodName: SetStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1484979695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10111,8 +10171,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 512647103}
-        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
         m_MethodName: SetStage
         m_Mode: 3
         m_Arguments:
@@ -10321,7 +10381,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1766505196}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867100}
+        m_TargetAssemblyTypeName: LobbyJoinInterface, Assembly-CSharp
+        m_MethodName: SetLocalPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1766505196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11324,8 +11396,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 512647103}
-        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
         m_MethodName: SetLocalPlayer
         m_Mode: 3
         m_Arguments:
@@ -11969,8 +12041,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 512647103}
-        m_TargetAssemblyTypeName: OnlineLobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 211867098}
+        m_TargetAssemblyTypeName: LobbyHostInterface, Assembly-CSharp
         m_MethodName: SetLocalPlayer
         m_Mode: 3
         m_Arguments:
@@ -12383,7 +12455,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2131468582}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 211867100}
+        m_TargetAssemblyTypeName: LobbyJoinInterface, Assembly-CSharp
+        m_MethodName: SetStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2131468582
 MonoBehaviour:
   m_ObjectHideFlags: 0

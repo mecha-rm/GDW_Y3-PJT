@@ -17,9 +17,23 @@ public class LobbyJoinInterface : MonoBehaviour
             lobbyManager = FindObjectOfType<OnlineLobbyManager>();
     }
 
+    // on stage selection
+    public void SetStage(int stageNum)
+    {
+        lobbyManager.SetStage(stageNum);
+    }
+
+    // sets the local palyer
+    public void SetLocalPlayer(int plyr)
+    {
+        lobbyManager.SetLocalPlayer(plyr);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        // find lobby manager
+        if (lobbyManager == null)
+            lobbyManager = FindObjectOfType<OnlineLobbyManager>();
     }
 }

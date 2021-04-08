@@ -91,16 +91,29 @@ public class OnlineLobbyManager : MonoBehaviour
     // the online gameplay manager.
     public OnlineGameplayManager onlineGameManager;
 
+    // is 'true' if in the lobby, false if not.
+    private bool inLobby = true;
+
     // TODO: add game builder.
     public GameBuilder gameBuilder;
+
+    // number of instances of this class.
+    private static int instances = 0;
 
     // states that the object shouldn't be destroyed on load.
     private void Awake()
     {
-        // the lobby manager shouldn't be destroyed.
-        DontDestroyOnLoad(gameObject);
+        instances++; // instance exists
 
-        // TODO: enable online on scene change?
+        if (instances > 1) // instance already exists, so use that.
+        {
+            // destroys this object so it isn't used.
+            Destroy(gameObject);
+        }
+        else // no instance exists
+        {
+            DontDestroyOnLoad(gameObject); // don't destroy this object.
+        }
     }
 
     // Start is called before the first frame update
@@ -415,7 +428,7 @@ public class OnlineLobbyManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("No Game Builder Found.");
+                Debug.Log("Game Builder Found.");
             }
         }
 
@@ -531,14 +544,7 @@ public class OnlineLobbyManager : MonoBehaviour
         }
         else if(levelName == "LobbyScene") // lobby loaded.
         {
-            // finds online game manager if not set.
-            if (onlineGameManager == null)
-                onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
-
-            // turn off online gameplay manager
-            // TODO: maybe delete and readd component?
-            if (onlineGameManager != null)
-                onlineGameManager.enabled = false;
+            OnReturnToLobby();
         }
     }
 
@@ -551,23 +557,58 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // activates gameplay manager.
         if (onlineGameManager != null)
-            onlineGameManager.gameObject.SetActive(true);
+        {
+            onlineGameManager.enabled = true;
+        }
+
+        // now in lobby
+        inLobby = false;
+    }
+
+    // called when returning to the lobby.
+    public void OnReturnToLobby()
+    {
+        // finds online game manager if not set.
+        if (onlineGameManager == null)
+            onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
+
+        // turn off online gameplay manager
+        // TODO: maybe delete and re-add component?
+        if (onlineGameManager != null)
+            onlineGameManager.enabled = false;
+
+        // game builder was deleted.
+        // if(gameBuilder == null)
+        //     SetGameBuilder();
+
+        // recreates game builder since it will be deleted.
+        // GameObject newObject = Instantiate(Resources.Load("Prefabs/Title Game Builder") as GameObject);
+
+        // now in lobby
+        inLobby = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // if(isMaster) // acting as server
+        if (gameBuilder == null)
+            SetGameBuilder();
+
+        // if in the lobby, recieve data from clients and send data to them.
+        // if(inLobby)
         // {
-        //     ReceiveDataFromClients();
-        //     SendDataToClients();
+        //     if(isMaster) // acting as server
+        //     {
+        //         ReceiveDataFromClients();
+        //         SendDataToClients();
+        //     }
+        //     else // acting as client
+        //     {
+        //         SendDataToServer();
+        //         ReceiveDataFromServer();
+        //     }
+        // 
         // }
-        // else // acting as client
-        // {
-        //     SendDataToServer();
-        //     ReceiveDataFromServer();
-        // }
-        
     }
 
     // OnDestroy is called when an object is being destroyed.
@@ -580,5 +621,7 @@ public class OnlineLobbyManager : MonoBehaviour
         if(client != null)
             client.ShutdownClient();
 
+        // this instance has been destroyed.
+        instances--;
     }
 }

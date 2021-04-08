@@ -332,6 +332,10 @@ public class GameBuilder : MonoBehaviour
                 RenderSettings.skybox = stage.skybox;
         }
 
+        // items
+        // clears out all items.
+        ItemManager.GetInstance().ClearAllItemsInPool();
+
         // next scene.
         if (sceneAfterGame != "")
         {
@@ -370,32 +374,39 @@ public class GameBuilder : MonoBehaviour
     }
 
     // adds a player to the list
-    public PlayerObject AddPlayer(int newPlayer)
+    public void AddPlayer(int newPlayer)
     {
         playerList.Add((playables)newPlayer);
 
         if (manager != null)
-            return manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
-        else
-            return null;
+            manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
     }
 
     // adds a player to the game builder.
-    public PlayerObject AddPlayer(GameBuilder.playables newPlayer)
+    public void AddPlayer(GameBuilder.playables newPlayer)
     {
         playerList.Add(newPlayer);
 
         if (manager != null)
-            return manager.CreatePlayer(playerList.Count, newPlayer, true, false);
-        else
-            return null;
+            manager.CreatePlayer(playerList.Count, newPlayer, true, false);
     }
 
     // adds a player to the game builder.
-    public PlayerObject AddPlayer(int number, GameBuilder.playables newPlayer)
+    public void AddPlayer(int number, GameBuilder.playables newPlayer)
     {
         playerList.Add(newPlayer);
 
+        if (manager != null)
+            manager.CreatePlayer(number, newPlayer, true, false);
+    }
+
+    // adds and gets the player
+    public PlayerObject AddAndGetPlayer(int number, GameBuilder.playables newPlayer)
+    {
+        // adds the player
+        playerList.Add(newPlayer);
+
+        // gets the created player
         if (manager != null)
             return manager.CreatePlayer(number, newPlayer, true, false);
         else

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 // this is used to manage user interface functions on the host side.
 // shared operations are put in the OnlineLobbyManager script.
+// ALL BUTTON OPERATONS NEED TO HAPPEN HERE.
 public class LobbyHostInterface : MonoBehaviour
 {
     // the lobby manager
@@ -142,6 +143,18 @@ public class LobbyHostInterface : MonoBehaviour
         lobbyManager.startTime = st;
     }
 
+    // on stage selection
+    public void SetStage(int stageNum)
+    {
+        lobbyManager.SetStage(stageNum);
+    }
+
+    // sets the local palyer
+    public void SetLocalPlayer(int plyr)
+    {
+        lobbyManager.SetLocalPlayer(plyr);
+    }
+
     // starts the game
     public void OnStartGame()
     {
@@ -151,6 +164,9 @@ public class LobbyHostInterface : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // find lobby manager
+        if (lobbyManager == null)
+            lobbyManager = FindObjectOfType<OnlineLobbyManager>();
+
     }
 }

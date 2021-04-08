@@ -62,6 +62,11 @@ public class ItemManager
             {
                 // removes the item from the list
                 FieldItem item = itemPool.Dequeue();
+
+                // item was set to null.
+                if (item == null)
+                    continue;
+
                 Object.Destroy(item.gameObject);
             }
             while (itemPool.Count > itemCount);
@@ -94,26 +99,59 @@ public class ItemManager
         return itemPool.Count == 0;
     }
 
+    // creates a field item
+    public FieldItem CreateItem()
+    {
+        // sets item values
+        GameObject itemBox = GameObject.Instantiate((GameObject)Resources.Load(itemPrefab));
+        FieldItem fieldItem = itemBox.GetComponent<FieldItem>();
+        fieldItem.ResetDespawnCountdown();
+        fieldItem.RandomizeItem();
+
+        // returns the new field item.
+        return fieldItem;
+    }
+
     // gets a field item
     public FieldItem GetItem()
     {
         // generates new item
         if(itemPool.Count == 0)
         {
-            GameObject itemBox = GameObject.Instantiate((GameObject)Resources.Load(itemPrefab));
-            FieldItem fieldItem = itemBox.GetComponent<FieldItem>();
-            fieldItem.ResetDespawnCountdown();
-            fieldItem.RandomizeItem();
-
-            // returns the new filed item.
-            return fieldItem;
+            // creates the item.
+            return CreateItem();
         }
         else // takes item from the pool
         {
-            FieldItem itemBox = itemPool.Dequeue();
-            itemBox.ResetDespawnCountdown();
-            itemBox.gameObject.SetActive(true);
-            itemBox.RandomizeItem(); // randomize item
+            // original
+            // FieldItem itemBox = itemPool.Dequeue();
+            // itemBox.ResetDespawnCountdown();
+            // itemBox.gameObject.SetActive(true);
+            // itemBox.RandomizeItem(); // randomize item
+
+            // new
+            FieldItem itemBox = null;
+
+            // checks for null values
+            do
+            {
+                // gets item
+                itemBox = itemPool.Dequeue();
+
+                // if the item box was null, go through the list again.
+                if (itemBox == null)
+                    continue;
+
+                // sets values if it isn't null.
+                itemBox.ResetDespawnCountdown();
+                itemBox.gameObject.SetActive(true);
+                itemBox.RandomizeItem(); // randomize item
+            }
+            while (itemBox == null && itemPool.Count != 0); // while a preset item hasn't been found.
+
+            // no items were found in the list.
+            if (itemBox == null)
+                itemBox = CreateItem();
 
             // returns item box.
             return itemBox;
@@ -126,5 +164,26 @@ public class ItemManager
         // item.ResetDespawnCountdown(); // happens upon being pulled from pool.
         item.gameObject.SetActive(false);
         itemPool.Enqueue(item); // adds item back into pool.
+    }
+
+    // clears out all items in the pool.
+    public void ClearAllItemsInPool()
+    {
+        itemPool.Clear();
+    }
+
+    // destroy all items in the pool.
+    public void DestroyAllItemsInPool()
+    {
+        while(itemPool.Count != 0)
+        {
+            FieldItem item = itemPool.Dequeue(); // removes item
+
+            // destroys the item.
+            if (item != null)
+                Object.Destroy(item.gameObject);
+        }
+
+        itemPool.Clear();
     }
 }
