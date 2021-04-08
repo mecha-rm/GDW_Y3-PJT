@@ -40,12 +40,24 @@ public class IPCryptor : MonoBehaviour
         return ip;
     }
 
+    // HELPER FUNCTIONS
+    public static string ReverseString(string str)
+    {
+        // reverses the string.
+        string strX = "";
+
+        for (int i = str.Length - 1; i >= 0; i--)
+            strX += str[i];
+
+        return strX;
+    }
 
     // ENCRYPTION
     // encrypts the system ip address.
     public static string EncryptSystemIP()
     {
-        return EncryptIP(GetSystemIPAddress());
+        string str = GetSystemIPAddress();
+        return EncryptIP(str);
     }
 
     // encrpyts the ip address.
@@ -57,9 +69,51 @@ public class IPCryptor : MonoBehaviour
     // encrypts the ip address to create a room code.
     public static string EncryptIP(string ipD)
     {
+        // activate encryption
+        bool encrypt = true;
+
+        // ip encrypted.
         string ipE = ipD;
 
-        // TODO: encrypt ip address
+        // encrypt the ip
+        if(encrypt)
+        {
+            // TODO: make the encryption algorithm more complex. 
+            // TODO: this doesn't work.
+            ipE.Replace('1', 'Q');
+            ipE.Replace('2', 'X');
+            ipE.Replace('3', 'R');
+            ipE.Replace('4', 'W');
+            ipE.Replace('5', 'M');
+            ipE.Replace('6', 'T');
+            ipE.Replace('7', 'F');
+            ipE.Replace('8', 'A');
+            ipE.Replace('9', 'Z');
+            ipE.Replace('.', 'S');
+
+            // reverses the string.
+            ipE = ReverseString(ipE);
+
+            // temporary string
+            // string str;
+
+            // for (int i = 0; i < ipE.Length; i++)
+            // {
+            //     ipE.Replace('1', 'Q');
+            //     ipE.Replace('2', 'X');
+            //     ipE.Replace('3', 'R');
+            //     ipE.Replace('4', 'W');
+            //     ipE.Replace('5', 'M');
+            //     ipE.Replace('6', 'T');
+            //     ipE.Replace('7', 'F');
+            //     ipE.Replace('8', 'A');
+            //     ipE.Replace('9', 'Z');
+            //     ipE.Replace('.', 'S');
+            // }
+            // 
+            // ipE = ReverseString(str);
+            
+        }
 
         return ipE;
     }
@@ -80,9 +134,29 @@ public class IPCryptor : MonoBehaviour
     // decrypts a room to create a room code.
     public static string DecryptIP(string ipE)
     {
+        // activate decryption
+        bool decrypt = true;
+
+        // decrypted.
         string ipD = ipE;
 
-        // TODO: decrypt ip address
+        // decrypt the ip
+        if (decrypt)
+        {
+            ipD.Replace('Q', '1');
+            ipD.Replace('X', '2');
+            ipD.Replace('R', '3');
+            ipD.Replace('W', '4');
+            ipD.Replace('M', '5');
+            ipD.Replace('T', '6');
+            ipD.Replace('F', '7');
+            ipD.Replace('A', '8');
+            ipD.Replace('Z', '9');
+            ipD.Replace('S', '.');
+
+            // reverse the string.
+            ipD = ReverseString(ipD);
+        }
 
         return ipD;
     }
