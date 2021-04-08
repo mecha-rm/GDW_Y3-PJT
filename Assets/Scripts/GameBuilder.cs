@@ -37,6 +37,13 @@ public class GameBuilder : MonoBehaviour
     // next scene once game is started.
     public string sceneAfterGame = "EndScene";
 
+    // score goal (does not get set if left as -1)
+    public float winScore = -1;
+
+    // start of countdown timer (not set if left as -1)
+    public float countdownStart = -1;
+
+
     // the stage file directory
     // string stageFileDirectory;
 
@@ -335,6 +342,18 @@ public class GameBuilder : MonoBehaviour
         // items
         // clears out all items.
         ItemManager.GetInstance().ClearAllItemsInPool();
+
+        // score
+        if(winScore != -1)
+            manager.winScore = winScore;
+
+        // time
+        if (countdownStart != -1)
+        {
+            // if countdown timer exists, give it this time.
+            if (manager.countdownTimer != null)
+                manager.countdownTimer.SetCountdownStartTime(countdownStart);
+        }
 
         // next scene.
         if (sceneAfterGame != "")

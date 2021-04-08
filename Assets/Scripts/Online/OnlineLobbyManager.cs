@@ -82,6 +82,10 @@ public class OnlineLobbyManager : MonoBehaviour
     // start time for timer
     public int startTime;
 
+    // win minimum nad maximum.
+    public int winScore; // the winning score
+    public const int WIN_MIN = 5, WIN_MAX = 100;
+
     // checks to see if the following connections are being used.
     private bool p2Join = false, p3Join = false, p4Join = false;
 

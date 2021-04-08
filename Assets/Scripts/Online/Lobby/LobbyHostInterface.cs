@@ -23,6 +23,10 @@ public class LobbyHostInterface : MonoBehaviour
     // time selection
     public Dropdown timeSelect;
 
+    // score select
+    public Slider scoreSelect;
+    public Text scoreText;
+
     // objects for host
     // public GameObject hostPane;
     // public GameObject join1Pane;
@@ -48,8 +52,6 @@ public class LobbyHostInterface : MonoBehaviour
                 roomCodeInputField = temp.GetComponent<InputField>();
             }
         }
-
-
 
         // room size text not set.
         if (roomSizeText == null)
@@ -93,6 +95,28 @@ public class LobbyHostInterface : MonoBehaviour
                 SetStartTime();
         }
 
+        // SCORE
+        // score text
+        if(scoreText == null)
+        {
+            GameObject newObject = GameObject.Find("Win Score Text");
+            scoreText = newObject.GetComponent<Text>();
+        }
+
+        // gets the score value
+        if (scoreSelect == null)
+        {
+            // searches for object.
+            GameObject temp = GameObject.Find("Win Score Slider");
+
+            // gets component
+            if (temp != null)
+                scoreSelect = temp.GetComponent<Slider>();
+
+            // sets the start time
+            if (scoreSelect != null)
+                OnScoreChange();
+        }
     }
 
     // gets the room size.
@@ -141,6 +165,22 @@ public class LobbyHostInterface : MonoBehaviour
     public void SetStartTime(int st)
     {
         lobbyManager.startTime = st;
+    }
+
+    // called when the score is changed.
+    public void OnScoreChange()
+    {
+        // gets the new value
+        lobbyManager.winScore = Mathf.RoundToInt(scoreSelect.value);
+
+        // set text value.
+        string str = lobbyManager.winScore.ToString();
+
+        // adding zeroes.
+        while (str.Length < 3)
+            str = "0" + str;
+
+        scoreText.text = str;
     }
 
     // on stage selection
