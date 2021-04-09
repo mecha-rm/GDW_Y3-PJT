@@ -98,7 +98,7 @@ public class OnlineLobbyManager : MonoBehaviour
     public GameBuilder.stages p2Stage, p3Stage, p4Stage;
 
     // stage received from server
-    public GameBuilder.stages recStage;
+    public GameBuilder.stages recStage = GameBuilder.stages.halloween;
 
     // the saved name of the player
     private const int NAME_CHAR_LIMIT = 16; //
@@ -1237,6 +1237,10 @@ public class OnlineLobbyManager : MonoBehaviour
             }
         }
 
+        // sets builder.
+        if (gameBuilder.manager == null)
+            gameBuilder.manager = FindObjectOfType<GameplayManager>(true);
+
         // returns game builder
         return gameBuilder;
     }
@@ -1247,8 +1251,11 @@ public class OnlineLobbyManager : MonoBehaviour
         // the scene name
         string sceneName = "";
 
+        // sets the next stage.
+        GameBuilder.stages chosenStage = (isMaster) ? p1Stage : recStage;
+
         // stage (checks to see if stage exists)
-        switch (p1Stage)
+        switch (chosenStage)
         {
             case GameBuilder.stages.halloween: // halloween stage
                 sceneName = "HalloweenMap";

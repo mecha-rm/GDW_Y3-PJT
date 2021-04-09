@@ -29,7 +29,7 @@ public class GameBuilder : MonoBehaviour
     public List<playables> playerList = new List<playables>();
 
     // the gameplay manager
-    GameplayManager manager;
+    public GameplayManager manager;
 
     // the stage parent object
     Stage stage;

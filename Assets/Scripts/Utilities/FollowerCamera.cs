@@ -79,6 +79,49 @@ public class FollowerCamera : MonoBehaviour
     {
         // vector for world origin (0, 0, 0)
         
+        // searches for player
+        if(target == null)
+        {
+            PlayerObject[] plyrs = FindObjectsOfType<PlayerObject>();
+            PlayerObject plyrMissingCam = null;
+            bool attached = false;
+
+            for(int i = 0; i < plyrs.Length; i++)
+            {
+                // player's camera is not null
+                if(plyrs[i].playerCamera == this)
+                {
+                    // if they have no target, give it this camera
+                    if(plyrs[i].playerCamera.target == null)
+                    {
+                        target = plyrs[i].gameObject;
+                        plyrs[i].playerCamera.target = plyrs[i].gameObject;
+                        attached = true;
+                        break;
+                    }    
+                }
+                else if(plyrs[i].playerCamera == null) // no camera set.
+                {
+                    plyrMissingCam = plyrs[i];
+                }
+            }
+
+            // gives player with no camera, this camera.
+            if (attached == false && plyrMissingCam != null)
+            {
+                plyrMissingCam.playerCamera = this;
+                attached = true;
+            }
+
+            // destroy self if no game object is found.
+            if (attached == false)
+            {
+                // destory self.
+                Destroy(gameObject);
+            }
+
+        }
+
         // saves the original position and rotation
         Vector3 origPos = transform.position;
         Quaternion origRot = transform.rotation;
