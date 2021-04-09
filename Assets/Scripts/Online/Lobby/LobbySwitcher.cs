@@ -135,7 +135,10 @@ public class LobbySwitcher : MonoBehaviour
     // starts the round.
     public void StartMatch()
     {
-        lobbyManager.PreMatchStart();
+        // lobbyManager.PreMatchStart();
+
+        // match should start.
+        lobbyManager.startMatchOnUpdate = true;
     }
 
     // exists the lobby.

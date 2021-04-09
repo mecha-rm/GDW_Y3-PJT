@@ -130,6 +130,10 @@ public class OnlineLobbyManager : MonoBehaviour
     // is 'true' if in the lobby, false if not.
     private bool inLobby = true;
 
+
+    // if 'true', the match starts on the next update.
+    public bool startMatchOnUpdate = false;
+
     // TODO: add game builder.
     public GameBuilder gameBuilder;
 
@@ -608,7 +612,13 @@ public class OnlineLobbyManager : MonoBehaviour
         // status
         {
             // becomes set to '2' when going onto another scene.
-            int status = 1; // TODO: have parameter for 2
+            int status = 0; // TODO: have parameter for 2
+
+            // changes status based on if the match is starting or not.
+            if (startMatchOnUpdate)
+                status = 2;
+            else
+                status = 1;
 
             byte[] data = BitConverter.GetBytes(status);
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
@@ -1089,7 +1099,10 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // Move Onto Gameplay Scene
         if (status == 2)
-            PreMatchStart();
+        {
+            // PreMatchStart();
+            startMatchOnUpdate = true; // start match.
+        }
     }
 
     // get endpoint count.
@@ -1422,11 +1435,12 @@ public class OnlineLobbyManager : MonoBehaviour
                 {
                     SendDataToServer();
                     ReceiveDataFromServer();
-                }
-           
-               
+                }     
            }
-        
+
+           // starts the match.
+            if (startMatchOnUpdate)
+                PreMatchStart();
         }
     }
 

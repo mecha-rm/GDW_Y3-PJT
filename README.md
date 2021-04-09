@@ -1,4 +1,6 @@
 # GDW_Y3_-_PJT
+Repo: https://github.com/mecha-rm/GDW_Y3-PJT
+
 Repository for the Outkasts game development project for the fall 2020 and winter 2021 term. Unity is the engine being used for this project.
 Unity Version: 2020.1.10f1
 
@@ -11,3 +13,4 @@ It is intended to have online multiplayer for up to 4 players.
 Use 'Free Roam' mode to roam the stages in single player mode.
 Use 'Online Mode' to join a lobby and start a match.
 	- NOTE: requires the sharing of the friendcode.
+	
