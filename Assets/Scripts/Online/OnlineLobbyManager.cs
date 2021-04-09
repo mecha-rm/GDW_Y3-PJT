@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using UnityEngine;
 using System.Text;
+using System.Collections.Generic;
 
 // manages online lobby
 public class OnlineLobbyManager : MonoBehaviour
@@ -59,7 +60,7 @@ public class OnlineLobbyManager : MonoBehaviour
     /// </summary>
 
     // recieved character
-    private struct recChar
+    public struct RecPlayer
     {
         public string name;
         public GameBuilder.playables character;
@@ -106,6 +107,9 @@ public class OnlineLobbyManager : MonoBehaviour
 
     // players
     public GameBuilder.playables p1 = GameBuilder.playables.dog, p2, p3, p4;
+
+    // room size
+    public int roomSize = 2;
 
     // start time for timer
     public int startTime;
@@ -179,6 +183,8 @@ public class OnlineLobbyManager : MonoBehaviour
             for (int i = defEpCount; i < serverEndpoints; i++)
                 server.AddEndPoint(serverBufferSize);
 
+            // room size increase.
+            roomSize = serverEndpoints + 1;
         }
 
         // finds online gameplay manager.
@@ -492,6 +498,20 @@ public class OnlineLobbyManager : MonoBehaviour
             {
                 string recName = Encoding.UTF8.GetString(data, index, NAME_CHAR_LIMIT);
 
+                // received name setting
+                switch (i)
+                {
+                    case 0:
+                        p2Name = recName;
+                        break;
+                    case 1:
+                        p3Name = recName;
+                        break;
+                    case 2:
+                        p4Name = recName;
+                        break;
+                }
+
                 // lenght of the name times size of chars.
                 index += (recName.Length * sizeof(char));
                 
@@ -598,19 +618,22 @@ public class OnlineLobbyManager : MonoBehaviour
         // Player Count
         {
             // becomes set to '2' when going onto another scene.
-            int pCount = 1; // TODO: have parameter for 2
-
-            // player 2 has joined.
-            if (p2Join)
-                pCount++;
-
-            // player 3 has joined.
-            if (p3Join)
-                pCount++;
-
-            // player 4 has joined.
-            if (p4Join)
-                pCount++;
+            // int pCount = 1; // TODO: have parameter for 2
+            // 
+            // // player 2 has joined.
+            // if (p2Join)
+            //     pCount++;
+            // 
+            // // player 3 has joined.
+            // if (p3Join)
+            //     pCount++;
+            // 
+            // // player 4 has joined.
+            // if (p4Join)
+            //     pCount++;
+            
+            // player count.
+            int pCount = roomSize;
 
             byte[] data = BitConverter.GetBytes(pCount);
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
@@ -815,6 +838,10 @@ public class OnlineLobbyManager : MonoBehaviour
         byte[] recData = client.client.GetReceiveBufferData();
         int index = 0;
 
+        // characters
+        List<RecPlayer> plyrs = new List<RecPlayer>();
+
+        // values
         int status = -1;
         int plyrCount = -1;
         int stageInt = -1;
@@ -828,6 +855,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // player count
         {
             plyrCount = BitConverter.ToInt32(recData, index);
+            roomSize = plyrCount;
             index += sizeof(int);
         }
 
@@ -839,33 +867,43 @@ public class OnlineLobbyManager : MonoBehaviour
         }
 
         // player names
-        for(int i = 1; i <= plyrCount; i++)
+        for(int i = 0; i < plyrCount; i++)
         {
             string recName = System.Text.Encoding.UTF8.GetString(recData, index, NAME_CHAR_LIMIT);
+            RecPlayer plyr;
+
+            // create new player
+            plyr = new RecPlayer();
+
+            // set name
+            plyr.name = recName;
+
+            // add to list.
+            plyrs.Add(plyr);
 
             // saves name to right variable.
             // NOTE: need identifiers for this.
-            switch(i)
-            {
-                case 1: // p1
-                    p1Name = recName;
-                    break;
-
-                case 2: // p2 (on the local side p2 is player 1)
-                    p2Name = recName;
-                    break;
-
-                case 3: // p3
-                    p3Name = recName;
-                    break;
-
-                case 4: // p4
-                    p4Name = recName;
-                    break;
-
-                default:
-                    break;
-            }
+            // switch(i)
+            // {
+            //     case 1: // p1
+            //         p1Name = recName;
+            //         break;
+            // 
+            //     case 2: // p2 (on the local side p2 is player 1)
+            //         p2Name = recName;
+            //         break;
+            // 
+            //     case 3: // p3
+            //         p3Name = recName;
+            //         break;
+            // 
+            //     case 4: // p4
+            //         p4Name = recName;
+            //         break;
+            // 
+            //     default:
+            //         break;
+            // }
 
             // lenght of the name times size of chars.
             index += (recName.Length * sizeof(char));
@@ -873,77 +911,242 @@ public class OnlineLobbyManager : MonoBehaviour
 
 
         // player characters
-        for (int i = 1; i <= plyrCount; i++)
+        for (int i = 0; i < plyrCount; i++)
         {
+            // player character.
             int pChar = BitConverter.ToInt32(recData, index);
+
+            // save character
+            GameBuilder.playables px = (GameBuilder.playables)(pChar);
+            RecPlayer recP = plyrs[i];
+            recP.character = px;
+            plyrs[i] = recP;
 
             // saves name to right variable.
             // NOTE: need identifiers for this.
-            switch (i)
-            {
-                case 1: // p1
-                    p1 = (GameBuilder.playables)(pChar);
-                    break;
-
-                case 2: // p2 (on the local side p2 is player 1)
-                    p2 = (GameBuilder.playables)(pChar);
-                    break;
-
-                case 3: // p3
-                    p3 = (GameBuilder.playables)(pChar);
-                    break;
-
-                case 4: // p4
-                    p4 = (GameBuilder.playables)(pChar);
-                    break;
-
-                default:
-                    break;
-            }
+            // switch (i)
+            // {
+            //     case 1: // p1
+            //         p1 = (GameBuilder.playables)(pChar);
+            //         break;
+            // 
+            //     case 2: // p2 (on the local side p2 is player 1)
+            //         p2 = (GameBuilder.playables)(pChar);
+            //         break;
+            // 
+            //     case 3: // p3
+            //         p3 = (GameBuilder.playables)(pChar);
+            //         break;
+            // 
+            //     case 4: // p4
+            //         p4 = (GameBuilder.playables)(pChar);
+            //         break;
+            // 
+            //     default:
+            //         break;
+            // }
 
             // lenght of the name times size of chars.
             index += sizeof(int);
         }
 
         // win count
-        for (int i = 1; i <= plyrCount; i++)
+        for (int i = 0; i < plyrCount; i++)
         {
+            // get win count
             int winCount = BitConverter.ToInt32(recData, index);
+
+            // set data
+            RecPlayer recP = plyrs[i];
+            recP.wins = winCount;
+            plyrs[i] = recP;
 
             // saves name to right variable.
             // NOTE: need identifiers for this.
-            switch (i)
-            {
-                case 1: // p1
-                    p1Wins = winCount;
-                    break;
-
-                case 2: // p2 (on the local side p2 is player 1)
-                    p2Wins = winCount;
-                    break;
-
-                case 3: // p3
-                    p3Wins = winCount;
-                    break;
-
-                case 4: // p4
-                    p4Wins = winCount;
-                    break;
-
-                default:
-                    break;
-            }
+            // switch (i)
+            // {
+            //     case 1: // p1
+            //         p1Wins = winCount;
+            //         break;
+            // 
+            //     case 2: // p2 (on the local side p2 is player 1)
+            //         p2Wins = winCount;
+            //         break;
+            // 
+            //     case 3: // p3
+            //         p3Wins = winCount;
+            //         break;
+            // 
+            //     case 4: // p4
+            //         p4Wins = winCount;
+            //         break;
+            // 
+            //     default:
+            //         break;
+            // }
 
             // lenght of the name times size of chars.
             index += sizeof(int);
         }
+
+        // set indexes
+        Stack<int> usedIndexes = new Stack<int>();
+        
+        // set players
+        bool p1Set = false, p2Set = false, p3Set = false, p4Set = false;
+
+
+        // match data with players.
+        for(int i = 0; i < plyrCount; i++)
+        {
+            if(p1Name == plyrs[i].name) // p1 (local player)
+            {
+                // skip if set to local player.
+                usedIndexes.Push(i);
+
+                // p1 has been set.
+                p1Set = true;
+
+                // p1Name = plyrs[i].name;
+                // p1Stage = plyrs[i].stage;
+                // p1Wins = plyrs[i].wins;
+            }
+            else if(p2Name == plyrs[i].name) // p2
+            {
+                usedIndexes.Push(i);
+                p2Stage = plyrs[i].stage;
+                p2Wins = plyrs[i].wins;
+
+                // p2 has been set.
+                p2Set = true;
+            }
+            else if (p3Name == plyrs[i].name) // p3
+            {
+                usedIndexes.Push(i);
+                p3Stage = plyrs[i].stage;
+                p3Wins = plyrs[i].wins;
+
+                // p3 has been set.
+                p3Set = true;
+            }
+            else if (p4Name == plyrs[i].name) // p4
+            {
+                usedIndexes.Push(i);
+                p4Stage = plyrs[i].stage;
+                p4Wins = plyrs[i].wins;
+
+                // p4 has been set.
+                p4Set = true;
+            }
+        }
+
+        
+        // the used indexes
+        while(usedIndexes.Count != 0)
+        {
+            int idx = usedIndexes.Pop(); // remove index
+            plyrs.RemoveAt(idx); // remove value
+        }
+
+
+        // fit remaining players
+        for(int i = 0; i < plyrs.Count; i++)
+        {
+            // checks what items are available.
+            // p1 is ignored since that's local.
+            // if(p1Set == false)
+            // {
+            //     //
+            // }
+
+            // p2 not set.
+            if(p2Set == false)
+            {
+                p2Name = plyrs[i].name;
+                p2 = plyrs[i].character;
+                p2Stage = plyrs[i].stage;
+                p2Wins = plyrs[i].wins;
+                p2Set = true;
+            }
+            else if(p3Set == false) // p3 not set.
+            {
+                p3Name = plyrs[i].name;
+                p3 = plyrs[i].character;
+                p3Stage = plyrs[i].stage;
+                p3Wins = plyrs[i].wins;
+                p3Set = true;
+            }
+            else if(p4Set == false) // p4 not set.
+            {
+                p4Name = plyrs[i].name;
+                p4 = plyrs[i].character;
+                p4Stage = plyrs[i].stage;
+                p4Wins = plyrs[i].wins;
+                p4Set = true;
+            }
+        }
+
 
         // Move Onto Gameplay Scene
         if (status == 2)
             PreMatchStart();
     }
 
-    
+    // get endpoint count.
+    public int GetEndPointCount()
+    {
+        return server.server.GetEndPointCount();
+    }
+
+    // set endpoint amount
+    public void SetEndPointCount(int newCount)
+    {
+        // server exists check.
+        if(server == null)
+        {
+            Debug.LogError("Server does not exist.");
+        }
+
+        // existing endpoint count.
+        int oldCount = server.server.GetEndPointCount();
+
+        if(newCount > oldCount) // count has increased.
+        {
+            // updated endpoint count.
+            int updatedCount;
+
+            // adds endpoints
+            do
+            {
+                server.server.AddEndPoint(); // add endpoint
+                updatedCount = server.server.GetEndPointCount(); // get current count.
+            }
+            while (newCount > updatedCount);
+        }
+        else if(newCount < oldCount) // count has decreased.
+        {
+            int updatedCount;
+
+            // adds endpoints
+            do
+            {
+                updatedCount = server.server.GetEndPointCount() - 1;
+
+                // no more endpoints.
+                if (updatedCount < 0)
+                    break;
+
+                server.server.RemoveEndPoint(updatedCount);
+            }
+            while (newCount < updatedCount);
+        }
+
+        // server endpoint count updated.
+        serverEndpoints = server.server.GetEndPointCount();
+        roomSize = serverEndpoints + 1;
+    }
+
+
     // adds endpoint
     public void AddEndpoint()
     {
@@ -1071,16 +1274,16 @@ public class OnlineLobbyManager : MonoBehaviour
         // }
 
         // players
-        int plyrCount = 0;
+        int plyrCount = roomSize;
 
         // goes through each player
-        for(int i = 1; i <= serverEndpoints + 1; i++)
+        for (int i = 1; i <= roomSize; i++)
         {
             GameBuilder.playables p = GameBuilder.playables.none;
             bool joined = false;
 
             // gets player
-            switch(i)
+            switch (i)
             {
                 case 1:
                     p = p1;
@@ -1102,10 +1305,20 @@ public class OnlineLobbyManager : MonoBehaviour
 
             // if the player is set to none, it means it wasn't set.
             // TODO: change to use joined.
+            // if (joined == false)
+            // {
+            //     continue;
+            // }
+            // else
+            // {
+            //     plyrCount++;
+            // }
+
+            plyrCount++;
+
+            // set game builder to dog if this is et to none.
             if (p == GameBuilder.playables.none)
-                continue;
-            else
-                plyrCount++;
+                p = GameBuilder.playables.dog;
 
             // adds player to game builder.
             gameBuilder.AddPlayer(i, p);
@@ -1196,17 +1409,20 @@ public class OnlineLobbyManager : MonoBehaviour
            }
            else // acting as client
            {
-               // moved onto gameplay.
-               // if(client.client.GetReceiveBufferSize() != clientBufferSize)
-               // {
-               //     // calls for prematch start.
-               //     PreMatchStart();
-               // }
-               // else
-               {
-                   SendDataToServer();
-                   ReceiveDataFromServer();
-               }
+                // moved onto gameplay
+                // int recSize = client.client.GetReceiveBufferSize();
+                // 
+                // 
+                // if (recSize != clientBufferSize && recSize != 0)
+                // {
+                //     // calls for prematch start.
+                //     PreMatchStart();
+                // }
+                // else
+                {
+                    SendDataToServer();
+                    ReceiveDataFromServer();
+                }
            
                
            }

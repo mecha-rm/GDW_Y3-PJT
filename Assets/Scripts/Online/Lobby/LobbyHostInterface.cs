@@ -18,7 +18,6 @@ public class LobbyHostInterface : MonoBehaviour
     // room size content
     public Text roomSizeText;
     public Slider roomSizeSlider;
-    private int roomSize;
 
     // room indicator
     public Image roomIndict;
@@ -86,7 +85,7 @@ public class LobbyHostInterface : MonoBehaviour
 
         // gets the room size in integer form.
         if (roomSizeText != null)
-            roomSize = int.Parse(roomSizeText.text);
+            lobbyManager.roomSize = int.Parse(roomSizeText.text);
 
 
         // room indicator colour
@@ -153,7 +152,7 @@ public class LobbyHostInterface : MonoBehaviour
     // gets the room size.
     public int GetRoomSize()
     {
-        return roomSize;
+        return lobbyManager.roomSize;
     }
 
     // on the room size change
@@ -164,7 +163,11 @@ public class LobbyHostInterface : MonoBehaviour
 
         // sets text and room size.
         roomSizeText.text = newSize.ToString();
-        roomSize = newSize;
+        lobbyManager.roomSize = newSize;
+
+        // sets the room size to the new size.
+        // room is of size 2 - 4, which means there's 1 -3 endpoints.
+        lobbyManager.SetEndPointCount(newSize - 1);
     }
 
     // generates the room code from the ip address

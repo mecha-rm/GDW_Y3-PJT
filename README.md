@@ -7,3 +7,7 @@ Said projects have been merged into one, with DLL source code being found in the
 
 This is a capture the flag type game where the player that holds the flag for the longest wins.
 It is intended to have online multiplayer for up to 4 players.
+
+Use 'Free Roam' mode to roam the stages in single player mode.
+Use 'Online Mode' to join a lobby and start a match.
+	- NOTE: requires the sharing of the friendcode.
