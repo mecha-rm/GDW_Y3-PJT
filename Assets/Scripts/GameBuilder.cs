@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// builds the game
+// TODO:
+// rewrite game startup and game lobby.
 public class GameBuilder : MonoBehaviour
 {
     // the playables
