@@ -28,6 +28,8 @@ public class GameplayManager : MonoBehaviour
     // TODO: have these get generated instead of just already existing. Done elsewhere.
     // TODO: make this a listi nstead of dedicated varaibles?
     // the character select screen will generate these.
+
+    // TODO: make this getter and setter variables instead of independent variables.
     public PlayerObject p1 = null;
     public PlayerObject p2 = null;
     public PlayerObject p3 = null;
@@ -45,6 +47,10 @@ public class GameplayManager : MonoBehaviour
     // the game builder that was used to make this manager.
     // this exists because you can't search for Don'tDestroyOnLoad objects.
     public GameBuilder gameBuilder = null;
+
+    // the match builder for the scene. This will eventually replace the game builder.
+    public MatchBuilder matchBuilder = null;
+
 
     // if set to 'true', the game builder is destroyed when the gameplay manager is destroyed.
     public bool destroyGameBuilder = true;
@@ -246,6 +252,44 @@ public class GameplayManager : MonoBehaviour
         return px;
     }
 
+    // creates the players (match builder variant) - will replace other variant
+    public PlayerObject CreatePlayer(int number, MatchBuilder.playables type, bool destroySaved, bool useMainCamera)
+    {
+        GameBuilder.playables gbp = GameBuilder.playables.none;
+
+        // goes through each type
+        switch(type)
+        {
+            case MatchBuilder.playables.none: // none
+                gbp = GameBuilder.playables.none;
+                break;
+
+            case MatchBuilder.playables.dog: // dog
+                gbp = GameBuilder.playables.dog;
+                break;
+
+            case MatchBuilder.playables.cat: // cat
+                gbp = GameBuilder.playables.cat;
+                break;
+
+            case MatchBuilder.playables.bunny: // bunny
+                gbp = GameBuilder.playables.bunny;
+                break;
+
+            case MatchBuilder.playables.turtle: // turtle
+                gbp = GameBuilder.playables.turtle;
+                break;
+        }
+
+        return CreatePlayer(number, gbp, destroySaved, useMainCamera);
+    }
+
+    // creates the players (match builder variant) - will replace other variant
+    public PlayerObject CreatePlayer(int number, int type, bool destroySaved, bool useMainCamera)
+    {
+        return CreatePlayer(number, (GameBuilder.playables)type, destroySaved, useMainCamera);
+    }
+
     // gets the player based on its number (1 - 4)
     public PlayerObject GetPlayer(int number)
     {
@@ -406,6 +450,12 @@ public class GameplayManager : MonoBehaviour
         if(destroyGameBuilder && gameBuilder != null)
         {
             Destroy(gameBuilder.gameObject);
+        }
+
+        // destroys match builder (will replace game builder)
+        if (destroyGameBuilder && matchBuilder != null)
+        {
+            Destroy(matchBuilder.gameObject);
         }
     }
 }
