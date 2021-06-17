@@ -221,7 +221,7 @@ public class MatchBuilder : MonoBehaviour
         playerList.Add(newPlayer);
 
         if (manager != null)
-            return manager.CreatePlayer(number, newPlayer, true, false);
+            return manager.CreatePlayer(number, newPlayer, true, false, Mathf.Clamp(number, 1, 4));
         else
             return null;
     }

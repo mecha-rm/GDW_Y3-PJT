@@ -91,7 +91,7 @@ public class FollowerCamera : MonoBehaviour
                 // player's camera is not null
                 if(plyrs[i].playerCamera == this)
                 {
-                    // if they have no target, give it this camera
+                    // if they have no target, give it this camera.
                     if(plyrs[i].playerCamera.target == null)
                     {
                         target = plyrs[i].gameObject;
@@ -154,4 +154,10 @@ public class FollowerCamera : MonoBehaviour
         transform.position = target.transform.position + offset;
         transform.LookAt(target.transform);
     }
+
+    // destroyed
+    // private void OnDestroy()
+    // {
+    //     Debug.Log("Follower Camera Destroyed");
+    // }
 }

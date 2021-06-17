@@ -29,6 +29,8 @@ public class GameplayManager : MonoBehaviour
     // TODO: make this a listi nstead of dedicated varaibles?
     // the character select screen will generate these.
 
+    // TODO: put players into list and use getter and setter
+
     // TODO: make this getter and setter variables instead of independent variables.
     public PlayerObject p1 = null;
     public PlayerObject p2 = null;
@@ -87,25 +89,25 @@ public class GameplayManager : MonoBehaviour
         //         {
         //             p1 = px.GetComponent<PlayerObject>();
         //             p1.playerNumber = 1;
-        //             p1.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 1;
+        //             p1.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 0;
         //         }
         //         else if (i == 2 && p2 == null)
         //         {
         //             p2 = px.GetComponent<PlayerObject>();
         //             p2.playerNumber = 2;
-        //             p2.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 2;
+        //             p2.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 1;
         //         }
         //         else if (i == 3 && p3 == null)
         //         {
         //             p3 = px.GetComponent<PlayerObject>();
         //             p3.playerNumber = 3;
-        //             p3.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 3;
+        //             p3.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 2;
         //         }
         //         else if (i == 4 && p4 == null)
         //         {
         //             p4 = px.GetComponent<PlayerObject>();
         //             p4.playerNumber = 4;
-        //             p4.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 4;
+        //             p4.playerCamera.gameObject.GetComponent<Camera>().targetDisplay = 3;
         //         }
         //     }
         // }
@@ -141,8 +143,12 @@ public class GameplayManager : MonoBehaviour
             countdownTimer = FindObjectOfType<CountdownTimer>();
     }
 
-    // creates the players
-    public PlayerObject CreatePlayer(int number, GameBuilder.playables type, bool destroySaved, bool useMainCamera)
+    // public int;
+
+    // creates the players.
+    // if 'useMainCamera' is set to true, then the player uses the main camera (default view). Otherwise a new camera is made.
+    // the target display is used to determine which camera to use.
+    public PlayerObject CreatePlayer(int number, GameBuilder.playables type, bool destroySaved, bool useMainCamera, int targetDisplay = 0)
     {
         // new player
         GameObject newPlayer;
@@ -182,24 +188,95 @@ public class GameplayManager : MonoBehaviour
 
         // px.playerNumber = number;
 
-        // if the number is greater than 0, set the target display to it.
-        if (number > 0 && !useMainCamera)
+        // Player Camera
         {
-            // TODO: playerCamera has not been set for some reason.
-            // camera object.
-            // it's done this way just in case the follower camera isn't set yet.
-            Camera cam = px.GetFollowerCamera().GetCamera();
-            
-            // change target display
-            if(cam != null)
-                cam.targetDisplay = number;
+            // used to check and see if the main camera is available.
+            bool mainCamUsed = false;
+
+            // camera objects
+            GameObject camObject = null; // game object
+            Camera camComp = null; // camera component
+            FollowerCamera fwr = null; // folloer componetn
+
+            // use main camera
+            if (useMainCamera)
+            {
+                camObject = GameObject.Find("Main Camera");
+
+                // finds the cam object.
+                if (camObject != null)
+                {
+                    // gets camera object.
+                    camComp = camObject.GetComponent<Camera>();
+
+                    // the camera is not equal to null, which mean the main cam exists.
+                    if (camComp != null)
+                    {
+                        // gets follower camera
+                        fwr = camObject.GetComponent<FollowerCamera>();
+
+                        // follower component exists
+                        if(fwr != null)
+                        {
+                            px.SetFollowerCamera(fwr); // sets follower component
+
+                            mainCamUsed = true; // camera found and used 
+
+                        }
+                        else
+                        {
+                            Debug.LogError("Main camera did not have follower component. Generating new camera.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Camera component on Main Camera object not found. Generating new camera.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Main camera object not found. Generating new camera.");
+                }
+            }
+
+            if(!useMainCamera || !mainCamUsed) // creates another camera specifically for this player
+            {
+                // gets instance of camera
+                camObject = Instantiate((GameObject)Resources.Load("Prefabs/Player Camera"));
+                
+                // gets camera component
+                camComp = camObject.GetComponent<Camera>();
+
+                // gets follower camera
+                fwr = camObject.GetComponent<FollowerCamera>();
+                px.SetFollowerCamera(fwr);
+            }
+
+            // sets the target display
+            // target display defaults to 0.
+            if (camComp != null)
+                camComp.targetDisplay = targetDisplay;
         }
-        else // use main camera
-        {
-            GameObject camObject = GameObject.Find("Main Camera");
-            Camera camComp = camObject.GetComponent<Camera>();
-            FollowerCamera fwr = px.MakeFollowerCamera(camComp);
-        }
+
+        // original camera setup
+        // // if the number is greater than 0, set the target display to it.
+        // if (number > 0 && !useMainCamera)
+        // {
+        //     // TODO: playerCamera has not been set for some reason.
+        //     // camera object.
+        //     // it's done this way just in case the follower camera isn't set yet.
+        //     Camera cam = px.GetFollowerCamera().GetCamera();
+        //     
+        //     // change target display
+        //     if(cam != null)
+        //         cam.targetDisplay = number;
+        // }
+        // else // use main camera
+        // {
+        //     GameObject camObject = GameObject.Find("Main Camera");
+        //     Camera camComp = camObject.GetComponent<Camera>();
+        //     FollowerCamera fwr = px.SetFollowerCamera(camComp);
+        // }
 
         // saves the player object
         // also increases player count if no player object was assigned yet.
@@ -253,7 +330,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     // creates the players (match builder variant) - will replace other variant
-    public PlayerObject CreatePlayer(int number, MatchBuilder.playables type, bool destroySaved, bool useMainCamera)
+    public PlayerObject CreatePlayer(int number, MatchBuilder.playables type, bool destroySaved, bool useMainCamera, int targetDisplay = 0)
     {
         GameBuilder.playables gbp = GameBuilder.playables.none;
 
@@ -281,13 +358,13 @@ public class GameplayManager : MonoBehaviour
                 break;
         }
 
-        return CreatePlayer(number, gbp, destroySaved, useMainCamera);
+        return CreatePlayer(number, gbp, destroySaved, useMainCamera, targetDisplay);
     }
 
     // creates the players (match builder variant) - will replace other variant
-    public PlayerObject CreatePlayer(int number, int type, bool destroySaved, bool useMainCamera)
+    public PlayerObject CreatePlayer(int number, int type, bool destroySaved, bool useMainCamera, int targetDisplay = 0)
     {
-        return CreatePlayer(number, (GameBuilder.playables)type, destroySaved, useMainCamera);
+        return CreatePlayer(number, (GameBuilder.playables)type, destroySaved, useMainCamera, targetDisplay);
     }
 
     // gets the player based on its number (1 - 4)

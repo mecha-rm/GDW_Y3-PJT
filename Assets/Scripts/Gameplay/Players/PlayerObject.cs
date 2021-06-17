@@ -148,6 +148,8 @@ public class PlayerObject : MonoBehaviour
 
         // if no player camera has been set, a new one will be created.
         // it first checks if the main camera has the right script
+
+        // TODO: for some reason if you go back and change your character it causes there to be no camera with an audio listener.
         {
             // used if the camera couldn't be foun.
             bool setCamera = true;
@@ -169,7 +171,7 @@ public class PlayerObject : MonoBehaviour
                         // if(!camComp.isActiveAndEnabled)
                         //     MakeFollowerCamera(camComp);
 
-                        MakeFollowerCamera(camComp);
+                        SetFollowerCamera(camComp);
                     }
                     else
                     {
@@ -394,36 +396,6 @@ public class PlayerObject : MonoBehaviour
             playerIcon.transform.parent = pSpace.transform;
     }
 
-
-    // makes the provided camera the follower camera.
-    // this does NOT change the target display.
-    public FollowerCamera MakeFollowerCamera(Camera camera)
-    {
-        // player camera
-        if (camera == null)
-            return null;
-
-        // tries to get the camera
-        playerCamera = camera.gameObject.GetComponent<FollowerCamera>();
-
-        // if the camera didn't have a follower camera component, add one.
-        if(playerCamera == null)
-            playerCamera = camera.gameObject.AddComponent<FollowerCamera>();
-
-        camera.tag = "Camera";
-        camera.depth = -1;
-
-        // attaches the camera
-        playerCamera.cameraObject = camera;
-
-        // set values
-        playerCamera.distance = cameraDistance;
-        playerCamera.target = gameObject;
-        playerCamera.useParentRotation = true;
-
-        return playerCamera;
-    }
-
     // gets the follower camera, generating a new one if it doesn't exist.
     public FollowerCamera GetFollowerCamera()
     {
@@ -458,6 +430,61 @@ public class PlayerObject : MonoBehaviour
 
         return playerCamera;
     }
+
+
+    // sets the follower camera
+    // this does NOT change the target display.
+    public void SetFollowerCamera(FollowerCamera cam)
+    {
+        // provided camera is null.
+        if(cam == null)
+        {
+            return;
+        }
+
+        // attaches the camera
+        playerCamera = cam;
+        playerCamera.cameraObject = playerCamera.gameObject.GetComponent<Camera>();
+
+        // attaches the camera
+        // adds a follower camera script, and gives it the base value.
+
+        playerCamera.distance = cameraDistance;
+        playerCamera.target = gameObject;
+        playerCamera.useParentRotation = true;
+    }
+
+    // sets the follower camera using a regular camera.
+    // this adds a follower component if it doesn't exist.
+    // this does NOT change the target display.
+    public FollowerCamera SetFollowerCamera(Camera camera)
+    {
+        // player camera
+        if (camera == null)
+            return null;
+
+        // tries to get the camera
+        playerCamera = camera.gameObject.GetComponent<FollowerCamera>();
+
+        // if the camera didn't have a follower camera component, add one.
+        if (playerCamera == null)
+            playerCamera = camera.gameObject.AddComponent<FollowerCamera>();
+
+        camera.tag = "Camera";
+        camera.depth = -1;
+
+        // attaches the camera
+        playerCamera.cameraObject = camera;
+
+        // set values
+        playerCamera.distance = cameraDistance;
+        playerCamera.target = gameObject;
+        playerCamera.useParentRotation = true;
+
+        return playerCamera;
+    }
+
+
 
     // attaches the flag to the player
     public void AttachFlag(FlagObject flag)

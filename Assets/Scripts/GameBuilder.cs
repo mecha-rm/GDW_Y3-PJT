@@ -398,6 +398,8 @@ public class GameBuilder : MonoBehaviour
     {
         playerList.Add((playables)newPlayer);
 
+
+        // TODO: change point where players are created to be when the scene starts.
         if (manager != null)
             manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
     }
@@ -407,6 +409,8 @@ public class GameBuilder : MonoBehaviour
     {
         playerList.Add(newPlayer);
 
+
+        // TODO: change point where players are created to be when the scene starts.
         if (manager != null)
             manager.CreatePlayer(playerList.Count, newPlayer, true, false);
     }
@@ -416,6 +420,8 @@ public class GameBuilder : MonoBehaviour
     {
         playerList.Add(newPlayer);
 
+
+        // TODO: change point where players are created to be when the scene starts.
         if (manager != null)
             manager.CreatePlayer(number, newPlayer, true, false);
     }
