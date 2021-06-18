@@ -439,6 +439,16 @@ public class GameBuilder : MonoBehaviour
             return null;
     }
 
+    // if set to 'true', the players are all destroyed.
+    public void ClearPlayerList(bool destroyPlayers)
+    {
+        playerList.Clear();
+
+        // if the players should be destroyed.
+        if(destroyPlayers)
+            manager.DestroyAllPlayers();
+    }
+
     // gets the stage.
     public stages GetStage()
     {
@@ -461,12 +471,6 @@ public class GameBuilder : MonoBehaviour
     public void SetStage(stages newMap)
     {
         map = newMap;
-    }
-
-    // clears the player list
-    public void ClearPlayerList()
-    {
-        playerList.Clear();
     }
 
     // updates the volume of all sound efects and BGMs.

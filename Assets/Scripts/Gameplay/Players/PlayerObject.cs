@@ -61,8 +61,8 @@ public class PlayerObject : MonoBehaviour
     // normal max velocity is the normal speed limit.
     // flag held velocity is used when the player is holding the flag.
     // flag held factor reduces acceleration when holding the flag.
-    private float maxVelocity = 50.0F;
-    private float flagMaxVelocity = 45.0F;
+    private float maxVelocity = 40.0F;
+    private float flagMaxVelocity = 35.0F;
     private float flagHeldFactor = 0.85F;
 
     // animal characteristics
