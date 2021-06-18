@@ -1336,7 +1336,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
             plyrCount++;
 
-            // set game builder to dog if this is et to none.
+            // set game builder to dog if this is set to none.
             if (p == GameBuilder.playables.none)
                 p = GameBuilder.playables.dog;
 
