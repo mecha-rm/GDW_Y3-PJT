@@ -59,6 +59,7 @@ public class OnlineLobbyManager : MonoBehaviour
     ///     - [44 - 47] - Win Count
     /// </summary>
 
+    // TODO: going to change up the setup to use RecPlayer for everything.
     // recieved character
     public struct RecPlayer
     {
