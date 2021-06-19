@@ -1296,11 +1296,14 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // players
         int plyrCount = roomSize;
+        int joinedPlayers = 0;
 
+        // TODO: add in check to see who is player 1 so it knows who to control.
         // goes through each player
         for (int i = 1; i <= roomSize; i++)
         {
             GameBuilder.playables p = GameBuilder.playables.none;
+            bool isP1 = false;
             bool joined = false;
 
             // gets player
@@ -1309,6 +1312,7 @@ public class OnlineLobbyManager : MonoBehaviour
                 case 1:
                     p = p1;
                     joined = true;
+                    isP1 = true;
                     break;
                 case 2:
                     p = p2;
@@ -1338,12 +1342,26 @@ public class OnlineLobbyManager : MonoBehaviour
             plyrCount++;
 
             // set game builder to dog if this is set to none.
+            // this should be commented out eventually.
             if (p == GameBuilder.playables.none)
                 p = GameBuilder.playables.dog;
 
             // adds player to game builder.
-            gameBuilder.AddPlayer(i, p);
+            if (joined == true)
+            {
+                if (isP1)
+                    gameBuilder.AddPlayer(i, p);
+                else
+                    gameBuilder.AddPlayer(i, p);
+
+                joinedPlayers++;
+            }
+                
         }
+
+        // if no players joined, it adds a default.
+        // if (joinedPlayers == 0)
+        //     gameBuilder.AddPlayer(1, GameBuilder.playables.dog);
 
         // set to load the game.
         gameBuilder.SetLoadGame(true);
