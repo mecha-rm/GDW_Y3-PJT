@@ -222,9 +222,19 @@ public class GameBuilder : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < count; i++)
+            // multiple players. Only the first one uses the main camera.
+            // for (int i = 0; i < count; i++)
+            // {
+            //     manager.CreatePlayer(i + 1, playerList[i], false, false);
+            // }
+
+            // player 1
+            manager.CreatePlayer(1, playerList[0], false, true, 0);
+
+            // other players (starts at 1 since player 1 has been created)
+            for (int i = 1; i < count; i++)
             {
-                manager.CreatePlayer(i + 1, playerList[i], false, false);
+                manager.CreatePlayer(i + 1, playerList[i], false, false, i);
             }
         }
 

@@ -107,7 +107,8 @@ public class OnlineLobbyManager : MonoBehaviour
     private string p1Name = "", p2Name = "", p3Name = "", p4Name = "";
 
     // players
-    public GameBuilder.playables p1 = GameBuilder.playables.dog, p2, p3, p4;
+    public GameBuilder.playables p1Char = GameBuilder.playables.dog;
+    public GameBuilder.playables p2Char, p3Char, p4Char;
 
     // room size
     public int roomSize = 2;
@@ -554,13 +555,13 @@ public class OnlineLobbyManager : MonoBehaviour
                 switch (i)
                 {
                     case 0:
-                        p2 = (GameBuilder.playables)(charValue);
+                        p2Char = (GameBuilder.playables)(charValue);
                         break;
                     case 1:
-                        p3 = (GameBuilder.playables)(charValue);
+                        p3Char = (GameBuilder.playables)(charValue);
                         break;
                     case 2:
-                        p4 = (GameBuilder.playables)(charValue);
+                        p4Char = (GameBuilder.playables)(charValue);
                         break;
                 }
 
@@ -706,7 +707,7 @@ public class OnlineLobbyManager : MonoBehaviour
             // player 1 has joined.
             // if (p1 != GameBuilder.playables.none)
             {   
-                byte[] data = BitConverter.GetBytes((int)p1);
+                byte[] data = BitConverter.GetBytes((int)p1Char);
                 Buffer.BlockCopy(data, 0, sendData, index, data.Length);
                 index += data.Length;
             }
@@ -714,7 +715,7 @@ public class OnlineLobbyManager : MonoBehaviour
             // player 2 has joined.
             if (p2Join)
             {
-                byte[] data = BitConverter.GetBytes((int)p2);
+                byte[] data = BitConverter.GetBytes((int)p2Char);
                 Buffer.BlockCopy(data, 0, sendData, index, data.Length);
                 index += data.Length;
             }
@@ -722,7 +723,7 @@ public class OnlineLobbyManager : MonoBehaviour
             // player 3 has joined.
             if (p3Join)
             {
-                byte[] data = BitConverter.GetBytes((int)p3);
+                byte[] data = BitConverter.GetBytes((int)p3Char);
                 Buffer.BlockCopy(data, 0, sendData, index, data.Length);
                 index += data.Length;
             }
@@ -730,7 +731,7 @@ public class OnlineLobbyManager : MonoBehaviour
             // player 4 has joined.
             if(p4Join)
             {
-                byte[] data = BitConverter.GetBytes((int)p4);
+                byte[] data = BitConverter.GetBytes((int)p4Char);
                 Buffer.BlockCopy(data, 0, sendData, index, data.Length);
                 index += data.Length;
             }
@@ -818,7 +819,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // Character
         {
-            byte[] data = BitConverter.GetBytes((int)p1);
+            byte[] data = BitConverter.GetBytes((int)p1Char);
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
             index += data.Length;
         }
@@ -1074,7 +1075,7 @@ public class OnlineLobbyManager : MonoBehaviour
             if(p2Set == false)
             {
                 p2Name = plyrs[i].name;
-                p2 = plyrs[i].character;
+                p2Char = plyrs[i].character;
                 p2Stage = plyrs[i].stage;
                 p2Wins = plyrs[i].wins;
                 p2Set = true;
@@ -1082,7 +1083,7 @@ public class OnlineLobbyManager : MonoBehaviour
             else if(p3Set == false) // p3 not set.
             {
                 p3Name = plyrs[i].name;
-                p3 = plyrs[i].character;
+                p3Char = plyrs[i].character;
                 p3Stage = plyrs[i].stage;
                 p3Wins = plyrs[i].wins;
                 p3Set = true;
@@ -1090,7 +1091,7 @@ public class OnlineLobbyManager : MonoBehaviour
             else if(p4Set == false) // p4 not set.
             {
                 p4Name = plyrs[i].name;
-                p4 = plyrs[i].character;
+                p4Char = plyrs[i].character;
                 p4Stage = plyrs[i].stage;
                 p4Wins = plyrs[i].wins;
                 p4Set = true;
@@ -1196,13 +1197,13 @@ public class OnlineLobbyManager : MonoBehaviour
     // sets the local player
     public void SetLocalPlayer(GameBuilder.playables plyr)
     {
-        p1 = plyr;
+        p1Char = plyr;
     }
 
     // sets the local palyer
     public void SetLocalPlayer(int plyr)
     {
-        p1 = (GameBuilder.playables)plyr;
+        p1Char = (GameBuilder.playables)plyr;
     }
 
     // finds gmae builder, generating a new one if it doesn't exist.
@@ -1250,40 +1251,112 @@ public class OnlineLobbyManager : MonoBehaviour
     public void PreMatchStart()
     {
         // TODO: check joined bools to get player counts. Also put them into a list for the loop.
+        List<RecPlayer> plyrs = new List<RecPlayer>();
 
         // the scene name
         string sceneName = "";
 
-        // sets the next stage.
-        GameBuilder.stages chosenStage = (isMaster) ? p1Stage : recStage;
-
-        // stage (checks to see if stage exists)
-        switch (chosenStage)
+        // TODO: optimize this
+        // add player 1
         {
-            case GameBuilder.stages.halloween: // halloween stage
-                sceneName = "HalloweenMap";
-                break;
+            RecPlayer rec = new RecPlayer();
+            rec.name = p1Name;
+            rec.character = p1Char;
+            rec.stage = p1Stage;
+            rec.wins = p1Wins;
 
-            case GameBuilder.stages.christmas: // christmas stage
-                sceneName = "ChristmasMap";
-                break;
-
-            case GameBuilder.stages.valentines: // valentine's stage
-                sceneName = "ValentinesMap";
-                break;
-
-            default: // nothing set.
-                sceneName = "";
-                break;
+            plyrs.Add(rec);
         }
 
-        // no round to start
-        if (sceneName == "")
+        // add player 2
+        if(p2Join)
         {
-            Debug.LogError("No match to start. Start failure.");
-            return;
+            RecPlayer rec = new RecPlayer();
+            rec.name = p2Name;
+            rec.character = p2Char;
+            rec.stage = p2Stage;
+            rec.wins = p2Wins;
+
+            plyrs.Add(rec);
         }
 
+        // add player 3
+        if(p3Join)
+        {
+            RecPlayer rec = new RecPlayer();
+            rec.name = p3Name;
+            rec.character = p3Char;
+            rec.stage = p3Stage;
+            rec.wins = p3Wins;
+
+            plyrs.Add(rec);
+        }
+
+        // add player 4
+        if(p4Join)
+        {
+            RecPlayer rec = new RecPlayer();
+            rec.name = p4Name;
+            rec.character = p4Char;
+            rec.stage = p4Stage;
+            rec.wins = p4Wins;
+
+            plyrs.Add(rec);
+        }
+
+
+
+        // selecting the stage.
+        {
+            // selecting the stage.
+            // sets the next stage. TODO: randomize stages
+            // TODO: have player 1 choose the stage instead of randomize them. 
+
+            // the host chooses the stage.
+            // spawning still having problems.
+            GameBuilder.stages chosenStage = (isMaster) ? p1Stage : recStage;
+
+            // TODO: remove
+            // original
+            // if(plyrs.Count != 0)
+            // {
+            //     // new - gets random stage
+            //     int index = UnityEngine.Random.Range(0, plyrs.Count);
+            //     chosenStage = plyrs[index].stage;
+            // }
+            // else // list is empty
+            // {
+            //     chosenStage = (isMaster) ? p1Stage : recStage;
+            // }
+            // 
+            // // stage (checks to see if stage exists)
+            // switch (chosenStage)
+            // {
+            //     case GameBuilder.stages.halloween: // halloween stage
+            //         sceneName = "HalloweenMap";
+            //         break;
+            // 
+            //     case GameBuilder.stages.christmas: // christmas stage
+            //         sceneName = "ChristmasMap";
+            //         break;
+            // 
+            //     case GameBuilder.stages.valentines: // valentine's stage
+            //         sceneName = "ValentinesMap";
+            //         break;
+            // 
+            //     default: // nothing set.
+            //         sceneName = "";
+            //         break;
+            // }
+
+            // no round to start
+            if (sceneName == "")
+            {
+                Debug.LogError("No match to start. Start failure.");
+                return;
+            }
+
+        }
 
         // finds game builder if not set.
         if (gameBuilder == null)
@@ -1297,68 +1370,79 @@ public class OnlineLobbyManager : MonoBehaviour
         // }
 
         // players
-        int plyrCount = roomSize;
-        int joinedPlayers = 0;
+        // int plyrCount = roomSize;
+        // int joinedPlayers = 0;
 
-        // TODO: add in check to see who is player 1 so it knows who to control.
-        // goes through each player
-        for (int i = 1; i <= roomSize; i++)
+        // goes through each player that's being let into the match.
+        // for (int i = 1; i <= plyrs.Count; i++)
+        for (int i = 0; i < plyrs.Count; i++)
         {
-            GameBuilder.playables p = GameBuilder.playables.none;
-            bool isP1 = false;
-            bool joined = false;
+            // gets the cahracter
+            GameBuilder.playables p = plyrs[i].character;
 
-            // gets player
-            switch (i)
-            {
-                case 1:
-                    p = p1;
-                    joined = true;
-                    isP1 = true;
-                    break;
-                case 2:
-                    p = p2;
-                    joined = p2Join;
-                    break;
-                case 3:
-                    p = p3;
-                    joined = p3Join;
-                    break;
-                case 4:
-                    p = p4;
-                    joined = p4Join;
-                    break;
-            }
-
-            // if the player is set to none, it means it wasn't set.
-            // TODO: change to use joined.
-            // if (joined == false)
-            // {
-            //     continue;
-            // }
-            // else
-            // {
-            //     plyrCount++;
-            // }
-
-            plyrCount++;
-
-            // set game builder to dog if this is set to none.
-            // this should be commented out eventually.
+            // there is no character, so set it to the default.
             if (p == GameBuilder.playables.none)
                 p = GameBuilder.playables.dog;
 
             // adds player to game builder.
-            if (joined == true)
-            {
-                if (isP1)
-                    gameBuilder.AddPlayer(i, p);
-                else
-                    gameBuilder.AddPlayer(i, p);
+            gameBuilder.AddPlayer(i, p);
 
-                joinedPlayers++;
-            }
-                
+
+            // GameBuilder.playables p = GameBuilder.playables.none;
+            // bool isP1 = false;
+            // bool joined = false;
+            // 
+            // // gets player
+            // switch (i)
+            // {
+            //     case 1:
+            //         p = p1Char;
+            //         joined = true;
+            //         isP1 = true;
+            //         break;
+            //     case 2:
+            //         p = p2Char;
+            //         joined = p2Join;
+            //         break;
+            //     case 3:
+            //         p = p3Char;
+            //         joined = p3Join;
+            //         break;
+            //     case 4:
+            //         p = p4Char;
+            //         joined = p4Join;
+            //         break;
+            // }
+            // 
+            // // if the player is set to none, it means it wasn't set.
+            // // TODO: change to use joined.
+            // // if (joined == false)
+            // // {
+            // //     continue;
+            // // }
+            // // else
+            // // {
+            // //     plyrCount++;
+            // // }
+            // 
+            // plyrCount++;
+            // 
+            // // set game builder to dog if this is set to none.
+            // // this should be commented out eventually.
+            // if (p == GameBuilder.playables.none)
+            //     p = GameBuilder.playables.dog;
+            // 
+            // // adds player to game builder.
+            // if (joined == true)
+            // {
+            //     if (isP1)
+            //         gameBuilder.AddPlayer(i, p);
+            //     else
+            //         gameBuilder.AddPlayer(i, p);
+            // 
+            //     joinedPlayers++;
+            // }
+
         }
 
         // if no players joined, it adds a default.
