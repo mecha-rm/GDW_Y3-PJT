@@ -1249,6 +1249,8 @@ public class OnlineLobbyManager : MonoBehaviour
     // called when the match is about to start (changes scene at the end of the function).
     public void PreMatchStart()
     {
+        // TODO: check joined bools to get player counts. Also put them into a list for the loop.
+
         // the scene name
         string sceneName = "";
 
