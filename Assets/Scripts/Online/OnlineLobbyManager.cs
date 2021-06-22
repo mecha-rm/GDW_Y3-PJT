@@ -1328,26 +1328,26 @@ public class OnlineLobbyManager : MonoBehaviour
             // {
             //     chosenStage = (isMaster) ? p1Stage : recStage;
             // }
-            // 
-            // // stage (checks to see if stage exists)
-            // switch (chosenStage)
-            // {
-            //     case GameBuilder.stages.halloween: // halloween stage
-            //         sceneName = "HalloweenMap";
-            //         break;
-            // 
-            //     case GameBuilder.stages.christmas: // christmas stage
-            //         sceneName = "ChristmasMap";
-            //         break;
-            // 
-            //     case GameBuilder.stages.valentines: // valentine's stage
-            //         sceneName = "ValentinesMap";
-            //         break;
-            // 
-            //     default: // nothing set.
-            //         sceneName = "";
-            //         break;
-            // }
+             
+            // stage (checks to see if stage exists)
+            switch (chosenStage)
+            {
+                case GameBuilder.stages.halloween: // halloween stage
+                    sceneName = "HalloweenMap";
+                    break;
+            
+                case GameBuilder.stages.christmas: // christmas stage
+                    sceneName = "ChristmasMap";
+                    break;
+            
+                case GameBuilder.stages.valentines: // valentine's stage
+                    sceneName = "ValentinesMap";
+                    break;
+            
+                default: // nothing set.
+                    sceneName = "";
+                    break;
+            }
 
             // no round to start
             if (sceneName == "")
