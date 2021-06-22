@@ -61,7 +61,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
     // TODO: going to change up the setup to use RecPlayer for everything.
     // recieved character
-    public struct RecPlayer
+    public struct LobbyPlayer
     {
         public string name;
         public GameBuilder.playables character;
@@ -851,7 +851,7 @@ public class OnlineLobbyManager : MonoBehaviour
         int index = 0;
 
         // characters
-        List<RecPlayer> plyrs = new List<RecPlayer>();
+        List<LobbyPlayer> plyrs = new List<LobbyPlayer>();
 
         // values
         int status = -1;
@@ -882,10 +882,10 @@ public class OnlineLobbyManager : MonoBehaviour
         for(int i = 0; i < plyrCount; i++)
         {
             string recName = System.Text.Encoding.UTF8.GetString(recData, index, NAME_CHAR_LIMIT);
-            RecPlayer plyr;
+            LobbyPlayer plyr;
 
             // create new player
-            plyr = new RecPlayer();
+            plyr = new LobbyPlayer();
 
             // set name
             plyr.name = recName;
@@ -930,7 +930,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
             // save character
             GameBuilder.playables px = (GameBuilder.playables)(pChar);
-            RecPlayer recP = plyrs[i];
+            LobbyPlayer recP = plyrs[i];
             recP.character = px;
             plyrs[i] = recP;
 
@@ -969,7 +969,7 @@ public class OnlineLobbyManager : MonoBehaviour
             int winCount = BitConverter.ToInt32(recData, index);
 
             // set data
-            RecPlayer recP = plyrs[i];
+            LobbyPlayer recP = plyrs[i];
             recP.wins = winCount;
             plyrs[i] = recP;
 
@@ -1251,7 +1251,7 @@ public class OnlineLobbyManager : MonoBehaviour
     public void PreMatchStart()
     {
         // TODO: check joined bools to get player counts. Also put them into a list for the loop.
-        List<RecPlayer> plyrs = new List<RecPlayer>();
+        List<LobbyPlayer> plyrs = new List<LobbyPlayer>();
 
         // the scene name
         string sceneName = "";
@@ -1259,7 +1259,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // TODO: optimize this
         // add player 1
         {
-            RecPlayer rec = new RecPlayer();
+            LobbyPlayer rec = new LobbyPlayer();
             rec.name = p1Name;
             rec.character = p1Char;
             rec.stage = p1Stage;
@@ -1271,7 +1271,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // add player 2
         if(p2Join)
         {
-            RecPlayer rec = new RecPlayer();
+            LobbyPlayer rec = new LobbyPlayer();
             rec.name = p2Name;
             rec.character = p2Char;
             rec.stage = p2Stage;
@@ -1283,7 +1283,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // add player 3
         if(p3Join)
         {
-            RecPlayer rec = new RecPlayer();
+            LobbyPlayer rec = new LobbyPlayer();
             rec.name = p3Name;
             rec.character = p3Char;
             rec.stage = p3Stage;
@@ -1295,7 +1295,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // add player 4
         if(p4Join)
         {
-            RecPlayer rec = new RecPlayer();
+            LobbyPlayer rec = new LobbyPlayer();
             rec.name = p4Name;
             rec.character = p4Char;
             rec.stage = p4Stage;

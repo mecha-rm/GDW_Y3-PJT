@@ -21,6 +21,14 @@ public class GameSettings
     private float bgmVolume = 1.0F;
     private float sfxVolume = 1.0F;
 
+    // file name
+    private const string FILE_NAME = "Assets/Resources/Saves/gamesettings.dat";
+    
+    // labels
+    private const string LBL_MASTER_VOL = "MSRVOL";
+    private const string LBL_BGM_VOL = "BGMVOL";
+    private const string LBL_SFX_VOL = "SFXVOL";
+
     // constructor
     private GameSettings()
     {
@@ -126,5 +134,64 @@ public class GameSettings
     public void SetSfxVolume(float vol)
     {
         sfxVolume = Mathf.Clamp(vol, 0.0F, 1.0F);
+    }
+
+    // loads the game settings
+    public void LoadSettings()
+    {
+        MetricsLogger prefLog = new MetricsLogger();
+
+        // sets the logger file
+        prefLog.SetLoggerFile(FILE_NAME);
+        prefLog.LoadMetrics();
+
+        // get the contents
+        float value;
+
+        // master volume
+        value = prefLog.GetMetricFromLogger(LBL_MASTER_VOL);
+        SetMasterVolume(value);
+
+        // bgm
+        value = prefLog.GetMetricFromLogger(LBL_BGM_VOL);
+        SetBgmVolume(value);
+
+        // sound effects
+        value = prefLog.GetMetricFromLogger(LBL_SFX_VOL);
+        SetSfxVolume(value);
+
+        // adjust all volume settings
+        SettingsInterface.AdjustVolume();
+    }
+
+    // saves the game settings
+    public void SaveSettings()
+    {
+        // uses the metric logger to save the settings
+        MetricsLogger prefLog = new MetricsLogger();
+
+        // adjusts the volume
+        // TODO: maybe move this function or put it into this game settings file.
+        SettingsInterface.AdjustVolume();
+
+        // Saving Content to Fle
+        // sets the logger file
+        prefLog.SetLoggerFile(FILE_NAME);
+
+        // TODO: add function to metrics to see if the file exists.
+        // see what happens if the file isn't there.
+
+        // adds the contents
+        // master volume
+        prefLog.AddMetricToLogger(LBL_MASTER_VOL, masterVolume);
+
+        // bgm volume
+        prefLog.AddMetricToLogger(LBL_BGM_VOL, bgmVolume);
+
+        // sound effects
+        prefLog.AddMetricToLogger(LBL_SFX_VOL, sfxVolume);
+
+        // saves the data
+        prefLog.SaveMetrics();
     }
 }

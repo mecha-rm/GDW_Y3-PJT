@@ -484,7 +484,7 @@ public class GameBuilder : MonoBehaviour
     }
 
     // updates the volume of all sound efects and BGMs.
-    public void UpdateVolume()
+    public static void UpdateVolume()
     {
         // finds all audio sources
         AudioSource[] audios = FindObjectsOfType<AudioSource>();
