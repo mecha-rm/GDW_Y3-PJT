@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f6d442cabca4224fb1b34c1cef56c4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adjustSettingsOnStart: 0
+  adjustSettingsOnStart: 1
   msrVolSlider: {fileID: 1702992617}
   bgmVolSlider: {fileID: 102079414}
   sfxVolSlider: {fileID: 1883491478}
