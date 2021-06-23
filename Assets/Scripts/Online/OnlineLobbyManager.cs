@@ -8,6 +8,8 @@ using System.Collections.Generic;
 // manages online lobby
 public class OnlineLobbyManager : MonoBehaviour
 {
+    // TODO: randomize stage each time the data is sent to the client instead?
+
     // if the size changes, or if the status is different, then the games load.
 
     /// FORMAT: CLIENTS TO SERVER
@@ -850,8 +852,25 @@ public class OnlineLobbyManager : MonoBehaviour
         byte[] recData = client.client.GetReceiveBufferData();
         int index = 0;
 
-        // characters
-        List<LobbyPlayer> plyrs = new List<LobbyPlayer>();
+        // list of players
+        // these get applied to the objects after all data is received.
+        // keep in mind that the player numbers on the server side and not the same as on the client side.
+        // this will be fixed at the end when it comes to matching the data.
+        // List<LobbyPlayer> plyrs = new List<LobbyPlayer>();
+        
+        // the up to four bits of player data that has been received.
+        LobbyPlayer p1Rec = new LobbyPlayer();
+        p1Rec.name = "";
+
+        LobbyPlayer p2Rec = new LobbyPlayer();
+        p2Rec.name = "";
+
+        LobbyPlayer p3Rec = new LobbyPlayer();
+        p3Rec.name = "";
+
+        LobbyPlayer p4Rec = new LobbyPlayer();
+        p4Rec.name = "";
+
 
         // values
         int status = -1;
@@ -881,41 +900,31 @@ public class OnlineLobbyManager : MonoBehaviour
         // player names
         for(int i = 0; i < plyrCount; i++)
         {
+            // gets the name
             string recName = System.Text.Encoding.UTF8.GetString(recData, index, NAME_CHAR_LIMIT);
-            LobbyPlayer plyr;
-
-            // create new player
-            plyr = new LobbyPlayer();
-
-            // set name
-            plyr.name = recName;
-
-            // add to list.
-            plyrs.Add(plyr);
 
             // saves name to right variable.
-            // NOTE: need identifiers for this.
-            // switch(i)
-            // {
-            //     case 1: // p1
-            //         p1Name = recName;
-            //         break;
-            // 
-            //     case 2: // p2 (on the local side p2 is player 1)
-            //         p2Name = recName;
-            //         break;
-            // 
-            //     case 3: // p3
-            //         p3Name = recName;
-            //         break;
-            // 
-            //     case 4: // p4
-            //         p4Name = recName;
-            //         break;
-            // 
-            //     default:
-            //         break;
-            // }
+            switch(i)
+            {
+                case 1: // p1
+                    p1Rec.name = recName;
+                    break;
+            
+                case 2: // p2
+                    p2Rec.name = recName;
+                    break;
+            
+                case 3: // p3
+                    p3Rec.name = recName;
+                    break;
+            
+                case 4: // p4
+                    p4Rec.name = recName;
+                    break;
+            
+                default:
+                    break;
+            }
 
             // lenght of the name times size of chars.
             index += (recName.Length * sizeof(char));
@@ -930,33 +939,29 @@ public class OnlineLobbyManager : MonoBehaviour
 
             // save character
             GameBuilder.playables px = (GameBuilder.playables)(pChar);
-            LobbyPlayer recP = plyrs[i];
-            recP.character = px;
-            plyrs[i] = recP;
 
             // saves name to right variable.
-            // NOTE: need identifiers for this.
-            // switch (i)
-            // {
-            //     case 1: // p1
-            //         p1 = (GameBuilder.playables)(pChar);
-            //         break;
-            // 
-            //     case 2: // p2 (on the local side p2 is player 1)
-            //         p2 = (GameBuilder.playables)(pChar);
-            //         break;
-            // 
-            //     case 3: // p3
-            //         p3 = (GameBuilder.playables)(pChar);
-            //         break;
-            // 
-            //     case 4: // p4
-            //         p4 = (GameBuilder.playables)(pChar);
-            //         break;
-            // 
-            //     default:
-            //         break;
-            // }
+            switch (i)
+            {
+                case 1: // p1
+                    p1Rec.character = (GameBuilder.playables)(pChar);
+                    break;
+            
+                case 2: // p2
+                    p2Rec.character = (GameBuilder.playables)(pChar);
+                    break;
+            
+                case 3: // p3
+                    p3Rec.character = (GameBuilder.playables)(pChar);
+                    break;
+            
+                case 4: // p4
+                    p4Rec.character = (GameBuilder.playables)(pChar);
+                    break;
+            
+                default:
+                    break;
+            }
 
             // lenght of the name times size of chars.
             index += sizeof(int);
@@ -968,135 +973,205 @@ public class OnlineLobbyManager : MonoBehaviour
             // get win count
             int winCount = BitConverter.ToInt32(recData, index);
 
-            // set data
-            LobbyPlayer recP = plyrs[i];
-            recP.wins = winCount;
-            plyrs[i] = recP;
-
             // saves name to right variable.
-            // NOTE: need identifiers for this.
-            // switch (i)
-            // {
-            //     case 1: // p1
-            //         p1Wins = winCount;
-            //         break;
-            // 
-            //     case 2: // p2 (on the local side p2 is player 1)
-            //         p2Wins = winCount;
-            //         break;
-            // 
-            //     case 3: // p3
-            //         p3Wins = winCount;
-            //         break;
-            // 
-            //     case 4: // p4
-            //         p4Wins = winCount;
-            //         break;
-            // 
-            //     default:
-            //         break;
-            // }
+            switch (i)
+            {
+                case 1: // p1
+                    p1Rec.wins = winCount;
+                    break;
+            
+                case 2: // p2
+                    p2Rec.wins = winCount;
+                    break;
+            
+                case 3: // p3
+                    p3Rec.wins = winCount;
+                    break;
+            
+                case 4: // p4
+                    p4Rec.wins = winCount;
+                    break;
+            
+                default:
+                    break;
+            }
 
             // lenght of the name times size of chars.
             index += sizeof(int);
         }
 
-        // set indexes
-        Stack<int> usedIndexes = new Stack<int>();
+        // match the data to the players
+        List<LobbyPlayer> plyrs = new List<LobbyPlayer>();
+
+        // index of the local player
+        int localIndex = -1;
+
+        // if a name is not listed, then data wasn't sent.
+        if(p1Rec.name != "") // p1
+            plyrs.Add(p1Rec);
+
+        if (p2Rec.name != "") // p2
+            plyrs.Add(p2Rec);
         
-        // set players
-        bool p1Set = false, p2Set = false, p3Set = false, p4Set = false;
+        if (p3Rec.name != "") // p3
+            plyrs.Add(p3Rec);
 
+        if (p4Rec.name != "") // p4
+            plyrs.Add(p4Rec);
 
-        // match data with players.
-        for(int i = 0; i < plyrCount; i++)
-        {
-            if(p1Name == plyrs[i].name) // p1 (local player)
-            {
-                // skip if set to local player.
-                usedIndexes.Push(i);
-
-                // p1 has been set.
-                p1Set = true;
-
-                // p1Name = plyrs[i].name;
-                // p1Stage = plyrs[i].stage;
-                // p1Wins = plyrs[i].wins;
-            }
-            else if(p2Name == plyrs[i].name) // p2
-            {
-                usedIndexes.Push(i);
-                p2Stage = plyrs[i].stage;
-                p2Wins = plyrs[i].wins;
-
-                // p2 has been set.
-                p2Set = true;
-            }
-            else if (p3Name == plyrs[i].name) // p3
-            {
-                usedIndexes.Push(i);
-                p3Stage = plyrs[i].stage;
-                p3Wins = plyrs[i].wins;
-
-                // p3 has been set.
-                p3Set = true;
-            }
-            else if (p4Name == plyrs[i].name) // p4
-            {
-                usedIndexes.Push(i);
-                p4Stage = plyrs[i].stage;
-                p4Wins = plyrs[i].wins;
-
-                // p4 has been set.
-                p4Set = true;
-            }
-        }
-
-        
-        // the used indexes
-        while(usedIndexes.Count != 0)
-        {
-            int idx = usedIndexes.Pop(); // remove index
-            plyrs.RemoveAt(idx); // remove value
-        }
-
-
-        // fit remaining players
+        // loops through
         for(int i = 0; i < plyrs.Count; i++)
         {
-            // checks what items are available.
-            // p1 is ignored since that's local.
-            // if(p1Set == false)
-            // {
-            //     //
-            // }
-
-            // p2 not set.
-            if(p2Set == false)
+            // local player found.
+            if (plyrs[i].name == p1Name)
             {
-                p2Name = plyrs[i].name;
-                p2Char = plyrs[i].character;
-                p2Stage = plyrs[i].stage;
-                p2Wins = plyrs[i].wins;
-                p2Set = true;
-            }
-            else if(p3Set == false) // p3 not set.
-            {
-                p3Name = plyrs[i].name;
-                p3Char = plyrs[i].character;
-                p3Stage = plyrs[i].stage;
-                p3Wins = plyrs[i].wins;
-                p3Set = true;
-            }
-            else if(p4Set == false) // p4 not set.
-            {
-                p4Name = plyrs[i].name;
-                p4Char = plyrs[i].character;
-                p4Stage = plyrs[i].stage;
-                p4Wins = plyrs[i].wins;
-                p4Set = true;
+                localIndex = i; // gets the index
+                break;
             }
         }
+
+        // removes the index of the local player.
+        plyrs.RemoveAt(localIndex);
+
+        // sets all the join variables to false in case the status has changed.
+        p2Join = false;
+        p3Join = false;
+        p4Join = false;
+
+        // applies the data for the rest of the objects.
+        for(int i = 0; i < plyrs.Count; i++)
+        {
+            // goes through each player object.
+            // note that the server only sends over its stage choice.
+            // the server does not send the stage choice from the other players.
+            // as such, each player is just given the server's stage.
+            switch(i)
+            {
+                case 0: // p2
+                    p2Name = plyrs[i].name;
+                    p2Char = plyrs[i].character;
+                    p2Stage = recStage;
+                    p2Wins = plyrs[i].wins;
+                    p2Join = true;
+                    
+                    break;
+
+                case 1: // p3
+                    p3Name = plyrs[i].name;
+                    p3Char = plyrs[i].character;
+                    p3Stage = recStage;
+                    p3Wins = plyrs[i].wins;
+                    p3Join = true;
+                    
+                    break;
+
+                case 2: // p4
+                    p4Name = plyrs[i].name;
+                    p4Char = plyrs[i].character;
+                    p4Stage = recStage;
+                    p4Wins = plyrs[i].wins;
+                    p4Join = true;
+                    
+                    break;
+            }
+        }
+
+        // // set indexes
+        // Stack<int> usedIndexes = new Stack<int>();
+        // 
+        // // set players
+        // bool p1Set = false, p2Set = false, p3Set = false, p4Set = false;
+
+
+        // // match data with players.
+        // for(int i = 0; i < plyrCount; i++)
+        // {
+        //     if(p1Name == plyrs[i].name) // p1 (local player)
+        //     {
+        //         // skip if set to local player.
+        //         usedIndexes.Push(i);
+        // 
+        //         // p1 has been set.
+        //         p1Set = true;
+        // 
+        //         // p1Name = plyrs[i].name;
+        //         // p1Stage = plyrs[i].stage;
+        //         // p1Wins = plyrs[i].wins;
+        //     }
+        //     else if(p2Name == plyrs[i].name) // p2
+        //     {
+        //         usedIndexes.Push(i);
+        //         p2Stage = plyrs[i].stage;
+        //         p2Wins = plyrs[i].wins;
+        // 
+        //         // p2 has been set.
+        //         p2Set = true;
+        //     }
+        //     else if (p3Name == plyrs[i].name) // p3
+        //     {
+        //         usedIndexes.Push(i);
+        //         p3Stage = plyrs[i].stage;
+        //         p3Wins = plyrs[i].wins;
+        // 
+        //         // p3 has been set.
+        //         p3Set = true;
+        //     }
+        //     else if (p4Name == plyrs[i].name) // p4
+        //     {
+        //         usedIndexes.Push(i);
+        //         p4Stage = plyrs[i].stage;
+        //         p4Wins = plyrs[i].wins;
+        // 
+        //         // p4 has been set.
+        //         p4Set = true;
+        //     }
+        // }
+        // 
+        // 
+        // // the used indexes
+        // while(usedIndexes.Count != 0)
+        // {
+        //     int idx = usedIndexes.Pop(); // remove index
+        //     plyrs.RemoveAt(idx); // remove value
+        // }
+        // 
+        // 
+        // // fit remaining players
+        // for(int i = 0; i < plyrs.Count; i++)
+        // {
+        //     // checks what items are available.
+        //     // p1 is ignored since that's local.
+        //     // if(p1Set == false)
+        //     // {
+        //     //     //
+        //     // }
+        // 
+        //     // p2 not set.
+        //     if(p2Set == false)
+        //     {
+        //         p2Name = plyrs[i].name;
+        //         p2Char = plyrs[i].character;
+        //         p2Stage = plyrs[i].stage;
+        //         p2Wins = plyrs[i].wins;
+        //         p2Set = true;
+        //     }
+        //     else if(p3Set == false) // p3 not set.
+        //     {
+        //         p3Name = plyrs[i].name;
+        //         p3Char = plyrs[i].character;
+        //         p3Stage = plyrs[i].stage;
+        //         p3Wins = plyrs[i].wins;
+        //         p3Set = true;
+        //     }
+        //     else if(p4Set == false) // p4 not set.
+        //     {
+        //         p4Name = plyrs[i].name;
+        //         p4Char = plyrs[i].character;
+        //         p4Stage = plyrs[i].stage;
+        //         p4Wins = plyrs[i].wins;
+        //         p4Set = true;
+        //     }
+        // }
 
 
         // Move Onto Gameplay Scene
