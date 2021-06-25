@@ -2964,10 +2964,6 @@ PrefabInstance:
       value: 100.12
       objectReference: {fileID: 0}
     - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 968848723}
@@ -2990,50 +2986,6 @@ PrefabInstance:
     - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
       propertyPath: bgmClipEnd
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[0].x
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[0].z
-      value: 105
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[1].z
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[2].x
-      value: -30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[2].z
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[3].x
-      value: -45
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[3].z
-      value: -65
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[0].y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[1].y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[2].y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320250319680646192, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
-      propertyPath: playerSpawns.Array.data[3].y
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6132452178725991130, guid: 5b80b10f0c42bd14f8e0afad76209033, type: 3}
       propertyPath: m_Name

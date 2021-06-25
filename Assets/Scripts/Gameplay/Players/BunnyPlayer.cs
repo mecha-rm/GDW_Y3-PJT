@@ -7,8 +7,6 @@ using UnityEngine.UI;
 // bunny
 public class BunnyPlayer : PlayerObject
 {
-    string playername = "bunnybox";
-
     // Start is called before the first frame update
     void Start()
     {

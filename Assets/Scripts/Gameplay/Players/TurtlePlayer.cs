@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class TurtlePlayer : PlayerObject
 {
     // Start is called before the first frame update
-    string playername = "turtlebox";
-
     void Start()
     {
         base.Start();

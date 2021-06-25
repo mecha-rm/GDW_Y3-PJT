@@ -1408,7 +1408,11 @@ MonoBehaviour:
   flagPrefab: Prefabs/Flag
   flagSpawn: {x: 50.6, y: 0, z: 32.73}
   useFlagPosAsSpawn: 1
-  playerSpawns: []
+  playerSpawns:
+  - {x: 70, y: 3, z: 105}
+  - {x: 0, y: 3, z: 64}
+  - {x: -30, y: 3, z: 13}
+  - {x: -45, y: 3, z: -65}
   randomPlayerPos: 0
   itemSpawner: {fileID: 0}
   itemSpawnAreaMin: {x: -50, y: -50, z: -50}

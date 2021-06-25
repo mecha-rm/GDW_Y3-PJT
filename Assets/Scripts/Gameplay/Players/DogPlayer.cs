@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class DogPlayer : PlayerObject
 {
     // Start is called before the first frame update
-    string playername = "Dogbox";
-
     void Start()
     {
         // call object.

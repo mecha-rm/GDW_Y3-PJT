@@ -6,6 +6,16 @@ using UnityEngine;
 // rewrite game startup and game lobby.
 public class GameBuilder : MonoBehaviour
 {
+    // the builder player that will be made when the game builder starts.
+    public struct BuilderPlayer
+    {
+        public int number; // player number
+        public playables character; // character
+        public bool destorySaved; // destroy player saved to accessed variable if true.
+        public bool useMainCam; // use main camera
+        public int targetDisplay; // target display for camera
+    }
+
     // the playables
     public enum playables { none, dog, cat, bunny, turtle};
 
@@ -27,7 +37,7 @@ public class GameBuilder : MonoBehaviour
     public stages map = 0; // loads the map for the scene.
 
     // the amount of players
-    public List<playables> playerList = new List<playables>();
+    public List<BuilderPlayer> playerList = new List<BuilderPlayer>();
 
     // the gameplay manager
     public GameplayManager manager;
@@ -129,7 +139,11 @@ public class GameBuilder : MonoBehaviour
 
         // sets this as the builder that made the manager.
         if (manager != null)
+        {
             manager.gameBuilder = this;
+            manager.DestroyAllPlayers(); // destroys all existing players.
+        }
+            
 
         // create game assets
 
@@ -214,11 +228,12 @@ public class GameBuilder : MonoBehaviour
         // creates the player and puts it in the manager
         if(count == 0) // no playes set, so test player is added.
         {
-            manager.CreatePlayer(0, 0, true, true);
+            PlayerObject p = manager.CreatePlayer(0, 0, true, true);
         }
         else if(count == 1) // only one player, so use main camera
         {
-            manager.CreatePlayer(0, playerList[0], false, true);
+            // manager.CreatePlayer(playerList[0].number, playerList[0].character, false, true);
+            manager.CreatePlayer(playerList[0].number, playerList[0].character, true, true, 0);
         }
         else
         {
@@ -229,12 +244,20 @@ public class GameBuilder : MonoBehaviour
             // }
 
             // player 1
-            manager.CreatePlayer(1, playerList[0], false, true, 0);
+            // manager.CreatePlayer(1, playerList[0], false, true, 0);
+            // 
+            // // other players (starts at 1 since player 1 has been created)
+            // for (int i = 1; i < count; i++)
+            // {
+            //     manager.CreatePlayer(i + 1, playerList[i], false, false, i);
+            // }
 
-            // other players (starts at 1 since player 1 has been created)
-            for (int i = 1; i < count; i++)
+            // pass in builder player
+            foreach (BuilderPlayer bp in playerList)
             {
-                manager.CreatePlayer(i + 1, playerList[i], false, false, i);
+                PlayerObject p = manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+                p.name = "P" + bp.number + " - " + p.name; // change name to show player number.
+
             }
         }
 
@@ -403,48 +426,151 @@ public class GameBuilder : MonoBehaviour
         loadMapOnEntry = loadStage;
     }
 
-    // adds a player to the list
+    // adds a player to the list.
+    // this automatically gives the player a number that corresponds to their place in the list.
+    // the target display is based on the placement in the list.
     public void AddPlayer(int newPlayer)
     {
-        playerList.Add((playables)newPlayer);
+        // adds the player to the list.
+        AddPlayer((playables)newPlayer);
+
+        // BuilderPlayer bp = new BuilderPlayer();
+        // bp.number = playerList.Count + 1;
+        // bp.character = (playables)newPlayer;
+        // bp.destorySaved = true;
+        // bp.useMainCam = false;
+        // bp.targetDisplay = playerList.Count;
+
+        // playerList.Add((playables)newPlayer);
 
 
         // TODO: change point where players are created to be when the scene starts.
-        if (manager != null)
-            manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
+        // if (manager != null)
+        //     manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+
+        // manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, false);
     }
 
     // adds a player to the game builder.
     public void AddPlayer(GameBuilder.playables newPlayer)
     {
-        playerList.Add(newPlayer);
+        // playerList.Add(newPlayer);
+        // 
+        // 
+        // // TODO: change point where players are created to be when the scene starts.
+        // if (manager != null)
+        //     manager.CreatePlayer(playerList.Count, newPlayer, true, false);
 
+        // sets values
+        BuilderPlayer bp = new BuilderPlayer();
+        bp.number = playerList.Count + 1;
+        bp.character = newPlayer;
+        bp.destorySaved = true;
+        bp.useMainCam = (playerList.Count == 0) ? true : false;
+        bp.targetDisplay = playerList.Count;
 
-        // TODO: change point where players are created to be when the scene starts.
+        // adds to list.
+        playerList.Add(bp);
+
+        // create player
         if (manager != null)
-            manager.CreatePlayer(playerList.Count, newPlayer, true, false);
+            manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
     }
 
     // adds a player to the game builder.
     public void AddPlayer(int number, GameBuilder.playables newPlayer)
     {
-        playerList.Add(newPlayer);
+        // playerList.Add(newPlayer);
+        // 
+        // 
+        // // TODO: change point where players are created to be when the scene starts.
+        // if (manager != null)
+        //     manager.CreatePlayer(number, newPlayer, true, false);
 
 
-        // TODO: change point where players are created to be when the scene starts.
+        // sets values
+        BuilderPlayer bp = new BuilderPlayer();
+        bp.number = number;
+        bp.character = newPlayer;
+        bp.destorySaved = true;
+        bp.useMainCam = (playerList.Count == 0) ? true : false;
+        bp.targetDisplay = playerList.Count;
+
+        // adds to list.
+        playerList.Add(bp);
+
+        // create player
         if (manager != null)
-            manager.CreatePlayer(number, newPlayer, true, false);
+            manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
     }
+
+    // adds a player to the game builder.
+    public void AddPlayer(int number, GameBuilder.playables newPlayer, bool destroySaved, bool useMainCam, int targetDisplay)
+    {
+        // sets values
+        BuilderPlayer bp = new BuilderPlayer();
+        bp.number = number;
+        bp.character = newPlayer;
+        bp.destorySaved = destroySaved;
+        bp.useMainCam = useMainCam;
+        bp.targetDisplay = targetDisplay;
+
+        // adds to list.
+        playerList.Add(bp);
+
+        // create player
+        if (manager != null)
+            manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+    }
+
 
     // adds and gets the player
     public PlayerObject AddAndGetPlayer(int number, GameBuilder.playables newPlayer)
     {
+        // playerList.Add(newPlayer);
+
         // adds the player
-        playerList.Add(newPlayer);
+        BuilderPlayer bp = new BuilderPlayer();
+        bp.number = number;
+        bp.character = newPlayer;
+        bp.destorySaved = true;
+        bp.useMainCam = (playerList.Count == 0) ? true : false;
+        bp.targetDisplay = playerList.Count;
+
+
+        // gets the created player
+        // if (manager != null)
+        //     return manager.CreatePlayer(number, newPlayer, true, false);
+        // else
+        //     return null;
+
+        // adds to list.
+        playerList.Add(bp);
 
         // gets the created player
         if (manager != null)
-            return manager.CreatePlayer(number, newPlayer, true, false);
+            return manager.CreatePlayer(number, newPlayer, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+        else
+            return null;
+    }
+
+    // adds a player to the game builder.
+    public PlayerObject AddAndGetPlayer(int number, GameBuilder.playables newPlayer, bool destroySaved, bool useMainCam, int targetDisplay)
+    {
+        // sets values
+        BuilderPlayer bp = new BuilderPlayer();
+        bp.number = number;
+        bp.character = newPlayer;
+        bp.destorySaved = destroySaved;
+        bp.useMainCam = useMainCam;
+        bp.targetDisplay = targetDisplay;
+
+        // adds to list.
+        playerList.Add(bp);
+
+        // create player and return it.
+        if (manager != null)
+            return manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
         else
             return null;
     }
@@ -455,7 +581,7 @@ public class GameBuilder : MonoBehaviour
         playerList.Clear();
 
         // if the players should be destroyed.
-        if(destroyPlayers)
+        if(destroyPlayers && manager != null)
             manager.DestroyAllPlayers();
     }
 
@@ -516,7 +642,7 @@ public class GameBuilder : MonoBehaviour
     }
 
     // called when the scene changes
-    public void OnLevelWasLoaded(int level)
+    private void OnLevelWasLoaded(int level)
     {
         // TODO: maybe just have this do it on loadGame being true?.
         // picks from list of loaded scenes

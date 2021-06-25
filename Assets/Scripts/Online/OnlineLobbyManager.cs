@@ -656,7 +656,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // stage
         {
-            // TODO: randomize instead of using P1s.
+            // TODO: randomize instead of using P1's.
             byte[] data = BitConverter.GetBytes((int)p1Stage);
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
             index += data.Length;
@@ -904,8 +904,9 @@ public class OnlineLobbyManager : MonoBehaviour
             string recName = System.Text.Encoding.UTF8.GetString(recData, index, NAME_CHAR_LIMIT);
 
             // saves name to right variable.
-            switch(i)
+            switch(i + 1)
             {
+                case 0: // p0 doubles as p1
                 case 1: // p1
                     p1Rec.name = recName;
                     break;
@@ -941,8 +942,9 @@ public class OnlineLobbyManager : MonoBehaviour
             GameBuilder.playables px = (GameBuilder.playables)(pChar);
 
             // saves name to right variable.
-            switch (i)
+            switch (i + 1)
             {
+                case 0: // p0 doubles as p1
                 case 1: // p1
                     p1Rec.character = (GameBuilder.playables)(pChar);
                     break;
@@ -974,8 +976,9 @@ public class OnlineLobbyManager : MonoBehaviour
             int winCount = BitConverter.ToInt32(recData, index);
 
             // saves name to right variable.
-            switch (i)
+            switch (i + 1)
             {
+                case 0: // p0 doubles as p1
                 case 1: // p1
                     p1Rec.wins = winCount;
                     break;
@@ -1020,6 +1023,7 @@ public class OnlineLobbyManager : MonoBehaviour
             plyrs.Add(p4Rec);
 
         // loops through
+        // TODO: make sure the things match up so that each variable keeps getting the consistent updates.
         for(int i = 0; i < plyrs.Count; i++)
         {
             // local player found.
@@ -1031,7 +1035,8 @@ public class OnlineLobbyManager : MonoBehaviour
         }
 
         // removes the index of the local player.
-        plyrs.RemoveAt(localIndex);
+        if(localIndex >= 0 && localIndex < plyrs.Count)
+            plyrs.RemoveAt(localIndex);
 
         // sets all the join variables to false in case the status has changed.
         p2Join = false;
@@ -1448,6 +1453,9 @@ public class OnlineLobbyManager : MonoBehaviour
         // int plyrCount = roomSize;
         // int joinedPlayers = 0;
 
+        // clears out the player list.
+        gameBuilder.ClearPlayerList(true);
+
         // goes through each player that's being let into the match.
         // for (int i = 1; i <= plyrs.Count; i++)
         for (int i = 0; i < plyrs.Count; i++)
@@ -1460,7 +1468,7 @@ public class OnlineLobbyManager : MonoBehaviour
                 p = GameBuilder.playables.dog;
 
             // adds player to game builder.
-            gameBuilder.AddPlayer(i, p);
+            gameBuilder.AddPlayer(i, p, true, (i == 0) ? true : false, i);
 
 
             // GameBuilder.playables p = GameBuilder.playables.none;

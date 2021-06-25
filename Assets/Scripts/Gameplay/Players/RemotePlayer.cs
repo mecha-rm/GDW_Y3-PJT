@@ -47,7 +47,7 @@ public class RemotePlayer : MonoBehaviour
     {
         // player not set
         if (player == null)
-            GetComponent<PlayerObject>();
+            player = GetComponent<PlayerObject>();
 
         // randomizes the id number for the remote player that goes from 1 to the max value.
         if (randomizeIdOnStart)

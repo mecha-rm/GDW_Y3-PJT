@@ -894,4 +894,10 @@ public class PlayerObject : MonoBehaviour
                 sfx_Run.Play();
         }
     }
+
+    // the ondestory function
+    private void OnDestroy()
+    {
+        Debug.Log("Player " + name + " has been destroyed.");
+    }
 }

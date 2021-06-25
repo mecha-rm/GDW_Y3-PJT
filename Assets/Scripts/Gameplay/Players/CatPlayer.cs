@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class CatPlayer : PlayerObject
 {
     // Start is called before the first frame update
-    string playername = "catbox";
-
     void Start()
     {
         base.Start();

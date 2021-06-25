@@ -21776,7 +21776,7 @@ GameObject:
   - component: {fileID: 4786296521841302995}
   - component: {fileID: 5325884377365723739}
   m_Layer: 0
-  m_Name: Stage 1
+  m_Name: Christmas Stage
   m_TagString: StageObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21837,14 +21837,18 @@ MonoBehaviour:
   bgmClipEnd: 260.938
   skybox: {fileID: 2100000, guid: e1b58e3a03211b944977d64f85d1ebea, type: 2}
   flag: {fileID: 0}
+  flagPrefab: Prefabs/Flag
   flagSpawn: {x: 0, y: 0, z: 0}
   useFlagPosAsSpawn: 1
   playerSpawns:
-  - {x: 0, y: 1, z: -58.46}
-  - {x: 48.8, y: 1, z: 47.3}
-  - {x: 18, y: 1, z: 11}
-  - {x: 48.8, y: 1, z: 47.3}
+  - {x: 0, y: 3, z: -58.46}
+  - {x: 48.8, y: 3, z: 47.3}
+  - {x: 18, y: 3, z: 11}
+  - {x: 48.8, y: 3, z: 47.3}
   randomPlayerPos: 0
+  itemSpawner: {fileID: 0}
+  itemSpawnAreaMin: {x: -50, y: -50, z: -50}
+  itemSpawnAreaMax: {x: 50, y: 50, z: 50}
 --- !u!1 &4798310430601105041
 GameObject:
   m_ObjectHideFlags: 0

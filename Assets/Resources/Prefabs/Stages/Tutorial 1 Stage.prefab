@@ -77,7 +77,7 @@ MonoBehaviour:
   flagSpawn: {x: -0.186, y: 0.15, z: 98.538}
   useFlagPosAsSpawn: 1
   playerSpawns:
-  - {x: -1.4305, y: 1, z: 0}
+  - {x: -1.4305, y: 3, z: 0}
   randomPlayerPos: 0
   itemSpawner: {fileID: 0}
   itemSpawnAreaMin: {x: -50, y: -50, z: -50}
