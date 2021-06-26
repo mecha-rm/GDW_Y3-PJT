@@ -422,7 +422,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
 
     // COMMUNICATION //
-    bool MatchData(ref LobbyPlayer p)
+    private bool MatchData(ref LobbyPlayer p)
     {
         // player 1 is the local player, so there's nothing to match.
 
@@ -464,6 +464,25 @@ public class OnlineLobbyManager : MonoBehaviour
         // no data was matched.
         return false;
     }
+
+
+    // match the data from the player list
+    private void MatchDataFromList(ref List<LobbyPlayer> plyrs)
+    {
+        // matches data
+        for (int i = plyrs.Count - 1; i >= 0; i--)
+        {
+            // tries to match the data from the familiar player.
+            LobbyPlayer p = plyrs[i];
+            bool matched = MatchData(ref p);
+
+            // the data has been matched, so remove it from the list.
+            if (matched)
+                plyrs.RemoveAt(i);
+        }
+
+
+    }
     
     
     // SERVER -> CLIENT (MASTER) //
@@ -471,13 +490,194 @@ public class OnlineLobbyManager : MonoBehaviour
     // gets the data from client
     void ReceiveDataFromClients()
     {
+        // list of received players
+        List<LobbyPlayer> plyrs = new List<LobbyPlayer>();
+
+        // up to three players can be received (three endpoints max)
+        LobbyPlayer p2Rec = new LobbyPlayer(); // p1/j1
+        p2Rec.name = "";
+
+        LobbyPlayer p3Rec = new LobbyPlayer(); // p2/j2
+        p3Rec.name = "";
+        
+        LobbyPlayer p4Rec = new LobbyPlayer(); // p3/j3
+        p4Rec.name = "";
 
         // gets the amount of endpoints
         int epAmount = server.server.GetEndPointCount();
 
+        // endpoints connected.
+        bool[] epConnected = new bool[epAmount]; // creates a new array with the given endpoints
+
         // TODO: maybe check something with player count?
 
+        // ORIGINAL //
         // goes through each endpoint to get the data. There is a max of 3.
+        // for (int i = 0; i < epAmount; i++)
+        // {
+        //     // gets buffer data
+        //     byte[] data = server.server.GetReceiveBufferData(i);
+        //     int index = 0;
+        // 
+        //     // 1. Status
+        //     // 2. Names
+        //     // 3. Stages
+        //     // 4. Characters
+        //     // 5. Wins
+        // 
+        //     // status (0 = unconnected, 1 = connected, 2 = enter play)
+        //     {
+        //         int status = BitConverter.ToInt32(data, index);
+        //         index += sizeof(int);
+        // 
+        //         // status
+        //         switch (status)
+        //         {
+        //             case 0: // not connected.
+        //                 // TODO: change colour to show not connected.
+        //                 switch (i) // change name to show there's no connection.
+        //                 {
+        //                     case 0:
+        //                         p2Name = NO_NAME_CHAR;
+        //                         p2Join = false;
+        //                         break;
+        //                     case 1:
+        //                         p3Name = NO_NAME_CHAR;
+        //                         p3Join = false;
+        //                         break;
+        //                     case 2:
+        //                         p4Name = NO_NAME_CHAR;
+        //                         p4Join = false;
+        //                         break;
+        //                 }
+        // 
+        //                 break;
+        //             case 1: // connected
+        //                 switch (i) // change join values
+        //                 {
+        //                     case 0: // p2
+        //                         p2Join = true;
+        //                         break;
+        //                     case 1: // p3
+        //                         p3Join = true;
+        //                         break;
+        //                     case 2: // p4
+        //                         p4Join = true;
+        //                         break;
+        //                 }
+        //                 break;
+        //             case 2: // entered game (should not be used)
+        //                 break;
+        //             default:
+        //                 break;
+        //         }
+        // 
+        //         // no data to get.
+        //         if (status == 0)
+        //         {
+        //             // Debug.Log("Zero Status");
+        //             continue;
+        //         }
+        //             
+        //     }
+        //     
+        //     // name (conversion is broken)
+        //     {
+        //         string recName = Encoding.UTF8.GetString(data, index, NAME_CHAR_LIMIT);
+        // 
+        //         // received name setting
+        //         switch (i)
+        //         {
+        //             case 0:
+        //                 p2Name = recName;
+        //                 break;
+        //             case 1:
+        //                 p3Name = recName;
+        //                 break;
+        //             case 2:
+        //                 p4Name = recName;
+        //                 break;
+        //         }
+        // 
+        //         // lenght of the name times size of chars.
+        //         index += (recName.Length * sizeof(char));
+        //         
+        //     }
+        // 
+        //     // stage
+        //     {
+        //         // stage
+        //         int stageInt = BitConverter.ToInt32(data, index);
+        //         
+        //         // sets stage information
+        //         switch(i)
+        //         {
+        //             case 0:
+        //                 p2Stage = (GameBuilder.stages)(stageInt);
+        //                 break;
+        //             case 1:
+        //                 p3Stage = (GameBuilder.stages)(stageInt);
+        //                 break;
+        //             case 2:
+        //                 p4Stage = (GameBuilder.stages)(stageInt);
+        //                 break;
+        //         }
+        // 
+        //         // next
+        //         index += sizeof(int);
+        //     }
+        // 
+        //     // character
+        //     {
+        //         // character number
+        //         int charValue = BitConverter.ToInt32(data, index);
+        // 
+        //         // sets stage information
+        //         switch (i)
+        //         {
+        //             case 0:
+        //                 p2Char = (GameBuilder.playables)(charValue);
+        //                 break;
+        //             case 1:
+        //                 p3Char = (GameBuilder.playables)(charValue);
+        //                 break;
+        //             case 2:
+        //                 p4Char = (GameBuilder.playables)(charValue);
+        //                 break;
+        //         }
+        // 
+        //         // next
+        //         index += sizeof(int);
+        //     }
+        // 
+        //     // win count
+        //     {
+        //         // win count
+        //         int winCount = BitConverter.ToInt32(data, index);
+        // 
+        //         // sets win count information
+        //         switch (i)
+        //         {
+        //             case 0:
+        //                 p2Wins = winCount;
+        //                 break;
+        //             case 1:
+        //                 p3Wins = winCount;
+        //                 break;
+        //             case 2:
+        //                 p4Wins = winCount;
+        //                 break;
+        //         }
+        // 
+        //         // next
+        //         index += sizeof(int);
+        //     }
+        // 
+        // }
+
+
+        // NEW //
+        // goes through each endpoint looking for data.
         for (int i = 0; i < epAmount; i++)
         {
             // gets buffer data
@@ -503,31 +703,28 @@ public class OnlineLobbyManager : MonoBehaviour
                         switch (i) // change name to show there's no connection.
                         {
                             case 0:
-                                p2Name = NO_NAME_CHAR;
-                                p2Join = false;
+                                epConnected[0] = false;
                                 break;
                             case 1:
-                                p3Name = NO_NAME_CHAR;
-                                p3Join = false;
+                                epConnected[1] = false;
                                 break;
                             case 2:
-                                p4Name = NO_NAME_CHAR;
-                                p4Join = false;
+                                epConnected[2] = false;
                                 break;
                         }
 
                         break;
                     case 1: // connected
-                        switch (i) // change join values
+                        switch (i) // change name to show there's no connection.
                         {
-                            case 0: // p2
-                                p2Join = true;
+                            case 0:
+                                epConnected[0] = true;
                                 break;
-                            case 1: // p3
-                                p3Join = true;
+                            case 1:
+                                epConnected[1] = true;
                                 break;
-                            case 2: // p4
-                                p4Join = true;
+                            case 2:
+                                epConnected[2] = true;
                                 break;
                         }
                         break;
@@ -543,9 +740,9 @@ public class OnlineLobbyManager : MonoBehaviour
                     // Debug.Log("Zero Status");
                     continue;
                 }
-                    
+
             }
-            
+
             // name (conversion is broken)
             {
                 string recName = Encoding.UTF8.GetString(data, index, NAME_CHAR_LIMIT);
@@ -554,37 +751,37 @@ public class OnlineLobbyManager : MonoBehaviour
                 switch (i)
                 {
                     case 0:
-                        p2Name = recName;
+                        p2Rec.name = recName;
                         break;
                     case 1:
-                        p3Name = recName;
+                        p3Rec.name = recName;
                         break;
                     case 2:
-                        p4Name = recName;
+                        p4Rec.name = recName;
                         break;
                 }
 
                 // lenght of the name times size of chars.
                 index += (recName.Length * sizeof(char));
-                
+
             }
 
             // stage
             {
                 // stage
                 int stageInt = BitConverter.ToInt32(data, index);
-                
+
                 // sets stage information
-                switch(i)
+                switch (i)
                 {
                     case 0:
-                        p2Stage = (GameBuilder.stages)(stageInt);
+                        p2Rec.stage = (GameBuilder.stages)(stageInt);
                         break;
                     case 1:
-                        p3Stage = (GameBuilder.stages)(stageInt);
+                        p3Rec.stage = (GameBuilder.stages)(stageInt);
                         break;
                     case 2:
-                        p4Stage = (GameBuilder.stages)(stageInt);
+                        p4Rec.stage = (GameBuilder.stages)(stageInt);
                         break;
                 }
 
@@ -601,13 +798,13 @@ public class OnlineLobbyManager : MonoBehaviour
                 switch (i)
                 {
                     case 0:
-                        p2Char = (GameBuilder.playables)(charValue);
+                        p2Rec.character = (GameBuilder.playables)(charValue);
                         break;
                     case 1:
-                        p3Char = (GameBuilder.playables)(charValue);
+                        p3Rec.character = (GameBuilder.playables)(charValue);
                         break;
                     case 2:
-                        p4Char = (GameBuilder.playables)(charValue);
+                        p4Rec.character = (GameBuilder.playables)(charValue);
                         break;
                 }
 
@@ -624,13 +821,13 @@ public class OnlineLobbyManager : MonoBehaviour
                 switch (i)
                 {
                     case 0:
-                        p2Wins = winCount;
+                        p2Rec.wins = winCount;
                         break;
                     case 1:
-                        p3Wins = winCount;
+                        p3Rec.wins = winCount;
                         break;
                     case 2:
-                        p4Wins = winCount;
+                        p4Rec.wins = winCount;
                         break;
                 }
 
@@ -640,6 +837,68 @@ public class OnlineLobbyManager : MonoBehaviour
 
         }
 
+
+        // goes through each endpoint.
+        for(int i = 0; i < epConnected.Length; i++)
+        {
+            // if the endpoint value is true, something is connected to it.
+            // furthermore, it means that data was saved.
+            if(epConnected[i] == true)
+            {
+                switch (i)
+                {
+                    case 0:
+                        plyrs.Add(p2Rec); // add p2Rec
+                        break;
+                    case 1:
+                        plyrs.Add(p3Rec); // add p3Rec
+                        break;
+                    case 2:
+                        plyrs.Add(p4Rec); // add p4Rec
+                        break;
+                }
+
+            }
+        }
+
+        p2Join = false;
+        p3Join = false;
+        p4Join = false;
+
+        // matches all the data.
+        MatchDataFromList(ref plyrs);
+
+        // applies the data for the rest of the objects.
+        for (int i = 0; i < plyrs.Count; i++)
+        {
+            // goes through each player object and matches the data.
+            // once an object has been used, it is ignored.
+            if (p2Join == false) // P2
+            {
+                p2Name = plyrs[i].name;
+                p2Char = plyrs[i].character;
+                p2Stage = recStage;
+                p2Wins = plyrs[i].wins;
+                p2Join = true;
+            }
+            else if (p3Join == false) // P3
+            {
+                p3Name = plyrs[i].name;
+                p3Char = plyrs[i].character;
+                p3Stage = recStage;
+                p3Wins = plyrs[i].wins;
+                p3Join = true;
+            }
+            else if (p4Join == false) // P4
+            {
+                p4Name = plyrs[i].name;
+                p4Char = plyrs[i].character;
+                p4Stage = recStage;
+                p4Wins = plyrs[i].wins;
+                p4Join = true;
+            }
+        
+        }
 
     }
 
@@ -1088,20 +1347,23 @@ public class OnlineLobbyManager : MonoBehaviour
         p4Join = false;
 
         // matches up players to past saves to make sure the names match.
-        for(int i = plyrs.Count - 1; i >= 0; i--)
-        {
-            // tries to match the data from the familiar player.
-            LobbyPlayer p = plyrs[i];
-            bool matched = MatchData(ref p);
+        MatchDataFromList(ref plyrs); // now in own function
 
-            // the data has been matched, so remove it from the list.
-            if(matched)
-                plyrs.RemoveAt(i);
-        }
+        // for(int i = plyrs.Count - 1; i >= 0; i--)
+        // {
+        //     // tries to match the data from the familiar player.
+        //     LobbyPlayer p = plyrs[i];
+        //     bool matched = MatchData(ref p);
+        // 
+        //     // the data has been matched, so remove it from the list.
+        //     if(matched)
+        //         plyrs.RemoveAt(i);
+        // }
 
 
+        // TODO: move into own function (save rec stage to plyrs)
         // applies the data for the rest of the objects.
-        for(int i = 0; i < plyrs.Count; i++)
+        for (int i = 0; i < plyrs.Count; i++)
         {
             // goes through each player object and matches the data.
             // once an object has been used, it is ignored.
