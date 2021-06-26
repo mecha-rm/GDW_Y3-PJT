@@ -422,6 +422,50 @@ public class OnlineLobbyManager : MonoBehaviour
 
 
     // COMMUNICATION //
+    bool MatchData(ref LobbyPlayer p)
+    {
+        // player 1 is the local player, so there's nothing to match.
+
+        // applies the data for the rest of the objects.
+        // player 2's name
+        if (p2Name != "" && p2Name == p.name)
+        {
+            p2Name = p.name;
+            p2Char = p.character;
+            p2Stage = recStage;
+            p2Wins = p.wins;
+            p2Join = true;
+
+            return true;
+        }
+        // player 3's name
+        else if (p3Name != "" && p3Name == p.name)
+        {
+            p3Name = p.name;
+            p3Char = p.character;
+            p3Stage = recStage;
+            p3Wins = p.wins;
+            p3Join = true;
+
+            return true;
+        }
+        // player 4's name
+        else if (p4Name != "" && p4Name == p.name)
+        {
+            p4Name = p.name;
+            p4Char = p.character;
+            p4Stage = recStage;
+            p4Wins = p.wins;
+            p4Join = true;
+
+            return true;
+        }
+
+        // no data was matched.
+        return false;
+    }
+    
+    
     // SERVER -> CLIENT (MASTER) //
 
     // gets the data from client
@@ -1043,141 +1087,50 @@ public class OnlineLobbyManager : MonoBehaviour
         p3Join = false;
         p4Join = false;
 
+        // matches up players to past saves to make sure the names match.
+        for(int i = plyrs.Count - 1; i >= 0; i--)
+        {
+            // tries to match the data from the familiar player.
+            LobbyPlayer p = plyrs[i];
+            bool matched = MatchData(ref p);
+
+            // the data has been matched, so remove it from the list.
+            if(matched)
+                plyrs.RemoveAt(i);
+        }
+
+
         // applies the data for the rest of the objects.
         for(int i = 0; i < plyrs.Count; i++)
         {
-            // goes through each player object.
-            // note that the server only sends over its stage choice.
-            // the server does not send the stage choice from the other players.
-            // as such, each player is just given the server's stage.
-            switch(i)
+            // goes through each player object and matches the data.
+            // once an object has been used, it is ignored.
+            if(p2Join == false) // P2
             {
-                case 0: // p2
-                    p2Name = plyrs[i].name;
-                    p2Char = plyrs[i].character;
-                    p2Stage = recStage;
-                    p2Wins = plyrs[i].wins;
-                    p2Join = true;
-                    
-                    break;
-
-                case 1: // p3
-                    p3Name = plyrs[i].name;
-                    p3Char = plyrs[i].character;
-                    p3Stage = recStage;
-                    p3Wins = plyrs[i].wins;
-                    p3Join = true;
-                    
-                    break;
-
-                case 2: // p4
-                    p4Name = plyrs[i].name;
-                    p4Char = plyrs[i].character;
-                    p4Stage = recStage;
-                    p4Wins = plyrs[i].wins;
-                    p4Join = true;
-                    
-                    break;
+                p2Name = plyrs[i].name;
+                p2Char = plyrs[i].character;
+                p2Stage = recStage;
+                p2Wins = plyrs[i].wins;
+                p2Join = true;
             }
+            else if(p3Join == false) // P3
+            {
+                p3Name = plyrs[i].name;
+                p3Char = plyrs[i].character;
+                p3Stage = recStage;
+                p3Wins = plyrs[i].wins;
+                p3Join = true;
+            }
+            else if(p4Join == false) // P4
+            {
+                p4Name = plyrs[i].name;
+                p4Char = plyrs[i].character;
+                p4Stage = recStage;
+                p4Wins = plyrs[i].wins;
+                p4Join = true;
+            }
+            
         }
-
-        // // set indexes
-        // Stack<int> usedIndexes = new Stack<int>();
-        // 
-        // // set players
-        // bool p1Set = false, p2Set = false, p3Set = false, p4Set = false;
-
-
-        // // match data with players.
-        // for(int i = 0; i < plyrCount; i++)
-        // {
-        //     if(p1Name == plyrs[i].name) // p1 (local player)
-        //     {
-        //         // skip if set to local player.
-        //         usedIndexes.Push(i);
-        // 
-        //         // p1 has been set.
-        //         p1Set = true;
-        // 
-        //         // p1Name = plyrs[i].name;
-        //         // p1Stage = plyrs[i].stage;
-        //         // p1Wins = plyrs[i].wins;
-        //     }
-        //     else if(p2Name == plyrs[i].name) // p2
-        //     {
-        //         usedIndexes.Push(i);
-        //         p2Stage = plyrs[i].stage;
-        //         p2Wins = plyrs[i].wins;
-        // 
-        //         // p2 has been set.
-        //         p2Set = true;
-        //     }
-        //     else if (p3Name == plyrs[i].name) // p3
-        //     {
-        //         usedIndexes.Push(i);
-        //         p3Stage = plyrs[i].stage;
-        //         p3Wins = plyrs[i].wins;
-        // 
-        //         // p3 has been set.
-        //         p3Set = true;
-        //     }
-        //     else if (p4Name == plyrs[i].name) // p4
-        //     {
-        //         usedIndexes.Push(i);
-        //         p4Stage = plyrs[i].stage;
-        //         p4Wins = plyrs[i].wins;
-        // 
-        //         // p4 has been set.
-        //         p4Set = true;
-        //     }
-        // }
-        // 
-        // 
-        // // the used indexes
-        // while(usedIndexes.Count != 0)
-        // {
-        //     int idx = usedIndexes.Pop(); // remove index
-        //     plyrs.RemoveAt(idx); // remove value
-        // }
-        // 
-        // 
-        // // fit remaining players
-        // for(int i = 0; i < plyrs.Count; i++)
-        // {
-        //     // checks what items are available.
-        //     // p1 is ignored since that's local.
-        //     // if(p1Set == false)
-        //     // {
-        //     //     //
-        //     // }
-        // 
-        //     // p2 not set.
-        //     if(p2Set == false)
-        //     {
-        //         p2Name = plyrs[i].name;
-        //         p2Char = plyrs[i].character;
-        //         p2Stage = plyrs[i].stage;
-        //         p2Wins = plyrs[i].wins;
-        //         p2Set = true;
-        //     }
-        //     else if(p3Set == false) // p3 not set.
-        //     {
-        //         p3Name = plyrs[i].name;
-        //         p3Char = plyrs[i].character;
-        //         p3Stage = plyrs[i].stage;
-        //         p3Wins = plyrs[i].wins;
-        //         p3Set = true;
-        //     }
-        //     else if(p4Set == false) // p4 not set.
-        //     {
-        //         p4Name = plyrs[i].name;
-        //         p4Char = plyrs[i].character;
-        //         p4Stage = plyrs[i].stage;
-        //         p4Wins = plyrs[i].wins;
-        //         p4Set = true;
-        //     }
-        // }
-
 
         // Move Onto Gameplay Scene
         if (status == 2)
