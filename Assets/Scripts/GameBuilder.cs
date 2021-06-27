@@ -54,6 +54,16 @@ public class GameBuilder : MonoBehaviour
     // start of countdown timer (not set if left as -1)
     public float countdownStart = -1;
 
+    // builder delay variables
+    // if the delay should be used. If loadGame is set to false, nothing will happen.
+    public bool useLoadDelay = false;
+
+    // delay time for loading the game
+    public float loadDelayTime = 0.01F;
+
+    // load delay countdown
+    public float loadDelayCountdown = 0.0F;
+
 
     // the stage file directory
     // string stageFileDirectory;
@@ -70,7 +80,18 @@ public class GameBuilder : MonoBehaviour
     {
         // checks to see if the game should be loaded.
         if (loadGame)
-            LoadGame();
+        {
+            // if the load delay should be used.
+            if(useLoadDelay)
+            {
+                loadDelayCountdown = loadDelayTime;
+            }
+            else // load game
+            {
+                LoadGame();
+            }
+        }
+            
 
 
         // updates volume of everything in the scene.
@@ -662,7 +683,17 @@ public class GameBuilder : MonoBehaviour
         //     LoadGame();
         // }   
 
-        LoadGame();
+        // if the game build should be delayed.
+        if(loadGame && useLoadDelay)
+        {
+            loadDelayCountdown = loadDelayTime;
+        }
+        else
+        {
+            // if loadGame is false, nothing will happen anyway.
+            LoadGame();
+        }
+        
     }
     
     // if called, the game builder is deleted.
@@ -675,7 +706,22 @@ public class GameBuilder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // if the load delay is being used.
+        if(loadGame && useLoadDelay && loadDelayCountdown > 0.0F)
+        {
+            // reduces countdown
+            loadDelayCountdown -= Time.deltaTime;
+
+            // if the load delay countdown is zero or less.
+            if(loadDelayCountdown <= 0.0F)
+            {
+                // loads the games
+                LoadGame();
+
+                // gets set to zero.
+                loadDelayCountdown = 0.0F;
+            }
+        }
     }
 
     // public void OnDestroy()

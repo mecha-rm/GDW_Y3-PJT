@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9117198036044333228}
   - component: {fileID: 9117198036044333229}
   m_Layer: 0
-  m_Name: Game Builder
+  m_Name: Title Game Builder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,4 +47,10 @@ MonoBehaviour:
   loadMapOnEntry: 0
   adjustAudioOnEntry: 1
   map: 2
-  playerList: 
+  manager: {fileID: 0}
+  sceneAfterGame: EndScene
+  winScore: -1
+  countdownStart: -1
+  useLoadDelay: 1
+  loadDelayTime: 0.01
+  loadDelayCountdown: 0
