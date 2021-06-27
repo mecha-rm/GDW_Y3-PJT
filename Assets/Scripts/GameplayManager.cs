@@ -391,6 +391,36 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    // gets the player count. This also recalculates it.
+    public int GetPlayerCount()
+    {
+        // count variable
+        int count = 0;
+
+        // p1 exists
+        if (p1 != null)
+            count++;
+
+        // p2 exists
+        if (p2 != null)
+            count++;
+
+        // p3 exists
+        if (p3 != null)
+            count++;
+
+        // p4 exists
+        if (p4 != null)
+            count++;
+
+        // overrides count
+        playerCount = count;
+
+        // returns count.
+        return playerCount;
+    }
+
+
     // destroys the player mased on their number
     public void DestroyPlayer(int number)
     {
@@ -417,6 +447,7 @@ public class GameplayManager : MonoBehaviour
                 break;
         }
 
+        // reduce count if player was destroyed.
         if (destroyed)
             playerCount--;
     }

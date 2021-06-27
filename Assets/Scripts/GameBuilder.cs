@@ -140,6 +140,7 @@ public class GameBuilder : MonoBehaviour
         // sets this as the builder that made the manager.
         if (manager != null)
         {
+            // TODO: perhaps order of deletion is screwing this up?
             manager.gameBuilder = this;
             manager.DestroyAllPlayers(); // destroys all existing players.
         }
@@ -324,7 +325,11 @@ public class GameBuilder : MonoBehaviour
         // if the stage is not null, randomize the positions of the players
         if (stage != null)
         {
-            stage.RandomizePlayerPositions(manager);
+            // this is a bit finicky, but it works.
+            // stage start has not yet been called, so the player spawns are searched for.
+            stage.AddSpawnPoints(true); // adds the spawn points since start() has not been called yet.
+            stage.RandomizePlayerPositions(manager); // randomizes the player positions
+            stage.findSpawns = false; // don't need to find the spawns again.
         }
 
 

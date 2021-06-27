@@ -34,6 +34,12 @@ public class Stage : MonoBehaviour
     public List<Vector3> playerSpawns = new List<Vector3>();
     public bool randomPlayerPos = false; // randomizes player position
 
+    // adds spawns from the markers
+    // this also deactivates all of the markers
+    public bool findSpawns = true;
+    // grabs from markers, even if the objects are deactivated.
+    public bool includeInactiveSpawns = true;
+
     // the scene's item spawner
     public ItemSpawner itemSpawner;
 
@@ -50,8 +56,6 @@ public class Stage : MonoBehaviour
         {
             gameManager = FindObjectOfType<GameplayManager>();
         }
-
-        
 
         // sets the skybox
         if (skybox != null)
@@ -96,12 +100,33 @@ public class Stage : MonoBehaviour
             itemSpawner.spawnAreaMin = itemSpawnAreaMin;
             itemSpawner.spawnAreaMax = itemSpawnAreaMax;
         }
-            
+
+
+        // if 'true', the spawn points are adde from the objects are added.
+        if (findSpawns) // find spawns
+        {
+            AddSpawnPoints(includeInactiveSpawns);
+        }
 
         // no spawns added
         if (playerSpawns.Count == 0)
-            playerSpawns.Add(new Vector3(0, 0, 0));
+            playerSpawns.Add(new Vector3(0, 0, 5));
     }
+
+    // finds the spawn points.
+    public void AddSpawnPoints(bool includeInactive)
+    {
+        // spawn point array
+        SpawnPoint[] sps = FindObjectsOfType<SpawnPoint>(includeInactive);
+
+        // gets the location from each spawn point.
+        foreach (SpawnPoint sp in sps)
+        {
+            playerSpawns.Add(sp.GetSpawnPoint());
+            sp.gameObject.SetActive(false);
+        }
+    }
+
 
     // randomizes the player positions
     public void RandomizePlayerPositions()
@@ -110,36 +135,72 @@ public class Stage : MonoBehaviour
         if (gameManager == null)
             return;
 
-        // copies spawn positions
-        List<Vector3> positions = playerSpawns;
-
-        // gives random positions
-        for(int i = 1; i <= gameManager.playerCount; i++)
+        // if there are player spawns to choose from
+        if(playerSpawns.Count != 0)
         {
-            // it's a "up to but not including" randomizer
-            int index = Random.Range(0, gameManager.playerCount);
+            // copies spawn positions
+            List<Vector3> spawns = playerSpawns;
 
-            // TODO: don't limit to the provided positions?
-            switch(i)
+            // gets the player count
+            int playerCount = gameManager.GetPlayerCount();
+
+
+            // goes through all the players
+            for (int i = 1; i <= playerCount; i++)
             {
-                case 1:
-                    gameManager.p1.transform.position = positions[index];
-                    break;
-                case 2:
-                    gameManager.p2.transform.position = positions[index];
-                    break;
-                case 3:
-                    gameManager.p3.transform.position = positions[index];
-                    break;
-                case 4:
-                    gameManager.p4.transform.position = positions[index];
-                    break;
+                // becomes 'true' if the position is set.
+                bool posSet = false;
+
+                // gets the index of the spawn.
+                int spawnIndex = Random.Range(0, spawns.Count);
+
+                // goes through each player
+                switch (i)
+                {
+                    case 1:
+                        // player 1 is set.
+                        if(gameManager.p1 != null)
+                        {
+                            gameManager.p1.transform.position = spawns[spawnIndex];
+                            posSet = true;
+                        }
+                            
+                        break;
+                    case 2:
+                        // player 2 is set.
+                        if (gameManager.p2 != null)
+                        {
+                            gameManager.p2.transform.position = spawns[spawnIndex];
+                            posSet = true;
+                        }
+                        
+                        break;
+                    case 3:
+                        if (gameManager.p3 != null)
+                        {
+                            gameManager.p3.transform.position = spawns[spawnIndex];
+                            posSet = true;
+                        }
+                        break;
+
+                    case 4:
+                        if (gameManager.p4 != null)
+                        {
+                            gameManager.p4.transform.position = spawns[spawnIndex];
+                            posSet = true;
+                        }
+                        break;
+                }
+
+                // if a spawn was used, and there are still positions left.
+                if(posSet == true && spawns.Count - 1 != 0)
+                {
+                    spawns.RemoveAt(spawnIndex);
+                }
             }
-
-            // removes position
-            positions.RemoveAt(index);
-
         }
+
+        
     }
 
     // sets manager and randomizes player positions

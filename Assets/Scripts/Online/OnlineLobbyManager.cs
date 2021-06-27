@@ -480,8 +480,42 @@ public class OnlineLobbyManager : MonoBehaviour
             if (matched)
                 plyrs.RemoveAt(i);
         }
+    }
 
+    // match the remaining match data
+    private void MatchRemainingData(ref List<LobbyPlayer> plyrs)
+    {
+        // applies the data for the rest of the objects.
+        for (int i = 0; i < plyrs.Count; i++)
+        {
+            // goes through each player object and matches the data.
+            // once an object has been used, it is ignored.
+            if (p2Join == false) // P2
+            {
+                p2Name = plyrs[i].name;
+                p2Char = plyrs[i].character;
+                p2Stage = plyrs[i].stage;
+                p2Wins = plyrs[i].wins;
+                p2Join = true;
+            }
+            else if (p3Join == false) // P3
+            {
+                p3Name = plyrs[i].name;
+                p3Char = plyrs[i].character;
+                p3Stage = plyrs[i].stage;
+                p3Wins = plyrs[i].wins;
+                p3Join = true;
+            }
+            else if (p4Join == false) // P4
+            {
+                p4Name = plyrs[i].name;
+                p4Char = plyrs[i].character;
+                p4Stage = plyrs[i].stage;
+                p4Wins = plyrs[i].wins;
+                p4Join = true;
+            }
 
+        }
     }
     
     
@@ -1313,16 +1347,16 @@ public class OnlineLobbyManager : MonoBehaviour
         int localIndex = -1;
 
         // if a name is not listed, then data wasn't sent.
-        if(p1Rec.name != "") // p1
+        if(p1Rec.name != "" && p1Rec.name.Contains("\0") == false) // p1
             plyrs.Add(p1Rec);
 
-        if (p2Rec.name != "") // p2
+        if (p2Rec.name != "" && p2Rec.name.Contains("\0") == false) // p2
             plyrs.Add(p2Rec);
         
-        if (p3Rec.name != "") // p3
+        if (p3Rec.name != "" && p3Rec.name.Contains("\0") == false) // p3
             plyrs.Add(p3Rec);
 
-        if (p4Rec.name != "") // p4
+        if (p4Rec.name != "" && p4Rec.name.Contains("\0") == false) // p4
             plyrs.Add(p4Rec);
 
         // loops through
