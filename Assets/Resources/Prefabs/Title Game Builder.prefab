@@ -51,6 +51,6 @@ MonoBehaviour:
   sceneAfterGame: EndScene
   winScore: -1
   countdownStart: -1
-  useLoadDelay: 1
+  useLoadDelay: 0
   loadDelayTime: 0.01
   loadDelayCountdown: 0

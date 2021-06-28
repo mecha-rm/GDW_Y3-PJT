@@ -79,6 +79,9 @@ public class OnlineLobbyManager : MonoBehaviour
     public UdpServerX server;
     public UdpClient client;
 
+    // becomes 'true', when the server or client are run.
+    private bool hostRunning = false;
+
     // the number of endpoints forr the server.
     public int serverEndpoints = 1;
 
@@ -351,7 +354,9 @@ public class OnlineLobbyManager : MonoBehaviour
             // message
             Debug.Log("Server is now running");
 
-            return server.server.IsRunning();
+            // checks to see if the server is running, and returns the result.
+            hostRunning = server.server.IsRunning();
+            return hostRunning;
         }
         else if (!isMaster && client != null) // run client.
         {
@@ -385,7 +390,9 @@ public class OnlineLobbyManager : MonoBehaviour
             // message
             Debug.Log("Client is now running");
 
-            return client.client.IsRunning();
+            // checks to see if the client is running, and returns the result.
+            hostRunning = client.client.IsRunning();
+            return hostRunning;
         }
 
         return false;
@@ -517,7 +524,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
         }
     }
-    
+
     
     // SERVER -> CLIENT (MASTER) //
 
@@ -543,174 +550,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // endpoints connected.
         bool[] epConnected = new bool[epAmount]; // creates a new array with the given endpoints
 
-        // TODO: maybe check something with player count?
-
-        // ORIGINAL //
-        // goes through each endpoint to get the data. There is a max of 3.
-        // for (int i = 0; i < epAmount; i++)
-        // {
-        //     // gets buffer data
-        //     byte[] data = server.server.GetReceiveBufferData(i);
-        //     int index = 0;
-        // 
-        //     // 1. Status
-        //     // 2. Names
-        //     // 3. Stages
-        //     // 4. Characters
-        //     // 5. Wins
-        // 
-        //     // status (0 = unconnected, 1 = connected, 2 = enter play)
-        //     {
-        //         int status = BitConverter.ToInt32(data, index);
-        //         index += sizeof(int);
-        // 
-        //         // status
-        //         switch (status)
-        //         {
-        //             case 0: // not connected.
-        //                 // TODO: change colour to show not connected.
-        //                 switch (i) // change name to show there's no connection.
-        //                 {
-        //                     case 0:
-        //                         p2Name = NO_NAME_CHAR;
-        //                         p2Join = false;
-        //                         break;
-        //                     case 1:
-        //                         p3Name = NO_NAME_CHAR;
-        //                         p3Join = false;
-        //                         break;
-        //                     case 2:
-        //                         p4Name = NO_NAME_CHAR;
-        //                         p4Join = false;
-        //                         break;
-        //                 }
-        // 
-        //                 break;
-        //             case 1: // connected
-        //                 switch (i) // change join values
-        //                 {
-        //                     case 0: // p2
-        //                         p2Join = true;
-        //                         break;
-        //                     case 1: // p3
-        //                         p3Join = true;
-        //                         break;
-        //                     case 2: // p4
-        //                         p4Join = true;
-        //                         break;
-        //                 }
-        //                 break;
-        //             case 2: // entered game (should not be used)
-        //                 break;
-        //             default:
-        //                 break;
-        //         }
-        // 
-        //         // no data to get.
-        //         if (status == 0)
-        //         {
-        //             // Debug.Log("Zero Status");
-        //             continue;
-        //         }
-        //             
-        //     }
-        //     
-        //     // name (conversion is broken)
-        //     {
-        //         string recName = Encoding.UTF8.GetString(data, index, NAME_CHAR_LIMIT);
-        // 
-        //         // received name setting
-        //         switch (i)
-        //         {
-        //             case 0:
-        //                 p2Name = recName;
-        //                 break;
-        //             case 1:
-        //                 p3Name = recName;
-        //                 break;
-        //             case 2:
-        //                 p4Name = recName;
-        //                 break;
-        //         }
-        // 
-        //         // lenght of the name times size of chars.
-        //         index += (recName.Length * sizeof(char));
-        //         
-        //     }
-        // 
-        //     // stage
-        //     {
-        //         // stage
-        //         int stageInt = BitConverter.ToInt32(data, index);
-        //         
-        //         // sets stage information
-        //         switch(i)
-        //         {
-        //             case 0:
-        //                 p2Stage = (GameBuilder.stages)(stageInt);
-        //                 break;
-        //             case 1:
-        //                 p3Stage = (GameBuilder.stages)(stageInt);
-        //                 break;
-        //             case 2:
-        //                 p4Stage = (GameBuilder.stages)(stageInt);
-        //                 break;
-        //         }
-        // 
-        //         // next
-        //         index += sizeof(int);
-        //     }
-        // 
-        //     // character
-        //     {
-        //         // character number
-        //         int charValue = BitConverter.ToInt32(data, index);
-        // 
-        //         // sets stage information
-        //         switch (i)
-        //         {
-        //             case 0:
-        //                 p2Char = (GameBuilder.playables)(charValue);
-        //                 break;
-        //             case 1:
-        //                 p3Char = (GameBuilder.playables)(charValue);
-        //                 break;
-        //             case 2:
-        //                 p4Char = (GameBuilder.playables)(charValue);
-        //                 break;
-        //         }
-        // 
-        //         // next
-        //         index += sizeof(int);
-        //     }
-        // 
-        //     // win count
-        //     {
-        //         // win count
-        //         int winCount = BitConverter.ToInt32(data, index);
-        // 
-        //         // sets win count information
-        //         switch (i)
-        //         {
-        //             case 0:
-        //                 p2Wins = winCount;
-        //                 break;
-        //             case 1:
-        //                 p3Wins = winCount;
-        //                 break;
-        //             case 2:
-        //                 p4Wins = winCount;
-        //                 break;
-        //         }
-        // 
-        //         // next
-        //         index += sizeof(int);
-        //     }
-        // 
-        // }
-
-
-        // NEW //
+        // TODO: maybe check something with player count //
         // goes through each endpoint looking for data.
         for (int i = 0; i < epAmount; i++)
         {
@@ -1857,7 +1697,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // TODO: add identifiers for the game.
         // if in the lobby, recieve data from clients and send data to them.
-        if(inLobby)
+        if(inLobby && hostRunning)
         {
            if(isMaster) // acting as server
            {
