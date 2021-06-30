@@ -11,6 +11,7 @@ public class GameBuilder : MonoBehaviour
     {
         public int number; // player number
         public playables character; // character
+        public bool controllable; // player is controllable
         public bool destorySaved; // destroy player saved to accessed variable if true.
         public bool useMainCam; // use main camera
         public int targetDisplay; // target display for camera
@@ -250,12 +251,12 @@ public class GameBuilder : MonoBehaviour
         // creates the player and puts it in the manager
         if(count == 0) // no playes set, so test player is added.
         {
-            PlayerObject p = manager.CreatePlayer(0, 0, true, true);
+            PlayerObject p = manager.CreatePlayer(0, 0, true, true, true, 0);
         }
         else if(count == 1) // only one player, so use main camera
         {
             // manager.CreatePlayer(playerList[0].number, playerList[0].character, false, true);
-            manager.CreatePlayer(playerList[0].number, playerList[0].character, true, true, 0);
+            manager.CreatePlayer(playerList[0].number, playerList[0].character, true, true, true, 0);
         }
         else
         {
@@ -277,7 +278,7 @@ public class GameBuilder : MonoBehaviour
             // pass in builder player
             foreach (BuilderPlayer bp in playerList)
             {
-                PlayerObject p = manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+                PlayerObject p = manager.CreatePlayer(bp.number, bp.character, bp.controllable, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
                 p.name = "P" + bp.number + " - " + p.name; // change name to show player number.
 
             }
@@ -478,7 +479,7 @@ public class GameBuilder : MonoBehaviour
     }
 
     // adds a player to the game builder.
-    public void AddPlayer(GameBuilder.playables newPlayer)
+    public void AddPlayer(GameBuilder.playables newPlayer, bool controllable = true)
     {
         // playerList.Add(newPlayer);
         // 
@@ -491,6 +492,7 @@ public class GameBuilder : MonoBehaviour
         BuilderPlayer bp = new BuilderPlayer();
         bp.number = playerList.Count + 1;
         bp.character = newPlayer;
+        bp.controllable = controllable;
         bp.destorySaved = true;
         bp.useMainCam = (playerList.Count == 0) ? true : false;
         bp.targetDisplay = playerList.Count;
@@ -500,11 +502,11 @@ public class GameBuilder : MonoBehaviour
 
         // create player
         if (manager != null)
-            manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+            manager.CreatePlayer(bp.number, bp.character, bp.controllable, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
     }
 
     // adds a player to the game builder.
-    public void AddPlayer(int number, GameBuilder.playables newPlayer)
+    public void AddPlayer(int number, GameBuilder.playables newPlayer, bool controllable)
     {
         // playerList.Add(newPlayer);
         // 
@@ -518,6 +520,7 @@ public class GameBuilder : MonoBehaviour
         BuilderPlayer bp = new BuilderPlayer();
         bp.number = number;
         bp.character = newPlayer;
+        bp.controllable = controllable;
         bp.destorySaved = true;
         bp.useMainCam = (playerList.Count == 0) ? true : false;
         bp.targetDisplay = playerList.Count;
@@ -527,16 +530,17 @@ public class GameBuilder : MonoBehaviour
 
         // create player
         if (manager != null)
-            manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+            manager.CreatePlayer(bp.number, bp.character, bp.controllable, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
     }
 
     // adds a player to the game builder.
-    public void AddPlayer(int number, GameBuilder.playables newPlayer, bool destroySaved, bool useMainCam, int targetDisplay)
+    public void AddPlayer(int number, GameBuilder.playables newPlayer, bool controllable, bool destroySaved, bool useMainCam, int targetDisplay)
     {
         // sets values
         BuilderPlayer bp = new BuilderPlayer();
         bp.number = number;
         bp.character = newPlayer;
+        bp.controllable = controllable;
         bp.destorySaved = destroySaved;
         bp.useMainCam = useMainCam;
         bp.targetDisplay = targetDisplay;
@@ -546,12 +550,12 @@ public class GameBuilder : MonoBehaviour
 
         // create player
         if (manager != null)
-            manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+            manager.CreatePlayer(bp.number, bp.character, bp.controllable, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
     }
 
 
     // adds and gets the player
-    public PlayerObject AddAndGetPlayer(int number, GameBuilder.playables newPlayer)
+    public PlayerObject AddAndGetPlayer(int number, GameBuilder.playables newPlayer, bool controllable)
     {
         // playerList.Add(newPlayer);
 
@@ -559,6 +563,7 @@ public class GameBuilder : MonoBehaviour
         BuilderPlayer bp = new BuilderPlayer();
         bp.number = number;
         bp.character = newPlayer;
+        bp.controllable = controllable;
         bp.destorySaved = true;
         bp.useMainCam = (playerList.Count == 0) ? true : false;
         bp.targetDisplay = playerList.Count;
@@ -575,18 +580,20 @@ public class GameBuilder : MonoBehaviour
 
         // gets the created player
         if (manager != null)
-            return manager.CreatePlayer(number, newPlayer, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+            return manager.CreatePlayer(number, newPlayer, bp.controllable, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
         else
             return null;
     }
 
     // adds a player to the game builder.
-    public PlayerObject AddAndGetPlayer(int number, GameBuilder.playables newPlayer, bool destroySaved, bool useMainCam, int targetDisplay)
+    public PlayerObject AddAndGetPlayer(int number, GameBuilder.playables newPlayer, bool controllable, 
+        bool destroySaved, bool useMainCam, int targetDisplay)
     {
         // sets values
         BuilderPlayer bp = new BuilderPlayer();
         bp.number = number;
         bp.character = newPlayer;
+        bp.controllable = controllable;
         bp.destorySaved = destroySaved;
         bp.useMainCam = useMainCam;
         bp.targetDisplay = targetDisplay;
@@ -596,7 +603,7 @@ public class GameBuilder : MonoBehaviour
 
         // create player and return it.
         if (manager != null)
-            return manager.CreatePlayer(bp.number, bp.character, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
+            return manager.CreatePlayer(bp.number, bp.character, bp.controllable, bp.destorySaved, bp.useMainCam, bp.targetDisplay);
         else
             return null;
     }

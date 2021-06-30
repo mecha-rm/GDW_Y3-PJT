@@ -121,18 +121,18 @@ public class MatchBuilder : MonoBehaviour
             // if no players exist, a default player is given.
             if (count == 0) // no playes set, so test player is added.
             {
-                manager.CreatePlayer(0, 0, true, true);
+                manager.CreatePlayer(0, 0, true, true, true);
                 playerList.Add(playables.none); // add player
             }
             else if (count == 1) // only one player, set them to main camera.
             {
-                manager.CreatePlayer(0, playerList[0], false, true);
+                manager.CreatePlayer(0, playerList[0], true, false, true);
             }
             else
             {
                 for (int i = 0; i < count; i++)
                 {
-                    manager.CreatePlayer(i + 1, playerList[i], false, false);
+                    manager.CreatePlayer(i + 1, playerList[i], true, false, false);
                 }
             }
 
@@ -193,35 +193,35 @@ public class MatchBuilder : MonoBehaviour
     }
 
     // adds a player to the list
-    public PlayerObject AddPlayer(int newPlayer, bool useMainCamera = false)
+    public PlayerObject AddPlayer(int newPlayer, bool controllable, bool useMainCamera = false)
     {
         playerList.Add((playables)newPlayer);
 
         if (manager != null)
-            return manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], true, useMainCamera);
+            return manager.CreatePlayer(playerList.Count, playerList[playerList.Count - 1], controllable, true, useMainCamera);
         else
             return null;
     }
 
     // adds a player to the game builder.
-    public PlayerObject AddPlayer(MatchBuilder.playables newPlayer, bool useMainCamera = false)
+    public PlayerObject AddPlayer(MatchBuilder.playables newPlayer, bool controllable, bool useMainCamera = false)
     {
         playerList.Add(newPlayer);
 
         // creates and returns player
         if (manager != null)
-            return manager.CreatePlayer(playerList.Count, newPlayer, true, useMainCamera);
+            return manager.CreatePlayer(playerList.Count, newPlayer, controllable, true, useMainCamera);
         else
             return null;
     }
 
     // adds a player to the game builder.
-    public PlayerObject AddPlayer(int number, MatchBuilder.playables newPlayer)
+    public PlayerObject AddPlayer(int number, MatchBuilder.playables newPlayer, bool controllable)
     {
         playerList.Add(newPlayer);
 
         if (manager != null)
-            return manager.CreatePlayer(number, newPlayer, true, false, Mathf.Clamp(number, 1, 4));
+            return manager.CreatePlayer(number, newPlayer, controllable, true, false, Mathf.Clamp(number, 1, 4));
         else
             return null;
     }

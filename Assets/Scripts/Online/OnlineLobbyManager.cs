@@ -1549,16 +1549,16 @@ public class OnlineLobbyManager : MonoBehaviour
         // for (int i = 1; i <= plyrs.Count; i++)
         for (int i = 0; i < plyrs.Count; i++)
         {
-            // gets the cahracter
+            // gets the character
             GameBuilder.playables p = plyrs[i].character;
+            bool controlAndCam = (i == 0) ? true : false;
 
             // there is no character, so set it to the default.
             if (p == GameBuilder.playables.none)
                 p = GameBuilder.playables.dog;
 
             // adds player to game builder.
-            // TODO: make a variable for whether the character is controllable or not.
-            gameBuilder.AddPlayer(i, p, true, (i == 0) ? true : false, i);
+            gameBuilder.AddPlayer(i, p, controlAndCam, true, controlAndCam, i);
 
 
             // GameBuilder.playables p = GameBuilder.playables.none;

@@ -148,7 +148,7 @@ public class GameplayManager : MonoBehaviour
     // creates the players.
     // if 'useMainCamera' is set to true, then the player uses the main camera (default view). Otherwise a new camera is made.
     // the target display is used to determine which camera to use.
-    public PlayerObject CreatePlayer(int number, GameBuilder.playables type, bool destroySaved, bool useMainCamera, int targetDisplay = 0)
+    public PlayerObject CreatePlayer(int number, GameBuilder.playables type, bool controllable, bool destroySaved, bool useMainCamera, int targetDisplay = 0)
     {
         // new player
         GameObject newPlayer;
@@ -187,6 +187,9 @@ public class GameplayManager : MonoBehaviour
         px.ParentIconToPlayerSpace();
 
         // px.playerNumber = number;
+
+        // the player is controllable
+        px.controllablePlayer = controllable;
 
         // Player Camera
         {
@@ -330,7 +333,8 @@ public class GameplayManager : MonoBehaviour
     }
 
     // creates the players (match builder variant) - will replace other variant
-    public PlayerObject CreatePlayer(int number, MatchBuilder.playables type, bool destroySaved, bool useMainCamera, int targetDisplay = 0)
+    public PlayerObject CreatePlayer(int number, MatchBuilder.playables type, bool controllable, 
+        bool destroySaved, bool useMainCamera, int targetDisplay = 0)
     {
         GameBuilder.playables gbp = GameBuilder.playables.none;
 
@@ -358,13 +362,13 @@ public class GameplayManager : MonoBehaviour
                 break;
         }
 
-        return CreatePlayer(number, gbp, destroySaved, useMainCamera, targetDisplay);
+        return CreatePlayer(number, gbp, controllable, destroySaved, useMainCamera, targetDisplay);
     }
 
     // creates the players (match builder variant) - will replace other variant
-    public PlayerObject CreatePlayer(int number, int type, bool destroySaved, bool useMainCamera, int targetDisplay = 0)
+    public PlayerObject CreatePlayer(int number, int type, bool controllable, bool destroySaved, bool useMainCamera, int targetDisplay = 0)
     {
-        return CreatePlayer(number, (GameBuilder.playables)type, destroySaved, useMainCamera, targetDisplay);
+        return CreatePlayer(number, (GameBuilder.playables)type, controllable, destroySaved, useMainCamera, targetDisplay);
     }
 
     // gets the player based on its number (1 - 4)
