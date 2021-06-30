@@ -1557,6 +1557,7 @@ public class OnlineLobbyManager : MonoBehaviour
                 p = GameBuilder.playables.dog;
 
             // adds player to game builder.
+            // TODO: make a variable for whether the character is controllable or not.
             gameBuilder.AddPlayer(i, p, true, (i == 0) ? true : false, i);
 
 

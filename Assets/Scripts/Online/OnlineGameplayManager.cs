@@ -163,6 +163,9 @@ public class OnlineGameplayManager : MonoBehaviour
         if (timer == null)
             timer = FindObjectOfType<TimerObject>();
 
+        // TODO: when the game is starting, this is getting ahold of the players that are about to be deleted.
+        // this needs to either change how it operates, or have a delay for getting remote players.
+
         // if the list hasn't had anything put into it.
         if (players.Count == 0)
         {
