@@ -141,6 +141,9 @@ public class OnlineLobbyManager : MonoBehaviour
     // if 'true', the match starts on the next update.
     public bool startMatchOnUpdate = false;
 
+    // past the start phase of the game 
+    private bool callPostMatchStart = false;
+
     // TODO: add game builder.
     public GameBuilder gameBuilder;
 
@@ -1651,6 +1654,29 @@ public class OnlineLobbyManager : MonoBehaviour
     // called when the match is started.
     private void OnMatchStart()
     {
+        // moved to post match start
+
+        // finds online game manager if not set.
+        // if (onlineGameManager == null)
+        //     onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
+
+        // activates gameplay manager.
+        // if (onlineGameManager != null)
+        // {
+        //     onlineGameManager.enabled = true;
+        //     onlineGameManager.isMaster = isMaster;
+        // }
+
+        // now in lobby
+        inLobby = false;
+
+        // call the post match start
+        callPostMatchStart = true;
+    }
+
+    // called on the first update after the match has started.
+    private void PostMatchStart()
+    {
         // finds online game manager if not set.
         if (onlineGameManager == null)
             onlineGameManager = FindObjectOfType<OnlineGameplayManager>();
@@ -1662,8 +1688,8 @@ public class OnlineLobbyManager : MonoBehaviour
             onlineGameManager.isMaster = isMaster;
         }
 
-        // now in lobby
-        inLobby = false;
+        // the post match function has now been called.
+        callPostMatchStart = false;
     }
 
     // called when returning to the lobby.
@@ -1676,7 +1702,22 @@ public class OnlineLobbyManager : MonoBehaviour
         // turn off online gameplay manager
         // TODO: maybe delete and re-add component?
         if (onlineGameManager != null)
+        {
+            // deactivates online game and destroys the component.
             onlineGameManager.enabled = false;
+            Destroy(onlineGameManager);
+
+            // deactivates game object and adds online game component.
+            gameObject.SetActive(false);
+            onlineGameManager = gameObject.AddComponent<OnlineGameplayManager>();
+
+            // disables onlne game component and activates object.
+            onlineGameManager.enabled = false;
+            gameObject.SetActive(true);
+
+            // TODO: delete the online gameplay manager and add it back.
+        }    
+            
 
         // game builder was deleted.
         // if(gameBuilder == null)
@@ -1693,6 +1734,7 @@ public class OnlineLobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // sets the game builder
         if (gameBuilder == null)
             SetGameBuilder();
 
@@ -1727,6 +1769,12 @@ public class OnlineLobbyManager : MonoBehaviour
             if (startMatchOnUpdate)
                 PreMatchStart();
         }
+
+
+        // the match has been started, so call post match start.
+        if (callPostMatchStart)
+            PostMatchStart();
+
     }
 
     // OnDestroy is called when an object is being destroyed.
