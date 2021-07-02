@@ -1554,71 +1554,14 @@ public class OnlineLobbyManager : MonoBehaviour
         {
             // gets the character
             GameBuilder.playables p = plyrs[i].character;
-            bool controlAndCam = (i == 0) ? true : false;
+            bool controlAndCam = (i + 1 == 1) ? true : false;
 
             // there is no character, so set it to the default.
             if (p == GameBuilder.playables.none)
                 p = GameBuilder.playables.dog;
 
             // adds player to game builder.
-            gameBuilder.AddPlayer(i, p, controlAndCam, true, controlAndCam, i);
-
-
-            // GameBuilder.playables p = GameBuilder.playables.none;
-            // bool isP1 = false;
-            // bool joined = false;
-            // 
-            // // gets player
-            // switch (i)
-            // {
-            //     case 1:
-            //         p = p1Char;
-            //         joined = true;
-            //         isP1 = true;
-            //         break;
-            //     case 2:
-            //         p = p2Char;
-            //         joined = p2Join;
-            //         break;
-            //     case 3:
-            //         p = p3Char;
-            //         joined = p3Join;
-            //         break;
-            //     case 4:
-            //         p = p4Char;
-            //         joined = p4Join;
-            //         break;
-            // }
-            // 
-            // // if the player is set to none, it means it wasn't set.
-            // // TODO: change to use joined.
-            // // if (joined == false)
-            // // {
-            // //     continue;
-            // // }
-            // // else
-            // // {
-            // //     plyrCount++;
-            // // }
-            // 
-            // plyrCount++;
-            // 
-            // // set game builder to dog if this is set to none.
-            // // this should be commented out eventually.
-            // if (p == GameBuilder.playables.none)
-            //     p = GameBuilder.playables.dog;
-            // 
-            // // adds player to game builder.
-            // if (joined == true)
-            // {
-            //     if (isP1)
-            //         gameBuilder.AddPlayer(i, p);
-            //     else
-            //         gameBuilder.AddPlayer(i, p);
-            // 
-            //     joinedPlayers++;
-            // }
-
+            gameBuilder.AddPlayer(i + 1, p, controlAndCam, true, controlAndCam, i);
         }
 
         // if no players joined, it adds a default.
