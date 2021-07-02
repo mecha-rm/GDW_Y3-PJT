@@ -234,6 +234,21 @@ public class OnlineGameplayManager : MonoBehaviour
         server.SetPort(newPort);
     }
 
+    
+    // refreshes the player list.
+    public void RefreshPlayerList()
+    {
+        players.Clear(); // empties out the list of players
+
+        // finds all remote players
+        RemotePlayer[] arr = FindObjectsOfType<RemotePlayer>();
+
+        // adds players to list.
+        foreach (RemotePlayer rp in arr)
+            players.Add(rp);
+    }
+
+
     // runs the server (or the client)
     public bool RunHost()
     {
