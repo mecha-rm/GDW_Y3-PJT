@@ -1571,7 +1571,10 @@ public class OnlineLobbyManager : MonoBehaviour
         // set to load the game.
         gameBuilder.SetLoadGame(true);
         gameBuilder.SetLoadStage(false);
+
+        // TODO: maybe just set this to the end scene?
         gameBuilder.sceneAfterGame = "LobbyScene";
+        // gameBuilder.sceneAfterGame = "EndScene";
 
         // change the scene.
         SceneChanger.ChangeScene(sceneName);
