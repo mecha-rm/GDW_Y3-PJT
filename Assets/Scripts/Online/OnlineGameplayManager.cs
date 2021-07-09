@@ -174,7 +174,8 @@ public class OnlineGameplayManager : MonoBehaviour
         {
             if (players.Count == 0)
             {
-                RemotePlayer[] arr = FindObjectsOfType<RemotePlayer>();
+                // only pulls from players with the remote player component active.
+                RemotePlayer[] arr = FindObjectsOfType<RemotePlayer>(false);
                 
                 // adds players to list.
                 foreach (RemotePlayer rp in arr)

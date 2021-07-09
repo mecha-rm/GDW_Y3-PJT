@@ -1507,7 +1507,8 @@ PrefabInstance:
       propertyPath: playerScoreText
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6131581136813494206, guid: 506a36c99bfc10f47aa85d4ff78d4436, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 506a36c99bfc10f47aa85d4ff78d4436, type: 3}
 --- !u!114 &895348591 stripped
 MonoBehaviour:

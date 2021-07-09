@@ -53,9 +53,14 @@ public class GameplayManager : MonoBehaviour
     // the match builder for the scene. This will eventually replace the game builder.
     public MatchBuilder matchBuilder = null;
 
-
     // if set to 'true', the game builder is destroyed when the gameplay manager is destroyed.
     public bool destroyGameBuilder = true;
+
+    // the online gameplay manager
+    public OnlineLobbyManager onlineLobbyManager = null;
+
+    // if 'true', the online gameplay manager is destroyed.
+    public bool destroyOnlineLobbyManager = true;
 
     // Start is called before the first frame update
     void Start()
@@ -568,6 +573,12 @@ public class GameplayManager : MonoBehaviour
         if (destroyGameBuilder && matchBuilder != null)
         {
             Destroy(matchBuilder.gameObject);
+        }
+
+        // destroys online gameplay manager, which also shuts down the server.
+        if (onlineLobbyManager && onlineLobbyManager != null)
+        {
+            Destroy(onlineLobbyManager.gameObject);
         }
     }
 }

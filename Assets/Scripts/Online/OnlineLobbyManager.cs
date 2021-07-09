@@ -1573,8 +1573,8 @@ public class OnlineLobbyManager : MonoBehaviour
         gameBuilder.SetLoadStage(false);
 
         // TODO: maybe just set this to the end scene?
-        gameBuilder.sceneAfterGame = "LobbyScene";
-        // gameBuilder.sceneAfterGame = "EndScene";
+        // gameBuilder.sceneAfterGame = "LobbyScene";
+        gameBuilder.sceneAfterGame = "EndScene";
 
         // change the scene.
         SceneChanger.ChangeScene(sceneName);
@@ -1633,6 +1633,14 @@ public class OnlineLobbyManager : MonoBehaviour
             onlineGameManager.enabled = true;
             onlineGameManager.isMaster = isMaster;
         }
+
+        // TODO: fix this so that players can go back to the lobby.
+        // finds the gameplay manager
+        GameplayManager gm = FindObjectOfType<GameplayManager>();
+
+        // sets this as the online lobby manager.
+        if (gm != null)
+            gm.onlineLobbyManager = this;
 
         // the post match function has now been called.
         callPostMatchStart = false;
