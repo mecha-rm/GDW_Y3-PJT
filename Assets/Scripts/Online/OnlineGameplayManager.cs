@@ -79,6 +79,9 @@ public class OnlineGameplayManager : MonoBehaviour
     // the controlled player should be in this list.
     public List<RemotePlayer> players = new List<RemotePlayer>();
 
+    // searches for players to add. They will automatically be given remote player components.
+    public bool findPlayers = true;
+
     // local controlled player.
     private RemotePlayer localPlayer = null;
 
@@ -167,14 +170,18 @@ public class OnlineGameplayManager : MonoBehaviour
         // this needs to either change how it operates, or have a delay for getting remote players.
 
         // if the list hasn't had anything put into it.
-        if (players.Count == 0)
+        if(findPlayers)
         {
-            RemotePlayer[] arr = FindObjectsOfType<RemotePlayer>();
-
-            // adds players to list.
-            foreach (RemotePlayer rp in arr)
-                players.Add(rp);
+            if (players.Count == 0)
+            {
+                RemotePlayer[] arr = FindObjectsOfType<RemotePlayer>();
+                
+                // adds players to list.
+                foreach (RemotePlayer rp in arr)
+                    players.Add(rp);
+            }
         }
+        
 
         // finds controlled player
         foreach(RemotePlayer rp in players)

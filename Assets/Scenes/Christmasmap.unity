@@ -2956,6 +2956,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6131581136813494206, guid: 506a36c99bfc10f47aa85d4ff78d4436, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7974707485083853879, guid: 506a36c99bfc10f47aa85d4ff78d4436, type: 3}
       propertyPath: m_Name
       value: Bunny Player
