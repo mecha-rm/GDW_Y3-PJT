@@ -17,6 +17,12 @@ public class UdpClient : MonoBehaviour
     // this sets the value at the instantiation (if applicable), at SetBlockingSockets(), and at RunClient().
     public bool blocking = true;
 
+    // sets the send timeout
+    public int sendTimeout = 0;
+
+    // sets the receive timeout
+    public int receiveTimeout = 0;
+
     // if 'true', the server starts running once the program starts.
     public bool runOnStart = false;
 
@@ -44,6 +50,11 @@ public class UdpClient : MonoBehaviour
     {
         // sets blocking value.
         client.SetBlockingSockets(blocking);
+
+        // set timeout values
+        SetSendTimeout(sendTimeout);
+        SetReceiveTimeout(receiveTimeout);
+
 
         // runs the client.
         if (runOnStart)
@@ -88,6 +99,37 @@ public class UdpClient : MonoBehaviour
         client.SetBlockingSockets(blocking);
     }
 
+    // gets the send timeout
+    public int GetSendTimeout()
+    {
+        sendTimeout = client.GetSendTimeout();
+        return sendTimeout;
+    }
+
+    // sets the send timeout
+    public void SetSendTimeout(int sendTimeout)
+    {
+        // sets the send timeout
+        this.sendTimeout = (sendTimeout >= 0) ? sendTimeout : 0;
+        client.SetSendTimeout(this.sendTimeout);
+    }
+
+    // gets the receive timeout
+    public int GetReceiveTimeout()
+    {
+        receiveTimeout = client.GetReceiverTimeout();
+        return receiveTimeout;
+    }
+
+    // sets the receive timeout
+    public void SetReceiveTimeout(int receiveTimeout)
+    {
+        // sets the receive timeout
+        this.receiveTimeout = (receiveTimeout >= 0) ? receiveTimeout : 0;
+        client.SetSendTimeout(this.receiveTimeout);
+    }
+
+
     // runs the client
     public void RunClient()
     {
@@ -108,7 +150,15 @@ public class UdpClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        client.Update();
+        // sets blocking socket value
+        SetBlockingSockets(blocking);
+
+        // sets timeout values
+        SetSendTimeout(sendTimeout);
+        SetReceiveTimeout(receiveTimeout);
+
+        if (client.IsRunning())
+            client.Update();
     }
 
     // shutting down server

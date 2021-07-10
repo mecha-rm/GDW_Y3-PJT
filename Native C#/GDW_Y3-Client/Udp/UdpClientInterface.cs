@@ -137,13 +137,13 @@ namespace NetworkLibrary
         // gets the receiver timeout.
         public static int GetReceiverTimeout()
         {
-            return client.GetReceiverTimeout();
+            return client.GetReceiveTimeout();
         }
 
         // sets the receiver timeout.
         public static void SetReceiverTimeout(int newRt)
         {
-            client.SetReceiverTimeout(newRt);
+            client.SetReceiveTimeout(newRt);
         }
 
         // checks to see if the server is running

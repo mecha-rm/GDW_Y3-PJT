@@ -19,6 +19,12 @@ public class UdpServerX : MonoBehaviour
     // this sets the value at the instantiation (if applicable), at SetBlockingSockets(), and at RunServer().
     public bool blocking = true;
 
+    // sets the send timeout
+    public int sendTimeout = 0;
+
+    // sets the receive timeout
+    public int receiveTimeout = 0;
+
     // if 'true', the server starts running once the program starts.
     public bool runOnStart = false;
 
@@ -40,7 +46,11 @@ public class UdpServerX : MonoBehaviour
     void Start()
     {
         // sets blocking value.
-        server.SetBlockingSockets(blocking);
+        SetBlockingSockets(blocking);
+
+        // set timeout values
+        SetSendTimeout(sendTimeout);
+        SetReceiveTimeout(receiveTimeout);
 
 
         // runs the server.
@@ -128,6 +138,37 @@ public class UdpServerX : MonoBehaviour
         server.SetBlockingSockets(blocking);
     }
 
+    // gets the send timeout
+    public int GetSendTimeout()
+    {
+        sendTimeout = server.GetSendTimeout();
+        return sendTimeout;
+    }
+
+    // sets the send timeout
+    public void SetSendTimeout(int sendTimeout)
+    {
+        // sets the send timeout
+        this.sendTimeout = (sendTimeout >= 0) ? sendTimeout : 0;
+        server.SetSendTimeout(this.sendTimeout);
+    }
+
+    // gets the receive timeout
+    public int GetReceiveTimeout()
+    {
+        receiveTimeout = server.GetReceiveTimeout();
+        return receiveTimeout;
+    }
+
+    // sets the receive timeout
+    public void SetReceiveTimeout(int receiveTimeout)
+    {
+        // sets the receive timeout
+        this.receiveTimeout = (receiveTimeout >= 0) ? receiveTimeout : 0;
+        server.SetSendTimeout(this.receiveTimeout);
+    }
+
+
     // returns 'true' if the server is running.
     public bool IsRunning()
     {
@@ -156,8 +197,15 @@ public class UdpServerX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // sets blocking socket value
+        SetBlockingSockets(blocking);
+
+        // sets timeout values
+        SetSendTimeout(sendTimeout);
+        SetReceiveTimeout(receiveTimeout);
+
         // updates the server
-        if(server.IsRunning())
+        if (server.IsRunning())
             server.Update();
     }
 

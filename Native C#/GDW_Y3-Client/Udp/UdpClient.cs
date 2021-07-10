@@ -238,13 +238,13 @@ namespace NetworkLibrary
         }
 
         // gets the receiver timeout.
-        public int GetReceiverTimeout()
+        public int GetReceiveTimeout()
         {
             return receiveTimeout;
         }
 
         // sets the receiver timeout.
-        public void SetReceiverTimeout(int newRt)
+        public void SetReceiveTimeout(int newRt)
         {
             receiveTimeout = newRt;
 
