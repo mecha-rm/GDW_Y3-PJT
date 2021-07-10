@@ -117,7 +117,7 @@ public class UdpClient : MonoBehaviour
     // gets the receive timeout
     public int GetReceiveTimeout()
     {
-        receiveTimeout = client.GetReceiverTimeout();
+        receiveTimeout = client.GetReceiveTimeout();
         return receiveTimeout;
     }
 
@@ -126,7 +126,7 @@ public class UdpClient : MonoBehaviour
     {
         // sets the receive timeout
         this.receiveTimeout = (receiveTimeout >= 0) ? receiveTimeout : 0;
-        client.SetSendTimeout(this.receiveTimeout);
+        client.SetReceiveTimeout(this.receiveTimeout);
     }
 
 
@@ -157,6 +157,7 @@ public class UdpClient : MonoBehaviour
         SetSendTimeout(sendTimeout);
         SetReceiveTimeout(receiveTimeout);
 
+        // updates the client
         if (client.IsRunning())
             client.Update();
     }

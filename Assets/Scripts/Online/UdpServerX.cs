@@ -165,7 +165,7 @@ public class UdpServerX : MonoBehaviour
     {
         // sets the receive timeout
         this.receiveTimeout = (receiveTimeout >= 0) ? receiveTimeout : 0;
-        server.SetSendTimeout(this.receiveTimeout);
+        server.SetReceiveTimeout(this.receiveTimeout);
     }
 
 
