@@ -809,6 +809,8 @@ public class OnlineLobbyManager : MonoBehaviour
             index += data.Length;
         }
 
+        // TODO: optimize this so that there's less copied data.
+
         // Player Count
         {
             // becomes set to '2' when going onto another scene.
@@ -827,7 +829,7 @@ public class OnlineLobbyManager : MonoBehaviour
             //     pCount++;
             
             // player count.
-            int pCount = roomSize;
+            int pCount = roomSize; // TODO: check to see if room count matches up with connected players? Go based on join values instead.
 
             byte[] data = BitConverter.GetBytes(pCount);
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
@@ -1051,7 +1053,7 @@ public class OnlineLobbyManager : MonoBehaviour
         LobbyPlayer p4Rec = new LobbyPlayer();
         p4Rec.name = "";
 
-
+        // TODO: for some reason you only have 61 bytes of data even though you're connected to multiple people.
         // values
         int status = -1;
         int plyrCount = -1;
