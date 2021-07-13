@@ -52,10 +52,15 @@ MonoBehaviour:
   client: {fileID: 9115964154999892298}
   serverEndpoints: 1
   blocking: 0
+  sendTimeout: 1
+  receiveTimeout: 1
   dataComm: 1
   serverBufferSize: 256
   clientBufferSize: 256
   ipAddress: 
+  intervalTimer: {fileID: 866859337918832886}
+  useIntervals: 1
+  interval: 1
   p1Stage: 1
   p2Stage: 0
   p3Stage: 0

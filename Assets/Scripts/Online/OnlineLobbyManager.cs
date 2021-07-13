@@ -100,9 +100,6 @@ public class OnlineLobbyManager : MonoBehaviour
     // if 'true', data is communicated.
     public bool dataComm = true;
 
-    // timer for intervals
-    // public IntervalTimer intervalTimer = null;
-
     // buffer size for clients and servers
     public int serverBufferSize = 256;
     public int clientBufferSize = 256;
@@ -110,6 +107,11 @@ public class OnlineLobbyManager : MonoBehaviour
     // ip address
     public string ipAddress;
 
+    [Header("Network Info/Intervals")]
+    // timer for intervals
+    public IntervalTimer intervalTimer = null;
+    public bool useIntervals = true;
+    public float intervalLength = 1.0F;
 
     // match information
     [Header("Match Info")]
@@ -220,6 +222,22 @@ public class OnlineLobbyManager : MonoBehaviour
             // room size increase.
             roomSize = serverEndpoints + 1;
         }
+
+
+        // interval setter
+        {
+            // if the interval timer is not set, look for it on the object.
+            if (intervalTimer == null)
+                intervalTimer = GetComponent<IntervalTimer>();
+
+            // interval timer found
+            if(intervalTimer != null)
+            {
+                intervalTimer.startOnInterval = false;
+                intervalTimer.intervalLength = intervalLength;
+            }
+        }
+
 
         // finds online gameplay manager.
         if (onlineGameManager == null)
@@ -1722,32 +1740,60 @@ public class OnlineLobbyManager : MonoBehaviour
         // if in the lobby, recieve data from clients and send data to them.
         if(inLobby && hostRunning)
         {
-           if(isMaster) // acting as server
-           {
-               ReceiveDataFromClients();
-               SendDataToClients();
-           }
-           else // acting as client
-           {
-                // moved onto gameplay
-                // int recSize = client.client.GetReceiveBufferSize();
-                // 
-                // 
-                // if (recSize != clientBufferSize && recSize != 0)
-                // {
-                //     // calls for prematch start.
-                //     PreMatchStart();
-                // }
-                // else
-                {
-                    SendDataToServer();
-                    ReceiveDataFromServer();
-                }     
-           }
+            // checks to update data
+            bool sendData = false;
 
-           // starts the match.
+            if(useIntervals && intervalTimer != null) // using intervals
+            {
+                // checks to see if the interval has ended.
+                intervalTimer.intervalLength = intervalLength; // updates to current interval length
+                sendData = intervalTimer.IntervalEnded();
+            }
+            else // not using intervals
+            {
+                sendData = true;
+            }
+
+            // if the match is starting on this update, ignore the intervals.
+            // without this, the match may not start on all screens.
+            // as such, this update is a guarantee.
             if (startMatchOnUpdate)
-                PreMatchStart();
+                sendData = true;
+
+
+            // if the data is being updated, run connections.
+            if(isMaster) // acting as server
+            {
+                ReceiveDataFromClients();
+
+                // if the data should be sent out.
+                if(sendData)
+                    SendDataToClients();
+            }
+            else if (!isMaster) // acting as client
+            {
+                 // moved onto gameplay
+                 // int recSize = client.client.GetReceiveBufferSize();
+                 // 
+                 // 
+                 // if (recSize != clientBufferSize && recSize != 0)
+                 // {
+                 //     // calls for prematch start.
+                 //     PreMatchStart();
+                 // }
+                 // else
+                 {
+                    // if the data should be sent out.
+                    if (sendData)
+                        SendDataToServer();
+                    
+                    ReceiveDataFromServer();
+                 }     
+            }
+
+            // starts the match.
+             if (startMatchOnUpdate)
+                 PreMatchStart();
         }
 
 

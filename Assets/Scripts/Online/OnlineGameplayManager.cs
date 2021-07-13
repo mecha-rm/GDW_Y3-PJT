@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// manager for online gameplay
 public class OnlineGameplayManager : MonoBehaviour
 {
     // The Master (server) handles the time, and item calculation
@@ -45,9 +46,6 @@ public class OnlineGameplayManager : MonoBehaviour
     /// CLINET DATA SENT TO SERE SEND DATA
     /// </summary>
 
-
-    // TODO: create interval
-
     // gets the game manager
     public GameplayManager gameManager;
 
@@ -60,6 +58,7 @@ public class OnlineGameplayManager : MonoBehaviour
     // TODO: use to correct the amount of time
     // private float timeDiff = 0.0F;
 
+    [Header("Network Info")]
     // if 'true', this player is the host.
     public bool isMaster = true;
 
