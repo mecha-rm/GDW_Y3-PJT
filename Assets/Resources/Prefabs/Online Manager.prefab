@@ -60,7 +60,7 @@ MonoBehaviour:
   ipAddress: 
   intervalTimer: {fileID: 866859337918832886}
   useIntervals: 1
-  interval: 1
+  intervalLength: 1
   p1Stage: 1
   p2Stage: 0
   p3Stage: 0
@@ -104,6 +104,9 @@ MonoBehaviour:
   dataComm: 1
   serverBufferSize: 1024
   clientBufferSize: 1024
+  intervalTimer: {fileID: 0}
+  useIntervals: 1
+  intervalLength: 0.001
 --- !u!114 &9115964154999892297
 MonoBehaviour:
   m_ObjectHideFlags: 0

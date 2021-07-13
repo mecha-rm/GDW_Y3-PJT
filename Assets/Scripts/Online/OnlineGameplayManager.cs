@@ -46,6 +46,8 @@ public class OnlineGameplayManager : MonoBehaviour
     /// CLINET DATA SENT TO SERE SEND DATA
     /// </summary>
 
+    [Header("Match Info")]
+
     // gets the game manager
     public GameplayManager gameManager;
 
@@ -101,6 +103,13 @@ public class OnlineGameplayManager : MonoBehaviour
     // buffer size for clients and servers
     public int serverBufferSize = 1024;
     public int clientBufferSize = 1024;
+
+    [Header("Network Info/Intervals")]
+
+    // timer for intervals
+    public IntervalTimer intervalTimer = null;
+    public bool useIntervals = true;
+    public float intervalLength = 0.001F;
 
 
     // Start is called before the first frame update
@@ -160,6 +169,23 @@ public class OnlineGameplayManager : MonoBehaviour
             else
                 client.RunClient();
         }
+
+
+        // interval setter
+        {
+            // if the interval timer is not set, look for it on the object.
+            if (intervalTimer == null)
+                intervalTimer = GetComponent<IntervalTimer>();
+
+            // interval timer found
+            if (intervalTimer != null)
+            {
+                intervalTimer.startOnInterval = false;
+                intervalTimer.intervalLength = intervalLength;
+                intervalTimer.countdown = 0; // send immediately
+            }
+        }
+
 
         // timer not set.
         if (timer == null)
@@ -743,18 +769,35 @@ public class OnlineGameplayManager : MonoBehaviour
         // if data should be communicated.
         if(dataComm)
         {
+            // checks to update data
+            bool sendData = false;
+
+            if (useIntervals && intervalTimer != null) // using intervals
+            {
+                // checks to see if the interval has ended.
+                intervalTimer.intervalLength = intervalLength; // updates to current interval length
+                sendData = intervalTimer.IntervalEnded();
+            }
+            else // not using intervals
+            {
+                sendData = true;
+            }
+
+
             if (isMaster && server.server.IsRunning()) // this player is the server
             {
                 // gets the data from the clients.
                 ReceiveDataFromClients();
 
                 // sends the data from the clients.
-                SendDataToClients();
+                if (sendData)
+                    SendDataToClients();
             }
             else if(!isMaster && client.client.IsRunning()) // this player is the client.
             {
                 // sends the data to the server
-                SendDataToServer();
+                if (sendData)
+                    SendDataToServer();
 
                 // receives data from the server.
                 ReceiveDataFromServer();

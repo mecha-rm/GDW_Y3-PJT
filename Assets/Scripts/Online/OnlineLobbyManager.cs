@@ -235,6 +235,7 @@ public class OnlineLobbyManager : MonoBehaviour
             {
                 intervalTimer.startOnInterval = false;
                 intervalTimer.intervalLength = intervalLength;
+                intervalTimer.countdown = 0; // send immediately
             }
         }
 
