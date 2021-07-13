@@ -72,6 +72,9 @@ public class OnlineLobbyManager : MonoBehaviour
     }
 
 
+    // seperator
+    [Header("Network Info")]
+
     // checks to see if this is the one hosting or not.
     public bool isMaster = true;
 
@@ -86,10 +89,19 @@ public class OnlineLobbyManager : MonoBehaviour
     public int serverEndpoints = 1;
 
     // sets whether to block on sockets or not for both the server and client.
-    public bool blocking = true;
+    public bool blocking = false;
+
+    // send timeout
+    public int sendTimeout = 1;
+
+    // receive timeout
+    public int receiveTimeout = 1;
 
     // if 'true', data is communicated.
     public bool dataComm = true;
+
+    // timer for intervals
+    // public IntervalTimer intervalTimer = null;
 
     // buffer size for clients and servers
     public int serverBufferSize = 256;
@@ -97,6 +109,10 @@ public class OnlineLobbyManager : MonoBehaviour
 
     // ip address
     public string ipAddress;
+
+
+    // match information
+    [Header("Match Info")]
 
     // selected stage (defaults to halloween)
     public GameBuilder.stages p1Stage = GameBuilder.stages.halloween;
@@ -189,6 +205,10 @@ public class OnlineLobbyManager : MonoBehaviour
         {
             // set blocking sockets value
             server.SetBlockingSockets(blocking);
+
+            // set timeout values
+            server.SetSendTimeout(sendTimeout);
+            server.SetReceiveTimeout(receiveTimeout);
 
             // existing number of endpoints
             int defEpCount = server.server.GetEndPointCount();
@@ -349,9 +369,11 @@ public class OnlineLobbyManager : MonoBehaviour
             }
 
 
-            // sets the ip address and runs the server.
+            // sets the ip address, related values, and runs the server.
             server.SetIPAddress(ipAddress);
             server.SetBlockingSockets(blocking);
+            server.SetSendTimeout(sendTimeout);
+            server.SetReceiveTimeout(receiveTimeout);
             server.RunServer();
 
             // message
@@ -385,9 +407,11 @@ public class OnlineLobbyManager : MonoBehaviour
             }
 
 
-            // set client
+            // set client ip and related values
             client.SetIPAddress(ipAddress);
             client.SetBlockingSockets(blocking);
+            client.SetSendTimeout(sendTimeout);
+            client.SetReceiveTimeout(receiveTimeout);
             client.RunClient();
 
             // message

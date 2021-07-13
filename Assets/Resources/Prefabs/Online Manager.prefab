@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9115964154999892296}
   - component: {fileID: 9115964154999892297}
   - component: {fileID: 9115964154999892298}
+  - component: {fileID: 866859337918832886}
   m_Layer: 0
   m_Name: Online Manager
   m_TagString: Manager
@@ -128,5 +129,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocking: 0
+  sendTimeout: 0
+  receiveTimeout: 0
   runOnStart: 0
   printMessages: 1
+--- !u!114 &866859337918832886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9115964154999892299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 875dec15ae0f4954dafec81c3a436368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOnInterval: 0
+  useIntervals: 1
+  intervalLength: 1
+  countdown: 0
