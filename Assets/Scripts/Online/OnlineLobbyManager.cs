@@ -1423,7 +1423,7 @@ public class OnlineLobbyManager : MonoBehaviour
         p1Char = (GameBuilder.playables)plyr;
     }
 
-    // finds gmae builder, generating a new one if it doesn't exist.
+    // finds game builder, generating a new one if it doesn't exist.
     private GameBuilder SetGameBuilder(bool makeIfNotExists = true)
     {
         // if the game builder does not exist.
@@ -1459,6 +1459,10 @@ public class OnlineLobbyManager : MonoBehaviour
         // sets builder.
         if (gameBuilder.manager == null)
             gameBuilder.manager = FindObjectOfType<GameplayManager>(true);
+
+        // don't destroy this online lobby manager.
+        // if (gameBuilder.manager != null)
+        //     gameBuilder.manager.destroyOnlineLobbyManager = false;
 
         // returns game builder
         return gameBuilder;
@@ -1621,7 +1625,13 @@ public class OnlineLobbyManager : MonoBehaviour
         // gameBuilder.sceneAfterGame = "LobbyScene";
         gameBuilder.sceneAfterGame = "EndScene";
 
-        // change the scene.
+        // the match start has been called, so this is now set to false.
+        startMatchOnUpdate = false;
+
+        // makes a note of if you're already in the scene.
+        // if (SceneChanger.GetActiveSceneName() == sceneName)
+        //     Debug.LogError("Already in scene.");
+
         SceneChanger.ChangeScene(sceneName);
     }
 

@@ -4539,18 +4539,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 970319896}
     - target: {fileID: 5325884377365723739, guid: a9588d5c374c1b54183dfb65518f34d3, type: 3}
-      propertyPath: itemSpawnAreaMin.x
-      value: -25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5325884377365723739, guid: a9588d5c374c1b54183dfb65518f34d3, type: 3}
-      propertyPath: itemSpawnAreaMin.z
-      value: -25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5325884377365723739, guid: a9588d5c374c1b54183dfb65518f34d3, type: 3}
-      propertyPath: itemSpawnAreaMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5325884377365723739, guid: a9588d5c374c1b54183dfb65518f34d3, type: 3}
       propertyPath: itemSpawner
       value: 
       objectReference: {fileID: 2034236384}

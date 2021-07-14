@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/HalloweenMap.unity
     guid: e87722f6647325b4e86d384e0747e80a
   - enabled: 1
-    path: Assets/Scenes/Christmasmap.unity
+    path: Assets/Scenes/ChristmasMap.unity
     guid: c6bee96e9e0d49f4e98cf97c9fb20165
   - enabled: 1
     path: Assets/Scenes/ValentinesMap.unity

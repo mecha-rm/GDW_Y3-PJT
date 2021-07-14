@@ -216,7 +216,10 @@ MonoBehaviour:
   deathSpace: {fileID: 7284661196444069585}
   nextScene: EndScene
   gameBuilder: {fileID: 0}
+  matchBuilder: {fileID: 0}
   destroyGameBuilder: 1
+  onlineLobbyManager: {fileID: 0}
+  destroyOnlineLobbyManager: 1
 --- !u!114 &7284661196444069585
 MonoBehaviour:
   m_ObjectHideFlags: 0

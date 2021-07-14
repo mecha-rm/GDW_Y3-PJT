@@ -576,7 +576,7 @@ public class GameplayManager : MonoBehaviour
         }
 
         // destroys online gameplay manager, which also shuts down the server.
-        if (onlineLobbyManager && onlineLobbyManager != null)
+        if (destroyOnlineLobbyManager && onlineLobbyManager != null)
         {
             Destroy(onlineLobbyManager.gameObject);
         }

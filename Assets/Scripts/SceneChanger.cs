@@ -55,6 +55,12 @@ public class SceneChanger : MonoBehaviour
         return false;
     }
 
+    // gets the current scene
+    public static Scene GetActiveScene()
+    {
+        return SceneManager.GetActiveScene();
+    }
+
     // gets the name of the active scene
     public static string GetActiveSceneName()
     {
@@ -73,9 +79,9 @@ public class SceneChanger : MonoBehaviour
         else
             return null;
     }
-   
+
+
     // changes the scene using an index.
-    // TODO: make static
     public static void ChangeScene(int scene)
     {
         SceneManager.LoadScene(scene);
