@@ -1702,13 +1702,18 @@ public class OnlineLobbyManager : MonoBehaviour
             onlineGameManager.isMaster = isMaster;
         }
 
-        // TODO: fix this so that players can go back to the lobby.
+
         // finds the gameplay manager
         GameplayManager gm = FindObjectOfType<GameplayManager>();
 
         // sets this as the online lobby manager.
         if (gm != null)
+        {
             gm.onlineLobbyManager = this;
+
+            // uncomment this to make it a timed game.
+            gm.timedGame = true; // this is a timed game.
+        }           
 
         // if the lobby should be reopneed after the match.
         if(reopenLobbyAfterMatch)

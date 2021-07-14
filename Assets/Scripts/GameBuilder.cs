@@ -52,6 +52,9 @@ public class GameBuilder : MonoBehaviour
     // score goal (does not get set if left as -1)
     public float winScore = -1;
 
+    // the player number of the most recent winner of the game.
+    public int recentWinner = -1;
+
     // start of countdown timer (not set if left as -1)
     public float countdownStart = -1;
 

@@ -502,7 +502,11 @@ public class GameplayManager : MonoBehaviour
 
                 // if game builder exists, then tell it not to load the game again when it exists the scene.
                 if (gb != null)
+                {
+                    gb.recentWinner = px.playerNumber; // saves the most recent winner.
                     gb.SetLoadGame(false);
+                }
+                    
 
                 SceneManager.LoadScene(nextScene);
             }
