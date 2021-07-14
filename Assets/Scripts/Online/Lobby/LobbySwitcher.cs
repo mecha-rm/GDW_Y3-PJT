@@ -144,9 +144,31 @@ public class LobbySwitcher : MonoBehaviour
     // exists the lobby.
     public void ExitLobby()
     {
+        // game builder to be deleted.
+        GameBuilder gb = null;
+
+        // if the lobby manager has not been set, try looking for it.
+        if (lobbyManager == null)
+            lobbyManager = FindObjectOfType<OnlineLobbyManager>();
+
         // destroys online manager upon exit.
         if (lobbyManager != null)
+        {
+            // gets the game builder from the lobby manager.
+            gb = lobbyManager.gameBuilder;
+
             Destroy(lobbyManager.gameObject);
+        }
+
+
+        // searches for the game builder if the lobby manager didn't have it.
+        if (gb == null)
+            gb = FindObjectOfType<GameBuilder>();
+
+        // if the game builder is not equal to null.
+        if (gb != null)
+            Destroy(gb.gameObject);
+
 
         // changes the scene.
         SceneChanger.ChangeScene(exitScene);

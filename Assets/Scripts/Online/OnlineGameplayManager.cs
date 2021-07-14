@@ -9,13 +9,6 @@ public class OnlineGameplayManager : MonoBehaviour
     // The Master (server) handles the time, and item calculation
     // The clients only handle their own score tallies and player controls.
 
-    // TODO: needed data:
-    // - Player Transformations
-    // - Item Positions and Rotations
-    // - Time
-    // - 
-
-    // TODO: transfer over item boxes
 
     /// <summary>
     /// Data that is sent out to each client.

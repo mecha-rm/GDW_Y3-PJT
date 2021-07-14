@@ -10,6 +10,9 @@ public class OnlineLobbyManager : MonoBehaviour
 {
     // TODO: randomize stage each time the data is sent to the client instead?
 
+    // TODO: just realized that the win score of the match and its length are not sent over.
+    // the remaining time is sent, but not the score needed to win the match is not.
+
     // if the size changes, or if the status is different, then the games load.
 
     /// FORMAT: CLIENTS TO SERVER
@@ -164,6 +167,9 @@ public class OnlineLobbyManager : MonoBehaviour
 
     // TODO: add game builder.
     public GameBuilder gameBuilder;
+
+    // if 'reponLobby' is true, the lobby is reopened once the match ends.
+    public bool reopenLobbyAfterMatch = true;
 
     // number of instances of this class.
     private static int instances = 0;
@@ -1621,9 +1627,16 @@ public class OnlineLobbyManager : MonoBehaviour
         gameBuilder.SetLoadGame(true);
         gameBuilder.SetLoadStage(false);
 
-        // TODO: maybe just set this to the end scene?
-        // gameBuilder.sceneAfterGame = "LobbyScene";
-        gameBuilder.sceneAfterGame = "EndScene";
+        // sets the win score (TODO: need to send this to other players)
+        // gameBuilder.winScore = winScore;
+
+        gameBuilder.countdownStart = startTime;
+
+        // if the lobby shoudl be reopened after the match ends
+        if (reopenLobbyAfterMatch)
+            gameBuilder.sceneAfterGame = "LobbyScene";
+        else // go to end screen after match ends
+            gameBuilder.sceneAfterGame = "EndScene";
 
         // the match start has been called, so this is now set to false.
         startMatchOnUpdate = false;
@@ -1696,6 +1709,22 @@ public class OnlineLobbyManager : MonoBehaviour
         // sets this as the online lobby manager.
         if (gm != null)
             gm.onlineLobbyManager = this;
+
+        // if the lobby should be reopneed after the match.
+        if(reopenLobbyAfterMatch)
+        {
+            // TODO: may just be easier to delet the game builder
+            // the lobby manager should NOT be destroyed.
+            gm.destroyGameBuilder = false;
+            
+            // sets the game builder to not load an new game once it returns to the lobby.
+            gameBuilder.ClearPlayerList(false);
+            gameBuilder.SetLoadGame(false);
+            gameBuilder.SetLoadStage(false);
+
+
+            gm.destroyOnlineLobbyManager = false;
+        }
 
         // the post match function has now been called.
         callPostMatchStart = false;
