@@ -40,7 +40,7 @@ public class CatPlayer : PlayerObject
         playerIcon = Instantiate(Resources.Load(playerIconPrefab)) as GameObject;
 
         // gets text object.
-        if (playerIcon != null)
+        if (playerIcon != null && playerScoreText == null)
         {
             playerScoreText = playerIcon.GetComponentInChildren<Text>();
         }

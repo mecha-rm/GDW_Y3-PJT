@@ -28,6 +28,12 @@ public class DogPlayer : PlayerObject
         // loads the player icon
         LoadPlayerIcon("Prefabs/UI/Dog Box");
 
+        // gets text object.
+        if (playerIcon != null && playerScoreText == null)
+        {
+            playerScoreText = playerIcon.GetComponentInChildren<Text>();
+        }
+
         //icons
         //GameObject parentObject = GameObject.Find("Players");
         //int childCount = parentObject.transform.childCount;
