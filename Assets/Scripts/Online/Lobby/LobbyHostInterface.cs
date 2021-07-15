@@ -293,6 +293,13 @@ public class LobbyHostInterface : MonoBehaviour
     // opens the room (runs server)
     public void OpenRoom()
     {
+        // checks to see if the host is already running.
+        if (lobbyManager.IsHostRunning())
+        {
+            Debug.LogAssertion("Tried to open the room, but the host was already running.");
+            return;
+        }
+
         // checks to see if the room is open.
         bool roomOpened = false;
 
@@ -307,6 +314,20 @@ public class LobbyHostInterface : MonoBehaviour
 
         // room has been opened.
         if(roomOpened)
+        {
+            roomIndict.color = roomIndictOn; // on colour
+        }
+        else
+        {
+            roomIndict.color = roomIndictOff; // off colour
+        }
+    }
+
+    // used to activate the room indicator light when re-entering hte lobby
+    public void ActivateRoomIndicatorLight(bool active)
+    {
+        // room has been opened.
+        if (active)
         {
             roomIndict.color = roomIndictOn; // on colour
         }

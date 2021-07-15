@@ -450,6 +450,13 @@ public class OnlineLobbyManager : MonoBehaviour
         return false;
     }
 
+    // checks to see if the host is running
+    public bool IsHostRunning()
+    {
+        return hostRunning;
+    }
+
+
     // UTILITY - truncates or extends string if too large.
     public static string SetStringLength(string str, int charCount, string fillChar = " ")
     {
@@ -1758,9 +1765,8 @@ public class OnlineLobbyManager : MonoBehaviour
             onlineGameManager.enabled = false;
             gameObject.SetActive(true);
 
-            // TODO: delete the online gameplay manager and add it back.
-        }    
-            
+            // TODO: delete the online gameplay manager and add it back (may not be needed)
+        }               
 
         // game builder was deleted.
         // if(gameBuilder == null)
@@ -1768,6 +1774,22 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // recreates game builder since it will be deleted.
         // GameObject newObject = Instantiate(Resources.Load("Prefabs/Title Game Builder") as GameObject);
+
+        // is a server
+        if(isMaster && hostRunning)
+        {
+            LobbyHostInterface lhi = FindObjectOfType<LobbyHostInterface>();
+
+            if (lhi != null)
+                lhi.ActivateRoomIndicatorLight(true);
+        }
+        else if (!isMaster && hostRunning) // is a client
+        {
+            LobbyJoinInterface lji = FindObjectOfType<LobbyJoinInterface>();
+
+            if (lji != null)
+                lji.ActivateRoomIndicatorLight(true);
+        }
 
         // now in lobby
         inLobby = true;

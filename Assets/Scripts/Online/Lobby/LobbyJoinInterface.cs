@@ -188,6 +188,13 @@ public class LobbyJoinInterface : MonoBehaviour
             return;
         }
 
+        // checks to see if the host is already running.
+        if(lobbyManager.IsHostRunning())
+        {
+            Debug.LogAssertion("Tried to run the host to find a room, but the host was already running.");
+            return;
+        }
+
         // checks to see if the room is open.
         bool searchStarted = false;
 
@@ -203,10 +210,25 @@ public class LobbyJoinInterface : MonoBehaviour
             return;
         }
         
+        // runs host
         searchStarted = lobbyManager.RunHost();
 
         // room has been opened.
         if (searchStarted)
+        {
+            roomIndict.color = roomIndictOn; // on colour
+        }
+        else
+        {
+            roomIndict.color = roomIndictOff; // off colour
+        }
+    }
+
+    // used to activate the room indicator light when re-entering hte lobby
+    public void ActivateRoomIndicatorLight(bool active)
+    {
+        // room has been opened.
+        if (active)
         {
             roomIndict.color = roomIndictOn; // on colour
         }

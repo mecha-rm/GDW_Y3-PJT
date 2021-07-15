@@ -21842,10 +21842,12 @@ MonoBehaviour:
   useFlagPosAsSpawn: 1
   playerSpawns:
   - {x: 0, y: 3, z: -58.46}
-  - {x: 48.8, y: 3, z: 47.3}
+  - {x: 53.8, y: 3, z: 47.3}
   - {x: 18, y: 3, z: 11}
-  - {x: 48.8, y: 3, z: 47.3}
+  - {x: 54.8, y: 3, z: 47.3}
   randomPlayerPos: 0
+  findSpawns: 1
+  includeInactiveSpawns: 1
   itemSpawner: {fileID: 0}
   itemSpawnAreaMin: {x: -50, y: -50, z: -50}
   itemSpawnAreaMax: {x: 50, y: 50, z: 50}
