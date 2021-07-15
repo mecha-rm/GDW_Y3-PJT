@@ -408,7 +408,7 @@ public class GameBuilder : MonoBehaviour
         ItemManager.GetInstance().ClearAllItemsInPool();
 
         // score
-        if(winScore != -1)
+        if(winScore > 0)
             manager.winScore = winScore;
 
         // time

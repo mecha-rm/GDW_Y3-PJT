@@ -140,7 +140,7 @@ public class LobbyHostInterface : MonoBehaviour
             if (temp != null)
                 scoreSelect = temp.GetComponent<Slider>();
 
-            // sets the start time
+            // sets the starting score
             if (scoreSelect != null)
                 OnScoreChange();
         }

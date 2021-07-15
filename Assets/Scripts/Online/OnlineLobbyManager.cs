@@ -9,9 +9,9 @@ using System.Collections.Generic;
 public class OnlineLobbyManager : MonoBehaviour
 {
     // TODO: randomize stage each time the data is sent to the client instead?
-
-    // TODO: just realized that the win score of the match and its length are not sent over.
-    // the remaining time is sent, but not the score needed to win the match is not.
+    
+    // TODO: nothing past the names seem to transfer over for some reason.
+    // do note that if you choose any character but the dog the connection won't work for some reaosn.
 
     // if the size changes, or if the status is different, then the games load.
 
@@ -34,19 +34,20 @@ public class OnlineLobbyManager : MonoBehaviour
     ///         * 1 = Friend Screen
     ///         * 2 = Enter Play
     ///     - [4 - 7] - Player Count
-    ///     - [8 - 11] - Stage Choice
-    ///     - [12 - 43] - Player 1 Name (char = 2 bytes, 16 chars total, which is 32 bytes)
-    ///     - [44 - 75] - Player 2 Name (if applicable)
-    ///     - [76 - 107] - Player 3 Name (if applicable)
-    ///     - [108 - 139] - Player 4 Name (if applicable)
-    ///     - [140 - 143] - Player 1 Character
-    ///     - [144 - 147] - Player 2 Character (if applicable)
-    ///     - [148 - 151] - Player 3 Character (if applicable)
-    ///     - [152 - 155] - Player 4 Character (if applicable)
-    ///     - [156 - 159] - Player 1 Win Count
-    ///     - [160 - 163] - Player 2 Win Count (if applicable)
-    ///     - [164 - 167] - Player 3 Win Count (if applicable)
-    ///     - [168 - 171] - Player 4 Win Count (if applicable)
+    ///     - [8 - 11] - Win Score
+    ///     - [12 - 15] - Stage Choice
+    ///     - [16 - 47] - Player 1 Name (char = 2 bytes, 16 chars total, which is 32 bytes)
+    ///     - [48 - 79] - Player 2 Name (if applicable)
+    ///     - [80 - 111] - Player 3 Name (if applicable)
+    ///     - [112 - 143] - Player 4 Name (if applicable)
+    ///     - [144 - 147] - Player 1 Character
+    ///     - [148 - 151] - Player 2 Character (if applicable)
+    ///     - [152 - 155] - Player 3 Character (if applicable)
+    ///     - [156 - 159] - Player 4 Character (if applicable)
+    ///     - [160 - 163] - Player 1 Win Count
+    ///     - [164 - 167] - Player 2 Win Count (if applicable)
+    ///     - [168 - 171] - Player 3 Win Count (if applicable)
+    ///     - [172 - 175] - Player 4 Win Count (if applicable)
     /// </summary>
 
 
@@ -143,7 +144,8 @@ public class OnlineLobbyManager : MonoBehaviour
     public int startTime;
 
     // win minimum nad maximum.
-    public int winScore; // the winning score
+    // NOTE: the winScore variable isn't updated until the slider is moved, so make sure it matches up with WIN_MIN.
+    public int winScore = 5; // the winning score (defaults to WIN_MIN)
     public const int WIN_MIN = 5, WIN_MAX = 100;
 
     // checks to see if the following connections are being used.
@@ -844,7 +846,8 @@ public class OnlineLobbyManager : MonoBehaviour
 
         // 1. Status
         // 2. Player Count
-        // 3. Stage Choice
+        // 3. Win Score
+        // 4. Stage Choice
         // 4. Player Name
         // 5. Player Character
         // 6. Player Win Count
@@ -891,6 +894,22 @@ public class OnlineLobbyManager : MonoBehaviour
             Buffer.BlockCopy(data, 0, sendData, index, data.Length);
             index += data.Length;
         }
+
+
+        // win score
+        {
+            // gets the win score
+            int points = winScore;
+
+            // if the set points is 0 or less, make it 5.
+            if (points <= 0)
+                points = 5;
+
+            byte[] data = BitConverter.GetBytes(points);
+            Buffer.BlockCopy(data, 0, sendData, index, data.Length);
+            index += data.Length;
+        }
+
 
         // stage
         {
@@ -1081,10 +1100,11 @@ public class OnlineLobbyManager : MonoBehaviour
     {
         // 1. Status
         // 2. Player Count
-        // 3. Stage Choice
-        // 4. Player Names
-        // 5. Player Character
-        // 6. Player Win Count
+        // 3. Win Score
+        // 4. Stage Choice
+        // 5. Player Names
+        // 6. Player Character
+        // 7. Player Win Count
 
         // data to be sent out to clients.
         byte[] recData = client.client.GetReceiveBufferData();
@@ -1113,6 +1133,7 @@ public class OnlineLobbyManager : MonoBehaviour
         // values
         int status = -1;
         int plyrCount = -1;
+        int winPoints = -1;
         int stageInt = -1;
 
         // status
@@ -1125,6 +1146,13 @@ public class OnlineLobbyManager : MonoBehaviour
         {
             plyrCount = BitConverter.ToInt32(recData, index);
             roomSize = plyrCount;
+            index += sizeof(int);
+        }
+
+        // win score
+        {
+            winPoints = BitConverter.ToInt32(recData, index); // gets the win score
+            winScore = winPoints; // this is the winning score
             index += sizeof(int);
         }
 
@@ -1635,7 +1663,7 @@ public class OnlineLobbyManager : MonoBehaviour
         gameBuilder.SetLoadStage(false);
 
         // sets the win score (TODO: need to send this to other players)
-        // gameBuilder.winScore = winScore;
+        gameBuilder.winScore = winScore;
 
         gameBuilder.countdownStart = startTime;
 

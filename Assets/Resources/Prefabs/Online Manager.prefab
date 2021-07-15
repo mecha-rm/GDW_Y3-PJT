@@ -72,10 +72,11 @@ MonoBehaviour:
   p4Char: 0
   roomSize: 2
   startTime: 0
-  winScore: 0
+  winScore: 5
   onlineGameManager: {fileID: 0}
   startMatchOnUpdate: 0
   gameBuilder: {fileID: 0}
+  reopenLobbyAfterMatch: 1
 --- !u!114 &9115964154999892296
 MonoBehaviour:
   m_ObjectHideFlags: 0

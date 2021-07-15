@@ -862,7 +862,10 @@ public class PlayerObject : MonoBehaviour
         if(flag != null)
         {
             playerScore += Time.deltaTime;
-            playerScoreText.text = "Player Score: " + Mathf.Floor(playerScore); // "Player Score: " +
+
+            // if the player score text object is set.
+            if(playerScoreText != null)
+                playerScoreText.text = "Player Score: " + Mathf.Floor(playerScore);
         }
 
         // playing idle sound
