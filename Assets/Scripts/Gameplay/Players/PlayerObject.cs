@@ -15,6 +15,7 @@ public class PlayerObject : MonoBehaviour
     public GameObject model;
     public StateMachine stateMachine = null;
 
+    // score
     public float playerScore = 0.0F;
     public Text playerScoreText = null; // TODO: maybe make a dedicated script to handle this.
 
