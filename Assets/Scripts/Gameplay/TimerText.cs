@@ -22,6 +22,9 @@ public class TimerText : MonoBehaviour
     // pause time
     public bool paused = false;
 
+    // override the pause variable in the individual timers
+    public bool overrideTimerPause = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -140,12 +143,16 @@ public class TimerText : MonoBehaviour
             switch (timerNumber)
             {
                 case 1: // countdown
-                    timer1.paused = paused;
+                    if(overrideTimerPause)
+                        timer1.paused = paused;
+                   
                     text.text = "Timer: " + timer1.GetCurrentCountdownTime().ToString("F2");
                     break;
 
                 case 2: // stopwatch
-                    timer2.paused = paused;
+                    if (overrideTimerPause)
+                        timer2.paused = paused;
+
                     text.text = "Timer: " + timer2.GetCurrentStopwatchTime().ToString("F2");
                     break;
 

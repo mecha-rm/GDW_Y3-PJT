@@ -71,7 +71,7 @@ MonoBehaviour:
   p3Char: 0
   p4Char: 0
   roomSize: 2
-  startTime: 0
+  startTime: 120
   winScore: 5
   onlineGameManager: {fileID: 0}
   startMatchOnUpdate: 0

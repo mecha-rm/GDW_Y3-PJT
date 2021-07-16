@@ -141,11 +141,16 @@ public class OnlineLobbyManager : MonoBehaviour
     public int roomSize = 2;
 
     // start time for timer
-    public int startTime;
+    public int startTime = 120; // default start time (make sure it matches with options)
+
+    // checks to see if this is a timed game.
+    public bool timedGame = false;
 
     // win minimum nad maximum.
     // NOTE: the winScore variable isn't updated until the slider is moved, so make sure it matches up with WIN_MIN.
     public int winScore = 5; // the winning score (defaults to WIN_MIN)
+
+    // win min and max
     public const int WIN_MIN = 5, WIN_MAX = 100;
 
     // checks to see if the following connections are being used.
@@ -1193,6 +1198,7 @@ public class OnlineLobbyManager : MonoBehaviour
                     break;
             }
 
+            // TODO: maybe use the name_char variable instead of doing what you're doing now?
             // lenght of the name times size of chars.
             index += (recName.Length * sizeof(char));
         }
@@ -1746,8 +1752,19 @@ public class OnlineLobbyManager : MonoBehaviour
         {
             gm.onlineLobbyManager = this;
 
+            // TODO: put canvases in debug so that they're deleted.
+            // create a new multiplayer canvas
+            // GameObject multHud = (GameObject)Resources.Load("Prefabs/UI/HUD MP Canvas");
+
+            // finds the countdown timer and sets the time value
+            CountdownTimer cdt = FindObjectOfType<CountdownTimer>();
+            cdt.SetCountdownStartTime(startTime);
+            cdt.ResetCountdownTimer();
+
             // uncomment this to make it a timed game.
-            gm.timedGame = true; // this is a timed game.
+            gm.timedGame = timedGame;
+            // gm.timedGame = true; // this is a timed game.
+            // gm.timedGame = false; // this is a timed game.
         }           
 
         // if the lobby should be reopneed after the match.

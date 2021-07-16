@@ -207,7 +207,7 @@ MonoBehaviour:
   winScore: 15
   objectiveText: {fileID: 0}
   playerCount: 0
-  countdownTimer: {fileID: 0}
+  countdownTimer: {fileID: -3004198080248553708}
   timedGame: 0
   p1: {fileID: 0}
   p2: {fileID: 0}
