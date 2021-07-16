@@ -20,7 +20,7 @@ public class FieldItem : MonoBehaviour
     // TODO: add more item types
     public enum itemType
     {
-        none, speedUp, jumpUp, scaleUp
+        none, speedUp, speedDown, jumpUp, jumpDown, scaleUp, scaleDown
     }
 
     // scale down has been taken out because it can glitch if scale up is set.
@@ -28,7 +28,7 @@ public class FieldItem : MonoBehaviour
     // scaleDown
 
     // number of items available
-    private const int ITEM_COUNT = 3;
+    private const int ITEM_COUNT = 6;
 
     // the number of the item
     public itemType itemSet = 0;
@@ -77,6 +77,7 @@ public class FieldItem : MonoBehaviour
         // TODO: have adjustable probability rates.
 
         // randomizes the item
+        // have the range start at zero if you want item boxes able to be empty.
         itemSet = (itemType)UnityEngine.Random.Range(1, ITEM_COUNT + 1);
 
         return itemSet;
@@ -96,59 +97,158 @@ public class FieldItem : MonoBehaviour
     // adds the item component to the player
     public HeldItem AddItemComponent(PlayerObject player)
     {
+        // generated item
         HeldItem genItem = null;
 
+        // checks to see which item to set.
         switch(itemSet)
         {
             case 0: // none
                 break;
-            case itemType.speedUp: // speed
+
+            case itemType.speedUp: // speed up
                 // checks to see if the player already has a speed item attached.
-                SpeedUpItem spdItem = player.gameObject.GetComponent<SpeedUpItem>();
+                SpeedUpItem speedUp = player.gameObject.GetComponent<SpeedUpItem>();
 
                 // if the player already has a speed item, the countdown for it is reset.
                 // if they didn't have a speed item, they are given one.
-                if (spdItem == null)
+                if (speedUp == null)
+                {
+                    // checks to see if a speed down component is equipped.
+                    // if so, deactive it first.
+                    SpeedDownItem oppItem = player.gameObject.GetComponent<SpeedDownItem>();
+
+                    // deactive effect
+                    if (oppItem != null)
+                        oppItem.DeactiveEffect();
+
                     genItem = player.gameObject.AddComponent<SpeedUpItem>();
+                }
                 else
-                    spdItem.ResetCountdown();
+                {
+                    speedUp.ResetCountdown();
+                }
+                    
+                break;
+
+            case itemType.speedDown: // speed down
+                // checks to see if the player already has a speed item attached.
+                SpeedDownItem speedDown = player.gameObject.GetComponent<SpeedDownItem>();
+
+                // if the player already has a speed item, the countdown for it is reset.
+                // if they didn't have a speed item, they are given one.
+                if (speedDown == null)
+                {
+                    // checks to see if a speed up component is equipped.
+                    // if so, deactive it first.
+                    SpeedUpItem oppItem = player.gameObject.GetComponent<SpeedUpItem>();
+
+                    // deactive effect
+                    if (oppItem != null)
+                        oppItem.DeactiveEffect();
+
+                    genItem = player.gameObject.AddComponent<SpeedDownItem>();
+                }
+                else
+                {
+                    speedDown.ResetCountdown();
+                }
 
                 break;
-            case itemType.jumpUp: // jump
+
+            case itemType.jumpUp: // jump up
                 // checks to see if the player already has a jump item attached.
                 JumpUpItem jumpItem = player.gameObject.GetComponent<JumpUpItem>();
 
                 // if the player already has a jump item, the countdown for it is reset.
                 // if they didn't have a jump item, they are given one.
                 if (jumpItem == null)
+                {
+                    // checks for jump down item and deactives it if needed.
+                    JumpDownItem oppItem = player.gameObject.GetComponent<JumpDownItem>();
+
+                    // deactive effect
+                    if (oppItem != null)
+                        oppItem.DeactiveEffect();
+
                     genItem = player.gameObject.AddComponent<JumpUpItem>();
+                }
                 else
+                {
                     jumpItem.ResetCountdown();
-                
+                }
+                    
                 break;
+
+            case itemType.jumpDown: // jump down
+                // checks to see if the player already has a jump item attached.
+                JumpDownItem jumpDown = player.gameObject.GetComponent<JumpDownItem>();
+
+                // if the player already has a jump item, the countdown for it is reset.
+                // if they didn't have a jump item, they are given one.
+                if (jumpDown == null)
+                {
+                    // checks for jump down item and deactives it if needed.
+                    JumpUpItem oppItem = player.gameObject.GetComponent<JumpUpItem>();
+
+                    // deactive effect
+                    if (oppItem != null)
+                        oppItem.DeactiveEffect();
+
+                    genItem = player.gameObject.AddComponent<JumpDownItem>();
+                }
+                else
+                {
+                    jumpDown.ResetCountdown();
+                }
+
+                break;
+
             case itemType.scaleUp: // scale up
                 // checks to see if the player already has a jump item attached.
                 ScaleUpItem scaleUp = player.gameObject.GetComponent<ScaleUpItem>();
 
                 // if the player already has this item, it adds to its time. If they don't, then they're given one.
                 if (scaleUp == null)
+                {
+                    // checks for scale down item and deactives it if needed.
+                    ScaleDownItem oppItem = player.gameObject.GetComponent<ScaleDownItem>();
+
+                    // deactive effect
+                    if (oppItem != null)
+                        oppItem.DeactiveEffect();
+
                     genItem = player.gameObject.AddComponent<ScaleUpItem>();
+                }
                 else
+                {
                     scaleUp.ResetCountdown();
+                }
 
                 break;
-            
-            // case itemType.scaleDown: // scale down
-            //     // checks to see if the player already has a jump item attached.
-            //     ScaleDownItem scaleDown = player.gameObject.GetComponent<ScaleDownItem>();
-            // 
-            //     // if the player already has this item, it adds to its time. If they don't, then they're given one.
-            //     if (scaleDown == null)
-            //         genItem = player.gameObject.AddComponent<ScaleDownItem>();
-            //     else
-            //         scaleDown.ResetCountdown();
-            // 
-            //     break;
+
+            case itemType.scaleDown: // scale down
+                // checks to see if the player already has a jump item attached.
+                ScaleDownItem scaleDown = player.gameObject.GetComponent<ScaleDownItem>();
+
+                // if the player already has this item, it adds to its time. If they don't, then they're given one.
+                if (scaleDown == null)
+                {
+                    // checks for scale up item and deactives it if needed.
+                    ScaleUpItem oppItem = player.gameObject.GetComponent<ScaleUpItem>();
+
+                    // deactive effect
+                    if (oppItem != null)
+                        oppItem.DeactiveEffect();
+
+                    genItem = player.gameObject.AddComponent<ScaleDownItem>();
+                }
+                else
+                {
+                    scaleDown.ResetCountdown();
+                }
+
+                break;
         }
 
         // activates the effect.

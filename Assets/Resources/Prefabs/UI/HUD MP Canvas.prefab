@@ -865,6 +865,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
   timer: {fileID: 0}
+  timerText: {fileID: 8006731309988058931}
   p1Box: {fileID: 6837062471450928687}
   p2Box: {fileID: 5609121592633176830}
   p3Box: {fileID: 3213894684867561404}
@@ -1001,6 +1002,7 @@ MonoBehaviour:
   countdownStart: 0
   timer2: {fileID: 0}
   paused: 0
+  overrideTimerPause: 1
 --- !u!114 &6208916797359125883
 MonoBehaviour:
   m_ObjectHideFlags: 0

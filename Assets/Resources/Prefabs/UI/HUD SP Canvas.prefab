@@ -1487,7 +1487,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 175}
+  m_AnchoredPosition: {x: -269, y: 175}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6083646374416225886
@@ -1560,7 +1560,7 @@ GameObject:
   - component: {fileID: 6083646374467275334}
   - component: {fileID: 6083646374467275333}
   m_Layer: 5
-  m_Name: HUD Canvas
+  m_Name: HUD SP Canvas
   m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1686,7 +1686,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -254, y: 171.99995}
+  m_AnchoredPosition: {x: 65, y: 204}
   m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6083646375538522390
@@ -1764,6 +1764,7 @@ MonoBehaviour:
   countdownStart: 100
   timer2: {fileID: 0}
   paused: 0
+  overrideTimerPause: 1
 --- !u!114 &7879728692389026653
 MonoBehaviour:
   m_ObjectHideFlags: 0

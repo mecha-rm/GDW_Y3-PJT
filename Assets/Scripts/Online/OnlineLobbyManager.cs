@@ -1752,9 +1752,16 @@ public class OnlineLobbyManager : MonoBehaviour
         {
             gm.onlineLobbyManager = this;
 
-            // TODO: put canvases in debug so that they're deleted.
             // create a new multiplayer canvas
-            // GameObject multHud = (GameObject)Resources.Load("Prefabs/UI/HUD MP Canvas");
+            // note: if accessed in single player, the hud gets deleted due to being a debug child.
+            // as such, this is used to find and delete the hud instead.
+            GameObject spHud = GameObject.Find("HUD SP Canvas");
+
+            // destroy the hud.
+            if (spHud != null)
+                Destroy(spHud);
+
+            Instantiate((GameObject)Resources.Load("Prefabs/UI/HUD MP Canvas"));
 
             // finds the countdown timer and sets the time value
             CountdownTimer cdt = FindObjectOfType<CountdownTimer>();

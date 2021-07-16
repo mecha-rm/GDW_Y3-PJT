@@ -129,29 +129,29 @@ public class GameHudMpManager : MonoBehaviour
     public void UpdateBoxes()
     {
         // p1
-        if (p1 == null && p1Box != null)
+        if (p1 != null && p1Box != null)
             p1Box.SetActive(true);
-        else if(p1Box != null)
+        else if(p1 == null && p1Box != null)
             p1Box.SetActive(false);
 
 
         // p2
-        if (p2 == null && p2Box != null)
+        if (p2 != null && p2Box != null)
             p2Box.SetActive(true);
-        else if (p2Box != null)
+        else if (p2 == null && p2Box != null)
             p2Box.SetActive(false);
 
 
         // p3
-        if (p3 == null && p3Box != null)
-            p3Box.SetActive(false);
-        else if (p3Box != null)
+        if (p3 != null && p3Box != null)
+            p3Box.SetActive(true);
+        else if (p3 == null  && p3Box != null)
             p3Box.SetActive(false);
 
         // p4
-        if (p4 == null && p4Box != null)
-            p4Box.SetActive(false);
-        else if (p4Box != null)
+        if (p4 != null && p4Box != null)
+            p4Box.SetActive(true);
+        else if (p4 == null && p4Box != null)
             p4Box.SetActive(false);
     }
 
@@ -177,6 +177,7 @@ public class GameHudMpManager : MonoBehaviour
             // the texture image
             Texture2D img = null;
 
+            // TODO: add function to return type of player using game builder enum.
             // the players
             if (players[i] is DogPlayer) // dog
             {

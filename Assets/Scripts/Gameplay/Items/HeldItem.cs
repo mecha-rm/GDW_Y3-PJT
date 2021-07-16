@@ -82,7 +82,11 @@ public abstract class HeldItem : MonoBehaviour
         // turns off all children.
         for (int index = 0; index < childCount; index++)
         {
+            // child object
             GameObject childObject = parentObject.transform.GetChild(index).gameObject;
+            
+
+            // checks for proper item
             if (childObject.name == itemIconName)
             {
                 childObject.SetActive(true);
@@ -90,7 +94,9 @@ public abstract class HeldItem : MonoBehaviour
             }
             else
             {
-                childObject.SetActive(false);
+                // if it's not the item graphic, hide it.
+                if(childObject.name != "Item Graphic")
+                    childObject.SetActive(false);
             }
         }
     }
