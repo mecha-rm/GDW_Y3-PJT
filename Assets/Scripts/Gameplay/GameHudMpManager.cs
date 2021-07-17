@@ -177,24 +177,47 @@ public class GameHudMpManager : MonoBehaviour
             // the texture image
             Texture2D img = null;
 
-            // TODO: add function to return type of player using game builder enum.
+            
             // the players
-            if (players[i] is DogPlayer) // dog
+            GameBuilder.playables type = players[i].GetPlayerType();
+
+            // TODO: check and see which one is less intensive.
+            // ver 1. - check type
+            switch(type)
             {
-                img = dogIcon;
+                case GameBuilder.playables.none: // none (use default)
+                    break;
+                case GameBuilder.playables.dog:
+                    img = dogIcon;
+                    break;
+                case GameBuilder.playables.cat:
+                    img = catIcon;
+                    break;
+                case GameBuilder.playables.bunny:
+                    img = bunnyIcon;
+                    break;
+                case GameBuilder.playables.turtle:
+                    img = turtleIcon;
+                    break;
             }
-            else if (players[i] is CatPlayer) // cat
-            {
-                img = catIcon;
-            }
-            else if (players[i] is BunnyPlayer) // bunny
-            {
-                img = bunnyIcon;
-            }
-            else if (players[i] is TurtlePlayer) // turtle
-            {
-                img = turtleIcon;
-            }
+
+            // ver 2. - downcast check
+            // if (players[i] is DogPlayer) // dog
+            // {
+            //     img = dogIcon;
+            // }
+            // else if (players[i] is CatPlayer) // cat
+            // {
+            //     img = catIcon;
+            // }
+            // else if (players[i] is BunnyPlayer) // bunny
+            // {
+            //     img = bunnyIcon;
+            // }
+            // else if (players[i] is TurtlePlayer) // turtle
+            // {
+            //     img = turtleIcon;
+            // }
 
             // image was found
             if(img != null)

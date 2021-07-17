@@ -60,6 +60,12 @@ public class BunnyPlayer : PlayerObject
 
     }
 
+    // gets the player type
+    public override GameBuilder.playables GetPlayerType()
+    {
+        return GameBuilder.playables.bunny;
+    }
+
     // Update is called once per frame
     void Update()
     {

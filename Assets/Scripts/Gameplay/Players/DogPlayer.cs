@@ -51,6 +51,12 @@ public class DogPlayer : PlayerObject
 
     }
 
+    // gets the player type
+    public override GameBuilder.playables GetPlayerType()
+    {
+        return GameBuilder.playables.dog;
+    }
+
     // Update is called once per frame
     void Update()
     {

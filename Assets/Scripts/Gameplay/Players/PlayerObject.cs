@@ -319,6 +319,12 @@ public class PlayerObject : MonoBehaviour
 
         // Debug.Log("OffGround");
     }
+    
+    // gets the player type
+    public virtual GameBuilder.playables GetPlayerType()
+    {
+        return GameBuilder.playables.none;
+    }
 
     // gets the player number
     public int GetPlayerNumber()

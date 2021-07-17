@@ -62,6 +62,12 @@ public class CatPlayer : PlayerObject
 
     }
 
+    // gets the player type
+    public override GameBuilder.playables GetPlayerType()
+    {
+        return GameBuilder.playables.cat;
+    }
+
     // Update is called once per frame
     void Update()
     {
