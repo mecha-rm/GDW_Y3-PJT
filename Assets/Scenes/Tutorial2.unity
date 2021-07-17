@@ -652,6 +652,7 @@ MonoBehaviour:
   countdownStart: 0
   timer2: {fileID: 771292244}
   paused: 0
+  overrideTimerPause: 1
 --- !u!114 &369021183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1489,17 +1490,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4674196698379792686, guid: f753d4bc02373a245b44ff6dc9374105, type: 3}
   m_PrefabInstance: {fileID: 580233244}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &580233246 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2747027042971580054, guid: f753d4bc02373a245b44ff6dc9374105, type: 3}
-  m_PrefabInstance: {fileID: 580233244}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e63993220b9ee4f8b0702c62a62fb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &769087362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1655,7 +1645,7 @@ Transform:
   m_Children:
   - {fileID: 580233245}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &964821148
 GameObject:
@@ -3482,7 +3472,7 @@ RectTransform:
   - {fileID: 435960145}
   - {fileID: 1114380206}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -4073,7 +4063,7 @@ PrefabInstance:
     - target: {fileID: 5050549912184755926, guid: b597d122611fd7448854a2fe8932c52f, type: 3}
       propertyPath: p1
       value: 
-      objectReference: {fileID: 580233246}
+      objectReference: {fileID: 0}
     - target: {fileID: 5050549912184755927, guid: b597d122611fd7448854a2fe8932c52f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.556

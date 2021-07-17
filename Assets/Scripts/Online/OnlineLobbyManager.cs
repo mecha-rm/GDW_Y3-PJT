@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public class OnlineLobbyManager : MonoBehaviour
 {
     // TODO: randomize stage each time the data is sent to the client instead?
-    
+
     // TODO: nothing past the names seem to transfer over for some reason.
     // do note that if you choose any character but the dog the connection won't work for some reaosn.
 
@@ -27,7 +27,7 @@ public class OnlineLobbyManager : MonoBehaviour
 
     /// FORMAT: SERVER TO CLIENTS
     /// <summary>
-    /// Total Bytes: ??? (Array size 256)
+    /// Total Bytes: ??? (Array size 256 due to online manager)
     /// Format: Sending Data to Clients
     ///     - [0 - 3] - Status
     ///         * 0 = none
@@ -36,7 +36,15 @@ public class OnlineLobbyManager : MonoBehaviour
     ///     - [4 - 7] - Player Count
     ///     - [8 - 11] - Win Score
     ///     - [12 - 15] - Stage Choice
-    ///     - [16 - 47] - Player 1 Name (char = 2 bytes, 16 chars total, which is 32 bytes)
+    ///     - [16 - 47] - Player 1 Name
+    ///         * If you run sizeof(char), it returns 2 (i.e. 2 bytes).
+    ///         * If converting UTF8, a given char can range from 1 to 3 bytes.
+    ///         * If you convert using ASCII, then the characters are all 1 byte, thus some are rendered unusable.
+    ///         * Before, the game would convert one way with UTF8, but convert back using ASCII.
+    ///         * Furthermore, the game assumed every character was two bytes, which both caused issues.
+    ///         * As such, the game now uses ASCII conversion instead.
+    ///         * The orignal plan was to have 16 characters (each worth 2 bytes for a total of 32).
+    ///         * We're keeping it at 32 for now  just in case we can open it up to going beyond ASCII (though it will probably stay like that).
     ///     - [48 - 79] - Player 2 Name (if applicable)
     ///     - [80 - 111] - Player 3 Name (if applicable)
     ///     - [112 - 143] - Player 4 Name (if applicable)

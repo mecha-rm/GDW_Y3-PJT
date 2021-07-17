@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 4674196698379792686}
   - component: {fileID: 2487694277518673106}
   - component: {fileID: 1982536662827971025}
-  - component: {fileID: 2747027042971580054}
+  - component: {fileID: 4634019518642565718}
   - component: {fileID: 9088542346894408297}
   - component: {fileID: -5319235699862361246}
   m_Layer: 0
@@ -116,7 +116,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.1, z: 1.45}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2747027042971580054
+--- !u!114 &4634019518642565718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3978860192212530099}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e63993220b9ee4f8b0702c62a62fb9, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c5da0d3f9089394c98cad93cf51cdb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 0
@@ -141,6 +141,7 @@ MonoBehaviour:
   jumpForce: 10
   backupFactor: 0.5
   momentumMovement: 1
+  bounceForce: 7.25
   playerCamera: {fileID: 0}
   cameraDistance: {x: 0, y: 3, z: -7}
   spawnPos: {x: 0, y: 1, z: 0}
@@ -149,7 +150,7 @@ MonoBehaviour:
   speedMult: 1
   knockbackMult: 1
   jumpMult: 1
-  defenseMult: 1
+  defenseMult: 1.5
   flag: {fileID: 0}
   flagIndicator: {fileID: 6642459565835869764}
   idleEffectWaitTime: 5
@@ -187,8 +188,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f15b6351b34b8040bbe54ce86a9172d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2747027042971580054}
+  player: {fileID: 0}
   idNumber: -1
+  randomizeIdOnStart: 1
 --- !u!1 &4565258420496980240
 GameObject:
   m_ObjectHideFlags: 0

@@ -647,7 +647,7 @@ GameObject:
   - component: {fileID: 1820034065259849386}
   - component: {fileID: 8870414188071261014}
   - component: {fileID: 4764659836360844885}
-  - component: {fileID: 9188325093911109906}
+  - component: {fileID: 2127045379989856046}
   - component: {fileID: 2863417912992673261}
   - component: {fileID: 6131581136813494206}
   m_Layer: 0
@@ -706,7 +706,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.18, y: 0.1, z: 0.96}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9188325093911109906
+--- !u!114 &2127045379989856046
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -715,7 +715,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7974707485083853879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e63993220b9ee4f8b0702c62a62fb9, type: 3}
+  m_Script: {fileID: 11500000, guid: 808ed41756d33db43b3537954285aaba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 0
@@ -731,6 +731,7 @@ MonoBehaviour:
   jumpForce: 10
   backupFactor: 0.5
   momentumMovement: 1
+  bounceForce: 7.25
   playerCamera: {fileID: 0}
   cameraDistance: {x: 0, y: 3, z: -7}
   spawnPos: {x: 0, y: 1, z: 0}
@@ -738,7 +739,7 @@ MonoBehaviour:
   spawnScl: {x: 0, y: 0, z: 0}
   speedMult: 1
   knockbackMult: 1
-  jumpMult: 1
+  jumpMult: 1.5
   defenseMult: 1
   flag: {fileID: 0}
   flagIndicator: {fileID: 410632129754270144}
@@ -777,8 +778,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f15b6351b34b8040bbe54ce86a9172d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 9188325093911109906}
+  player: {fileID: 2127045379989856046}
   idNumber: -1
+  randomizeIdOnStart: 1
 --- !u!1001 &6276276284939705026
 PrefabInstance:
   m_ObjectHideFlags: 0

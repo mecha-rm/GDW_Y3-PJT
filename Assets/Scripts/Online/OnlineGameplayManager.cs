@@ -36,7 +36,7 @@ public class OnlineGameplayManager : MonoBehaviour
     /// 
 
     /// <summary>
-    /// CLINET DATA SENT TO SERE SEND DATA
+    /// CLINET DATA SENT TO SERVER SEND DATA
     /// </summary>
 
     [Header("Match Info")]
@@ -455,6 +455,7 @@ public class OnlineGameplayManager : MonoBehaviour
             // timer data
             byte[] data;
             
+            // TODO: check for NaN.
             // if the timer has been set, get the current time.
             if(timer != null)
                 data = BitConverter.GetBytes(timer.GetCurrentTimeValue());

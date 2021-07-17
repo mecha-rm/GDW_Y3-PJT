@@ -738,7 +738,7 @@ MonoBehaviour:
   spawnRot: {x: 0, y: 0, z: 0, w: 1}
   spawnScl: {x: 0, y: 0, z: 0}
   speedMult: 1
-  knockbackMult: 1
+  knockbackMult: 1.5
   jumpMult: 1
   defenseMult: 1
   flag: {fileID: 0}

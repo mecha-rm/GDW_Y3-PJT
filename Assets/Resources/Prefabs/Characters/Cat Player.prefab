@@ -349,12 +349,13 @@ MonoBehaviour:
   jumpForce: 10
   backupFactor: 0.5
   momentumMovement: 1
+  bounceForce: 7.25
   playerCamera: {fileID: 0}
   cameraDistance: {x: 0, y: 3, z: -7}
   spawnPos: {x: 0, y: 0, z: 0}
   spawnRot: {x: 0, y: 0, z: 0, w: 1}
   spawnScl: {x: 0, y: 0, z: 0}
-  speedMult: 1
+  speedMult: 1.5
   knockbackMult: 1
   jumpMult: 1
   defenseMult: 1
@@ -397,6 +398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 6781808547747617761}
   idNumber: -1
+  randomizeIdOnStart: 1
 --- !u!1 &5410496912438522910
 GameObject:
   m_ObjectHideFlags: 0
